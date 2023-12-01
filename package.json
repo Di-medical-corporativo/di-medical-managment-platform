@@ -1,0 +1,14 @@
+{
+  "name": "di-medical-managment-platform",
+  "version": "1.0.0",
+  "description": "Di medical managment platform",
+  "main": "index.js",
+  "repository": "git@github.com:Di-medical-corporativo/di-medical-managment-platform.git",
+  "author": "dimedical-corporativo <redessociales@dimedicalcorporativo.mx>",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "husky": "^8.0.3"
+  }
+}
