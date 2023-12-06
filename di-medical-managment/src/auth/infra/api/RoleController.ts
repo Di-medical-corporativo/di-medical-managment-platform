@@ -9,7 +9,6 @@ import { Response } from 'express'
 import { IsAuthenticated } from '../middlewares/IsAuthenticated'
 
 @JsonController('/roles')
-@UseBefore(IsAuthenticated)
 @Service()
 export class RoleRestController {
   constructor (

@@ -156,7 +156,6 @@ export class DbUserRepository implements UserRepository {
       
       return Right.create(userDomain)
     } catch (error) {
-      console.log(error)
       return Left.create(ServerError.SERVER_ERROR)
     }
   }
@@ -208,7 +207,6 @@ export class DbUserRepository implements UserRepository {
       userDomain.login = ModelToDomainLogin.from(user.login!)
       return Right.create(userDomain)
     } catch (error) {
-      console.log(error)
       return Left.create(ServerError.SERVER_ERROR)
     }
   }

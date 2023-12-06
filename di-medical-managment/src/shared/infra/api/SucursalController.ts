@@ -8,7 +8,6 @@ import { UpdateSucursalDto } from '../dto/UpdateSucursalDto'
 import { IsAuthenticated } from '../../../auth/infra/middlewares/IsAuthenticated'
 
 @JsonController('/sucursal')
-@UseBefore(IsAuthenticated)
 @Service()
 export class SucursalRestController {
   constructor(

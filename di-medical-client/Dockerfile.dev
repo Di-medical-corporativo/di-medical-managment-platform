@@ -1,0 +1,6 @@
+FROM node:19-alpine as base
+WORKDIR /client
+COPY package*.json .
+COPY . .
+
+CMD [ "npm", "run", "dev" ]

@@ -17,6 +17,7 @@ import { BaseError } from './shared/domain/errors/Error'
 import { UnknowError } from './auth/domain/Errors'
 import { TruckRestController } from './fleet/infra/api/TruckController'
 import { ClientRestController } from './fleet/infra/api/ClientController'
+import { ItineraryRestController } from './fleet/infra/api/ItineraryController'
 
 @Service()
 export class Server implements ServerI {
@@ -32,7 +33,6 @@ export class Server implements ServerI {
     useExpressServer(this._app, {
       development: true,
       validation: true,
-      routePrefix: '/api',
       cors: true,
       classTransformer: true,
       controllers: [
@@ -43,7 +43,8 @@ export class Server implements ServerI {
         SucursalRestController,
         AuthRestController,
         TruckRestController,
-        ClientRestController
+        ClientRestController,
+        ItineraryRestController
       ]
     })
     .use((err: any, req: any, res: any, next: any) => {

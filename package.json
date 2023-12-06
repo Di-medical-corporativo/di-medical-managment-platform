@@ -6,6 +6,12 @@
   "repository": "git@github.com:Di-medical-corporativo/di-medical-managment-platform.git",
   "author": "dimedical-corporativo <redessociales@dimedicalcorporativo.mx>",
   "license": "MIT",
+  "scripts": {
+    "postinstall": "husky install",
+    "prepack": "pinst --disable",
+    "postpack": "pinst --enable",
+    "client": "cd client && yarn dev"
+  },
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",

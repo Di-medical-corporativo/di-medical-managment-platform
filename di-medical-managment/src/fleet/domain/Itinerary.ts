@@ -1,14 +1,16 @@
 import { Sucursal } from '../../shared/domain/Sucursal'
+import { Point } from './Point'
 
 export class Itinerary {
+  private _points: Point[]
   constructor (
-    private _itineraryId: string,
+    private _itineraryId: string | undefined,
     private _sucursal: Sucursal,
     private _createdAt: Date,
     private _updatedAt: Date
   ) { }
 
-  public get itineraryId (): string {
+  public get itineraryId (): string | undefined{
     return this._itineraryId
   }
 
@@ -38,5 +40,13 @@ export class Itinerary {
 
   public set updatedAt (updatedAt: Date) {
     this._updatedAt = updatedAt
+  }
+
+  public get points(): Point[] {
+    return this._points
+  }
+
+  public set points(points: Point[]) {
+    this._points = points
   }
 }

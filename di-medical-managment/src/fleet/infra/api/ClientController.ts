@@ -10,7 +10,6 @@ import { UpdateClientDto } from '../dto/UpdateClientDto'
 
 @JsonController('/clients')
 @Service()
-@UseBefore(IsAuthenticated)
 export class ClientRestController {
 
   constructor(

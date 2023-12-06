@@ -11,9 +11,6 @@
     "build": "tsc",
     "standard": "npx ts-standard src tests",
     "lint": "npx ts-standard --fix",
-    "postinstall": "husky install",
-    "prepack": "pinst --disable",
-    "postpack": "pinst --enable",
     "start": "node ./dist/src/index.js"
   },
   "dependencies": {

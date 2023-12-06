@@ -1,4 +1,7 @@
+import { User } from "./User"
+
 export class Sucursal {
+  private _employees: User[]
   constructor (
     private _sucursalId: string | undefined,
     private _sucursalName: string,
@@ -45,5 +48,13 @@ export class Sucursal {
 
   public set dimedicalBrand (dimedicalBrand: string) {
     this._dimedicalBrand = dimedicalBrand
+  }
+
+  public set employees (employees: User[]) {
+    this._employees = employees
+  }
+
+  public get employees (): User[] {
+    return this._employees
   }
 }

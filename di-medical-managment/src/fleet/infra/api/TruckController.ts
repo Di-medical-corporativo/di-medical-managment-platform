@@ -10,7 +10,6 @@ import { CreateIncidentDto } from '../dto/CreateIncidentDto'
 import { UpdateTruckDto } from '../dto/UpdateTruckDto'
 
 @JsonController('/truck')
-@UseBefore(IsAuthenticated)
 @Service()
 export class TruckRestController {
   constructor (

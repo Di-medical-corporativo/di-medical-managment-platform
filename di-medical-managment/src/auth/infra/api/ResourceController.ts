@@ -8,7 +8,6 @@ import { UpdateResourceDto } from '../dto/UpdateResourceDto'
 import { IsAuthenticated } from '../middlewares/IsAuthenticated'
 
 @JsonController('/resource')
-@UseBefore(IsAuthenticated)
 @Service()
 export class ResourceRestController {
   constructor (

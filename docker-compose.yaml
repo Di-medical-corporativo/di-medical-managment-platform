@@ -1,5 +1,12 @@
 version: '1'
 services:
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - "3050:80"
   db:
     image: postgres:14.1-alpine
     restart: always
@@ -11,19 +18,26 @@ services:
       - "5432:5432"
     volumes:
       - db:/var/lib/postgresql/data
-  backend:
+  api:
     build:
-      context: .
       dockerfile: Dockerfile.dev
-    ports:
-      - "3000:3000"
+      context: ./di-medical-managment
     depends_on:
       - db
     volumes:
-      - /app/node_modules/
-      - .:/app
+      - /server/node_modules/
+      - ./di-medical-managment:/server
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres
+  client:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./di-medical-client
+    depends_on:
+      - api
+    volumes:
+      - /client/node_modules/
+      - ./di-medical-client:/client
 volumes:
   db:
     driver: local

@@ -9,7 +9,6 @@ import { UpdateViewDto } from '../dto/UpdateViewDto'
 import { IsAuthenticated } from '../middlewares/IsAuthenticated'
 
 @JsonController('/views')
-@UseBefore(IsAuthenticated)
 @Service()
 export class ViewRestController {
   constructor (

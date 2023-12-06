@@ -23,8 +23,8 @@ model User {
   updatedAt DateTime
   loginId String? @unique
   login     Login? @relation(fields: [loginId], references: [id])
-  sucursalId String? @unique
-  sucursal Sucursal? @relation(fields: [sucursalId], references: [id])
+  sucursalId String @unique
+  sucursal Sucursal @relation(fields: [sucursalId], references: [id])
   roles UserHasRole[]
   points Point[]
 }
@@ -45,7 +45,7 @@ model Sucursal {
   address        String
   phone          String
   dimedicalBrand String
-  user User?
+  user User[]
   itineraries Itinerary[]
 }
 
@@ -132,7 +132,7 @@ model Client {
 
 model Point {
   id String @id @default(uuid())
-  sign String
+  sign String?
   client Client @relation(fields: [clientId], references: [id])
   clientId String
   truck Truck @relation(fields: [truckId], references: [id])
@@ -140,6 +140,8 @@ model Point {
   user User @relation(fields: [userId], references: [id])
   userId String
   invoices Invoce[]
+  itineraryId String?
+  itinerary Itinerary? @relation(fields: [itineraryId], references: [id])
 }
 
 model Invoce {
@@ -151,7 +153,8 @@ model Invoce {
 }
 
 model Itinerary {
-  itineraryId String @id @default(uuid())
+  id String @id @default(uuid())
   sucursal Sucursal @relation(fields: [sucursalId], references: [id])
   sucursalId String
+  points Point[]
 }

@@ -1,16 +1,16 @@
 import { Point } from './Point'
 
 export class Invoice {
+  private _point: Point
   constructor (
-    private _invoiceId: string,
-    private _pointId: Point,
+    private _invoiceId: string | undefined,
     private _invoiceNumber: string,
     private _description: string,
     private _createdAt: Date,
     private _updatedAt: Date
   ) {}
 
-  get invoiceId (): string {
+  get invoiceId (): string | undefined {
     return this._invoiceId
   }
 
@@ -19,11 +19,11 @@ export class Invoice {
   }
 
   get pointId (): Point {
-    return this._pointId
+    return this._point
   }
 
   set pointId (value: Point) {
-    this._pointId = value
+    this._point = value
   }
 
   get invoiceNumber (): string {

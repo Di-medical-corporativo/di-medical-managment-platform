@@ -16,14 +16,13 @@ export class AuthRestController {
   ) {}
 
   @Post('/new')
-  @UseBefore(IsAuthenticated)
   public async createUser (@Body() role: CreateUserDto, @Res() response: Response) {
-    const roleOrError = await this.userService.createUser(role)
-    if(roleOrError.isLeft()) {
-      response.status(roleOrError.error.status)
-      return roleOrError.error
+    const userOrError = await this.userService.createUser(role)
+    if(userOrError.isLeft()) {
+      response.status(userOrError.error.status)
+      return userOrError.error
     }
-    return roleOrError.value
+    return userOrError.value
   }
 
   @Post('/login')
