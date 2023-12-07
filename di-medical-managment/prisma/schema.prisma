@@ -157,4 +157,6 @@ model Itinerary {
   sucursal Sucursal @relation(fields: [sucursalId], references: [id])
   sucursalId String
   points Point[]
+  createdAt DateTime
+  updatedAt DateTime
 }

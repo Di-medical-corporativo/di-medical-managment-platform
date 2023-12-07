@@ -16,6 +16,6 @@ export class SucursalNotFound extends BaseError {
 }
 
 export class UserNotFound extends BaseError {
-  message: string = 'No se encontro el usuario';
+  message: string = 'No se encontro el usuario'
   status: number = 404
 }

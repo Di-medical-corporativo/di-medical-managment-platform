@@ -9,3 +9,8 @@ export class ClientNotFound extends BaseError {
   message: string = 'No se encontro el cliente'
   status: number = 404
 }
+
+export class NotFound extends BaseError {
+  message: string = 'Los datos que proporcionaste no se encuentran'
+  status: number = 404
+}

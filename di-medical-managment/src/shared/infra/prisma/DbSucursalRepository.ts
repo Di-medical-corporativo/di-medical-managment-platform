@@ -4,7 +4,6 @@ import { SucursalRepository } from '../../application/SucursalRepository'
 import { Either, Left, Right } from '../../domain/Either'
 import { Sucursal } from '../../domain/Sucursal'
 import { ServerError } from '../../domain/errors/Error'
-import { ModelToUserDomain } from './ModelToUserDomain'
 
 @Service()
 export class DbSucursalRepository implements SucursalRepository {
@@ -74,18 +73,13 @@ export class DbSucursalRepository implements SucursalRepository {
       const sucursalById = await this.prismaClient.sucursal.findUnique({
         where: {
           id: sucursalId
-        },
-        include: {
-          user: true
         }
       })
-      
-      console.log(sucursalById?.user);
-      
   
       if (!sucursalById) {
         return Left.create(ServerError.NOT_FOUND)
-      }  
+      }
+
       const sucursal = new Sucursal(
         sucursalById.id, 
         sucursalById.name, 
@@ -93,8 +87,6 @@ export class DbSucursalRepository implements SucursalRepository {
         sucursalById.phone, 
         sucursalById.dimedicalBrand
       )
-      const usersModelToDomain = ModelToUserDomain.fromUsers(sucursalById.user)
-      sucursal.employees = usersModelToDomain
       return Right.create(sucursal)
     } catch (error) {
       return Left.create(ServerError.SERVER_ERROR)

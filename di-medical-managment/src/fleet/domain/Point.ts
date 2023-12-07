@@ -9,14 +9,13 @@ export class Point {
   private _responseId: string
   private _sign: Sign
   private _itinerary: Itinerary
+  private _truck: Truck
+  private _invoices: Invoice[]
+  private _client: Client
+
+  private _assignedDriver: User
   constructor (
     private _pointId: string | undefined,
-    private _client: Client,
-    private _assignedDriver: User,
-    private _truck: Truck,
-    private _invoices: Invoice[],
-    private _createdAt: Date,
-    private _updatedAt: Date
   ) { }
 
   public get pointId (): string | undefined{
@@ -59,23 +58,6 @@ export class Point {
     this._sign = sign
   }
 
-  public get createdAt (): Date {
-    return this._createdAt
-  }
-
-  public set createdAt (createdAt: Date) {
-    this._createdAt = createdAt
-  }
-
-  public get updatedAt (): Date {
-    return this._updatedAt
-  }
-
-  public set updatedAt (updatedAt: Date) {
-    this._updatedAt = updatedAt
-  
-  }
-  
   public set truck(truck: Truck) {
     this._truck = truck
   }

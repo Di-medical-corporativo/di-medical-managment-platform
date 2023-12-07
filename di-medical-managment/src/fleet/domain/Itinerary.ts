@@ -3,9 +3,9 @@ import { Point } from './Point'
 
 export class Itinerary {
   private _points: Point[]
+  private _sucursal: Sucursal
   constructor (
     private _itineraryId: string | undefined,
-    private _sucursal: Sucursal,
     private _createdAt: Date,
     private _updatedAt: Date
   ) { }

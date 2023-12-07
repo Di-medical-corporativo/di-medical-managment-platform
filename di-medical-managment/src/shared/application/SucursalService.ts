@@ -2,7 +2,7 @@ import { Inject, Service } from 'typedi'
 import { DbSucursalRepository } from '../infra/prisma/DbSucursalRepository'
 import { SucursalRepository } from './SucursalRepository'
 import { Either, Left, Right } from '../domain/Either'
-import { BaseError, ServerError } from '../domain/errors/Error'
+import { BaseError, ServerError, SucursalNotFound } from '../domain/errors/Error'
 import { Sucursal } from '../domain/Sucursal'
 import { RoleNotFound, UnknowError } from '../../auth/domain/Errors'
 import { CreateSucursalDto } from '../infra/dto/CreateSucursalDto'
@@ -102,7 +102,7 @@ export class SucursalService {
       case ServerError.SERVER_ERROR:
         return Left.create(new UnknowError())
       case ServerError.NOT_FOUND:
-        return Left.create(new RoleNotFound())
+        return Left.create(new SucursalNotFound())
       default:
         return Left.create(new UnknowError())
     }

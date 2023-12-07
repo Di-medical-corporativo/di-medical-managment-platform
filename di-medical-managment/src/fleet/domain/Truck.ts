@@ -1,7 +1,7 @@
 import { Incident } from './Incident'
 
 export class Truck {
-  private _incidents: Incident[] = []
+  private _incidents: Incident[]
   constructor (
     private _truckId: string | undefined,
     private _plates: string,

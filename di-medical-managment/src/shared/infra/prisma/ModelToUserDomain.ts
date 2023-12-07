@@ -22,4 +22,21 @@ export class ModelToUserDomain {
 
     return usersDomain
   }
+
+  public static from(userModel: User) {
+    return new UserDomain(
+      userModel.id,
+      userModel.firstName,
+      userModel.lastName,
+      userModel.birthDate,
+      userModel.NSS,
+      userModel.job,
+      userModel.picture,
+      userModel.phone,
+      userModel.email,
+      userModel.isActive,
+      userModel.createdAt,
+      userModel.updatedAt
+    )
+  }
 }

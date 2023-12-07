@@ -4,6 +4,7 @@ import { Either, Left, Right } from '../../../shared/domain/Either';
 import { ServerError } from '../../../shared/domain/errors/Error';
 import { Itinerary } from '../../domain/Itinerary';
 import { PrismaClient } from '@prisma/client';
+import { ModelTodomainItinerary } from './ModelToDomainItinerary';
 
 @Service()
 export class DbItineraryRepository implements ItineraryRepository {
@@ -32,7 +33,7 @@ export class DbItineraryRepository implements ItineraryRepository {
               user: {
                 connect: {
                   id: point.assignedDriver.userId
-                }
+                },
               },
               invoices: {
                 create: point.invoices.map(invoice => {
@@ -40,16 +41,26 @@ export class DbItineraryRepository implements ItineraryRepository {
                 })
               }
             })),
-          }
+          },
+          createdAt: itinerary.createdAt,
+          updatedAt: itinerary.updatedAt
         },
         include: {
-          points: true,
-          sucursal: true
+          points: {
+            include: {
+              invoices: true,
+              truck: true,
+              client: true,
+              user: true
+            }
+          },
+          sucursal: true,
         }
       })
-      return Right.create(itinerary)
+      const domainItinerary = ModelTodomainItinerary.from(itineraryCreated)
+      
+      return Right.create(domainItinerary)
     } catch (error) {
-      console.log(error);
       return Left.create(ServerError.SERVER_ERROR)
     }    
   }

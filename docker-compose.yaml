@@ -38,6 +38,10 @@ services:
     volumes:
       - /client/node_modules/
       - ./di-medical-client:/client
+    environment:
+      - WDS_SOCKET_PORT=0
+    ports:
+      - "9000:9000"
 volumes:
   db:
     driver: local

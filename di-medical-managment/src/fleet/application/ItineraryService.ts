@@ -1,7 +1,7 @@
 import { Inject, Service } from 'typedi'
 import { CreateItineraryDto } from '../infra/dto/CreateItinearyDto'
 import { Either, Left, Right } from '../../shared/domain/Either'
-import { BaseError } from '../../shared/domain/errors/Error'
+import { BaseError, ServerError } from '../../shared/domain/errors/Error'
 import { Itinerary } from '../domain/Itinerary'
 import { DbItineraryRepository } from '../infra/prisma/DbItineraryRepository'
 import { ItineraryRepository } from './ItineraryRepository'
@@ -12,6 +12,7 @@ import { Point } from '../domain/Point'
 import { ClientService } from './ClientService'
 import { UserService } from '../../shared/application/UserService'
 import { TruckService } from './TruckService'
+import { NotFound } from '../domain/Errors'
 
 @Service()
 export class ItineraryService {
@@ -30,7 +31,6 @@ export class ItineraryService {
   ) {}
 
   public async createItinerary (itineraryToCreate: CreateItineraryDto): Promise<Either<BaseError, Itinerary>> {
-    
     const sucursalOrError = await this.sucursalService.findSucursalById(itineraryToCreate.sucursalId)
     if(sucursalOrError.isLeft()) {
       return sucursalOrError
@@ -41,9 +41,7 @@ export class ItineraryService {
         new Invoice(
           undefined, 
           invoice.invoiceNumber, 
-          invoice.description,
-          new Date(),
-          new Date()
+          invoice.description
           )
       )
 
@@ -64,15 +62,12 @@ export class ItineraryService {
       }
 
       const point = new Point(
-        undefined,
-        clientOrError.value,
-        userAssignedOrerror.value,
-        truckOrError.value,
-        invoices,
-        new Date(),
-        new Date()
+        undefined
       )
-
+      point.client = clientOrError.value
+      point.invoices = invoices
+      point.assignedDriver = userAssignedOrerror.value
+      point.truck = truckOrError.value
       return Right.create(point)
     })
 
@@ -94,16 +89,30 @@ export class ItineraryService {
 
     const itinerary = new Itinerary(
       undefined,
-      sucursalOrError.value,
       new Date(),
       new Date()
     )
-
+    itinerary.sucursal = sucursalOrError.value
     itinerary.points = unfoldedPoints
-
     const itineraryCreatedOrError = await this.itineraryRepository.createItinerary(itinerary)
-    console.log(itineraryCreatedOrError);
     
-    return Right.create(itinerary)
+    if(itineraryCreatedOrError.isLeft()) {
+      return this.unfoldError(itineraryCreatedOrError.error)
+    }
+    
+    return itineraryCreatedOrError
+  }
+
+
+  private unfoldError (error: ServerError) {
+    switch (error) {
+      case ServerError.NETWORK_ERROR:
+      case ServerError.SERVER_ERROR:
+        return Left.create(new UnknowError())
+      case ServerError.NOT_FOUND:
+        return Left.create(new NotFound())
+      default:
+        return Left.create(new UnknowError())
+    }
   }
 }

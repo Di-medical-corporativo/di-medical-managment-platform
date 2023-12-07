@@ -6,8 +6,6 @@ export class Invoice {
     private _invoiceId: string | undefined,
     private _invoiceNumber: string,
     private _description: string,
-    private _createdAt: Date,
-    private _updatedAt: Date
   ) {}
 
   get invoiceId (): string | undefined {
@@ -40,21 +38,5 @@ export class Invoice {
 
   set description (value: string) {
     this._description = value
-  }
-
-  get createdAt (): Date {
-    return this._createdAt
-  }
-
-  set createdAt (value: Date) {
-    this._createdAt = value
-  }
-
-  get updatedAt (): Date {
-    return this._updatedAt
-  }
-
-  set updatedAt (value: Date) {
-    this._updatedAt = value
   }
 }
