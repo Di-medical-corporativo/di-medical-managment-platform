@@ -1,4 +1,5 @@
 import { RouteRecordRaw } from 'vue-router';
+import { RoutesNames } from './routesNames';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -7,8 +8,9 @@ const routes: RouteRecordRaw[] = [
     children: [{ path: '', component: () => import('pages/login/LoginPage.vue') }]
   },
   {
-    path: '/backoffice',
+    path: RoutesNames.backoffice,
     component: () => import('layouts/backoffice/BackofficeLayout.vue'),
+
   },
   // Always leave this as last one,
   // but you can also remove it

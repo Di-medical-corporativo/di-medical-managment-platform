@@ -39,8 +39,13 @@
     </q-header>
 
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" class="bg-grey-1">
-      <div class="q-pa-md q-gutter-sm">
-        <q-tree :nodes="simple" dense node-key="label"/>
+
+      <div class="bg-primary flex flex-center" style="height: 68px;">
+        <q-img src="../../assets/images/logos/dimedical-logo.png" style="max-width: 45px"></q-img>
+      </div>
+
+      <div class="q-pa-md q-gutter-sm q-mt-sm">
+        <q-tree :nodes="props" default-expand-all v-model:selected="selected" node-key="label" />
       </div>
 
     </q-drawer>
@@ -56,14 +61,14 @@
 import { ref } from 'vue'
 
 const leftDrawerOpen = ref(false)
-
-const simple = [
+const selected = ref(null)
+const props = [
   {
-    label: 'Satisfied customers (with avatar)',
+    label: 'Satisfied customers',
     avatar: 'https://cdn.quasar.dev/img/boy-avatar.png',
     children: [
       {
-        label: 'Good food (with icon)',
+        label: 'Good food',
         icon: 'restaurant_menu',
         children: [
           { label: 'Quality ingredients' },
@@ -71,24 +76,26 @@ const simple = [
         ]
       },
       {
-        label: 'Good service (disabled node with icon)',
+        label: 'Good service',
         icon: 'room_service',
-        disabled: true,
         children: [
           { label: 'Prompt attention' },
           { label: 'Professional waiter' }
         ]
       },
       {
-        label: 'Pleasant surroundings (with icon)',
+        label: 'Pleasant surroundings',
         icon: 'photo',
         children: [
           {
-            label: 'Happy atmosphere (with image)',
-            img: 'https://cdn.quasar.dev/img/logo_calendar_128px.png'
+            label: 'Happy atmosphere'
           },
-          { label: 'Good table presentation' },
-          { label: 'Pleasing decor' }
+          {
+            label: 'Good table presentation'
+          },
+          {
+            label: 'Pleasing decor'
+          }
         ]
       }
     ]
