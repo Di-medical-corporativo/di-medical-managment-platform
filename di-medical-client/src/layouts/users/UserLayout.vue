@@ -1,5 +1,6 @@
 <template>
   <q-layout>
+    pSW
     <q-page-container>
       <router-view />
     </q-page-container>

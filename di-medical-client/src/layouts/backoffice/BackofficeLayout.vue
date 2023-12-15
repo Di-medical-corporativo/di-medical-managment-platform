@@ -45,7 +45,12 @@
       </div>
 
       <div class="q-pa-md q-gutter-sm q-mt-sm">
-        <q-tree :nodes="props" default-expand-all v-model:selected="selected" node-key="label" />
+        <q-tree 
+          :nodes="props" 
+          default-expand-all 
+          v-model:selected="selectedPage" 
+          node-key="label"
+        />
       </div>
 
     </q-drawer>
@@ -58,50 +63,54 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { usersModule, registrerUserLabel, RoutesPath, userModuleLabel, userListLabel } from '../../router/routesNames'
 
 const leftDrawerOpen = ref(false)
-const selected = ref(null)
+const selectedPage = ref(null)
+const router = useRouter()
+
 const props = [
   {
-    label: 'Satisfied customers',
-    avatar: 'https://cdn.quasar.dev/img/boy-avatar.png',
+    label: 'Perfil',
     children: [
-      {
-        label: 'Good food',
-        icon: 'restaurant_menu',
-        children: [
-          { label: 'Quality ingredients' },
-          { label: 'Good recipe' }
-        ]
-      },
-      {
-        label: 'Good service',
-        icon: 'room_service',
-        children: [
-          { label: 'Prompt attention' },
-          { label: 'Professional waiter' }
-        ]
-      },
-      {
-        label: 'Pleasant surroundings',
-        icon: 'photo',
-        children: [
-          {
-            label: 'Happy atmosphere'
-          },
-          {
-            label: 'Good table presentation'
-          },
-          {
-            label: 'Pleasing decor'
-          }
-        ]
-      }
+      usersModule
     ]
   }
 ]
+
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
+
+const routing = () => {
+  console.log(selectedPage.value)
+}
+
+
+watch(
+  () => selectedPage.value,
+  (value) => {
+    let route 
+    if(value === 'Perfil') {
+      route = RoutesPath.backoffice.profile.name
+    }
+
+    if(value === userModuleLabel) {
+      route = RoutesPath.users.default.name
+    }
+    
+    if(value === registrerUserLabel) {
+      route = RoutesPath.users.registrer.name
+    }
+    
+    if(value == userListLabel) {
+      route = RoutesPath.users.list.name
+    }
+    
+    router.push({ name: route })
+  }
+)
+
 </script>
