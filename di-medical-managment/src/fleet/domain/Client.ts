@@ -1,4 +1,8 @@
+import { Point } from './Point'
+
 export class Client {
+  private _points: Point[]
+  private _countPoints: number
   constructor (
     private _clientId: string | undefined,
     private _name: string,
@@ -36,5 +40,21 @@ export class Client {
 
   public get isActive(): boolean {
     return this._isActive
+  }
+
+  public get points(): Point[] {
+    return this._points
+  }
+
+  public set points(points: Point[]) {
+    this._points = points
+  }
+
+  public get countPoints() {
+    return this._countPoints
+  }
+
+  public set countPoints(count: number) {
+    this._countPoints = count
   }
 }

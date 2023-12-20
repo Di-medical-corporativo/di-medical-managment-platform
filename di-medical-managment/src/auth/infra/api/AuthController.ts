@@ -7,12 +7,13 @@ import { CreateUserDto } from '../dto/CreateUserDto'
 import { UserService } from '../../../shared/application/UserService'
 import { LoginUserDto } from '../dto/LoginUserDto'
 import { IsAuthenticated } from '../middlewares/IsAuthenticated'
+import { CheckTokenDto } from '../dto/CheckTokenDto'
 
 @JsonController('/auth')
 @Service()
 export class AuthRestController {
   constructor (
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   @Post('/new')
@@ -37,7 +38,6 @@ export class AuthRestController {
   }
 
   @Get('/:userId/resources')
-  @UseBefore(IsAuthenticated)
   public async getResourcesByUser(@Param('userId') userId: string) {
     const resourcesOrError = await this.userService.resourcesByUser(userId)
 
@@ -47,5 +47,18 @@ export class AuthRestController {
     }
 
     return resourcesOrError.value
+  }
+
+  @Post('/checkAuth')
+  public async checkToken(
+    @Body() token: CheckTokenDto,
+    @Res() response: Response
+  ) {
+    const tokenValid = await this.userService.checkAuth(token)
+    if(tokenValid.isLeft()) {
+      response.status(tokenValid.error.status)
+      return tokenValid.error
+    }
+    return tokenValid.value
   }
  }

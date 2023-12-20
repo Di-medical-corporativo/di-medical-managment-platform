@@ -20,8 +20,7 @@ export class ResourceService {
   public async createResource (roleToCreate: CreateResourceDto): Promise<Either<BaseError, Resource>> {
     const resource = new Resource(undefined, roleToCreate.name, roleToCreate.description)
     const roleCreatedOrError: Either<ServerError, Resource> = await this.resourceRepository.createResource(
-      resource,
-      roleToCreate.views
+      resource    
     )
     if(roleCreatedOrError.isLeft()) {
       return this.unfoldError(roleCreatedOrError.error)
@@ -47,7 +46,7 @@ export class ResourceService {
 
     const updatedResource: Either<ServerError, Resource> = await this
       .resourceRepository
-      .updateResource(resource.value, resourceToUpdate.views)
+      .updateResource(resource.value)
 
     if(updatedResource.isLeft()) {
       return this.unfoldError(updatedResource.error)

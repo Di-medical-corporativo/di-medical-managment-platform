@@ -17,6 +17,7 @@ import { SucursalService } from './SucursalService'
 import { RoleService } from '../../auth/application/RoleService'
 import { ResourceService } from '../../auth/application/ResourceService'
 import { Role } from '../../auth/domain/Role'
+import { CheckTokenDto } from '../../auth/infra/dto/CheckTokenDto'
 
 @Service()
 export class UserService {
@@ -117,6 +118,30 @@ export class UserService {
 
     const token = this.jwtService.generateToken(currentUser.value.userId)
     return Right.create({ token, resources: resourcesForUser.value, user: currentUser.value })
+  }
+
+  public async checkAuth(token: CheckTokenDto) {
+
+    const payload = this.jwtService.getPayloadFromToken(token.value)
+
+    if(payload.isLeft()) {
+      return payload
+    }
+
+    const id = payload.value.id
+
+    const currentUser = await this.findUserById(id)
+    if(currentUser.isLeft()){
+      return Left.create(new UserNotFound())
+    }
+
+    const resourcesForUser = await this.resourcesByUser(currentUser.value.userId!)
+
+    if(resourcesForUser.isLeft()) {
+      return Left.create(new UnknowError())
+    }
+
+    return Right.create({ token: token.value, resources: resourcesForUser.value, user: currentUser.value })
   }
 
   public async findUserByEmail (email: string): Promise<Either<BaseError, User>> {

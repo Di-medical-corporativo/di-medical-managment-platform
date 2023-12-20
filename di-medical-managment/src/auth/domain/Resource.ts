@@ -1,7 +1,5 @@
-import { View } from "./View"
 
 export class Resource {
-  private _views: View[]
   constructor (
     private _resourceId: string | undefined,
     private _name: string,
@@ -30,17 +28,5 @@ export class Resource {
 
   set description (value: string) {
     this._description = value
-  }
-
-  get views () {
-    return this._views
-  }
-
-  set views (views) {
-    this._views = views
-  }
-
-  public addView (view: View) {
-    this._views.push(view)
   }
 }

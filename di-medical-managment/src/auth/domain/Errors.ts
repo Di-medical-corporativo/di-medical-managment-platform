@@ -31,6 +31,6 @@ export class BadCredentials extends BaseError {
 }
 
 export class Unauthorized extends BaseError {
-  message: string = 'Debes estart autenticado para acceder'
+  message: string = 'Debes estar autenticado para acceder'
   status: number = 401
 }

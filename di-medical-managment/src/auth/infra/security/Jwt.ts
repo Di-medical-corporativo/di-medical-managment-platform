@@ -1,6 +1,6 @@
 import { Service } from 'typedi'
 import { JWTservice } from '../../application/JWTservice'
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import { Either, Left, Right } from '../../../shared/domain/Either'
 import { BaseError } from '../../../shared/domain/errors/Error'
 import { Unauthorized } from '../../domain/Errors'
@@ -26,5 +26,14 @@ export class JsonWebToken implements JWTservice {
         expiresIn: '1h'
       }
     )
+  }
+
+  getPayloadFromToken(token: string): Either<BaseError, JwtPayload> {
+    try {
+      const decoded = jwt.verify(token, 'kevin') as JwtPayload
+      return Right.create(decoded)
+    } catch (error) {
+      return Left.create(new Unauthorized())
+    }
   }
 }

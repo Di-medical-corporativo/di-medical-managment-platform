@@ -8,8 +8,4 @@ export class UpdateResourceDto {
   @IsString()
   @IsOptional()
   description?: string
-
-  @IsOptional()
-  @IsArray()
-  views: string[]
 }

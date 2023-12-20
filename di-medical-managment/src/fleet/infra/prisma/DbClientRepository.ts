@@ -4,6 +4,7 @@ import { ServerError } from '../../../shared/domain/errors/Error'
 import { ClientRepository } from '../../application/ClientRepository'
 import { Client } from '../../domain/Client'
 import { Service } from 'typedi'
+import { ModelToDomainPoint } from './ModelToDomainPoint'
 
 @Service()
 export class DbClientRepository implements ClientRepository {
@@ -31,6 +32,22 @@ export class DbClientRepository implements ClientRepository {
       const client = await this.prismaClient.client.findFirst({
         where: {
           id: clientId
+        },
+        include: {
+          points: {
+            include: {
+              client: true,
+              invoices: true,
+              truck: true,
+              user: true
+            },
+            take: 5,
+            orderBy: {
+              itinerary: {
+                createdAt: 'desc'
+              }
+            }
+          }
         }
       })
 
@@ -44,6 +61,8 @@ export class DbClientRepository implements ClientRepository {
         client.address,
         client.isActive
       )
+      const points = ModelToDomainPoint.fromPoints(client.points)
+      clientDomain.points = points
       return Right.create(clientDomain)
     } catch (error) {
       return Left.create(ServerError.SERVER_ERROR)

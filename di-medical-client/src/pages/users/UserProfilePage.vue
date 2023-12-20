@@ -18,7 +18,9 @@
 </template>
 
 <script setup lang="ts">
-
+import { useAuthStore } from 'src/stores/auth-store';
+const authStore = useAuthStore()
+console.log(authStore.getToken);
 </script>
 
 <style lang="scss" scoped>

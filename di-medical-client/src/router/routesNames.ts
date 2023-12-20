@@ -1,4 +1,8 @@
 export const RoutesPath = {
+  login: {
+    route: '/login',
+    name: 'login'
+  },
   backoffice: {
     route: '/backoffice',
     profile: {
@@ -20,14 +24,31 @@ export const RoutesPath = {
       route: 'list',
       name: 'user-list'
     }
+  },
+  sucursal: {
+    route: 'sucursal',
+    default: {
+      route: '',
+      name: 'sucursal'
+    },
+    registrer: {
+      route: 'registrer',
+      name: 'sucursal-registrer'
+    }
   }
 }
 
-export const registrerUserLabel = 'Registrar usuario'
+interface PlatformModule {
+  label: string
+  children?: PlatformModule[]
+}
+
+
 export const userModuleLabel = 'Usuarios'
+export const registrerUserLabel = 'Registrar usuario'
 export const userListLabel = 'Listado de usuarios'
 
-export const usersModule = {
+export const usersModule: PlatformModule = {
   label: userModuleLabel,
   children: [
     {
@@ -38,3 +59,20 @@ export const usersModule = {
     }
   ]
 }
+
+export const sucursalModuleLabel = 'Sucursales'
+export const registerSucursalLabel = 'Registrar sucursal'
+
+export const sucursalModule: PlatformModule = {
+  label: sucursalModuleLabel,
+  children: [
+    {
+      label: registerSucursalLabel
+    }
+  ]
+}
+
+export const modules: PlatformModule[] = [
+  usersModule,
+  sucursalModule
+]

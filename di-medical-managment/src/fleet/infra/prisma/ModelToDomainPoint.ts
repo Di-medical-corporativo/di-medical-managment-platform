@@ -55,7 +55,7 @@ export class ModelToDomainPoint {
         clientId: string; 
         truckId: string; 
         userId: string; 
-        itineraryId: string | null; 
+        itineraryId: string | null;
       })[]) {
 
     const domainPoints = points.map((point) => {
@@ -71,5 +71,16 @@ export class ModelToDomainPoint {
     })
 
     return domainPoints
+  }
+
+  public static fromPointsClient(points: { 
+    id: string; 
+    sign: string | null; 
+    clientId: string; 
+    truckId: string; 
+    userId: string; 
+    itineraryId: string | null; 
+  }) {
+
   }
 }

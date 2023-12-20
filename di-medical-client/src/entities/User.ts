@@ -1,3 +1,5 @@
+import { Resource } from "./Resource"
+
 export class User {
   constructor (
     private _userId: string | undefined,
@@ -11,7 +13,9 @@ export class User {
     private _email: string,
     private _isActive: boolean,
     private _createdAt: Date,
-    private _updatedAt: Date
+    private _updatedAt: Date,
+    private _token: string,
+    private _resources: Resource[]
   ) { }
 
   public get userId (): string | undefined {
@@ -108,5 +112,21 @@ export class User {
 
   public set updatedAt (updatedAt: Date) {
     this._updatedAt = updatedAt
+  }
+
+  public set token(token: string) {
+    this._token = token
+  }
+
+  public get token() {
+    return this._token
+  }
+
+  public get resources() {
+    return this._resources
+  }
+
+  public set resources(resources: Resource[]) {
+    this._resources = resources
   }
 }

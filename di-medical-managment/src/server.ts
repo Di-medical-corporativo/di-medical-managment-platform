@@ -8,7 +8,6 @@ import { LoggerI } from './shared/application/LoggerInterface'
 import { ServerI } from './shared/application/Server'
 import { Logger } from './shared/application/Logs4js'
 import { RoleRestController } from './auth/infra/api/RoleController'
-import { ViewRestController } from './auth/infra/api/ViewController'
 import { ResourceRestController } from './auth/infra/api/ResourceController'
 import { UserRestController } from './shared/infra/api/UserController'
 import { SucursalRestController } from './shared/infra/api/SucursalController'
@@ -37,7 +36,6 @@ export class Server implements ServerI {
       classTransformer: true,
       controllers: [
         RoleRestController,
-        ViewRestController,
         ResourceRestController,
         UserRestController,
         SucursalRestController,

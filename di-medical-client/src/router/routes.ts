@@ -3,9 +3,9 @@ import { RoutesPath } from './routesNames';
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/login',
+    path: RoutesPath.login.route,
     component: () => import('layouts/login/LoginLayout.vue'),
-    children: [{ path: '', component: () => import('pages/login/LoginPage.vue') }]
+    children: [{ path: '', component: () => import('pages/login/LoginPage.vue'), name: RoutesPath.login.name }]
   },
   {
     path: RoutesPath.backoffice.route,
@@ -35,6 +35,22 @@ const routes: RouteRecordRaw[] = [
             path: RoutesPath.users.list.route,
             name: RoutesPath.users.list.name,
             component: () => import('pages/users/UserListPage.vue')
+          }
+        ]
+      },
+      {
+        path: RoutesPath.sucursal.route,
+        component: () => import('layouts/backoffice/SucursalLayout.vue'),
+        children: [
+          {
+            path: RoutesPath.sucursal.default.route,
+            name: RoutesPath.sucursal.default.name,
+            component: () => import('pages/sucursal/DefaultSucursalPage.vue')
+          },
+          {
+            path: RoutesPath.sucursal.registrer.route,
+            name: RoutesPath.sucursal.registrer.name,
+            component: () => import('pages/sucursal/SucursalRegistrerPage.vue')
           }
         ]
       }

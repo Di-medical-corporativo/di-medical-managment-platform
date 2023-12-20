@@ -57,29 +57,11 @@ model Role {
   users UserHasRole[]
 }
 
-model View {
-  id          String     @id @default(uuid())
-  name        String
-  slug        String     @unique
-  description String
-  resources ViewByResource[]
-}
-
 model Resource {
   id              String            @id @default(uuid())
   name            String
   description     String
-  views  ViewByResource[]
   roles ResourcesByRole[]
-}
-
-model ViewByResource {
-  resource   Resource @relation(fields: [resourceId], references: [id])
-  resourceId String
-  view       View     @relation(fields: [viewId], references: [id])
-  viewId     String
-
-  @@id([viewId, resourceId])
 }
 
 model ResourcesByRole {

@@ -7,7 +7,6 @@ import { UpdateUserDto } from '../dto/UpdateUserDto'
 import { IsAuthenticated } from '../../../auth/infra/middlewares/IsAuthenticated'
 
 @JsonController('/user')
-@UseBefore(IsAuthenticated)
 @Service()
 export class UserRestController {
   constructor (
