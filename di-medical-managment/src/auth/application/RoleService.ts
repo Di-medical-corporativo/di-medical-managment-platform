@@ -79,6 +79,16 @@ export class RoleService {
     return deleteRoleIdOrError
   }
 
+  public async getAllRoles(): Promise<Either<BaseError, Role[]>> {
+    const rolesOrError = await this.roleRepository.getAllRoles()
+
+    if(rolesOrError.isLeft()) {
+      return this.unfoldError(rolesOrError.error)
+    }
+
+    return rolesOrError
+  }
+
   private unfoldError (error: ServerError) {
     switch (error) {
       case ServerError.NETWORK_ERROR:

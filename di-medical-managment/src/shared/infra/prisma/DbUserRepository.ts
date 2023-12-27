@@ -7,12 +7,46 @@ import { ServerError } from '../../domain/errors/Error'
 import { ModelToDomainSucursal } from './ModelToSucursalDomain'
 import { ModelToDomainLogin } from '../../../auth/infra/prisma/ModelToDomainLogin'
 import { ModelToDomainRole } from '../../../auth/infra/prisma/ModelToDomainRole'
+import { ModelToUserDomain } from './ModelToUserDomain'
+import { PaginatedResult } from '../../domain/PaginatedResult'
 
 @Service()
 export class DbUserRepository implements UserRepository {
   private readonly prismaClient = new PrismaClient()
+  private pageSize: number = 10;
   constructor() { }
+  async getUsersPaginated(page: number): Promise<Either<ServerError, PaginatedResult<User>>> {
+    try {
+      console.log(page);
+      
+      const [ users, total ] = await Promise.all([
+        this.prismaClient.user.findMany({
+          skip: (page - 1) * 10,
+          take: this.pageSize
+        }),
+        this.prismaClient.user.count()
+      ])
 
+      const totalPages = Math.ceil(total / this.pageSize)
+
+      if(page > totalPages) {
+        return Left.create(ServerError.NOT_FOUND)
+      }
+
+      const usersDomain = ModelToUserDomain.fromUsers(users)
+      const pagination = new PaginatedResult<User>(
+        usersDomain,
+        Math.ceil(total / this.pageSize)
+      )
+      return Right.create(pagination)
+    } catch (error) {
+
+      console.log(error);
+      
+
+      return Left.create(ServerError.SERVER_ERROR)
+    }
+  }
   public async createUser(
     user: User,
     passwordHashed: { hash: string, salt: string },
@@ -60,8 +94,8 @@ export class DbUserRepository implements UserRepository {
       })
 
       const rolesModel = userCreated.roles.map(r => r.role)
-      const rolesToDomain = ModelToDomainRole.from(rolesModel)
-      user.roles = rolesToDomain
+      const rolesToDomainRoles = ModelToDomainRole.from(rolesModel)
+      user.roles = rolesToDomainRoles
       user.userId = userCreated.id
       return Right.create(user)
     } catch (error) {
@@ -187,6 +221,7 @@ export class DbUserRepository implements UserRepository {
           login: true
         }
       })
+
       if (!user) {
         return Left.create(ServerError.NOT_FOUND)
       }

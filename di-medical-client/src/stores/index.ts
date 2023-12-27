@@ -1,6 +1,9 @@
 import { store } from 'quasar/wrappers'
 import { createPinia } from 'pinia'
 import { Router } from 'vue-router';
+import { useRoleStore } from './role-store';
+import { useBranchStore } from './sucursal-store';
+import { useUserStore } from './user-store';
 
 /*
  * When adding new properties to stores, you should also
@@ -22,11 +25,17 @@ declare module 'pinia' {
  * with the Store instance.
  */
 
-export default store((/* { ssrContext } */) => {
+export default store(async (/* { ssrContext } */) => {
   const pinia = createPinia()
-
+  const roles = useRoleStore(pinia)
+  const branches = useBranchStore(pinia)
+  const users = useUserStore(pinia)
+  const promises = []
+  promises.push(roles.getAllRoles())
+  promises.push(branches.getAllBranches())
+  promises.push(users.usersPaginated(1))
+  await Promise.all(promises)
   // You can add Pinia plugins here
   // pinia.use(SomePiniaPlugin)
-
   return pinia
 })

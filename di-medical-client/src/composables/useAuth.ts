@@ -26,7 +26,6 @@ export function useAuth() {
 
   const getUserResources = () => {
     const user = authStore.getUser
-
     if(!user) return
 
     const resources = user.resources

@@ -7,4 +7,5 @@ export interface SucursalRepository {
   updateSucursal(sucursal: Sucursal): Promise<Either<ServerError, Sucursal>>
   deleteSucursalById(resourceId: string): Promise<Either<ServerError, void>>
   findSucursalById(id: string): Promise<Either<ServerError, Sucursal>>
+  getAllSucursal(): Promise<Either<ServerError, Sucursal[]>>
 }

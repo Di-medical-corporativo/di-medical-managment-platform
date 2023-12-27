@@ -34,3 +34,8 @@ export class Unauthorized extends BaseError {
   message: string = 'Debes estar autenticado para acceder'
   status: number = 401
 }
+
+export class UserExits extends BaseError {
+  message: string = 'No se puede crear un usuario con el mismo correo'
+  status: number = 400
+}

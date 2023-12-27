@@ -16,9 +16,6 @@ export class CreateUserDto {
   @IsString()
   job: string
 
-  @IsString()
-  picture: string
-
   @IsPhoneNumber('MX')
   phone: string
 

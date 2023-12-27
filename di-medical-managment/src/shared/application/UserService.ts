@@ -5,7 +5,7 @@ import { CreateUserDto } from '../../auth/infra/dto/CreateUserDto'
 import { User } from '../domain/User'
 import { Either, Left, Right } from '../domain/Either'
 import { BaseError, ServerError, SucursalNotFound, UserNotFound } from '../domain/errors/Error'
-import { BadCredentials, UnknowError } from '../../auth/domain/Errors'
+import { BadCredentials, UnknowError, UserExits } from '../../auth/domain/Errors'
 import { Bcrypt } from '../../auth/infra/security/Bcrypt'
 import { AuthenticationService } from '../../auth/application/AuthenticationService'
 import { LoginUserDto } from '../../auth/infra/dto/LoginUserDto'
@@ -18,6 +18,8 @@ import { RoleService } from '../../auth/application/RoleService'
 import { ResourceService } from '../../auth/application/ResourceService'
 import { Role } from '../../auth/domain/Role'
 import { CheckTokenDto } from '../../auth/infra/dto/CheckTokenDto'
+import { PaginationDto } from '../infra/dto/PaginationDto'
+import { PaginatedResult } from '../domain/PaginatedResult'
 
 @Service()
 export class UserService {
@@ -41,7 +43,18 @@ export class UserService {
     private readonly resourceService: ResourceService
     ) {}
 
-  public async createUser (userToCreate: CreateUserDto): Promise<Either<BaseError, User>> {
+
+  public async getUsersPaginated(pagination: number = 1): Promise<Either<BaseError, PaginatedResult<User>>> {   
+    const usersOrError = await this.userRepository.getUsersPaginated(pagination)
+    
+    if(usersOrError.isLeft()) {
+      return this.unfoldError(usersOrError.error)
+    }
+
+    return usersOrError
+  }
+
+  public async createUser (userToCreate: CreateUserDto, userImageUrl: string): Promise<Either<BaseError, User>> {
     const sucursalOrError = await this.sucursalService.findSucursalById(userToCreate.sucursalId)
 
     if(sucursalOrError.isLeft()) {
@@ -63,7 +76,7 @@ export class UserService {
       userToCreate.birthDate,
       userToCreate.nss, 
       userToCreate.job,
-      userToCreate.picture,
+      userImageUrl,
       userToCreate.phone,
       userToCreate.email,
       true,
@@ -252,7 +265,7 @@ export class UserService {
       case ServerError.SERVER_ERROR:
         return Left.create(new UnknowError())
       case ServerError.NOT_FOUND:
-        return Left.create(new SucursalNotFound())
+        return Left.create(new UserNotFound())
       default:
         return Left.create(new UnknowError())
     }

@@ -1,10 +1,11 @@
 import 'reflect-metadata'
-import { JsonController, Post, Body, Param, Put, Get, Res, Delete, OnUndefined, Params, UseBefore } from 'routing-controllers'
+import { JsonController, Body, Param, Put, Get, Res, Delete, OnUndefined, QueryParams } from 'routing-controllers'
 import { Service } from 'typedi'
 import { Response, response } from 'express'
 import { UserService } from '../../application/UserService'
 import { UpdateUserDto } from '../dto/UpdateUserDto'
 import { IsAuthenticated } from '../../../auth/infra/middlewares/IsAuthenticated'
+import { PaginationDto } from '../dto/PaginationDto'
 
 @JsonController('/user')
 @Service()
@@ -12,6 +13,21 @@ export class UserRestController {
   constructor (
     private userService: UserService
   ) {}
+  
+  @Get()
+  public async getUsersPaginated(
+    @QueryParams() query: PaginationDto,
+    @Res() response: Response
+  ) {
+    const users = await this.userService.getUsersPaginated(query.page)
+
+    if(users.isLeft()) {
+      response.status(users.error.status)
+      return users.error
+    }
+
+    return users.value
+  }
 
  @Get('/:id')
  public async getUserById(@Param('id') userId: string, @Res() response: Response){

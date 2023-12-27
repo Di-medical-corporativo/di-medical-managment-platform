@@ -45,7 +45,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { usersModule, registrerUserLabel, RoutesPath, userModuleLabel, userListLabel, sucursalModuleLabel, registerSucursalLabel } from '../../router/routesNames'
+import { usersModule, registrerUserLabel, RoutesPath, userModuleLabel, userListLabel, sucursalModuleLabel, registerSucursalLabel, clientsModuleLabel, registerClientLabel } from '../../router/routesNames'
 import { useAuth } from 'src/composables/useAuth'
 import { QTreeNode } from 'quasar';
 
@@ -98,8 +98,16 @@ watch(
 
     if(value == registerSucursalLabel) {
       route = RoutesPath.sucursal.registrer.name
-    } 
+    }
 
+    if(value == clientsModuleLabel) {
+      route = RoutesPath.clients.default.name
+    }
+
+    if(value == registerClientLabel) {
+      route = RoutesPath.clients.register.name
+    }
+    
     router.push({ name: route })
   }
 )

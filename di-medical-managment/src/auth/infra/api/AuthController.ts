@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { JsonController, Post, Body, Param, Res, Get, UseBefore } from 'routing-controllers'
+import { JsonController, Post, Body, Param, Res, Get, UseBefore, UploadedFile, OnUndefined } from 'routing-controllers'
 import { Service } from 'typedi'
 import { Response, response } from 'express'
 import { CreateUserDto } from '../dto/CreateUserDto'
@@ -8,18 +8,41 @@ import { UserService } from '../../../shared/application/UserService'
 import { LoginUserDto } from '../dto/LoginUserDto'
 import { IsAuthenticated } from '../middlewares/IsAuthenticated'
 import { CheckTokenDto } from '../dto/CheckTokenDto'
+import { FirebaseStorageService } from '../../../shared/infra/imageUpload/FirebaseStorage'
+import { SharpProcessor } from '../../../shared/infra/imageModifier/Sharp'
+import { UserExits } from '../../domain/Errors'
 
 @JsonController('/auth')
 @Service()
 export class AuthRestController {
-  constructor (
+  constructor(
     private userService: UserService,
-  ) {}
+    private imageUploadService: FirebaseStorageService,
+    private imageProcessing: SharpProcessor
+  ) { }
 
   @Post('/new')
-  public async createUser (@Body() role: CreateUserDto, @Res() response: Response) {
-    const userOrError = await this.userService.createUser(role)
-    if(userOrError.isLeft()) {
+  @OnUndefined(201)
+  public async createUser(
+    @Body() user: CreateUserDto,
+    @Res() response: Response,
+    @UploadedFile("file") file: any,
+  ) {
+    const userExits = await this.userService.findUserByEmail(user.email)
+
+    if (userExits.isRight()) {
+      return new UserExits()
+    }
+
+    const resizeImage = await this.imageProcessing.resize(file as Buffer, 250, 250)
+    if (resizeImage.isLeft()) {
+      return resizeImage.error
+    }
+      
+    const userImageUrl = await this.imageUploadService.upload(resizeImage.value)
+    const userOrError = await this.userService.createUser(user, userImageUrl[0])
+    
+    if (userOrError.isLeft()) {
       response.status(userOrError.error.status)
       return userOrError.error
     }
@@ -27,9 +50,9 @@ export class AuthRestController {
   }
 
   @Post('/login')
-  public async login (@Body() credentials: LoginUserDto, @Res() response: Response) {
+  public async login(@Body() credentials: LoginUserDto, @Res() response: Response) {
     const authCredentials = await this.userService.loginUser(credentials)
-    if(authCredentials.isLeft()){
+    if (authCredentials.isLeft()) {
       response.status(authCredentials.error.status)
       return authCredentials.error
     }
@@ -41,7 +64,7 @@ export class AuthRestController {
   public async getResourcesByUser(@Param('userId') userId: string) {
     const resourcesOrError = await this.userService.resourcesByUser(userId)
 
-    if(resourcesOrError.isLeft()) {
+    if (resourcesOrError.isLeft()) {
       response.status(resourcesOrError.error.status)
       return resourcesOrError.error
     }
@@ -55,10 +78,10 @@ export class AuthRestController {
     @Res() response: Response
   ) {
     const tokenValid = await this.userService.checkAuth(token)
-    if(tokenValid.isLeft()) {
+    if (tokenValid.isLeft()) {
       response.status(tokenValid.error.status)
       return tokenValid.error
     }
     return tokenValid.value
   }
- }
+}

@@ -17,8 +17,8 @@ export const RoutesPath = {
       name: 'users'
     },
     registrer: {
-      route: 'registrer',
-      name: 'user-registrer'
+      route: 'register',
+      name: 'user-register'
     },
     list: {
       route: 'list',
@@ -32,8 +32,19 @@ export const RoutesPath = {
       name: 'sucursal'
     },
     registrer: {
-      route: 'registrer',
-      name: 'sucursal-registrer'
+      route: 'register',
+      name: 'sucursal-register'
+    }
+  },
+  clients: {
+    route: 'clients',
+    default: {
+      route: '',
+      name: 'clients'
+    },
+    register: {
+      route: 'register',
+      name: 'client-register'
     }
   }
 }
@@ -72,7 +83,19 @@ export const sucursalModule: PlatformModule = {
   ]
 }
 
+export const clientsModuleLabel = 'Clientes'
+export const registerClientLabel = 'Registrar cliente'
+export const clientsModule: PlatformModule = {
+  label: clientsModuleLabel,
+  children: [
+    {
+      label: registerClientLabel
+    }
+  ]
+}
+
 export const modules: PlatformModule[] = [
   usersModule,
-  sucursalModule
+  sucursalModule,
+  clientsModule
 ]

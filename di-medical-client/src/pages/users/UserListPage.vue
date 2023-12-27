@@ -1,31 +1,37 @@
 <template>
   <div class="flex flex-center column">
-    <div></div>
     <div class="user-list flex flex-center">
-      <q-card class="user-card q-mt-xl" v-for="i in 10" :key="i">
-        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+      <q-card 
+        class="user-card q-mt-xl" 
+        v-for="user in userStore.getUsers" 
+        :key="user.userId">
+        <q-img :src="user.picture">
           <div class="absolute-bottom">
-            <div class="text-h6">Our Changing Planet</div>
-            <div class="text-subtitle2">by John Doe</div>
+            <div class="text-h6">{{ user.firstName + ' ' + user.lastName}}</div>
+            <div class="text-subtitle2">{{ user.job }}</div>
           </div>
         </q-img>
 
         <q-card-actions>
-          <q-btn flat>Action 1</q-btn>
-          <q-btn flat>Action 2</q-btn>
+          <q-btn flat no-caps>Actualizar</q-btn>
+          <q-btn flat no-caps>Eliminar</q-btn>
+          <q-btn flat no-caps>Estadísticas</q-btn>
         </q-card-actions>
       </q-card>
     </div>
     <div class="q-pa-lg flex flex-center">
-      <q-pagination v-model="current" :max="5" input />
+      <q-pagination v-model="current" :max="userStore.getTotalPages" input />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useUserStore } from 'src/stores/user-store'
+import { ref } from 'vue'
 
+const userStore = useUserStore()
 const current = ref(1)
+
 </script>
 
 <style lang="scss">

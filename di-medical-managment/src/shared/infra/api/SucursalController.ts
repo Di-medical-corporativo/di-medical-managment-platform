@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { JsonController, Post, Body, Param, Put, Get, Res, Delete, OnUndefined, UseBefore } from 'routing-controllers'
 import { Service } from 'typedi'
-import { Response } from 'express'
+import { Response, response } from 'express'
 import { CreateSucursalDto } from '../dto/CreateSucursalDto'
 import { SucursalService } from '../../application/SucursalService'
 import { UpdateSucursalDto } from '../dto/UpdateSucursalDto'
@@ -66,11 +66,22 @@ export class SucursalRestController {
     @Res() response: Response
   ) {
     const deletedView = await this.sucursalService.deleteSucursalById(id)
-    console.log(deletedView)
     if(deletedView.isLeft()) {
       response.status(deletedView.error.status)
       return deletedView.error
     }
     return deletedView.value
+  }
+
+
+  @Get()
+  public async getAllSucursal() {
+    const sucursalList = await this.sucursalService.getAllSucursal()
+    if(sucursalList.isLeft()) {
+      response.status(sucursalList.error.status)
+      return sucursalList.error
+    }
+
+    return sucursalList.value
   }
 }

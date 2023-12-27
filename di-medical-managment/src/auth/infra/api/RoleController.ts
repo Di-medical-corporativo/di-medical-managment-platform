@@ -5,7 +5,7 @@ import { Service } from 'typedi'
 import { RoleService } from '../../application/RoleService'
 import { CreateRoleDto } from '../dto/CreateRoleDto'
 import { UpdateRoleDto } from '../dto/UpdateRoleDto'
-import { Response } from 'express'
+import { Response, response } from 'express'
 import { IsAuthenticated } from '../middlewares/IsAuthenticated'
 
 @JsonController('/roles')
@@ -56,5 +56,16 @@ export class RoleRestController {
     }
 
     return roleIdOrError.value
+  }
+
+  @Get()
+  public async getAllRoles() {
+    const rolesOrError = await this.roleService.getAllRoles()
+    if(rolesOrError.isLeft()) {
+      response.status(rolesOrError.error.status)
+      return rolesOrError.error
+    }
+
+    return rolesOrError.value
   }
 }

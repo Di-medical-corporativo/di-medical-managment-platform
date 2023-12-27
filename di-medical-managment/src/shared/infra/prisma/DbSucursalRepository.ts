@@ -23,8 +23,6 @@ export class DbSucursalRepository implements SucursalRepository {
       sucursal.sucursalId = sucursalCreated.id
       return Right.create(sucursal)
     } catch (error) {
-      console.log(error);
-      
       return Left.create(ServerError.SERVER_ERROR)
     }
 
@@ -88,6 +86,16 @@ export class DbSucursalRepository implements SucursalRepository {
         sucursalById.dimedicalBrand
       )
       return Right.create(sucursal)
+    } catch (error) {
+      return Left.create(ServerError.SERVER_ERROR)
+    }
+  }
+
+  async getAllSucursal(): Promise<Either<ServerError, Sucursal[]>> {
+    try {
+      const sucursalList = await this.prismaClient.sucursal.findMany()
+      const sucursalDomain = sucursalList.map((sucursal) => new Sucursal(sucursal.id, sucursal.name, sucursal.address, sucursal.phone, sucursal.dimedicalBrand))
+      return Right.create(sucursalDomain)
     } catch (error) {
       return Left.create(ServerError.SERVER_ERROR)
     }

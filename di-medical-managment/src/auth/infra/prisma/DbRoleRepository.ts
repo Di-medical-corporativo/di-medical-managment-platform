@@ -5,10 +5,21 @@ import { PrismaClient } from '@prisma/client'
 import { Either, Left, Right } from '../../../shared/domain/Either'
 import { ServerError } from '../../../shared/domain/errors/Error'
 import { ModelToDomainResource } from './ModelToDomainResource'
+import { ModelToDomainRole } from './ModelToDomainRole'
 
 @Service()
 export class DbRoleRepository implements RoleRepository {
   private readonly prismaClient = new PrismaClient()
+
+  async getAllRoles(): Promise<Either<ServerError, Role[]>> {
+    try {
+      const roles = await this.prismaClient.role.findMany()
+      const roleDomain = ModelToDomainRole.from(roles)
+      return Right.create(roleDomain)
+    } catch (error) {
+      return Left.create(ServerError.SERVER_ERROR)
+    }    
+  }
 
   public async createRole (role: Role, resourcesId: string[] = []): Promise<Either<ServerError, Role>> {
     try {

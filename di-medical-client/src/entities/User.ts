@@ -1,6 +1,14 @@
 import { Resource } from "./Resource"
+import { Role } from "./Role"
+import { Sucursal } from "./Sucursal"
 
 export class User {
+
+  private _token: string = ''
+  private _resources: Resource[] = []
+  private _password: string = ''
+  private _roles: Role[] = []
+  private _sucursal: Sucursal | undefined = undefined 
   constructor (
     private _userId: string | undefined,
     private _firstName: string,
@@ -8,14 +16,12 @@ export class User {
     private _birthDate: Date,
     private _nss: string,
     private _job: string,
-    private _picture: string,
+    private _picture: string | File,
     private _phone: string,
     private _email: string,
     private _isActive: boolean,
     private _createdAt: Date,
-    private _updatedAt: Date,
-    private _token: string,
-    private _resources: Resource[]
+    private _updatedAt: Date
   ) { }
 
   public get userId (): string | undefined {
@@ -66,7 +72,7 @@ export class User {
     this._job = job
   }
 
-  public get picture (): string {
+  public get picture (): string | File {
     return this._picture
   }
 
@@ -128,5 +134,29 @@ export class User {
 
   public set resources(resources: Resource[]) {
     this._resources = resources
+  }
+
+  public set password(password: string){
+    this._password = password
+  }
+  
+  public get password() {
+    return this._password
+  } 
+
+  public get roles() {
+    return this._roles
+  }
+
+  public set roles(roles: Role[]) {
+    this._roles = roles
+  }
+
+  public get sucursal(): Sucursal | undefined{
+    return this._sucursal
+  }
+
+  public set sucursal(sucursal: Sucursal) {
+    this._sucursal = sucursal
   }
 }

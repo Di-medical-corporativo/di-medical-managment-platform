@@ -1,5 +1,6 @@
 import { Either } from '../../shared/domain/Either'
 import { ServerError } from '../../shared/domain/errors/Error'
+import { PaginatedResult } from '../domain/PaginatedResult'
 import { User } from '../domain/User'
 
 export interface UserRepository {
@@ -8,4 +9,5 @@ export interface UserRepository {
   findUserById(resourceId: string): Promise<Either<ServerError, User>>
   findUserByEmail(email: string): Promise<Either<ServerError, User>>
   deleteUserById(resourceId: string): Promise<Either<ServerError, void>>
+  getUsersPaginated(page: number): Promise<Either<ServerError, PaginatedResult<User>>>
 }

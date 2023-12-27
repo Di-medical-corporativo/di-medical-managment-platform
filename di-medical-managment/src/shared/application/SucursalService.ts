@@ -82,7 +82,6 @@ export class SucursalService {
 
   public async deleteSucursalById (sucarsalId: string) {
     const sucursal = await this.findSucursalById(sucarsalId)
-    console.log(sucursal);
     
     if(sucursal.isLeft()){
       return sucursal
@@ -94,6 +93,15 @@ export class SucursalService {
     }
 
     return Right.create(undefined)
+  }
+
+  public async getAllSucursal() {
+    const sucursalList = await this.sucursalRepository.getAllSucursal()
+    if(sucursalList.isLeft()) {
+      return this.unfoldError(sucursalList.error)
+    }
+
+    return sucursalList
   }
 
   private unfoldError (error: ServerError) {

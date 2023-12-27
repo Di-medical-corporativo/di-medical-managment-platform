@@ -53,6 +53,22 @@ const routes: RouteRecordRaw[] = [
             component: () => import('pages/sucursal/SucursalRegistrerPage.vue')
           }
         ]
+      },
+      {
+        path: RoutesPath.clients.route,
+        component: () => import('layouts/backoffice/ClientsLayout.vue'),
+        children: [
+          {
+            path: RoutesPath.clients.default.route,
+            name: RoutesPath.clients.default.name,
+            component: () => import('pages/clientss/DefaultClientesPage.vue')
+          },
+          {
+            path: RoutesPath.clients.register.route,
+            name: RoutesPath.clients.register.name,
+            component: () => import('pages/clientss/ClientRegisterPage.vue')
+          }
+        ]
       }
     ]
   },
