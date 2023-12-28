@@ -1,5 +1,5 @@
-import { User } from "@prisma/client";
-import { User as UserDomain } from "../../domain/User";
+import { User } from '@prisma/client'
+import { User as UserDomain } from '../../domain/User'
 
 export class ModelToUserDomain {
   public static fromUsers(usersModel: User[]): UserDomain[] {

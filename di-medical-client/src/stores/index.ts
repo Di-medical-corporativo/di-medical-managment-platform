@@ -4,6 +4,7 @@ import { Router } from 'vue-router';
 import { useRoleStore } from './role-store';
 import { useBranchStore } from './sucursal-store';
 import { useUserStore } from './user-store';
+import { useClientStore } from './client-store';
 
 /*
  * When adding new properties to stores, you should also
@@ -30,10 +31,12 @@ export default store(async (/* { ssrContext } */) => {
   const roles = useRoleStore(pinia)
   const branches = useBranchStore(pinia)
   const users = useUserStore(pinia)
+  const clients = useClientStore(pinia)
   const promises = []
   promises.push(roles.getAllRoles())
   promises.push(branches.getAllBranches())
   promises.push(users.usersPaginated(1))
+  promises.push(clients.clientsPaginated(1))
   await Promise.all(promises)
   // You can add Pinia plugins here
   // pinia.use(SomePiniaPlugin)

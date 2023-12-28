@@ -10,4 +10,17 @@ export class ModelToClientDomain {
       client.isActive
     )
   }
+
+  public static fromClients(clientsModel: Client[]) {
+    const clientsDomain = clientsModel.map((client) => {
+      return new DomainClient(
+        client.id,
+        client.name,
+        client.address,
+        client.isActive
+      )
+    })
+
+    return clientsDomain
+  }
 }

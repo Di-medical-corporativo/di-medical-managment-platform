@@ -85,7 +85,6 @@ const registerSucursal = async () => {
 </script>
 
 <style lang="scss" scoped>
-
 .sucursal-form{
   width: 90%;
 }

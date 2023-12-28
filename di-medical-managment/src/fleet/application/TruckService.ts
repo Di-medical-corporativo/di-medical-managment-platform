@@ -18,13 +18,13 @@ export class TruckService {
     private readonly truckRepository: TruckRespository
   ) {}
   
-  public async createTruck(truckToCreate: CreateTruckDto): Promise<Either<BaseError, Truck>> {
+  public async createTruck(truckToCreate: CreateTruckDto, truckImageUrl: string): Promise<Either<BaseError, Truck>> {
     const truck = new Truck(
       undefined,
       truckToCreate.plates,
       truckToCreate.model,
       truckToCreate.brand,
-      truckToCreate.picture,
+      truckImageUrl,
       true
     )
 

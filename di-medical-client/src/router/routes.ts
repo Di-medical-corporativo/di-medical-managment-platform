@@ -51,6 +51,11 @@ const routes: RouteRecordRaw[] = [
             path: RoutesPath.sucursal.registrer.route,
             name: RoutesPath.sucursal.registrer.name,
             component: () => import('pages/sucursal/SucursalRegistrerPage.vue')
+          },
+          {
+            path: RoutesPath.sucursal.list.route,
+            name: RoutesPath.sucursal.list.name,
+            component: () => import('pages/sucursal/SucursalListPage.vue')
           }
         ]
       },
@@ -67,6 +72,27 @@ const routes: RouteRecordRaw[] = [
             path: RoutesPath.clients.register.route,
             name: RoutesPath.clients.register.name,
             component: () => import('pages/clientss/ClientRegisterPage.vue')
+          },
+          {
+            path: RoutesPath.clients.list.route,
+            name: RoutesPath.clients.list.name,
+            component: () => import('pages/clientss/ClientListPage.vue')
+          }
+        ]
+      },
+      {
+        path: RoutesPath.fleet.route,
+        component: () => import('layouts/backoffice/FleetLayout.vue'),
+        children: [
+          {
+            path: RoutesPath.fleet.default.route,
+            name: RoutesPath.fleet.default.name,
+            component: () => import('pages/fleet/DefaultFleetPage.vue')
+          },
+          {
+            path: RoutesPath.fleet.register.route,
+            name: RoutesPath.fleet.register.name,
+            component: () => import('pages/fleet/TruckRegisterPage.vue')
           }
         ]
       }

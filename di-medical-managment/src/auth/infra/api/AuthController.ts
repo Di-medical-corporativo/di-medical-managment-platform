@@ -39,7 +39,7 @@ export class AuthRestController {
       return resizeImage.error
     }
       
-    const userImageUrl = await this.imageUploadService.upload(resizeImage.value)
+    const userImageUrl = await this.imageUploadService.upload(resizeImage.value, 'users')
     const userOrError = await this.userService.createUser(user, userImageUrl[0])
     
     if (userOrError.isLeft()) {

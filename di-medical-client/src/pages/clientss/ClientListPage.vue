@@ -1,14 +1,16 @@
 <template>
   <div class="flex flex-center column">
-    <div class="user-list flex flex-center" v-if="!userStore.getLoading">
-      <q-card class="user-card q-mt-xl" v-for="user in userStore.getUsers" :key="user.userId">
-        <q-img :src="user.picture">
-          <div class="absolute-bottom">
-            <div class="text-h6">{{ user.firstName + ' ' + user.lastName }}</div>
-            <div class="text-subtitle2">{{ user.job }}</div>
-          </div>
-        </q-img>
-
+    <div class="client-list flex flex-center" v-if="!clientStore.getLoading">
+      <q-card 
+        class="user-card q-mt-xl" 
+        v-for="client in clientStore.getClients"
+        :key="client.clientId"
+        >
+        <q-card-section>
+          <div class="text-h6">{{client.name}}</div>
+          <small>{{client.address}}</small>
+        </q-card-section>
+  
         <q-card-actions>
           <q-btn flat no-caps>Actualizar</q-btn>
           <q-btn flat no-caps>Eliminar</q-btn>
@@ -16,16 +18,17 @@
         </q-card-actions>
       </q-card>
     </div>
-
     <div class="q-pa-lg flex flex-center">
-      <q-pagination v-model="current" :max="userStore.getTotalPages" input />
+      <q-pagination v-model="current" :max="clientStore.getTotalPages" input />
     </div>
 
-    <q-inner-loading :showing="userStore.getLoading" 
-      color="primary"
-      label="Por favor espera..."
-      label-class="text-black"
-      label-style="font-size: 1.1em" />
+    <q-inner-loading
+        :showing="clientStore.getLoading"
+        color="primary"
+        label="Por favor espera..."
+        label-class="text-black"
+        label-style="font-size: 1.1em"
+      />
 
     <q-dialog v-model="seamless" seamless position="top">
       <q-banner inline-actions class="text-white" :class="ok ? 'bg-green' : 'bg-red'">
@@ -39,21 +42,22 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from 'src/stores/user-store'
+import { useClientStore } from 'src/stores/client-store'
 import { ref, watch } from 'vue'
 
 const seamless = ref(false)
 const ok = ref(false)
 const message = ref('')
 
-const userStore = useUserStore()
+const clientStore = useClientStore()
 const current = ref(1)
 
+
 watch(current, async (value) => {
-  const users = await userStore.usersPaginated(value)
-  if (users.isLeft()) {
+  const clients = await clientStore.clientsPaginated(value)
+  if(clients.isLeft()) {
     ok.value = false
-    message.value = users.error
+    message.value = clients.error
     seamless.value = true
   }
 })
@@ -61,11 +65,7 @@ watch(current, async (value) => {
 </script>
 
 <style lang="scss">
-.user {
-  &-card {
-    width: 300px;
-  }
-
+.client {
   &-list {
     align-items: center;
     flex-direction: column;

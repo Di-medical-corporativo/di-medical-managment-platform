@@ -34,6 +34,10 @@ export const RoutesPath = {
     registrer: {
       route: 'register',
       name: 'sucursal-register'
+    },
+    list: {
+      route: 'list',
+      name: 'sucursal-list'
     }
   },
   clients: {
@@ -45,6 +49,21 @@ export const RoutesPath = {
     register: {
       route: 'register',
       name: 'client-register'
+    },
+    list: {
+      route: 'list',
+      name: 'client-list'
+    }
+  },
+  fleet: {
+    route: 'fleet',
+    default: {
+      route: '',
+      name: 'fleet'
+    },
+    register: {
+      route: 'register',
+      name: 'truck-register'
     }
   }
 }
@@ -73,23 +92,42 @@ export const usersModule: PlatformModule = {
 
 export const sucursalModuleLabel = 'Sucursales'
 export const registerSucursalLabel = 'Registrar sucursal'
+export const sucursalListLabel = 'Listado de sucursales'
 
 export const sucursalModule: PlatformModule = {
   label: sucursalModuleLabel,
   children: [
     {
       label: registerSucursalLabel
+    },
+    {
+      label: sucursalListLabel
     }
   ]
 }
 
 export const clientsModuleLabel = 'Clientes'
 export const registerClientLabel = 'Registrar cliente'
+export const clientListLabel = 'Listado de clientes'
 export const clientsModule: PlatformModule = {
   label: clientsModuleLabel,
   children: [
     {
       label: registerClientLabel
+    },
+    {
+      label: clientListLabel
+    }
+  ]
+}
+
+export const fleetModuleLabel = 'Flota'
+export const registerTruckModuleLabel = 'Registrar camioneta'
+export const fleetModule: PlatformModule = {
+  label: fleetModuleLabel,
+  children: [
+    {
+      label: registerTruckModuleLabel
     }
   ]
 }
@@ -97,5 +135,6 @@ export const clientsModule: PlatformModule = {
 export const modules: PlatformModule[] = [
   usersModule,
   sucursalModule,
-  clientsModule
+  clientsModule,
+  fleetModule
 ]

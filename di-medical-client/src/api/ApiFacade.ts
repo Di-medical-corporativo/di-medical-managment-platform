@@ -9,6 +9,7 @@ import { Sucursal } from "src/entities/Sucursal";
 import { Role } from "src/entities/Role";
 import { PaginatedResult } from "src/entities/PaginatedResult";
 import { Client } from "src/entities/Client";
+import { Truck } from "src/entities/Truck";
 
 export class ApiFacade implements ApiFacadeI {
   async login(credentials: Credentials): Promise<Either<string, User>> {
@@ -220,5 +221,29 @@ export class ApiFacade implements ApiFacadeI {
       const data = axiosError.response?.data as { message: string }
       return Left.create(data.message)
     }
+  }
+
+  async getAllClientsPaginated(page: number): Promise<Either<string, PaginatedResult<Client>>> {
+    try {
+      const { data } = await api.get('/clients', {
+        params: {
+          page
+        }
+      })
+
+      const resultsDomain = data._results.map((client: { _clientId: string | undefined; _name: string; _address: string; _isActive: boolean; }) => {
+        return new Client(client._clientId, client._name, client._address, client._isActive)
+      })
+
+      return Right.create(new PaginatedResult<Client>(resultsDomain, data._pages))
+    } catch (error) {
+      const axiosError: AxiosError = error as AxiosError
+      const data = axiosError.response?.data as { message: string }
+      return Left.create(data.message)
+    }
+  }
+
+  async createTruck(truck: Truck): Promise<Either<string, Truck>> {
+    throw new Error()
   }
 }

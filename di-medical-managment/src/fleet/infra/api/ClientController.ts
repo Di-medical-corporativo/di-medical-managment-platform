@@ -1,12 +1,13 @@
 import 'reflect-metadata'
 
-import { Body, Delete, Get, JsonController, OnUndefined, Param, Post, Put, Res, UseBefore } from 'routing-controllers'
+import { Body, Delete, Get, JsonController, OnUndefined, Param, Post, Put, QueryParams, Res, UseBefore } from 'routing-controllers'
 import { Service } from 'typedi'
 import { IsAuthenticated } from '../../../auth/infra/middlewares/IsAuthenticated'
 import { CreateClientDto } from '../dto/CreateClientDto'
-import { Response, response } from 'express'
+import { Response } from 'express'
 import { ClientService } from '../../application/ClientService'
 import { UpdateClientDto } from '../dto/UpdateClientDto'
+import { PaginationDto } from '../../../shared/infra/dto/PaginationDto'
 
 @JsonController('/clients')
 @Service()
@@ -15,6 +16,21 @@ export class ClientRestController {
   constructor(
     private clientService: ClientService
   ) {}
+
+  @Get()
+  public async getClientsPaginated(
+    @QueryParams() query: PaginationDto,
+    @Res() response: Response
+  ) {
+    const clientsOrError = await this.clientService.getClientsPaginated(query.page)
+
+    if(clientsOrError.isLeft()) {
+      response.status(clientsOrError.error.status)
+      return clientsOrError.error
+    }
+
+    return clientsOrError.value
+  }
 
   @Post('/new')
   public async createClient(

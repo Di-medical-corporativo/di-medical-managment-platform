@@ -5,6 +5,7 @@ import { PaginatedResult } from "src/entities/PaginatedResult";
 import { Resource } from "src/entities/Resource";
 import { Role } from "src/entities/Role";
 import { Sucursal } from "src/entities/Sucursal";
+import { Truck } from "src/entities/Truck";
 import { User } from "src/entities/User";
 
 export interface ApiFacadeI {
@@ -16,4 +17,6 @@ export interface ApiFacadeI {
   registerUser(user: User): Promise<Either<string, User>>
   getAllUsersPaginated(page: number): Promise<Either<string, PaginatedResult<User>>>
   registerClient(client: Client): Promise<Either<string, Client>>
+  getAllClientsPaginated(page: number): Promise<Either<string, PaginatedResult<Client>>>
+  createTruck(truck: Truck): Promise<Either<string, Truck>>
 }

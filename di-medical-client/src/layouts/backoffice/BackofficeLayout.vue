@@ -45,7 +45,20 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { usersModule, registrerUserLabel, RoutesPath, userModuleLabel, userListLabel, sucursalModuleLabel, registerSucursalLabel, clientsModuleLabel, registerClientLabel } from '../../router/routesNames'
+import { 
+  registrerUserLabel, 
+  RoutesPath, 
+  userModuleLabel, 
+  userListLabel, 
+  sucursalModuleLabel, 
+  registerSucursalLabel, 
+  clientsModuleLabel, 
+  registerClientLabel, 
+  sucursalListLabel, 
+  clientListLabel, 
+  fleetModuleLabel,
+  registerTruckModuleLabel
+} from '../../router/routesNames'
 import { useAuth } from 'src/composables/useAuth'
 import { QTreeNode } from 'quasar';
 
@@ -70,7 +83,6 @@ const closeSesion = () => {
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
-
 
 watch(
   () => selectedPage.value,
@@ -100,12 +112,28 @@ watch(
       route = RoutesPath.sucursal.registrer.name
     }
 
+    if(value == sucursalListLabel) {
+      route = RoutesPath.sucursal.list.name
+    }
+
     if(value == clientsModuleLabel) {
       route = RoutesPath.clients.default.name
     }
 
     if(value == registerClientLabel) {
       route = RoutesPath.clients.register.name
+    }
+
+    if(value == clientListLabel) {
+      route = RoutesPath.clients.list.name
+    }
+
+    if(value == fleetModuleLabel) {
+      route = RoutesPath.fleet.default.name
+    }
+
+    if(value == registerTruckModuleLabel) {
+      route = RoutesPath.fleet.register.name
     }
     
     router.push({ name: route })

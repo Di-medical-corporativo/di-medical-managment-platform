@@ -17,8 +17,6 @@ export class DbUserRepository implements UserRepository {
   constructor() { }
   async getUsersPaginated(page: number): Promise<Either<ServerError, PaginatedResult<User>>> {
     try {
-      console.log(page);
-      
       const [ users, total ] = await Promise.all([
         this.prismaClient.user.findMany({
           skip: (page - 1) * 10,
@@ -36,14 +34,10 @@ export class DbUserRepository implements UserRepository {
       const usersDomain = ModelToUserDomain.fromUsers(users)
       const pagination = new PaginatedResult<User>(
         usersDomain,
-        Math.ceil(total / this.pageSize)
+        totalPages
       )
       return Right.create(pagination)
     } catch (error) {
-
-      console.log(error);
-      
-
       return Left.create(ServerError.SERVER_ERROR)
     }
   }

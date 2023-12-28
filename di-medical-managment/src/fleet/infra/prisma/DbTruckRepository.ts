@@ -26,6 +26,8 @@ export class DbTruckRepository implements TruckRespository {
       truck.isActive = truckCreated.isActive
       return Right.create(truck)
     } catch (error) {
+      console.log(error);
+      
       return Left.create(ServerError.SERVER_ERROR)
     }
   }

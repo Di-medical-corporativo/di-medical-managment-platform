@@ -6,41 +6,20 @@
         <div class="user-forms justify-evenly">
           <q-form class="sucursal-form">
             <q-input color="primary" label="Nombre" v-model="user.firstName" :rules="[val => !!val || 'Field is required']">
-              <template v-slot:prepend>
-                <q-icon name="person" />
-              </template>
             </q-input>
             <q-input color="primary" label="Apellido" class="q-mt-xl" v-model="user.lastName" :rules="[val => !!val || 'Field is required']">
-              <template v-slot:prepend>
-                <q-icon name="person" />
-              </template>
             </q-input>
             <q-input color="primary" label="Puesto de trabajo" class="q-mt-xl" v-model="user.job" :rules="[val => !!val || 'Field is required']">
-              <template v-slot:prepend>
-                <q-icon name="work" />
-              </template>
             </q-input>
             <q-input color="primary" label="NSS" class="q-mt-xl" v-model="user.nss" :rules="[val => !!val || 'Field is required']">
-              <template v-slot:prepend>
-                <q-icon name="badge" />
-              </template>
             </q-input>
             <q-input 
               color="primary" label="Numbero de teléfono" class="q-mt-xl" mask="(+##) ##########" unmasked-value
               hint="Ejemplo: (+52) 5525179478" v-model="user.phone" :rules="[val => !!val || 'Field is required']">
-              <template v-slot:prepend>
-                <q-icon name="phone" />
-              </template>
             </q-input>
             <q-input color="primary" type="date" label="Fecha de nacimiento" class="q-mt-xl" v-model="user.date">
-              <template v-slot:prepend>
-                <q-icon name="calendar_today" />
-              </template>
             </q-input>
             <q-file class="q-mt-xl" label="Foto" v-model="user.photo">
-              <template v-slot:prepend>
-                <q-icon name="attach_file" />
-              </template>
             </q-file>
           </q-form>
         </div>

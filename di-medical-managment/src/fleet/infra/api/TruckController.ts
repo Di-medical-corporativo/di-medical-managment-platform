@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { JsonController, Post, Body, Param, Res, Get, UseBefore, Put, Delete, OnUndefined } from 'routing-controllers'
+import { JsonController, Post, Body, Param, Res, Get, UseBefore, Put, Delete, OnUndefined, UploadedFile } from 'routing-controllers'
 import { Service } from 'typedi'
 import { Response, response } from 'express'
 import { IsAuthenticated } from '../../../auth/infra/middlewares/IsAuthenticated'
@@ -8,17 +8,31 @@ import { CreateTruckDto } from '../dto/CreateTruckDto'
 import { TruckService } from '../../application/TruckService'
 import { CreateIncidentDto } from '../dto/CreateIncidentDto'
 import { UpdateTruckDto } from '../dto/UpdateTruckDto'
+import { FirebaseStorageService } from '../../../shared/infra/imageUpload/FirebaseStorage'
+import { SharpProcessor } from '../../../shared/infra/imageModifier/Sharp'
 
 @JsonController('/truck')
 @Service()
 export class TruckRestController {
   constructor (
-    private truckService: TruckService
+    private truckService: TruckService,
+    private imageUploadService: FirebaseStorageService,
+    private imageProcessing: SharpProcessor
   ) {}
 
   @Post('/new')
-  public async createTruck (@Body() truck: CreateTruckDto, @Res() response: Response) {
-    const truckOrError = await this.truckService.createTruck(truck)
+  public async createTruck (
+    @Body() truck: CreateTruckDto,
+    @UploadedFile ("file") file: any,
+    @Res() response: Response
+    ) {
+    const resizeImage = await this.imageProcessing.resize(file as Buffer, 350, 350)
+    if (resizeImage.isLeft()) {
+      return resizeImage.error
+    }
+        
+    const truckImageUrl = await this.imageUploadService.upload(resizeImage.value, 'trucks')    
+    const truckOrError = await this.truckService.createTruck(truck, truckImageUrl[0])
     if(truckOrError.isLeft()) {
       response.status(truckOrError.error.status)
       return truckOrError.error

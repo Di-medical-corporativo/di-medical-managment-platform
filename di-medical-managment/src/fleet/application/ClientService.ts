@@ -8,6 +8,7 @@ import { CreateClientDto } from '../infra/dto/CreateClientDto'
 import { UnknowError } from '../../auth/domain/Errors'
 import { ClientNotFound } from '../domain/Errors'
 import { UpdateClientDto } from '../infra/dto/UpdateClientDto'
+import { PaginatedResult } from '../../shared/domain/PaginatedResult'
 
 @Service()
 export class ClientService {
@@ -17,6 +18,18 @@ export class ClientService {
     private readonly clientRepository: ClientRepository
 
   ) {}
+
+
+  public async getClientsPaginated(pagination: number): Promise<Either<BaseError, PaginatedResult<Client>>> {
+    const clientsOrError = await this.clientRepository.getClientsPaginated(pagination)
+
+    if(clientsOrError.isLeft()){
+      return this.unfoldError(clientsOrError.error)
+    }
+
+    return clientsOrError
+
+  }
 
   public async createClient(clientToCreate: CreateClientDto): Promise<Either<BaseError, Client>> {
     const client = new Client(undefined, clientToCreate.name, clientToCreate.address, true)

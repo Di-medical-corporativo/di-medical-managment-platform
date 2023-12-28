@@ -2,6 +2,7 @@ import { Service } from 'typedi'
 import { ImageUploadService } from '../../application/ImageUploadService'
 import serviceAccount from './serviceAccountKey.json'
 import * as admin from 'firebase-admin'
+import { v4 as uuidv4 } from 'uuid'
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
@@ -12,9 +13,9 @@ admin.initializeApp({
 export class FirebaseStorageService implements ImageUploadService {
   private storage = admin.storage().bucket()
 
-  public async upload(bufferFile: any) {
-    const destination = `uploads/test`
-    const fileRef = this.storage.file(destination)    
+  public async upload(bufferFile: any, destination: string): Promise<any> {
+    const fileDestination = `${destination}/${uuidv4()}`
+    const fileRef = this.storage.file(fileDestination)
     const fileStream = fileRef.createWriteStream({
       metadata: {
         contentType: 'image/png'

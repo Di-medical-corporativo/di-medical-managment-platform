@@ -7,6 +7,4 @@ export class CreateTruckDto {
   model: string
   @IsString()
   brand: string
-  @IsString()
-  picture: string
 }
