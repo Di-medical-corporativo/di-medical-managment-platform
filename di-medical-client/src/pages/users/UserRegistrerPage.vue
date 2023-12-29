@@ -105,11 +105,14 @@ import { useRoleStore } from 'src/stores/role-store'
 import { useBranchStore } from 'src/stores/sucursal-store'
 import { User } from 'src/entities/User'
 import { ApiFacade } from 'src/api/ApiFacade'
+import { UserFacade, UserFacadeI } from 'src/api/UserFacade'
+import { useUserStore } from 'src/stores/user-store'
 
 const roleStore = useRoleStore()
 const branchStore = useBranchStore()
+const userStore = useUserStore()
 
-const apiFacade = new ApiFacade()
+const apiFacade: UserFacadeI = new UserFacade()
 const seamless = ref(false)
 const ok = ref(false)
 const message = ref('')
@@ -199,7 +202,6 @@ const registerUser = async () => {
   userToCreate.roles = selectionRoles.value
   userToCreate.sucursal = selectionBranch.value
   userToCreate.password = user.value.password
-  console.log(userToCreate.birthDate);
   
   const userCreated = await apiFacade.registerUser(userToCreate)
 

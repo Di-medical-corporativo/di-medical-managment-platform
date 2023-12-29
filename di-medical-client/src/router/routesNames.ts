@@ -64,6 +64,10 @@ export const RoutesPath = {
     register: {
       route: 'register',
       name: 'truck-register'
+    },
+    list: {
+      route: 'list',
+      name: 'truck-list'
     }
   }
 }
@@ -72,7 +76,6 @@ interface PlatformModule {
   label: string
   children?: PlatformModule[]
 }
-
 
 export const userModuleLabel = 'Usuarios'
 export const registrerUserLabel = 'Registrar usuario'
@@ -123,11 +126,15 @@ export const clientsModule: PlatformModule = {
 
 export const fleetModuleLabel = 'Flota'
 export const registerTruckModuleLabel = 'Registrar camioneta'
+export const truckListModuleLabel = 'Listado de camionetas'
 export const fleetModule: PlatformModule = {
   label: fleetModuleLabel,
   children: [
     {
       label: registerTruckModuleLabel
+    },
+    {
+      label: truckListModuleLabel
     }
   ]
 }

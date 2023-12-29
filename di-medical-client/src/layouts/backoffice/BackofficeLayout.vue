@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lhh lpR lFr">
 
-    <q-header bordered class="bg-grey-2 text-white">
+    <q-header bordered class="bg-white text-white">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" color="primary" size="lg" />
 
@@ -18,7 +18,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" class="bg-grey-1">
+    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" class="bg-white">
 
       <div class="bg-primary flex flex-center" style="height: 68px;">
         <q-img src="../../assets/images/logos/dimedical-logo.png" style="max-width: 45px"></q-img>
@@ -35,7 +35,7 @@
 
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="bg-content">
       <router-view />
     </q-page-container>
 
@@ -57,7 +57,8 @@ import {
   sucursalListLabel, 
   clientListLabel, 
   fleetModuleLabel,
-  registerTruckModuleLabel
+  registerTruckModuleLabel,
+truckListModuleLabel
 } from '../../router/routesNames'
 import { useAuth } from 'src/composables/useAuth'
 import { QTreeNode } from 'quasar';
@@ -135,9 +136,19 @@ watch(
     if(value == registerTruckModuleLabel) {
       route = RoutesPath.fleet.register.name
     }
+
+    if(value == truckListModuleLabel) {
+      route = RoutesPath.fleet.list.name
+    }
     
     router.push({ name: route })
   }
 )
 
 </script>
+
+<style lang="scss" scoped>
+.bg-content {
+  background-color: #FAFCFD;
+}
+</style>

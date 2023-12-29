@@ -1,13 +1,14 @@
 import { defineStore } from "pinia";
 import { ApiFacade } from "src/api/ApiFacade";
 import { ApiFacadeI } from "src/api/ApiFacadeInterface";
+import { UserFacade, UserFacadeI } from "src/api/UserFacade";
 import { User } from "src/entities/User";
 import { computed, ref } from "vue";
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(null)
   const userAuth = ref<User | null>(null)
-  const apiFacade: ApiFacadeI = new ApiFacade()
+  const apiFacade: UserFacadeI = new UserFacade()
 
   function setUser(user: User | null) {
     if(user === null) {

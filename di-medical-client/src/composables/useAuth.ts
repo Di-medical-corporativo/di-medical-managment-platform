@@ -1,14 +1,12 @@
-import { ApiFacade } from 'src/api/ApiFacade'
-import { ApiFacadeI } from 'src/api/ApiFacadeInterface'
+import { UserFacade, UserFacadeI } from 'src/api/UserFacade'
 import { Credentials } from 'src/entities/Credentials'
 import { Either, Left } from 'src/entities/Either'
 import { User } from 'src/entities/User'
 import { modules } from 'src/router/routesNames'
 import { useAuthStore } from 'src/stores/auth-store'
-import { ref } from 'vue'
 
 export function useAuth() {
-  const apiFacade: ApiFacadeI = new ApiFacade()
+  const apiFacade: UserFacadeI = new UserFacade()
   const authStore = useAuthStore()
 
   const loginUser = async (credentials: Credentials): Promise<Either<string, User>> => {

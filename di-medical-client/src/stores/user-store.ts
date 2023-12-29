@@ -1,12 +1,13 @@
 import { defineStore } from "pinia";
 import { ApiFacade } from "src/api/ApiFacade";
 import { ApiFacadeI } from "src/api/ApiFacadeInterface";
+import { UserFacade, UserFacadeI } from "src/api/UserFacade";
 import { Either, Left, Right } from "src/entities/Either";
 import { User } from "src/entities/User";
 import { computed, ref } from "vue";
 
 export const useUserStore = defineStore('users', () => {
-  const apiFacade: ApiFacadeI = new ApiFacade()
+  const apiFacade: UserFacadeI = new UserFacade()
   const users = ref<User[]>()
   const pages  = ref(0)
   const currentPage = ref(1)
