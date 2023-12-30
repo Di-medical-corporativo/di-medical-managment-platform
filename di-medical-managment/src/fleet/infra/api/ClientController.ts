@@ -12,7 +12,6 @@ import { PaginationDto } from '../../../shared/infra/dto/PaginationDto'
 @JsonController('/clients')
 @Service()
 export class ClientRestController {
-
   constructor(
     private clientService: ClientService
   ) {}

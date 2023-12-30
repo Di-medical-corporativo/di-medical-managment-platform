@@ -17,6 +17,7 @@ import { UnknowError } from './auth/domain/Errors'
 import { TruckRestController } from './fleet/infra/api/TruckController'
 import { ClientRestController } from './fleet/infra/api/ClientController'
 import { ItineraryRestController } from './fleet/infra/api/ItineraryController'
+import { SurveyRestController } from './survey/infra/api/SurveyController'
 
 @Service()
 export class Server implements ServerI {
@@ -42,7 +43,8 @@ export class Server implements ServerI {
         AuthRestController,
         TruckRestController,
         ClientRestController,
-        ItineraryRestController
+        ItineraryRestController,
+        SurveyRestController
       ]
     })
     .use((err: any, req: any, res: any, next: any) => {

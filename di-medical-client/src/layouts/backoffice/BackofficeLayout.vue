@@ -32,7 +32,6 @@
           node-key="label"
         />
       </div>
-
     </q-drawer>
 
     <q-page-container class="bg-content">

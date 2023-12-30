@@ -124,6 +124,8 @@ model Point {
   invoices Invoce[]
   itineraryId String?
   itinerary Itinerary? @relation(fields: [itineraryId], references: [id])
+  responseId String? @unique
+  response SurveyResponse? @relation(fields: [responseId], references: [id])
 }
 
 model Invoce {
@@ -141,4 +143,70 @@ model Itinerary {
   points Point[]
   createdAt DateTime
   updatedAt DateTime
+}
+
+model Survey {
+  id String @id @default(uuid())
+  name String
+  description String
+  startDate DateTime
+  endDate DateTime
+  active Boolean
+  questions Question[]
+  responses SurveyResponse[]
+}
+
+model Question {
+  id String @id @default(uuid())
+  text String
+  order Int
+  surveyId String
+  survey Survey @relation(fields: [surveyId], references: [id])
+  typeId String
+  type QuestionType @relation(fields: [typeId], references: [id])
+  options QuestionOption[]
+  answers AnswerQuestion[]
+}
+
+model QuestionType {
+  id String @id @default(uuid())
+  type String
+  questions Question[]
+}
+
+model QuestionOption {
+  id String @id @default(uuid())
+  value String
+  order Int
+  questionId String
+  quesion Question @relation(fields: [questionId], references: [id])
+  answerOption AnswerOption[]
+}
+
+model SurveyResponse {
+  id String @id @default(uuid())
+  surveyId String
+  survey Survey  @relation(fields: [surveyId], references: [id])
+  point Point?
+  beginDate DateTime
+  endDate DateTime
+  answers AnswerQuestion[]
+}
+
+model AnswerQuestion {
+  id String @id @default(uuid())
+  responseId String
+  response SurveyResponse @relation(fields: [responseId], references: [id])
+  questionId String
+  question Question @relation(fields: [questionId], references: [id])
+  answer String
+  answerOption AnswerOption[]
+}
+
+model AnswerOption {
+  answerOptionId String @id @default(uuid())
+  answerId String
+  answer AnswerQuestion @relation(fields: [answerId], references: [id])
+  optionId String
+  option QuestionOption @relation(fields: [optionId], references: [id])
 }

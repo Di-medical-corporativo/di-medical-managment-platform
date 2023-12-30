@@ -6,10 +6,41 @@ import { Truck } from '../../domain/Truck';
 import { Service } from 'typedi';
 import { Incident } from '../../domain/Incident';
 import { ModelToDomainIncidents } from './ModelToDomainIncident';
+import { PaginatedResult } from '../../../shared/domain/PaginatedResult';
+import { ModelToDomainTruck } from './ModelToDomainTruck';
 
 @Service()
 export class DbTruckRepository implements TruckRespository {
   private readonly prismaClient = new PrismaClient()
+  private pageSize: number = 10
+  async getTrucksPaginated(page: number): Promise<Either<ServerError, PaginatedResult<Truck>>> {
+    try {
+      const [ trucks, total ] = await Promise.all([
+        this.prismaClient.truck.findMany({
+          skip: (page - 1) * 10,
+          take: this.pageSize
+        }),
+        this.prismaClient.truck.count()
+      ])
+
+      const totalPages = Math.ceil(total / this.pageSize)
+
+      if(page > totalPages) {
+        return Left.create(ServerError.NOT_FOUND)
+      }
+
+      const trucksDomain = ModelToDomainTruck.fromTrucks(trucks)
+      const pagination = new PaginatedResult<Truck>(
+        trucksDomain,
+        totalPages
+      )
+
+      return Right.create(pagination)
+    } catch (error) {
+      return Left.create(ServerError.SERVER_ERROR)
+    }    
+  }
+
   async createTruck(truck: Truck): Promise<Either<ServerError, Truck>> {
     try {
       const truckCreated = await this.prismaClient.truck.create({
@@ -26,8 +57,6 @@ export class DbTruckRepository implements TruckRespository {
       truck.isActive = truckCreated.isActive
       return Right.create(truck)
     } catch (error) {
-      console.log(error);
-      
       return Left.create(ServerError.SERVER_ERROR)
     }
   }

@@ -12,4 +12,16 @@ export class ModelToDomainTruck {
       truck.isActive
     )
   }
+
+  public static fromTrucks(truck: Truck[]) {
+    const domainTrucks = truck.map((truck) => new DomainTruck(
+      truck.id,
+      truck.plates,
+      truck.model,
+      truck.brand,
+      truck.picture,
+      truck.isActive
+    ))
+    return domainTrucks
+  }
 }

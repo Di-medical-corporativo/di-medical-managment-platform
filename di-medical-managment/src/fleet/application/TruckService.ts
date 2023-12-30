@@ -10,6 +10,7 @@ import { TruckNotFound } from '../domain/Errors'
 import { CreateIncidentDto } from '../infra/dto/CreateIncidentDto'
 import { Incident } from '../domain/Incident'
 import { UpdateTruckDto } from '../infra/dto/UpdateTruckDto'
+import { PaginatedResult } from '../../shared/domain/PaginatedResult'
 
 @Service()
 export class TruckService {
@@ -18,6 +19,16 @@ export class TruckService {
     private readonly truckRepository: TruckRespository
   ) {}
   
+  public async getTrucksPaginated(pagination: number): Promise<Either<BaseError, PaginatedResult<Truck>>> {
+    const trucksOrError = await this.truckRepository.getTrucksPaginated(pagination)
+
+    if(trucksOrError.isLeft()) {
+      return this.unfoldError(trucksOrError.error)
+    }
+    
+    return trucksOrError
+  }
+
   public async createTruck(truckToCreate: CreateTruckDto, truckImageUrl: string): Promise<Either<BaseError, Truck>> {
     const truck = new Truck(
       undefined,

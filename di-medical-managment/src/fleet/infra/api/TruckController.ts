@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { JsonController, Post, Body, Param, Res, Get, UseBefore, Put, Delete, OnUndefined, UploadedFile } from 'routing-controllers'
+import { JsonController, Post, Body, Param, Res, Get, UseBefore, Put, Delete, OnUndefined, UploadedFile, QueryParams } from 'routing-controllers'
 import { Service } from 'typedi'
 import { Response, response } from 'express'
 import { IsAuthenticated } from '../../../auth/infra/middlewares/IsAuthenticated'
@@ -10,6 +10,7 @@ import { CreateIncidentDto } from '../dto/CreateIncidentDto'
 import { UpdateTruckDto } from '../dto/UpdateTruckDto'
 import { FirebaseStorageService } from '../../../shared/infra/imageUpload/FirebaseStorage'
 import { SharpProcessor } from '../../../shared/infra/imageModifier/Sharp'
+import { PaginationDto } from '../../../shared/infra/dto/PaginationDto'
 
 @JsonController('/truck')
 @Service()
@@ -20,11 +21,26 @@ export class TruckRestController {
     private imageProcessing: SharpProcessor
   ) {}
 
+  @Get()
+  public async getTrucksPaginated(
+    @QueryParams() query: PaginationDto,
+    @Res() response: Response
+  ) {
+    const trucksOrError = await this.truckService.getTrucksPaginated(query.page)
+    
+    if(trucksOrError.isLeft()) {
+      response.status(trucksOrError.error.status)
+      return trucksOrError.error
+    }
+
+    return trucksOrError.value
+  }
+
   @Post('/new')
   public async createTruck (
     @Body() truck: CreateTruckDto,
-    @UploadedFile ("file") file: any,
-    @Res() response: Response
+    @Res() response: Response,
+    @UploadedFile("file") file: any
     ) {
     const resizeImage = await this.imageProcessing.resize(file as Buffer, 350, 350)
     if (resizeImage.isLeft()) {

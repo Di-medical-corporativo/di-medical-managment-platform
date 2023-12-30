@@ -22,6 +22,7 @@ export const useClientStore = defineStore('counter', () => {
     }
     setClients(clientsPaginated.value.results)
     setPages(clientsPaginated.value.pages)
+    setCurrentPage(page)
     isLoading.value = false
     return Right.create(true)
   }

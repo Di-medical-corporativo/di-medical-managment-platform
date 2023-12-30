@@ -1,4 +1,5 @@
 import { Either } from '../../shared/domain/Either'
+import { PaginatedResult } from '../../shared/domain/PaginatedResult'
 import { ServerError } from '../../shared/domain/errors/Error'
 import { Incident } from '../domain/Incident'
 import { Truck } from '../domain/Truck'
@@ -11,5 +12,6 @@ export interface TruckRespository {
   getIncidentById (incidentId: string): Promise<Either<ServerError, Incident>>
   removeIncident (truck: Truck, incident: Incident): Promise<Either<ServerError, Truck>>
   updateTruck (truck: Truck): Promise<Either<ServerError, Truck>>
-  deleteTruck (truckId: string): Promise<Either<ServerError, void>> 
+  deleteTruck (truckId: string): Promise<Either<ServerError, void>>
+  getTrucksPaginated(page: number): Promise<Either<ServerError, PaginatedResult<Truck>>>
 }

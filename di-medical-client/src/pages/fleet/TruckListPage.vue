@@ -1,16 +1,19 @@
 <template>
   <div class="flex flex-center column">
-    <div class="sucursal-list flex flex-center">
+    <div class="client-list flex flex-center" v-if="!truckStore.getLoading">
       <q-card 
         class="user-card q-mt-xl" 
-        v-for="branch in sucursalStore.getBranches"
-        :key="branch.id"
+        v-for="truck in truckStore.getTrucks"
+        :key="truck.truckId"
         >
-        <q-card-section>
-          <div class="text-h6">{{branch.name}}</div>
-          <small>{{branch.address}}</small>
-        </q-card-section>
-  
+
+        <q-img :src="truck.picture">
+          <div class="absolute-bottom">
+            <div class="text-h6">{{ truck.model }}</div>
+            <div class="text-subtitle2">{{ truck.plates }}</div>
+            <small>{{truck.brand}}</small>
+          </div>
+        </q-img>  
         <q-card-actions>
           <q-btn flat no-caps>Actualizar</q-btn>
           <q-btn flat no-caps>Eliminar</q-btn>
@@ -18,25 +21,53 @@
         </q-card-actions>
       </q-card>
     </div>
+    <div class="q-pa-lg flex flex-center">
+      <q-pagination v-model="current" :max="truckStore.getTotalPages" input />
+    </div>
+
+    <q-inner-loading
+        :showing="truckStore.getLoading"
+        color="primary"
+        label="Por favor espera..."
+        label-class="text-black"
+        label-style="font-size: 1.1em"
+      />
+
+    <q-dialog v-model="seamless" seamless position="top">
+      <q-banner inline-actions class="text-white" :class="ok ? 'bg-green' : 'bg-red'">
+        {{ message }}
+        <template v-slot:action>
+          <q-btn flat color="white" label="Cerrar" v-close-popup />
+        </template>
+      </q-banner>
+    </q-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useBranchStore } from 'src/stores/sucursal-store'
-import { computed } from 'vue';
+import { useTruckStore } from 'src/stores/truck-store'
+import { ref, watch } from 'vue'
 
-const sucursalStore = useBranchStore()
+const seamless = ref(false)
+const ok = ref(false)
+const message = ref('')
 
-const branchColor = computed(() => (color: string) => color.includes('sur') ? 'bg-sur' : 'bg-primary')
+const truckStore = useTruckStore()
+const current = ref(1)
+
+watch(current, async (value) => {
+  const clients = await truckStore.trucksPaginated(value)
+  if(clients.isLeft()) {
+    ok.value = false
+    message.value = clients.error
+    seamless.value = true
+  }
+})
+
 </script>
 
 <style lang="scss">
-
-.bg-sur {
-  background-color: #218d9b;
-}
-
-.sucursal {
+.client {
   &-list {
     align-items: center;
     flex-direction: column;
@@ -46,7 +77,7 @@ const branchColor = computed(() => (color: string) => color.includes('sur') ? 'b
   @media screen and (min-width: $breakpoint-md-min) {
     &-list {
       width: 90%;
-      gap: 20px;
+      gap: 30px;
       justify-content: initial;
       align-items: initial;
       flex-direction: initial;
