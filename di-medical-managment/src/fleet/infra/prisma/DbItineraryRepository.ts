@@ -19,31 +19,45 @@ export class DbItineraryRepository implements ItineraryRepository {
             }
           },
           points: {
-            create: itinerary.points.map(point => ({ 
-              client: {
-                connect: {
-                  id: point.client.clientId
-                } 
-              },
-              truck: {
-                connect: {
-                  id: point.truck.truckId
-                }
-              },
-              user: {
-                connect: {
-                  id: point.assignedDriver.userId
+            create: itinerary.points.map(point => {
+              const pointToCreate: any = { 
+                client: {
+                  connect: {
+                    id: point.client.clientId
+                  } 
                 },
-              },
-              invoices: {
-                create: point.invoices.map(invoice => {
-                  return { invoiceNumber: invoice.invoiceNumber, description: invoice.description }
-                })
+                truck: {
+                  connect: {
+                    id: point.truck.truckId
+                  }
+                },
+                user: {
+                  connect: {
+                    id: point.assignedDriver.userId
+                  },
+                },
+                invoices: {
+                  create: point.invoices.map(invoice => {
+                    return { invoiceNumber: invoice.invoiceNumber, description: invoice.description}
+                  })
+                },
+                active: true
               }
-            })),
+
+              if(point.survey) {
+                pointToCreate.survey = {
+                  connect: {
+                    id: point.survey.surveyId
+                  }
+                }
+              }
+
+              return pointToCreate
+            }),
           },
           createdAt: itinerary.createdAt,
-          updatedAt: itinerary.updatedAt
+          updatedAt: itinerary.updatedAt,
+          active: true
         },
         include: {
           points: {
@@ -51,16 +65,29 @@ export class DbItineraryRepository implements ItineraryRepository {
               invoices: true,
               truck: true,
               client: true,
-              user: true
+              user: true,
+              survey: {
+                include: {
+                  questions: {
+                    include: {
+                      options: true,
+                      type: true
+                    }
+                  }
+                }
+              }
             }
           },
           sucursal: true,
         }
       })
+
       const domainItinerary = ModelTodomainItinerary.from(itineraryCreated)
       
       return Right.create(domainItinerary)
     } catch (error) {
+      console.log(error);
+      
       return Left.create(ServerError.SERVER_ERROR)
     }    
   }

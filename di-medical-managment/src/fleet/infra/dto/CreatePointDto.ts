@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer'
-import { IsString, ValidateNested } from 'class-validator'
+import { IsOptional, IsString, ValidateNested } from 'class-validator'
 import { CreateInvoiceDto } from './CreateInvoiceDto'
 
 export class CreatePointDto {
@@ -11,6 +11,10 @@ export class CreatePointDto {
 
   @IsString()
   assignedUserId: string
+
+  @IsString()
+  @IsOptional()
+  surveyId: string
 
   @ValidateNested({ each: true })
   @Type(() => CreateInvoiceDto)

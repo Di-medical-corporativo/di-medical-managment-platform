@@ -6,6 +6,8 @@ import { Survey } from '../../domain/Survey'
 import { QuestionType } from '../../domain/QuestionType'
 import { PrismaClient } from '@prisma/client'
 import { ModelToDomainQuestionType } from './ModelToDomainQuestionType'
+import { ModelToDomainQuestion } from './ModelToDomainQuestion'
+import { ModelToDomainSurvey } from './ModelToDomainSurvey'
 
 @Service()
 export class DbSurveyRepository implements SurveyRepository {
@@ -47,11 +49,11 @@ export class DbSurveyRepository implements SurveyRepository {
           }
         }
       })
-      console.log(surveyCreated);
-      
+
       return Right.create(survey)
     } catch (error) {
       console.log(error);
+      
       return Left.create(ServerError.SERVER_ERROR)
     }
   }
@@ -86,6 +88,34 @@ export class DbSurveyRepository implements SurveyRepository {
 
       questionType.questionTypeId = type.id
       return Right.create(questionType)
+    } catch (error) {
+      return Left.create(ServerError.SERVER_ERROR)
+    }
+  }
+
+  async findSurveyById(surveyId: string): Promise<Either<ServerError, Survey>> {
+    try {
+      const survey = await this.prismaClient.survey.findFirst({
+        where: {
+          id: surveyId
+        },
+        include: {
+          questions: {
+            include: {
+              options: true,
+              type: true          
+            }
+          }
+        }
+      })
+
+      if(!survey){
+        return Left.create(ServerError.NOT_FOUND)
+      }
+
+      const surveyDomain = ModelToDomainSurvey.from(survey)
+
+      return Right.create(surveyDomain)
     } catch (error) {
       return Left.create(ServerError.SERVER_ERROR)
     }

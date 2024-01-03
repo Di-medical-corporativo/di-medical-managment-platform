@@ -1,9 +1,11 @@
 import { Sucursal } from '../../shared/domain/Sucursal'
+import { Survey } from '../../survey/domain/Survey'
 import { Point } from './Point'
 
 export class Itinerary {
   private _points: Point[]
   private _sucursal: Sucursal
+  
   constructor (
     private _itineraryId: string | undefined,
     private _createdAt: Date,
@@ -49,4 +51,5 @@ export class Itinerary {
   public set points(points: Point[]) {
     this._points = points
   }
+
 }

@@ -21,7 +21,28 @@ export class SurveyRestController {
     @Res() response: Response
   ) {
     const surveyOrError = await this.surveyService.createSurvey(survey)
-    return surveyOrError
+
+    if(surveyOrError.isLeft()) {
+      response.status(surveyOrError.error.status)
+      return surveyOrError.error
+    }
+
+    return surveyOrError.value
+  }
+
+  @Get('/:surveyId')
+  public async getSurveyById(
+    @Param('surveyId') surveyId: string,
+    @Res() response: Response
+  ) {
+    const surveyOrError = await this.surveyService.getSurveyById(surveyId)
+
+    if(surveyOrError.isLeft()) {
+      response.status(surveyOrError.error.status)
+      return surveyOrError.error
+    }
+
+    return surveyOrError.value
   }
 
   @Post('/type/new')
@@ -32,6 +53,7 @@ export class SurveyRestController {
     const typeOrError = await this.surveyService.createQuestionType(type)
     
     if(typeOrError.isLeft()) {
+      response.status(typeOrError.error.status)
       return typeOrError.error
     }
 

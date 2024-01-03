@@ -61,7 +61,7 @@ export class AuthRestController {
   }
 
   @Get('/:userId/resources')
-  public async getResourcesByUser(@Param('userId') userId: string) {
+  public async getResourcesByUser(@Param('userId') userId: string, @Res() response: Response) {
     const resourcesOrError = await this.userService.resourcesByUser(userId)
 
     if (resourcesOrError.isLeft()) {

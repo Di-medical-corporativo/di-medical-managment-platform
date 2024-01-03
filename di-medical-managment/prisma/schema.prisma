@@ -124,8 +124,11 @@ model Point {
   invoices Invoce[]
   itineraryId String?
   itinerary Itinerary? @relation(fields: [itineraryId], references: [id])
+  surveyId String?
+  survey Survey? @relation(fields: [surveyId], references: [id])
   responseId String? @unique
   response SurveyResponse? @relation(fields: [responseId], references: [id])
+  active Boolean
 }
 
 model Invoce {
@@ -143,6 +146,7 @@ model Itinerary {
   points Point[]
   createdAt DateTime
   updatedAt DateTime
+  active Boolean
 }
 
 model Survey {
@@ -154,6 +158,7 @@ model Survey {
   active Boolean
   questions Question[]
   responses SurveyResponse[]
+  points Point[]
 }
 
 model Question {

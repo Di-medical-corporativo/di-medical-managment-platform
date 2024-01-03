@@ -7,4 +7,5 @@ export interface SurveyRepository {
   createSurvey(survey: Survey): Promise<Either<ServerError, Survey>>
   getQuestionType(typeId: string): Promise<Either<ServerError, QuestionType>>
   createQuestionType(questionType: QuestionType): Promise<Either<ServerError, QuestionType>>
+  findSurveyById(surveyId: string): Promise<Either<ServerError, Survey>>
 }

@@ -68,6 +68,17 @@ export const RoutesPath = {
     list: {
       route: 'list',
       name: 'truck-list'
+    },
+    itinerary: {
+      route: 'itinerary',
+      name: 'itinerary-register'
+    }
+  },
+  survey: {
+    route: 'survey',
+    default: {
+      route: '',
+      name: 'survey'
     }
   }
 }
@@ -125,11 +136,15 @@ export const clientsModule: PlatformModule = {
 }
 
 export const fleetModuleLabel = 'Flota'
+export const registerItineraryModuleLabel = 'Registrar itinerario'
 export const registerTruckModuleLabel = 'Registrar camioneta'
 export const truckListModuleLabel = 'Listado de camionetas'
 export const fleetModule: PlatformModule = {
   label: fleetModuleLabel,
   children: [
+    {
+      label: registerItineraryModuleLabel
+    },
     {
       label: registerTruckModuleLabel
     },
@@ -139,9 +154,15 @@ export const fleetModule: PlatformModule = {
   ]
 }
 
+export const surveyModuleLabel = 'Encuestas'
+export const surveyModule: PlatformModule = {
+  label: surveyModuleLabel
+}
+
 export const modules: PlatformModule[] = [
   usersModule,
   sucursalModule,
   clientsModule,
-  fleetModule
+  fleetModule,
+  surveyModule
 ]

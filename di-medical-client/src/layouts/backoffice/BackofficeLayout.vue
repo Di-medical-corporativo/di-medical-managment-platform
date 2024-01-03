@@ -57,7 +57,8 @@ import {
   clientListLabel, 
   fleetModuleLabel,
   registerTruckModuleLabel,
-truckListModuleLabel
+truckListModuleLabel,
+registerItineraryModuleLabel
 } from '../../router/routesNames'
 import { useAuth } from 'src/composables/useAuth'
 import { QTreeNode } from 'quasar';
@@ -138,6 +139,10 @@ watch(
 
     if(value == truckListModuleLabel) {
       route = RoutesPath.fleet.list.name
+    }
+
+    if(value == registerItineraryModuleLabel) {
+      route = RoutesPath.fleet.itinerary.name
     }
     
     router.push({ name: route })

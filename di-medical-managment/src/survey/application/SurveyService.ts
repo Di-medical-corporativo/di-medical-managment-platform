@@ -10,6 +10,7 @@ import { Question } from '../domain/Question'
 import { CreateQuestionTypeDto } from '../infra/dto/CreateQuestionTypeDto'
 import { QuestionType } from '../domain/QuestionType'
 import { Option } from '../domain/Option'
+import { SurveyNotFound } from '../domain/Errors'
 
 @Service()
 export class SurveyService {
@@ -52,6 +53,21 @@ export class SurveyService {
     surveyDomain.questions = questionsToCreate
     
     const surveyCreatedOrError = await this.surveyRepository.createSurvey(surveyDomain)
+    
+    if(surveyCreatedOrError.isLeft()) {
+      return this.unfoldError(surveyCreatedOrError.error)
+    }
+
+    return surveyCreatedOrError
+  }
+
+  public async getSurveyById(surveyId: string) {
+    const surveyOrError = await this.surveyRepository.findSurveyById(surveyId)
+    if(surveyOrError.isLeft()) {
+      return this.unfoldError(surveyOrError.error)
+    }
+    
+    return surveyOrError
   }
 
   public async createQuestionType(typeToCreate: CreateQuestionTypeDto) {
@@ -75,7 +91,7 @@ export class SurveyService {
       case ServerError.SERVER_ERROR:
         return Left.create(new UnknowError())
       case ServerError.NOT_FOUND:
-        return Left.create(new UnknowError())
+        return Left.create(new SurveyNotFound())
       default:
         return Left.create(new UnknowError())
     }

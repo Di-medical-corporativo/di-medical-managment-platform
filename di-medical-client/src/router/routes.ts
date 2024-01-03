@@ -98,6 +98,11 @@ const routes: RouteRecordRaw[] = [
             path: RoutesPath.fleet.list.route,
             name: RoutesPath.fleet.list.name,
             component: () => import('pages/fleet/TruckListPage.vue')
+          },
+          {
+            path: RoutesPath.fleet.itinerary.name,
+            name: RoutesPath.fleet.itinerary.name,
+            component: () => import('pages/fleet/ItineraryRegisterPage.vue')
           }
         ]
       }

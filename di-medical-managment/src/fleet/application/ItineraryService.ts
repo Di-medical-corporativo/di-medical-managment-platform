@@ -13,6 +13,7 @@ import { ClientService } from './ClientService'
 import { UserService } from '../../shared/application/UserService'
 import { TruckService } from './TruckService'
 import { NotFound } from '../domain/Errors'
+import { SurveyService } from '../../survey/application/SurveyService'
 
 @Service()
 export class ItineraryService {
@@ -27,7 +28,9 @@ export class ItineraryService {
     @Inject(() => UserService)
     private readonly userService: UserService,
     @Inject(() => TruckService)
-    private readonly truckService: TruckService
+    private readonly truckService: TruckService,
+    @Inject(() => SurveyService)
+    private readonly surveyService: SurveyService
   ) {}
 
   public async createItinerary (itineraryToCreate: CreateItineraryDto): Promise<Either<BaseError, Itinerary>> {
@@ -61,6 +64,15 @@ export class ItineraryService {
         return truckOrError
       }
 
+      let surveyOrError
+      if(pointToCreate.surveyId){
+        surveyOrError = await this.surveyService.getSurveyById(pointToCreate.surveyId)
+
+        if(surveyOrError.isLeft()) {
+          return surveyOrError
+        }
+      }
+
       const point = new Point(
         undefined
       )
@@ -68,6 +80,17 @@ export class ItineraryService {
       point.invoices = invoices
       point.assignedDriver = userAssignedOrerror.value
       point.truck = truckOrError.value
+
+      if(pointToCreate.surveyId) {
+        const surveyOrError = await this.surveyService.getSurveyById(pointToCreate.surveyId)
+        
+        if(surveyOrError.isLeft()) {
+          return surveyOrError
+        }
+
+        point.survey = surveyOrError.value
+      }
+
       return Right.create(point)
     })
 

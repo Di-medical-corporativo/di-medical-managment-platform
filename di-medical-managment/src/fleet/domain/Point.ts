@@ -4,6 +4,7 @@ import { Sign } from './Sign'
 import { User } from '../../shared/domain/User'
 import { Truck } from './Truck'
 import { Invoice } from './Invoice'
+import { Survey } from '../../survey/domain/Survey'
 
 export class Point {
   private _responseId: string
@@ -12,6 +13,7 @@ export class Point {
   private _truck: Truck
   private _invoices: Invoice[]
   private _client: Client
+  private _survey: Survey
 
   private _assignedDriver: User
   constructor (
@@ -72,5 +74,13 @@ export class Point {
 
   public get invoices(): Invoice[] {
     return this._invoices
+  }
+
+  public get survey() {
+    return this._survey
+  }
+
+  public set survey(survey: Survey) {
+    this._survey = survey
   }
 }
