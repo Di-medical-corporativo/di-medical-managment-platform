@@ -128,13 +128,14 @@ model Point {
   survey Survey? @relation(fields: [surveyId], references: [id])
   responseId String? @unique
   response SurveyResponse? @relation(fields: [responseId], references: [id])
-  active Boolean
+  done Boolean @default(false)
+  comment String?
 }
 
 model Invoce {
   invoceId String @id @default(uuid())
   invoiceNumber String
-  description String
+  description String?
   point Point @relation(fields: [pointId], references: [id])
   pointId String
 }
@@ -147,6 +148,8 @@ model Itinerary {
   createdAt DateTime
   updatedAt DateTime
   active Boolean
+  done Boolean @default(false)
+  scheduleDate DateTime
 }
 
 model Survey {
