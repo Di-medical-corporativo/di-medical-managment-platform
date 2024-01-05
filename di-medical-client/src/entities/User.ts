@@ -1,9 +1,9 @@
+
 import { Resource } from "./Resource"
 import { Role } from "./Role"
 import { Sucursal } from "./Sucursal"
 
 export class User {
-
   private _token: string = ''
   private _resources: Resource[] = []
   private _password: string = ''

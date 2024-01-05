@@ -2,7 +2,7 @@ import { Point } from "./Point"
 import { Sucursal } from "./Sucursal"
 
 export class Itinerary {
-  private _points!: Point[]
+  private _points: Point[] = []
   private _sucursal!: Sucursal
   
   constructor (
@@ -49,6 +49,13 @@ export class Itinerary {
 
   public set points(points: Point[]) {
     this._points = points
+  }
+
+  public addPoint (point: Point) {
+    if(this._points.length == 0) {
+      this._points = []
+    }
+    this._points.push(point)
   }
 
 }

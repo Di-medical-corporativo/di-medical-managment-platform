@@ -1,1 +1,11 @@
 // app global css in SCSS form
+*::-webkit-scrollbar
+{
+	width: 5px;
+}
+
+*::-webkit-scrollbar-thumb
+{
+	background-color: $dark-page;
+	border: 1px solid #555555;
+}
