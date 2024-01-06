@@ -9,7 +9,8 @@ export class Itinerary {
   constructor (
     private _itineraryId: string | undefined,
     private _createdAt: Date,
-    private _updatedAt: Date
+    private _updatedAt: Date,
+    private _scheduleDate: Date
   ) { }
 
   public get itineraryId (): string | undefined{
@@ -50,6 +51,14 @@ export class Itinerary {
 
   public set points(points: Point[]) {
     this._points = points
+  }
+
+  public set scheduleDate(date: Date) {
+    this._scheduleDate = date
+  }
+
+  public get scheduleDate() {
+    return this._scheduleDate
   }
 
 }

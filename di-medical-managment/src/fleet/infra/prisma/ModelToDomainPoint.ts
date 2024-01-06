@@ -16,6 +16,10 @@ export class ModelToDomainPoint {
       pointDomain.assignedDriver = ModelToUserDomain.from(point.user)
       pointDomain.invoices = ModelToDomainInvoice.fromInvoices(point.invoices)
       pointDomain.truck = ModelToDomainTruck.from(point.truck)
+
+      if(point.comment) {
+        pointDomain.comment = point.comment
+      }
       
       if(point.survey != null) {
         pointDomain.survey = ModelToDomainSurvey.from(point.survey)

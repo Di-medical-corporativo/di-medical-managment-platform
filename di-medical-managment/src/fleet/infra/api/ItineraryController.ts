@@ -17,6 +17,8 @@ export class ItineraryRestController {
   public async createItinerary(
     @Body() itineryToCreate: CreateItineraryDto
   ) {
+    console.log('CREANDO....');
+    
     const itineraryOrError = await this.itineraryService.createItinerary(itineryToCreate)
     if(itineraryOrError.isLeft()) {
       return itineraryOrError.error

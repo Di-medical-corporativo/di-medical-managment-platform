@@ -8,11 +8,40 @@ import { PrismaClient } from '@prisma/client'
 import { ModelToDomainQuestionType } from './ModelToDomainQuestionType'
 import { ModelToDomainQuestion } from './ModelToDomainQuestion'
 import { ModelToDomainSurvey } from './ModelToDomainSurvey'
+import { PaginatedResult } from '../../../shared/domain/PaginatedResult'
 
 @Service()
 export class DbSurveyRepository implements SurveyRepository {
   private prismaClient = new PrismaClient()
+  private pageSize: number = 10;
+  async getSurveysPaginated(page: number): Promise<Either<ServerError, PaginatedResult<Survey>>> {
+    try {
+      const [ surveys, total ] = await Promise.all([
+        this.prismaClient.survey.findMany({
+          skip: (page - 1) * 10,
+          take: this.pageSize
+        }),
+        this.prismaClient.survey.count()
+      ])
 
+      const totalPage = Math.ceil(total / this.pageSize)
+
+      if(page > totalPage) {
+        return Left.create(ServerError.NOT_FOUND)
+      }
+
+      const surveyDomain = ModelToDomainSurvey.fromSurveysSimplified(surveys)
+      
+      const pagination = new PaginatedResult<Survey>(
+        surveyDomain,
+        totalPage
+      )
+      return Right.create(pagination)
+    } catch (error) {
+      return Left.create(ServerError.SERVER_ERROR)
+    }
+  }
+  
   async createSurvey(survey: Survey): Promise<Either<ServerError, Survey>> {
     try {
       const surveyCreated = await this.prismaClient.survey.create({
@@ -52,8 +81,6 @@ export class DbSurveyRepository implements SurveyRepository {
 
       return Right.create(survey)
     } catch (error) {
-      console.log(error);
-      
       return Left.create(ServerError.SERVER_ERROR)
     }
   }

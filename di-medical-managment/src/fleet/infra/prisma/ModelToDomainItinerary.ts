@@ -5,9 +5,18 @@ import { ModelToDomainPoint } from './ModelToDomainPoint';
 
 
 export class ModelTodomainItinerary {
-  public static from(itinerary: { sucursal: { id: string; name: string; address: string; phone: string; dimedicalBrand: string; }; 
+  public static from(itinerary: { 
+    scheduleDate: Date;
+    sucursal: { 
+      id: string; 
+      name: string; 
+      address: string; 
+      phone: string; 
+      dimedicalBrand: string; 
+    }; 
     points: (
       { 
+        comment: string | null;
         user: 
         { 
           id: string; 
@@ -45,7 +54,7 @@ export class ModelTodomainItinerary {
         { 
           invoceId: string; 
           invoiceNumber: string; 
-          description: string; 
+          description: string | null; 
           pointId: string; 
         }[]; 
         }
@@ -57,18 +66,21 @@ export class ModelTodomainItinerary {
           truckId: string; 
           userId: string; 
           itineraryId: string | null; 
+          comment: string | null
         })[]; 
       } & 
       { 
         id: string; 
         sucursalId: string; 
         createdAt: Date; 
-        updatedAt: Date; 
+        updatedAt: Date;
+        scheduleDate: Date;
       }) {
     const itineraryDomain = new DomainItinerary(
       itinerary.id,
       itinerary.createdAt,
-      itinerary.updatedAt
+      itinerary.updatedAt,
+      itinerary.scheduleDate
     )
 
     itineraryDomain.points = ModelToDomainPoint.fromPoints(itinerary.points)

@@ -4,7 +4,7 @@ import { Sucursal } from "./Sucursal"
 export class Itinerary {
   private _points: Point[] = []
   private _sucursal!: Sucursal
-  
+  private _scheduleDate: Date | undefined
   constructor (
     private _itineraryId: string | undefined,
     private _createdAt: Date,
@@ -58,4 +58,11 @@ export class Itinerary {
     this._points.push(point)
   }
 
+  public set scheduleDate(date: Date) {
+    this._scheduleDate = date
+  }
+
+  public get scheduleDate() {
+    return this._scheduleDate
+  }
 }

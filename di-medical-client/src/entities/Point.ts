@@ -1,6 +1,7 @@
 import { Client } from './Client'
 import { Invoice } from './Invoice'
 import { Itinerary } from './Itinerary'
+import { Survey } from './Survey'
 import { Truck } from './Truck'
 import { User } from './User'
 
@@ -11,7 +12,7 @@ export class Point {
   private _invoices!: Invoice[]
   private _client!: Client
   private _assignedDriver!: User
-  private _survey!: string
+  private _survey!: Survey
   constructor (
     private _pointId: string | undefined,
   ) { }

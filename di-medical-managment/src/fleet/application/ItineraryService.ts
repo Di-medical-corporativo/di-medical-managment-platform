@@ -44,7 +44,7 @@ export class ItineraryService {
         new Invoice(
           undefined, 
           invoice.invoiceNumber, 
-          invoice.description
+          invoice.description ? invoice.description : 'Sin Descripción'
           )
       )
 
@@ -80,7 +80,6 @@ export class ItineraryService {
       point.invoices = invoices
       point.assignedDriver = userAssignedOrerror.value
       point.truck = truckOrError.value
-
       if(pointToCreate.surveyId) {
         const surveyOrError = await this.surveyService.getSurveyById(pointToCreate.surveyId)
         
@@ -113,8 +112,10 @@ export class ItineraryService {
     const itinerary = new Itinerary(
       undefined,
       new Date(),
-      new Date()
+      new Date(),
+      itineraryToCreate.scheduleDate
     )
+
     itinerary.sucursal = sucursalOrError.value
     itinerary.points = unfoldedPoints
     const itineraryCreatedOrError = await this.itineraryRepository.createItinerary(itinerary)
@@ -125,7 +126,6 @@ export class ItineraryService {
     
     return itineraryCreatedOrError
   }
-
 
   private unfoldError (error: ServerError) {
     switch (error) {

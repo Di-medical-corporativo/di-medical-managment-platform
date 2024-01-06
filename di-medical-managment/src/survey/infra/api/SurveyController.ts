@@ -1,12 +1,13 @@
 import 'reflect-metadata'
 
-import { JsonController, Post, Body, Param, Res, Get, UseBefore, UploadedFile, OnUndefined } from 'routing-controllers'
+import { JsonController, Post, Body, Param, Res, Get, UseBefore, UploadedFile, OnUndefined, QueryParams } from 'routing-controllers'
 import { Service } from 'typedi'
 import { Response, response } from 'express'
 import { IsAuthenticated } from '../../../auth/infra/middlewares/IsAuthenticated'
 import { CreateSurveyDto } from '../dto/CreateSurveyDto'
 import { SurveyService } from '../../application/SurveyService'
 import { CreateQuestionTypeDto } from '../dto/CreateQuestionTypeDto'
+import { PaginationDto } from '../../../shared/infra/dto/PaginationDto'
 
 @JsonController('/survey')
 @Service()
@@ -58,5 +59,20 @@ export class SurveyRestController {
     }
 
     return typeOrError.value
+  }
+
+  @Get()
+  public async getUsersPaginated(
+    @QueryParams() query: PaginationDto,
+    @Res() response: Response
+  ) {
+    const users = await this.surveyService.getSurveysPaginated(query.page)
+
+    if(users.isLeft()) {
+      response.status(users.error.status)
+      return users.error
+    }
+
+    return users.value
   }
 }

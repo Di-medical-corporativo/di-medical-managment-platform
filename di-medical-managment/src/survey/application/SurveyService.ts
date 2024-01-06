@@ -3,14 +3,15 @@ import { DbSurveyRepository } from '../infra/prisma/DbSurveyRepository'
 import { SurveyRepository } from './SurveyRepository'
 import { CreateSurveyDto } from '../infra/dto/CreateSurveyDto'
 import { Survey } from '../domain/Survey'
-import { ServerError } from '../../shared/domain/errors/Error'
-import { Left } from '../../shared/domain/Either'
+import { BaseError, ServerError } from '../../shared/domain/errors/Error'
+import { Either, Left } from '../../shared/domain/Either'
 import { UnknowError } from '../../auth/domain/Errors'
 import { Question } from '../domain/Question'
 import { CreateQuestionTypeDto } from '../infra/dto/CreateQuestionTypeDto'
 import { QuestionType } from '../domain/QuestionType'
 import { Option } from '../domain/Option'
 import { SurveyNotFound } from '../domain/Errors'
+import { PaginatedResult } from '../../shared/domain/PaginatedResult'
 
 @Service()
 export class SurveyService {
@@ -19,6 +20,16 @@ export class SurveyService {
     @Inject(() => DbSurveyRepository)
     private readonly surveyRepository: SurveyRepository
   ) {}
+
+  public async getSurveysPaginated(pagination: number = 1): Promise<Either<BaseError, PaginatedResult<Survey>>> {   
+    const usersOrError = await this.surveyRepository.getSurveysPaginated(pagination)
+    
+    if(usersOrError.isLeft()) {
+      return this.unfoldError(usersOrError.error)
+    }
+
+    return usersOrError
+  }
 
   public async createSurvey(surveyToCreate: CreateSurveyDto) {
     const surveyDomain = new Survey(

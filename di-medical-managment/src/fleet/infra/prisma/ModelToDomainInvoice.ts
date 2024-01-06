@@ -7,7 +7,7 @@ export class ModelToDomainInvoice {
       return new DomainInvoice(
         invoice.invoceId,
         invoice.invoiceNumber,
-        invoice.description
+        invoice.description ? invoice.description : 'Sin comentario'
       )
     })
 

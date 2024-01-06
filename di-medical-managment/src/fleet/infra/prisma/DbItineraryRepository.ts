@@ -18,6 +18,7 @@ export class DbItineraryRepository implements ItineraryRepository {
               id: itinerary.sucursal.sucursalId
             }
           },
+          scheduleDate: itinerary.scheduleDate,
           points: {
             create: itinerary.points.map(point => {
               const pointToCreate: any = { 
@@ -41,7 +42,7 @@ export class DbItineraryRepository implements ItineraryRepository {
                     return { invoiceNumber: invoice.invoiceNumber, description: invoice.description}
                   })
                 },
-                active: true
+                done: false,
               }
 
               if(point.survey) {
@@ -82,9 +83,10 @@ export class DbItineraryRepository implements ItineraryRepository {
         }
       })
 
-      const domainItinerary = ModelTodomainItinerary.from(itineraryCreated)
+      const itineraryDomain = ModelTodomainItinerary.from(itineraryCreated)
       
-      return Right.create(domainItinerary)
+      
+      return Right.create(itineraryDomain)
     } catch (error) {
       console.log(error);
       

@@ -1,5 +1,4 @@
-import { Question, Survey } from '@prisma/client'
-import { Survey as DomainSurvey } from '../../domain/Survey'
+import { Survey as DomainSurvey, Survey } from '../../domain/Survey'
 import { ModelToDomainQuestion } from './ModelToDomainQuestion'
 
 export class ModelToDomainSurvey {
@@ -15,5 +14,17 @@ export class ModelToDomainSurvey {
     surveyDomain.endDate = survey.endDate
     surveyDomain.questions = ModelToDomainQuestion.fromQuestions(survey.questions)
     return surveyDomain
+  }
+
+  public static fromSurveysSimplified(surveys: any[]) {
+    const surveysDomain = surveys.map((survey) => new Survey(
+      survey.id,
+      survey.name,
+      survey.description,
+      survey.startDate,
+      survey.active
+    ))
+
+    return surveysDomain
   }
 }

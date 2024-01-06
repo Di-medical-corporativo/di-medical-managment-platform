@@ -14,7 +14,8 @@ import { PaginatedResult } from '../../domain/PaginatedResult'
 export class DbUserRepository implements UserRepository {
   private readonly prismaClient = new PrismaClient()
   private pageSize: number = 10;
-  constructor() { }
+  constructor() {}
+  
   async getUsersPaginated(page: number): Promise<Either<ServerError, PaginatedResult<User>>> {
     try {
       const [ users, total ] = await Promise.all([

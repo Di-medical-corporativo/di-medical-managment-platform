@@ -4,7 +4,7 @@
       <div>
         <q-btn icon="event" round color="primary" no-caps>
           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-            <q-date>
+            <q-date v-model="scheduleDate">
               <div class="row items-center justify-end q-gutter-sm">
                 <q-btn label="Cancel" color="primary" flat v-close-popup />
                 <q-btn label="OK" color="primary" flat v-close-popup />
@@ -12,6 +12,7 @@
             </q-date>
           </q-popup-proxy>
         </q-btn>
+        <small class="q-ml-sm">{{scheduleDate}}</small>
         <q-select 
             label="Sucursal" 
             :options="branchStore.getBranches" 
@@ -108,7 +109,26 @@
               </q-item-section>
             </template>            
           </q-select>
-          <q-select label="Encuesta" />
+          <q-select label="Encuesta" 
+            :options="surveyStore.getSurveys" 
+            v-model="point.surveyAssinged"
+            emit-value 
+            :option-value="opt => opt" 
+            :option-label="opt => opt.name"
+          >
+            <template v-slot:option="scope">
+              <q-item v-bind="scope.itemProps">
+                <q-item-section>
+                  <q-item-label>{{ scope.opt.name}}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
+            <template v-slot:after-options>
+              <q-item-section class="flex flex-center">
+                <q-pagination v-model="surveyCurrentPagination" :max="surveyStore.getTotalPages" input />
+              </q-item-section>
+            </template>            
+          </q-select>
 
         </q-card-section>
         <q-separator />
@@ -183,10 +203,20 @@
             </q-item>
             <q-item v-ripple>
               <q-item-section avatar>
-                <q-avatar square color="red" text-color="white" icon="directions" />
+                <q-avatar square color="secondary" text-color="white" icon="contacts" />
               </q-item-section>
               <q-item-section>
-                <q-item-label>{{p.client.name}}</q-item-label>
+                <q-item-label>Cliente</q-item-label>
+                <q-item-label caption>{{p.client.name}}</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item v-ripple v-if="p.survey">
+              <q-item-section avatar>
+                <q-avatar square color="secondary" text-color="white" icon="quiz" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Encuesta</q-item-label>
+                <q-item-label caption>{{p.survey.name}}</q-item-label>
               </q-item-section>
             </q-item>
           </q-card-section>
@@ -226,8 +256,14 @@ import { useClientStore } from 'src/stores/client-store';
 import { Client } from 'src/entities/Client';
 import { useBranchStore } from 'src/stores/sucursal-store';
 import { Itinerary } from 'src/entities/Itinerary';
+import { date } from 'quasar';
+import { ItineraryFacade } from 'src/api/ItineraryFacade'
+import { useSurveyStore } from 'src/stores/survey-store'
+import { Survey } from 'src/entities/Survey';
 
-const itinerary = new Itinerary(undefined, new Date(), new Date())
+const itineraryFacade = new ItineraryFacade()
+
+let itinerary = new Itinerary(undefined, new Date(), new Date())
 const seamless = ref(false)
 const ok = ref(false)
 const message = ref('')
@@ -235,10 +271,12 @@ const userStore = useUserStore()
 const truckStore = useTruckStore()
 const clientStore = useClientStore()
 const branchStore = useBranchStore()
+const surveyStore = useSurveyStore()
 
 const truckCurrentPagination = ref(1)
 const userCurrentPagination = ref(1)
 const clientCurrentPagination = ref(1)
+const surveyCurrentPagination = ref(1)
 
 const branchAssigned = ref(null)
 const invoice = ref({
@@ -246,10 +284,11 @@ const invoice = ref({
   invoiceComment: 'Sin comentario',
 })
 
+const scheduleDate = ref(null)
+
 const invoices = ref<{ invoiceNumber: string, invoiceComment: string, id: string }[]>([])
 const updateInvoiceNumberValue = ref('')
 const updateInvoiceCommentValue = ref('')
-
 
 const points = ref<Point[]>([])
 
@@ -292,7 +331,17 @@ const updateInvoiceNumber = (id: string) => {
 }
 
 const addPoint = () => {
-  if(invoices.value.length == 0) return
+  if(
+      invoices.value.length == 0 || 
+      point.value.userAssigned == null ||
+      point.value.clientAssigned == null ||
+      point.value.truckAssigned == null
+      ) {
+    message.value = 'Debes proporcionar todos los datos del punto de entrega'
+    seamless.value = true
+    ok.value = false
+    return
+  }
   const pointToCreate = new Point(undefined)
   pointToCreate.invoices = invoices.value.map((inv) => new Invoice(undefined, inv.invoiceNumber, inv.invoiceComment))
   pointToCreate.truck =  new Truck(
@@ -324,18 +373,53 @@ const addPoint = () => {
     point.value.clientAssigned?.isActive!
   )
 
+  if(point.value.surveyAssinged !== null) {
+    pointToCreate.survey = new Survey(
+      point.value.surveyAssinged.surveyId,
+      point.value.surveyAssinged.name,
+      point.value.surveyAssinged.description,
+      point.value.surveyAssinged.startDate,
+      point.value.surveyAssinged.active
+    )
+  }
+
   points.value.push(pointToCreate)
   userCurrentPagination.value = 1
   clientCurrentPagination.value = 1
   truckCurrentPagination.value = 1
   itinerary.addPoint(pointToCreate)
+  invoices.value = []
 }
 
-const createItinerary = () => {
-  if(points.value.length == 0) return
+const createItinerary = async () => {
+  if(points.value.length == 0 || branchAssigned.value === null || scheduleDate.value == null) {
+    message.value = 'Debes de proporcionar todos los datos y al menos un punto'
+    seamless.value = true
+    ok.value = false
+    return
+  }
   
-  console.log(itinerary);
-  
+  const dateItinerary = new Date(scheduleDate.value!)
+  itinerary.scheduleDate = dateItinerary
+  itinerary.sucursal = branchAssigned.value!
+  const itineraryOrError = await itineraryFacade.registerItinerary(itinerary)
+  if(itineraryOrError.isLeft()) {
+    message.value = 'Ocurrio un error al crear el client'
+    seamless.value = true
+    ok.value = false
+    return
+  }
+
+  message.value = 'Se creo exitosamente el cliente'
+  seamless.value = true
+  ok.value = true
+  points.value = []
+  point.value.clientAssigned = null
+  point.value.surveyAssinged = null
+  point.value.truckAssigned = null
+  point.value.userAssigned = null
+  itinerary = new Itinerary(undefined, new Date(), new Date())
+  invoices.value = [] 
 }
 
 watch(truckCurrentPagination, async (value) => {
