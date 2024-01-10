@@ -13,7 +13,6 @@ export class ModelToDomainPoint {
       )
       pointDomain.assignedDriver = ModelToUserDomain.from(point.user)
       pointDomain.client = ModelToClientDomain.from(point.client)
-      pointDomain.assignedDriver = ModelToUserDomain.from(point.user)
       pointDomain.invoices = ModelToDomainInvoice.fromInvoices(point.invoices)
       pointDomain.truck = ModelToDomainTruck.from(point.truck)
 

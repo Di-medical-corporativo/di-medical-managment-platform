@@ -72,6 +72,10 @@ export const RoutesPath = {
     itinerary: {
       route: 'itinerary',
       name: 'itinerary-register'
+    },
+    itineraryHistory: {
+      route: 'history',
+      name: 'itinerary-history'
     }
   },
   survey: {
@@ -139,6 +143,7 @@ export const fleetModuleLabel = 'Flota'
 export const registerItineraryModuleLabel = 'Registrar itinerario'
 export const registerTruckModuleLabel = 'Registrar camioneta'
 export const truckListModuleLabel = 'Listado de camionetas'
+export const historyItineraryLabel = 'Historial de itinerarios'
 export const fleetModule: PlatformModule = {
   label: fleetModuleLabel,
   children: [
@@ -150,6 +155,9 @@ export const fleetModule: PlatformModule = {
     },
     {
       label: truckListModuleLabel
+    },
+    {
+      label: historyItineraryLabel
     }
   ]
 }

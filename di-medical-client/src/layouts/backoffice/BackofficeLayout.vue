@@ -58,7 +58,8 @@ import {
   fleetModuleLabel,
   registerTruckModuleLabel,
 truckListModuleLabel,
-registerItineraryModuleLabel
+registerItineraryModuleLabel,
+historyItineraryLabel
 } from '../../router/routesNames'
 import { useAuth } from 'src/composables/useAuth'
 import { QTreeNode } from 'quasar';
@@ -143,6 +144,10 @@ watch(
 
     if(value == registerItineraryModuleLabel) {
       route = RoutesPath.fleet.itinerary.name
+    }
+
+    if(value == historyItineraryLabel) {
+      route = RoutesPath.fleet.itineraryHistory.name
     }
     
     router.push({ name: route })

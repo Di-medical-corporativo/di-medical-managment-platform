@@ -1,15 +1,51 @@
 import { Service } from 'typedi'
-import { ItineraryRepository } from '../../application/ItineraryRepository';
-import { Either, Left, Right } from '../../../shared/domain/Either';
-import { ServerError } from '../../../shared/domain/errors/Error';
-import { Itinerary } from '../../domain/Itinerary';
-import { PrismaClient } from '@prisma/client';
-import { ModelTodomainItinerary } from './ModelToDomainItinerary';
+import { ItineraryRepository } from '../../application/ItineraryRepository'
+import { Either, Left, Right } from '../../../shared/domain/Either'
+import { ServerError } from '../../../shared/domain/errors/Error'
+import { Itinerary } from '../../domain/Itinerary'
+import { PrismaClient } from '@prisma/client'
+import { ModelTodomainItinerary } from './ModelToDomainItinerary'
+import { PaginatedResult } from '../../../shared/domain/PaginatedResult'
 
 @Service()
 export class DbItineraryRepository implements ItineraryRepository {
   private readonly prismaClient = new PrismaClient()
-  async createItinerary(itinerary: Itinerary): Promise<Either<ServerError, Itinerary>> {
+
+  private pageSize: number = 10
+  public async getItineraryPaginated(page: number): Promise<Either<ServerError, PaginatedResult<Itinerary>>> {
+    try {
+      const [ itineraries, total ] = await Promise.all([
+        this.prismaClient.itinerary.findMany({
+          skip: (page - 1) * 10,
+          take: this.pageSize,
+          include: {
+            _count: true
+          },
+          orderBy: {
+            scheduleDate: 'desc'
+          }
+        }),
+        this.prismaClient.itinerary.count()
+      ])
+    
+      const totalPages = Math.ceil(total / this.pageSize)
+
+      if(page > totalPages) {
+        return Left.create(ServerError.NOT_FOUND)
+      }
+
+      const itinerariesDomain = ModelTodomainItinerary.fromItineraries(itineraries)
+      const pagination = new PaginatedResult<Itinerary>(
+        itinerariesDomain,
+        totalPages
+      )
+      return Right.create(pagination)
+    } catch (error) {
+      return Left.create(ServerError.SERVER_ERROR)
+    }      
+  }
+
+  public async createItinerary(itinerary: Itinerary): Promise<Either<ServerError, Itinerary>> {
     try {
       const itineraryCreated = await this.prismaClient.itinerary.create({
         data: {
@@ -88,8 +124,6 @@ export class DbItineraryRepository implements ItineraryRepository {
       
       return Right.create(itineraryDomain)
     } catch (error) {
-      console.log(error);
-      
       return Left.create(ServerError.SERVER_ERROR)
     }    
   }

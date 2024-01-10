@@ -5,6 +5,7 @@ export class Itinerary {
   private _points: Point[] = []
   private _sucursal!: Sucursal
   private _scheduleDate: Date | undefined
+  private _totalPoints: number = 0
   constructor (
     private _itineraryId: string | undefined,
     private _createdAt: Date,
@@ -58,11 +59,19 @@ export class Itinerary {
     this._points.push(point)
   }
 
-  public set scheduleDate(date: Date) {
+  public set scheduleDate(date: Date | undefined) {
     this._scheduleDate = date
   }
 
   public get scheduleDate() {
     return this._scheduleDate
+  }
+
+  public get totalPoints() {
+    return this._totalPoints
+  }
+
+  public set totalPoints(total: number) {
+    this._totalPoints = total
   }
 }

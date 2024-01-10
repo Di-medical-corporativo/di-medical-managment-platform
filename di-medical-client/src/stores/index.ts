@@ -7,6 +7,7 @@ import { useUserStore } from './user-store';
 import { useClientStore } from './client-store';
 import { useTruckStore } from './truck-store';
 import { useSurveyStore } from './survey-store';
+import { useItineraryStore } from './itinerary-store';
 
 /*
  * When adding new properties to stores, you should also
@@ -36,13 +37,17 @@ export default store(async (/* { ssrContext } */) => {
   const clients = useClientStore(pinia)
   const trucks = useTruckStore(pinia)
   const surveys=  useSurveyStore(pinia)
+  const itineraries = useItineraryStore(pinia)
   const promises = []
+
   promises.push(roles.getAllRoles())
   promises.push(branches.getAllBranches())
   promises.push(users.usersPaginated(1))
   promises.push(clients.clientsPaginated(1))
   promises.push(trucks.trucksPaginated(1))
   promises.push(surveys.surveysPaginated(1))
+  promises.push(itineraries.itineraryHistoryPaginated(1))
+  
   await Promise.all(promises)
   // You can add Pinia plugins here
   // pinia.use(SomePiniaPlugin)

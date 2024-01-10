@@ -17,7 +17,6 @@ import { SurveyService } from '../../survey/application/SurveyService'
 
 @Service()
 export class ItineraryService {
-
   constructor (
     @Inject(() => DbItineraryRepository)
     private readonly itineraryRepository: ItineraryRepository,
@@ -32,6 +31,16 @@ export class ItineraryService {
     @Inject(() => SurveyService)
     private readonly surveyService: SurveyService
   ) {}
+
+  public async getItineraryPaginated(page: number) {
+    const itinerariesOrError = await this.itineraryRepository.getItineraryPaginated(page)
+
+    if(itinerariesOrError.isLeft()) {
+      return this.unfoldError(itinerariesOrError.error)
+    }
+
+    return itinerariesOrError
+  }
 
   public async createItinerary (itineraryToCreate: CreateItineraryDto): Promise<Either<BaseError, Itinerary>> {
     const sucursalOrError = await this.sucursalService.findSucursalById(itineraryToCreate.sucursalId)

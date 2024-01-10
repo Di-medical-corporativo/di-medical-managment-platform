@@ -116,7 +116,10 @@
             :option-value="opt => opt" 
             :option-label="opt => opt.name"
           >
-            <template v-slot:option="scope">
+            <template v-slot:append>
+              <q-icon name="close" @click.stop.prevent="point.surveyAssinged = null" class="cursor-pointer" />
+            </template>  
+              <template v-slot:option="scope">
               <q-item v-bind="scope.itemProps">
                 <q-item-section>
                   <q-item-label>{{ scope.opt.name}}</q-item-label>

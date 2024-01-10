@@ -16,6 +16,7 @@ export class Point {
   private _survey: Survey
   private _comment: string | null
   private _assignedDriver: User
+
   constructor (
     private _pointId: string | undefined,
   ) { }

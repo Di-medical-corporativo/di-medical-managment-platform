@@ -86,4 +86,19 @@ export class ModelTodomainItinerary {
     itineraryDomain.points = ModelToDomainPoint.fromPoints(itinerary.points)
     return itineraryDomain
   }
+
+  public static fromItineraries(itineraries: any[]) {
+    const itinerariesDomain = itineraries.map((itinerary) => {
+      const domainItinerary = new DomainItinerary(
+        itinerary.id,
+        itinerary.createdAt,
+        itinerary.updatedAt,
+        itinerary.scheduleDate
+      )
+      domainItinerary.totalPoints = itinerary._count.points
+      return domainItinerary
+    })
+    
+    return itinerariesDomain
+  }
 }

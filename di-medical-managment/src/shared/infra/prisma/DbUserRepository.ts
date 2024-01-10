@@ -13,7 +13,7 @@ import { PaginatedResult } from '../../domain/PaginatedResult'
 @Service()
 export class DbUserRepository implements UserRepository {
   private readonly prismaClient = new PrismaClient()
-  private pageSize: number = 10;
+  private pageSize: number = 10
   constructor() {}
   
   async getUsersPaginated(page: number): Promise<Either<ServerError, PaginatedResult<User>>> {
@@ -42,6 +42,7 @@ export class DbUserRepository implements UserRepository {
       return Left.create(ServerError.SERVER_ERROR)
     }
   }
+
   public async createUser(
     user: User,
     passwordHashed: { hash: string, salt: string },

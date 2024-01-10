@@ -5,7 +5,7 @@ import { Point } from './Point'
 export class Itinerary {
   private _points: Point[]
   private _sucursal: Sucursal
-  
+  private _totalPoints: number
   constructor (
     private _itineraryId: string | undefined,
     private _createdAt: Date,
@@ -60,5 +60,12 @@ export class Itinerary {
   public get scheduleDate() {
     return this._scheduleDate
   }
+  
+  public get totalPoints() {
+    return this._totalPoints
+  }
 
+  public set totalPoints(total: number) {
+    this._totalPoints = total
+  }
 }
