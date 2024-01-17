@@ -6,14 +6,17 @@
         v-for="itinerary in itineraryStore.getItineraryHistory"
         :key="itinerary.itineraryId"
         >
+        <q-chip :icon="itinerary.isDone ? 'done' : 'local_shipping'" :color="itinerary.isDone ? 'secondary' : 'grey'" text-color="white">
+          {{ itinerary.isDone ? 'Concluido' : 'En ruta' }}
+        </q-chip>
         <q-card-section>
-          <div class="text-h6">Itinerario del {{itineraryDate(itinerary.scheduleDate!)}}</div>
+          <div class="text-h6">Itinerario del {{formattedDate(itinerary.scheduleDate!)}}</div>
         </q-card-section>
-  
+        <q-card-section>
+          <p>{{itinerary.totalPoints}} puntos de entrega</p>
+        </q-card-section>
         <q-card-actions>
-          <q-btn flat no-caps>Actualizar</q-btn>
-          <q-btn flat no-caps>Eliminar</q-btn>
-          <q-btn flat no-caps>Estadísticas</q-btn>
+          <q-btn flat  no-caps :to="{ name: 'itinerary-detail', params: { id: itinerary.itineraryId } }">Ver puntos de entrega</q-btn>
         </q-card-actions>
       </q-card>
     </div>
@@ -34,8 +37,8 @@
 </template>
 
 <script setup lang="ts">
-import { useItineraryStore } from 'src/stores/itinerary-store';
-import { computed, ref, watch } from 'vue'
+import { useItineraryStore } from 'src/stores/itinerary-store'
+import { ref, watch } from 'vue'
 const seamless = ref(false)
 const ok = ref(false)
 const message = ref('')
@@ -52,18 +55,18 @@ watch(current, async (value) => {
   }
 })
 
-const itineraryDate = (date: Date) => computed(() => {
+const formattedDate = (date: Date) => {
   const dateToParse = new Date(date)
-  const diasSemana = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-  const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  const weekdays = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
 
-  const diaSemana = diasSemana[dateToParse.getDay()];
-  const dia = dateToParse.getDate();
-  const mes = meses[dateToParse.getMonth()];
-  const ano = dateToParse.getFullYear();
+  const dayOfWeek = weekdays[dateToParse.getDay()]
+  const day = dateToParse.getDate()
+  const month = months[dateToParse.getMonth()]
+  const year = dateToParse.getFullYear()
 
-  return `${diaSemana}, ${dia} de ${mes} de ${ano}`;
-})
+  return `${dayOfWeek}, ${day} ${month} ${year}`
+}
 
 </script>
 

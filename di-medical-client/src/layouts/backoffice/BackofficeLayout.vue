@@ -13,7 +13,7 @@
         </q-btn>
 
         <div class="q-pa-md">
-          <q-btn color="primary" icon="person" label="Cerrar sesion" @click="closeSesion"></q-btn>
+          <q-btn color="primary" icon="person" label="Cerrar sesion"  no-caps @click="closeSesion"></q-btn>
         </div>
       </q-toolbar>
     </q-header>
@@ -57,9 +57,9 @@ import {
   clientListLabel, 
   fleetModuleLabel,
   registerTruckModuleLabel,
-truckListModuleLabel,
-registerItineraryModuleLabel,
-historyItineraryLabel
+  truckListModuleLabel,
+  registerItineraryModuleLabel,
+  historyItineraryLabel
 } from '../../router/routesNames'
 import { useAuth } from 'src/composables/useAuth'
 import { QTreeNode } from 'quasar';

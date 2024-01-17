@@ -108,6 +108,11 @@ const routes: RouteRecordRaw[] = [
             path: RoutesPath.fleet.itineraryHistory.route,
             name: RoutesPath.fleet.itineraryHistory.name,
             component: () => import('pages/fleet/ItineraryHistoryPage.vue')
+          },
+          {
+            path: RoutesPath.fleet.itineraryDetail.route,
+            name: RoutesPath.fleet.itineraryDetail.name,
+            component: () => import('pages/fleet/ItineraryDetailPage.vue')
           }
         ]
       }

@@ -6,6 +6,7 @@ export class Itinerary {
   private _points: Point[]
   private _sucursal: Sucursal
   private _totalPoints: number
+  private _done: boolean = false
   constructor (
     private _itineraryId: string | undefined,
     private _createdAt: Date,
@@ -67,5 +68,13 @@ export class Itinerary {
 
   public set totalPoints(total: number) {
     this._totalPoints = total
+  }
+
+  public get isDone() {
+    return this._done
+  }
+
+  public set done(value:boolean) {
+    this._done = value
   }
 }

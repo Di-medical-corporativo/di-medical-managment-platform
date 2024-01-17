@@ -95,6 +95,7 @@ export class ModelTodomainItinerary {
         itinerary.updatedAt,
         itinerary.scheduleDate
       )
+      domainItinerary.done = itinerary.done
       domainItinerary.totalPoints = itinerary._count.points
       return domainItinerary
     })

@@ -54,12 +54,12 @@ export class ItineraryFacade implements ItineraryFacadeI {
           itinerary._createdAt,
           itinerary._updatedAt
         )
+        itineraryDomain.done = itinerary._done
         itineraryDomain.totalPoints = itinerary._totalPoints
         itineraryDomain.scheduleDate = itinerary._scheduleDate
         return itineraryDomain
       })
       
-    
       return Right.create(new PaginatedResult<Itinerary>(resultsDomain, data._pages))
     } catch (error) {
       const axiosError: AxiosError = error as AxiosError
