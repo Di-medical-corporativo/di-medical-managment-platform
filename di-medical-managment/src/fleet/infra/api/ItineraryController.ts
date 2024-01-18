@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { Body, Get, JsonController, Post, QueryParams, Res } from 'routing-controllers'
+import { Body, Get, JsonController, Param, Post, QueryParams, Res } from 'routing-controllers'
 import { Service } from 'typedi'
 import { CreateItineraryDto } from '../dto/CreateItinearyDto'
 import { ItineraryService } from '../../application/ItineraryService';
@@ -17,10 +17,12 @@ export class ItineraryRestController {
 
   @Post('/new')
   public async createItinerary(
-    @Body() itineryToCreate: CreateItineraryDto
+    @Body() itineryToCreate: CreateItineraryDto,
+    @Res() response: Response
   ) {
     const itineraryOrError = await this.itineraryService.createItinerary(itineryToCreate)
     if(itineraryOrError.isLeft()) {
+      response.status(itineraryOrError.error.status)
       return itineraryOrError.error
     }
 
@@ -35,9 +37,25 @@ export class ItineraryRestController {
     const itinerariesOrError = await this.itineraryService.getItineraryPaginated(query.page)
 
     if(itinerariesOrError.isLeft()) {
+      response.status(itinerariesOrError.error.status)
       return itinerariesOrError.error
     }
 
     return itinerariesOrError.value
+  }
+
+  @Get('/:itineraryId')
+  public async getItineraryById(
+    @Param('itineraryId') itineraryId: string,
+    @Res() response: Response
+  ) {
+    const itineraryOrError = await this.itineraryService.getItineraryById(itineraryId)
+
+    if(itineraryOrError.isLeft()) {
+      response.status(itineraryOrError.error.status)
+      return itineraryOrError.error
+    }
+
+    return itineraryOrError.value
   }
 }

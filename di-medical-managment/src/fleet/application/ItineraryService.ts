@@ -136,6 +136,16 @@ export class ItineraryService {
     return itineraryCreatedOrError
   }
 
+  public async getItineraryById(itineraryId: string) {
+    const itineraryOrError = await this.itineraryRepository.getItineraryById(itineraryId)
+
+    if(itineraryOrError.isLeft()) {
+      return this.unfoldError(itineraryOrError.error)
+    }
+
+    return itineraryOrError
+  }
+
   private unfoldError (error: ServerError) {
     switch (error) {
       case ServerError.NETWORK_ERROR:

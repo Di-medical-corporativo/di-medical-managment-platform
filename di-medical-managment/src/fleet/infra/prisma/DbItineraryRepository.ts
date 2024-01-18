@@ -11,6 +11,48 @@ import { PaginatedResult } from '../../../shared/domain/PaginatedResult'
 export class DbItineraryRepository implements ItineraryRepository {
   private readonly prismaClient = new PrismaClient()
 
+  async getItineraryById(itineraryId: string): Promise<Either<ServerError, Itinerary>> {
+    try {
+      const itinerary = await this.prismaClient.itinerary.findFirst({
+        where: {
+          id: itineraryId
+        },
+        include: {
+          points: {
+            include: {
+              invoices: true,
+              truck: true,
+              client: true,
+              user: true,
+              survey: {
+                include: {
+                  questions: {
+                    include: {
+                      options: true,
+                      type: true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          sucursal: true,
+        }
+      })
+
+      if(!itinerary) {
+        return Left.create(ServerError.NOT_FOUND)
+      }
+
+      const domainItinerary = ModelTodomainItinerary.from(itinerary)
+
+      return Right.create(domainItinerary)
+
+    } catch (error) {
+      return Left.create(ServerError.SERVER_ERROR)
+    }
+  }
+
   private pageSize: number = 10
   public async getItineraryPaginated(page: number): Promise<Either<ServerError, PaginatedResult<Itinerary>>> {
     try {
@@ -120,8 +162,6 @@ export class DbItineraryRepository implements ItineraryRepository {
       })
 
       const itineraryDomain = ModelTodomainItinerary.from(itineraryCreated)
-      
-      
       return Right.create(itineraryDomain)
     } catch (error) {
       return Left.create(ServerError.SERVER_ERROR)

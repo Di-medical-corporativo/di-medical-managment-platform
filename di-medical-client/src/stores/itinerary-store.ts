@@ -31,6 +31,16 @@ export const useItineraryStore = defineStore('itinerary', () => {
     return Right.create(true)
   }
 
+  const getItineraryById = async (id: string): Promise<Either<string, Itinerary>> => {
+    const itineraryOrError = await apiFacade.getItineraryById(id)
+
+    if(itineraryOrError.isLeft()) {
+      return itineraryOrError
+    }
+
+    return itineraryOrError
+  }
+
   const setItineraryHistory = (itineraries: Itinerary[]) => {
     itineraryHistory.value = itineraries
   }
@@ -59,6 +69,7 @@ export const useItineraryStore = defineStore('itinerary', () => {
     getItineraryHistory,
     getTotalPages,
     getCurretPage,
-    getLoading
+    getLoading,
+    getItineraryById
   }
 });

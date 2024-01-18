@@ -5,5 +5,6 @@ import { Itinerary } from '../domain/Itinerary'
 
 export interface ItineraryRepository {
   createItinerary(itinerary: Itinerary): Promise<Either<ServerError, Itinerary>>
-  getItineraryPaginated(page: number): Promise<Either<ServerError, PaginatedResult<Itinerary>>> 
+  getItineraryPaginated(page: number): Promise<Either<ServerError, PaginatedResult<Itinerary>>>
+  getItineraryById(itineraryId: string): Promise<Either<ServerError, Itinerary>>
 }
