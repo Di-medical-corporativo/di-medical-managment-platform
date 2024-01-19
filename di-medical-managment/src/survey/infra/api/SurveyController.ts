@@ -31,6 +31,17 @@ export class SurveyRestController {
     return surveyOrError.value
   }
 
+  @Get('/types')
+  public async getQuestionTypes() {
+    const questionTypes = await this.surveyService.getQuestionTypes()
+
+    if(questionTypes.isLeft()) {
+      return questionTypes.error
+    }
+
+    return questionTypes.value
+  }
+
   @Get('/:surveyId')
   public async getSurveyById(
     @Param('surveyId') surveyId: string,
@@ -62,7 +73,7 @@ export class SurveyRestController {
   }
 
   @Get()
-  public async getUsersPaginated(
+  public async getSurveysPaginated(
     @QueryParams() query: PaginationDto,
     @Res() response: Response
   ) {

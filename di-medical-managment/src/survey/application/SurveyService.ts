@@ -31,6 +31,18 @@ export class SurveyService {
     return usersOrError
   }
 
+  public async getQuestionTypes() {
+    console.log('QUESTION TYPES');
+    
+    const questionTypes = await this.surveyRepository.getQuestionTypes()
+
+    if(questionTypes.isLeft()) {
+      return this.unfoldError(questionTypes.error)
+    }
+
+    return questionTypes
+  }
+
   public async createSurvey(surveyToCreate: CreateSurveyDto) {
     const surveyDomain = new Survey(
       undefined,

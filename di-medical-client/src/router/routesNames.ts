@@ -87,6 +87,10 @@ export const RoutesPath = {
     default: {
       route: '',
       name: 'survey'
+    },
+    register: {
+      route: 'register',
+      name: 'survey-register'
     }
   }
 }
@@ -168,8 +172,14 @@ export const fleetModule: PlatformModule = {
 }
 
 export const surveyModuleLabel = 'Encuestas'
+export const registerSurveyModuleLabel = 'Registrar encuesta'
 export const surveyModule: PlatformModule = {
-  label: surveyModuleLabel
+  label: surveyModuleLabel,
+  children: [
+    {
+      label: registerSurveyModuleLabel
+    }
+  ]
 }
 
 export const modules: PlatformModule[] = [

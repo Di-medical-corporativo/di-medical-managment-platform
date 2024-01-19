@@ -13,7 +13,22 @@ import { PaginatedResult } from '../../../shared/domain/PaginatedResult'
 @Service()
 export class DbSurveyRepository implements SurveyRepository {
   private prismaClient = new PrismaClient()
-  private pageSize: number = 10;
+  private pageSize: number = 10
+
+  async getQuestionTypes(): Promise<Either<ServerError, QuestionType[]>> {
+    try {
+      const questionTypes = await this.prismaClient.questionType.findMany({})
+      if(questionTypes.length == 0) {
+        return Left.create(ServerError.NOT_FOUND)
+      }
+      const questionTypesDomain = ModelToDomainQuestionType.fromQuestionTypes(questionTypes)
+
+      return Right.create(questionTypesDomain)
+    } catch (error) {
+      return Left.create(ServerError.SERVER_ERROR)
+    }
+  }
+
   async getSurveysPaginated(page: number): Promise<Either<ServerError, PaginatedResult<Survey>>> {
     try {
       const [ surveys, total ] = await Promise.all([

@@ -115,6 +115,22 @@ const routes: RouteRecordRaw[] = [
             component: () => import('pages/fleet/ItineraryDetailPage.vue')
           }
         ]
+      },
+      {
+        path: RoutesPath.survey.route,
+        component: () => import('layouts/backoffice/SurveyLayout.vue'),
+        children: [
+          {
+            path: RoutesPath.survey.default.route,
+            name: RoutesPath.survey.default.name,
+            component: () => import('pages/survey/DefaultSurveyPage.vue')
+          },
+          {
+            path: RoutesPath.survey.register.route,
+            name: RoutesPath.survey.register.name,
+            component: () => import('pages/survey/RegisterSurveyPage.vue')
+          }
+        ]
       }
     ]
   },
