@@ -22,7 +22,6 @@ export const useItineraryStore = defineStore('itinerary', () => {
       itineraryHistory.value = []
       return history
     }
-    console.log(history);
     
     setItineraryHistory(history.value.results)
     setPages(history.value.pages)

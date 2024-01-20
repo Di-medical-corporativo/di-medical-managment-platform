@@ -1,4 +1,8 @@
+import { Question } from "./Question"
+
 export class Survey {
+  private _questions: Question[] = []
+  private _endDate: Date | undefined
   constructor(
     private _surveyId: string | undefined,
     private _name: string,
@@ -46,5 +50,21 @@ export class Survey {
 
   set active(value: boolean) {
     this._active = value
+  }
+
+  get endDate(): Date | undefined {
+    return this._endDate
+  }
+
+  set endDate(value: Date) {
+    this._endDate = value
+  }
+
+  get questions(): Question[] {
+    return this._questions
+  }
+
+  set questions(questions: Question[]) {
+    this._questions = questions
   }
 }

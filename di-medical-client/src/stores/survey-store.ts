@@ -38,7 +38,7 @@ export const useSurveyStore = defineStore('survey', () => {
   const setCurrentPage = (page: number) => {
     currentPage.value = page
   }
-
+  
   const getSurveys = computed(() => surveys.value)
   const getTotalPages = computed(() => pages.value)
   const getCurretPage = computed(() => currentPage.value)
