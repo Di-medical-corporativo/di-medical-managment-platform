@@ -5,6 +5,7 @@ import { PaginatedResult } from "src/entities/PaginatedResult"
 import { QuestionType } from "src/entities/QuestionType"
 import { Survey } from "src/entities/Survey"
 import { User } from "src/entities/User"
+import { multipleOptionQuestion } from "src/helpers/questionTypes"
 
 export interface SurveyFacadeI {
   getAllSurveysPaginated(page: number): Promise<Either<string, PaginatedResult<Survey>>>
@@ -54,7 +55,31 @@ export class SurveyFacade implements SurveyFacadeI {
 
 
   async registerSurvey(survey: Survey): Promise<Either<string, Survey>> {
-    console.log(survey);
-    throw new Error()
+    try {
+      const { data } = await api.post('/survey/new', {
+        name: survey.name,
+        description: survey.description,
+        questions: survey.questions.map((question) => {
+          let questionToAdd: any = {
+            text: question.text,
+            order: Number(question.order),
+            questionTypeId: question.typeId,
+          }
+
+          if(question.type.type == multipleOptionQuestion) {
+            questionToAdd.options = question.options.map((option) => ({ value: option.value, order: Number(option.order) }))
+          }          
+          return questionToAdd
+        })
+      })
+
+      console.log(data);
+      return Right.create(survey)
+    } catch (error) {
+      console.log(error);
+      const axiosError: AxiosError = error as AxiosError
+      const data = axiosError.response?.data as { message: string }
+      return Left.create(data.message)
+    }
   }
 }

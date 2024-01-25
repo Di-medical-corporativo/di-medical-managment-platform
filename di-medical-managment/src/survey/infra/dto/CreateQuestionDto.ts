@@ -6,7 +6,6 @@ export class CreateQuestionDto {
   @IsString()
   text: string
   
-  @IsPositive()
   @IsInt()
   order: number
 

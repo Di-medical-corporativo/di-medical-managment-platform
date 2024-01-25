@@ -8,12 +8,8 @@
         <q-toolbar-title class="flex text-primary">
         </q-toolbar-title>
 
-        <q-btn round icon="email" size="sm" color="primary">
-          <q-badge color="red" floating>4</q-badge>
-        </q-btn>
-
         <div class="q-pa-md">
-          <q-btn color="primary" icon="person" label="Cerrar sesion"  no-caps @click="closeSesion"></q-btn>
+          <q-btn flat color="primary" icon="person" label="Cerrar sesion" no-caps @click="closeSesion"></q-btn>
         </div>
       </q-toolbar>
     </q-header>

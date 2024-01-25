@@ -5,6 +5,5 @@ export class CreateOptionDto {
   value: string
 
   @IsInt()
-  @IsPositive()
   order: number
 }
