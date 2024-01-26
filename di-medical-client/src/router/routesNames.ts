@@ -91,6 +91,14 @@ export const RoutesPath = {
     register: {
       route: 'register',
       name: 'survey-register'
+    },
+    answer: {
+      route: '/survey',
+      name: 'survey-answer'
+    },
+    answerClient: {
+      route: ':id/answer',
+      name: 'survey-client-answer'
     }
   }
 }

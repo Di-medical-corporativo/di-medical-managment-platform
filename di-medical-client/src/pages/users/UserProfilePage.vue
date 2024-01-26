@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from 'src/stores/auth-store';
+import { useAuthStore } from 'src/stores/auth-store'
 const authStore = useAuthStore()
 const user = authStore.getUser
 </script>

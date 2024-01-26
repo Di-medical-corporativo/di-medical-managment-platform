@@ -1,3 +1,5 @@
+
+
 import { RouteRecordRaw } from 'vue-router';
 import { RoutesPath } from './routesNames';
 
@@ -131,6 +133,17 @@ const routes: RouteRecordRaw[] = [
             component: () => import('pages/survey/RegisterSurveyPage.vue')
           }
         ]
+      }
+    ]
+  },
+  {
+    path: RoutesPath.survey.answer.route,
+    component: () => import('layouts/survey/SurveyLayout.vue'),
+    children: [
+      {
+        path: RoutesPath.survey.answerClient.route,
+        name: RoutesPath.survey.answerClient.name,
+        component: () => import('pages/survey/ClientAnswerPage.vue')
       }
     ]
   },
