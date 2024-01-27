@@ -12,6 +12,10 @@ import { QuestionType } from '../domain/QuestionType'
 import { Option } from '../domain/Option'
 import { SurveyNotFound } from '../domain/Errors'
 import { PaginatedResult } from '../../shared/domain/PaginatedResult'
+import { SurveyResponse } from '../domain/SurveyResponse'
+import { AnswerSurveyClientDto } from '../infra/dto/ResponseSurveyClientDto'
+import { AnswerQuestion } from '../domain/AnswerQuestion'
+import { AnswerOption } from '../domain/AnswerOption'
 
 @Service()
 export class SurveyService {
@@ -32,8 +36,6 @@ export class SurveyService {
   }
 
   public async getQuestionTypes() {
-    console.log('QUESTION TYPES');
-    
     const questionTypes = await this.surveyRepository.getQuestionTypes()
 
     if(questionTypes.isLeft()) {
@@ -106,6 +108,47 @@ export class SurveyService {
     }
 
     return typeCreatedOrError
+  }
+
+  public async clientAnswer(response: AnswerSurveyClientDto) {
+    const answers = response.answers.map((answer) => {
+      const answerDomain = new AnswerQuestion(
+        undefined,
+        undefined,
+        answer.questionId
+      )
+
+      if(answer.optionId) {
+        answerDomain.option = new AnswerOption(
+          undefined,
+          undefined,
+          answer.optionId
+        )
+      } else {
+        answerDomain.answer = answer.answer
+      }
+      return answerDomain
+    })
+
+    const responseSurvey = new SurveyResponse(
+      undefined,
+      response.surveyId,
+      response.beginDate,
+      response.endDate,
+      answers
+    )
+
+    if(response.pointId) {
+      responseSurvey.pointId = response.pointId
+    }
+
+    const test = await this.surveyRepository.answerSurveyClient(responseSurvey)
+
+    if(test.isLeft()) {
+      return this.unfoldError(test.error)
+    }
+
+    return test
   }
 
   private unfoldError (error: ServerError) {

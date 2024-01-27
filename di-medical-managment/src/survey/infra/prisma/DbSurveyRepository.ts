@@ -9,12 +9,12 @@ import { ModelToDomainQuestionType } from './ModelToDomainQuestionType'
 import { ModelToDomainQuestion } from './ModelToDomainQuestion'
 import { ModelToDomainSurvey } from './ModelToDomainSurvey'
 import { PaginatedResult } from '../../../shared/domain/PaginatedResult'
+import { SurveyResponse } from '../../domain/SurveyResponse'
 
 @Service()
 export class DbSurveyRepository implements SurveyRepository {
   private prismaClient = new PrismaClient()
   private pageSize: number = 10
-
   async getQuestionTypes(): Promise<Either<ServerError, QuestionType[]>> {
     try {
       const questionTypes = await this.prismaClient.questionType.findMany({})
@@ -24,6 +24,58 @@ export class DbSurveyRepository implements SurveyRepository {
       const questionTypesDomain = ModelToDomainQuestionType.fromQuestionTypes(questionTypes)
 
       return Right.create(questionTypesDomain)
+    } catch (error) {
+      return Left.create(ServerError.SERVER_ERROR)
+    }
+  }
+
+  async answerSurveyClient(surveyResponseDomain: SurveyResponse): Promise<Either<ServerError, SurveyResponse>> {
+    try {
+      const surveyResponse = await this.prismaClient.surveyResponse.create({
+        data: {
+          beginDate: surveyResponseDomain.beginDate,
+          endDate: surveyResponseDomain.endDate,
+          survey: {
+            connect: {
+              id: surveyResponseDomain.surveyId,
+            }
+          },
+          point: surveyResponseDomain.pointId ? {
+            connect: {
+              id: surveyResponseDomain.pointId
+            }
+          } : {},
+          answers: {
+            create: surveyResponseDomain.answers.map((answer) => {
+              const answerToSave: any = {
+                question: {
+                  connect: {
+                    id: answer.questionId
+                  }
+                }
+              }
+              if(answer.option) {
+                answerToSave.answerOption = {
+                  create: {
+                    option: {
+                      connect: {
+                        id: answer.option?.optionId
+                      }
+                    }
+                  }
+                }
+                answerToSave.answer = 'Sin respuesta'
+              } else {
+                answerToSave.answer = answer.answer
+              }
+
+              return answerToSave
+            })
+          }
+        }
+      })
+
+      return Right.create(surveyResponseDomain)
     } catch (error) {
       return Left.create(ServerError.SERVER_ERROR)
     }
@@ -86,9 +138,16 @@ export class DbSurveyRepository implements SurveyRepository {
         },
         include: {
           questions: {
+            orderBy: {
+              order: 'desc'
+            },
             include: {
-              options: true,
-              type: true
+              options: {
+                orderBy: {
+                  order: 'asc'
+                }
+              },
+              type: true,
             }
           }
         }
@@ -143,8 +202,15 @@ export class DbSurveyRepository implements SurveyRepository {
         },
         include: {
           questions: {
+            orderBy: {
+              order: 'asc'
+            },
             include: {
-              options: true,
+              options: {
+                orderBy: {
+                  order: 'asc'
+                }
+              },
               type: true          
             }
           }

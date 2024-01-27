@@ -1,19 +1,65 @@
 import { AxiosError } from "axios"
 import { api } from "src/boot/axios"
 import { Either, Left, Right } from "src/entities/Either"
+import { Option } from "src/entities/Option"
 import { PaginatedResult } from "src/entities/PaginatedResult"
+import { Question } from "src/entities/Question"
 import { QuestionType } from "src/entities/QuestionType"
 import { Survey } from "src/entities/Survey"
-import { User } from "src/entities/User"
 import { multipleOptionQuestion } from "src/helpers/questionTypes"
 
 export interface SurveyFacadeI {
   getAllSurveysPaginated(page: number): Promise<Either<string, PaginatedResult<Survey>>>
   registerSurvey(survey: Survey): Promise<Either<string, Survey>>
   getQuestionTypes(): Promise<Either<string, QuestionType[]>>
+  getSurveyById(id: string): Promise<Either<string, Survey>>
 }
 
 export class SurveyFacade implements SurveyFacadeI {
+
+  async getSurveyById(surveyId: string): Promise<Either<string, Survey>> {
+    try {
+      const { data } = await api.get(`/survey/${surveyId}`)
+      const surveyDomain = new Survey(
+        data._surveyId,
+        data._name,
+        data._description,
+        data._startDate,
+        data._active
+      )
+
+      const questions = data._questions.map((question: any) => {
+
+        const type = new QuestionType(question._type._questionTypeId, question._type._type)
+
+        const questionDomain = new Question(
+          question._questionId,
+          question._text,
+          question._order,
+          type
+        )
+
+
+        if(question._type._type === multipleOptionQuestion) {
+          questionDomain.options = question._options.map((option: any) => new Option(
+            option._id,
+            option._value,
+            option._order
+          ))
+        }
+
+        return questionDomain
+      })
+
+      surveyDomain.questions = questions
+
+      return Right.create(surveyDomain)
+    } catch (error) {
+      const axiosError: AxiosError = error as AxiosError
+      const data = axiosError.response?.data as { message: string }
+      return Left.create(data.message)
+    }
+  }
 
   async getQuestionTypes(): Promise<Either<string, QuestionType[]>> {
     try {

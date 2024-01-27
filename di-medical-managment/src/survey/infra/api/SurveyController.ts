@@ -8,6 +8,7 @@ import { CreateSurveyDto } from '../dto/CreateSurveyDto'
 import { SurveyService } from '../../application/SurveyService'
 import { CreateQuestionTypeDto } from '../dto/CreateQuestionTypeDto'
 import { PaginationDto } from '../../../shared/infra/dto/PaginationDto'
+import { AnswerSurveyClientDto } from '../dto/ResponseSurveyClientDto'
 
 @JsonController('/survey')
 @Service()
@@ -85,5 +86,19 @@ export class SurveyRestController {
     }
 
     return users.value
+  }
+
+  @Post('/answer')
+  public async answerClientSurvey(
+    @Body() surveyResponse: AnswerSurveyClientDto,
+    @Res() response: Response
+  ) {
+    const responseSurveyOrError = await this.surveyService.clientAnswer(surveyResponse)
+    if(responseSurveyOrError.isLeft()) {
+      response.status(responseSurveyOrError.error.status)
+      return responseSurveyOrError.error 
+    }
+
+    responseSurveyOrError.value
   }
 }
