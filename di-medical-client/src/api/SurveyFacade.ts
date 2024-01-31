@@ -6,6 +6,7 @@ import { PaginatedResult } from "src/entities/PaginatedResult"
 import { Question } from "src/entities/Question"
 import { QuestionType } from "src/entities/QuestionType"
 import { Survey } from "src/entities/Survey"
+import { SurveyResponse } from "src/entities/SurveyResponse"
 import { multipleOptionQuestion } from "src/helpers/questionTypes"
 
 export interface SurveyFacadeI {
@@ -13,9 +14,35 @@ export interface SurveyFacadeI {
   registerSurvey(survey: Survey): Promise<Either<string, Survey>>
   getQuestionTypes(): Promise<Either<string, QuestionType[]>>
   getSurveyById(id: string): Promise<Either<string, Survey>>
+  answerSurveyId(response: SurveyResponse): Promise<Either<string, boolean>>
 }
 
 export class SurveyFacade implements SurveyFacadeI {
+
+  async answerSurveyId(response: SurveyResponse): Promise<Either<string, boolean>> {
+    try {
+      const requestData: any = {
+        beginDate: response.beginDate,
+        endDate: response.endDate,
+        surveyId: response.surveyId,
+      }
+
+      requestData.answers = response.answers.map((answer) => {
+        if(answer.option) {
+          return { questionId: answer.questionId, optionId: answer.option?.optionId }
+        }
+
+        return { questionId: answer.questionId, answer: answer.answer }
+      })
+
+      await api.post('/survey/answer',requestData)
+      return Right.create(true)
+    } catch (error) {
+      const axiosError: AxiosError = error as AxiosError
+      const data = axiosError.response?.data as { message: string }
+      return Left.create(data.message)
+    }
+  }
 
   async getSurveyById(surveyId: string): Promise<Either<string, Survey>> {
     try {
@@ -29,17 +56,13 @@ export class SurveyFacade implements SurveyFacadeI {
       )
 
       const questions = data._questions.map((question: any) => {
-
         const type = new QuestionType(question._type._questionTypeId, question._type._type)
-
         const questionDomain = new Question(
           question._questionId,
           question._text,
           question._order,
           type
         )
-
-
         if(question._type._type === multipleOptionQuestion) {
           questionDomain.options = question._options.map((option: any) => new Option(
             option._id,
@@ -88,7 +111,7 @@ export class SurveyFacade implements SurveyFacadeI {
         survey._startDate,
         survey._active
       ))
-      
+
       return Right.create(new PaginatedResult<Survey>(resultsDomain, data._pages))
 
     } catch (error) {
@@ -97,8 +120,6 @@ export class SurveyFacade implements SurveyFacadeI {
       return Left.create(data.message)
     }
   }
-
-
 
   async registerSurvey(survey: Survey): Promise<Either<string, Survey>> {
     try {

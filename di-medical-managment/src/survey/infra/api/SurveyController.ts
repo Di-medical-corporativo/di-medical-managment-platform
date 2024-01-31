@@ -99,6 +99,6 @@ export class SurveyRestController {
       return responseSurveyOrError.error 
     }
 
-    responseSurveyOrError.value
+    return responseSurveyOrError.value
   }
 }

@@ -33,7 +33,6 @@
     <q-page-container class="bg-content">
       <router-view />
     </q-page-container>
-
   </q-layout>
 </template>
 
@@ -57,7 +56,8 @@ import {
   registerItineraryModuleLabel,
   historyItineraryLabel,
   surveyModuleLabel,
-  registerSurveyModuleLabel
+  registerSurveyModuleLabel,
+surveyListModuleLabel
 } from '../../router/routesNames'
 import { useAuth } from 'src/composables/useAuth'
 import { QTreeNode } from 'quasar';
@@ -154,6 +154,10 @@ watch(
     
     if(value == registerSurveyModuleLabel) {
       route = RoutesPath.survey.register.name
+    }
+
+    if(value == surveyListModuleLabel) {
+      route = RoutesPath.survey.list.name
     }
     
     router.push({ name: route })

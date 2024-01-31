@@ -15,16 +15,15 @@
     <div class="survey-question full-page flex flex-center" v-if="getQuestions.length > 0">
 
       <div class="survey-progress">
-        <q-linear-progress :value="progress" class="q-mt-md" />
+        <q-linear-progress :value="surveyProgress" class="q-mt-md" :animation-speed="900"/>
       </div>
       <!-- Open question -->
       <div class="survey-question-open question column" v-if="currentQuestion!.type.type === openQuestion">
-        <p class="survey-question-order text-h5">{{ currentQuestion!.order + 1 }}</p>
         <div class="survey-question-order">
 
         </div>
         <div class="survey-question-text column">
-          <p ype="text" placeholder="Ingresa la pregunta" class="survey-question-text-input" cols="750">
+          <p class="survey-question-text-input">
             {{ currentQuestion!.text }}
           </p>
           <div class="survey-question-answer q-mt-sm column">
@@ -37,9 +36,8 @@
       </div>
       <!-- Multiple quesition -->
       <div class="survey-question-multiple question column" v-else>
-        <p class="survey-question-order text-h5">{{ currentQuestion!.order + 1 }}</p>
         <div class="survey-question-text column">
-          <p ype="text" placeholder="Ingresa la pregunta" class="survey-question-text-input" cols="750">
+          <p class="survey-question-text-input">
             {{ currentQuestion!.text }}
           </p>
           <div class="survey-question-multiple-options q-mt-sm column">
@@ -81,26 +79,24 @@ import { AnswerOption } from 'src/entities/AnswerOption'
 import { AnswerQuestion } from 'src/entities/AnswerQuestion'
 import { Question } from 'src/entities/Question'
 import { Survey } from 'src/entities/Survey'
-import { multipleOptionQuestion, openQuestion } from 'src/helpers/questionTypes'
+import { SurveyResponse } from 'src/entities/SurveyResponse'
+import { openQuestion } from 'src/helpers/questionTypes'
 import { computed, onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const seamless = ref(false)
 const ok = ref(false)
 const message = ref('')
 const isLoading = ref(true)
-const progress = ref(0)
-
 const currentIndexQuestion = ref(0)
 const currentQuestion = ref<Question | undefined>()
-const currentAnswer = ref<AnswerQuestion | undefined>()
 const openQuestionText = ref('')
-
 const answers = ref<AnswerQuestion[]>([])
-
 const route = useRoute()
+const router = useRouter()
 const surveyApi = new SurveyFacade()
 const survey = ref<Survey>()
+const beginDate = new Date()
 
 const getSurvey = async () => {
   isLoading.value = true
@@ -108,11 +104,11 @@ const getSurvey = async () => {
   const surveyOrError = await surveyApi.getSurveyById(surveyId)
   if (surveyOrError.isLeft()) {
     isLoading.value = false
+    router.push({ name: 'not-found' })
     return
   }
   survey.value = surveyOrError.value
   currentQuestion.value = survey.value.questions[0]
-  setUpProgress()
   isLoading.value = false
 }
 
@@ -123,15 +119,18 @@ const answerOpenQuestion = (questionId: string) => {
     undefined,
     questionId
   )
-
+  answer.answer = openQuestionText.value
   if (alreadyExistsAnswer == -1) {
-    answer.answer = openQuestionText.value
     answers.value.push(answer)
     return
   }
 
   answers.value[alreadyExistsAnswer] = answer
   openQuestionText.value = ''
+  if(currentIndexQuestion.value == survey.value?.questions.length! - 1) {
+    sendResponse()
+    return
+  }
   nextQuestion()
 }
 
@@ -151,47 +150,58 @@ const answerMultipleQuestion = (optionId: string, questionId: string) => {
 
   answer.option = optionAnswer
 
+  // If no answers exists for that question, then add a answer to array
   if (alreadyExistsAnswer == -1) {
     answers.value.push(answer)
   } else {
+    // Otherwise change existing answer to chosen one
     answers.value[alreadyExistsAnswer] = answer
+  }
+
+  // If last question, then send response
+  if(currentIndexQuestion.value == survey.value?.questions.length! - 1) {
+    sendResponse()
+    return
   }
 
   nextQuestion()
 }
 
-const nextQuestion = () => {
-  
-  if(currentIndexQuestion.value == survey.value?.questions.length! - 1) {
+const sendResponse = async () => {
+  isLoading.value = true
+  const surveyId = route.params.id as string
+  const surveyResponse = new SurveyResponse(undefined, surveyId, beginDate, new Date(), answers.value as AnswerQuestion[])
+  const response = await surveyApi.answerSurveyId(surveyResponse)
+  if(response.isLeft()) {
+    isLoading.value = false
+    console.log(response)
     return
   }
+  isLoading.value = false
+  router.push({ name: 'survey-client-thanks' })
+}
 
-  setUpProgress()
+const nextQuestion = () => {
+  // If last quesition dont do anything
+  if(currentIndexQuestion.value == survey.value?.questions.length! - 1) return
+  
   currentIndexQuestion.value++
-  currentQuestion.value = survey.value?.questions[currentIndexQuestion.value]
-  
+  currentQuestion.value = survey.value?.questions[currentIndexQuestion.value]  
 }
 
-const setUpProgress = () => {
-  const p = ((currentIndexQuestion.value ) / survey.value?.questions.length!) * 100
-  console.log(p);
+const surveyProgress = computed(() => {
+  const totalQuestions = survey.value?.questions.length!;
+  const answeredQuestions = currentIndexQuestion.value + 1;
   
-  progress.value = p
-}
+  return Math.min(answeredQuestions / totalQuestions, 1);
+})
 
 const previousQuestion = () => {
-  setUpProgress()
   currentIndexQuestion.value--
   currentQuestion.value = survey.value?.questions[currentIndexQuestion.value]
-  console.log(currentIndexQuestion.value);
-}
-
-const preventScrolling = (event: any) => {
-  event.preventDefault()
 }
 
 const startSurvey = () => {
-  setUpProgress()
   const targetPosition = 1 * window.innerHeight
   window.scrollTo({
     top: targetPosition,
@@ -203,9 +213,6 @@ const getLoading = computed(() => isLoading.value)
 const getQuestions = computed(() => (survey.value?.questions || []));
 
 onMounted(async () => {
-  window.addEventListener('wheel', preventScrolling, { passive: false });
-  window.addEventListener('touchmove', preventScrolling, { passive: false });
-  window.addEventListener('keydown', preventScrolling, { passive: false });
   await getSurvey()
 })
 </script>
@@ -237,9 +244,14 @@ onMounted(async () => {
 
   &-progress {
     position: absolute;
-    width: 700px;
+    width: 90%;
     height: 20px;
-    top: 0;
+    top: 10px;
+
+    @media screen and (min-width: $breakpoint-md-min) {
+      width: 700px;
+      top: 20px;
+    }
   }
 
   &-title {

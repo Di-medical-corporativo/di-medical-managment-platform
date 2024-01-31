@@ -99,6 +99,18 @@ export const RoutesPath = {
     answerClient: {
       route: ':id/answer',
       name: 'survey-client-answer'
+    },
+    thanks: {
+      route: '/thanks',
+      name: 'survey-client-thanks'
+    },
+    list: {
+      route: 'list',
+      name: 'survey-list'
+    },
+    detail: {
+      route: ':id/detail',
+      name: 'survey-detail'
     }
   }
 }
@@ -181,11 +193,15 @@ export const fleetModule: PlatformModule = {
 
 export const surveyModuleLabel = 'Encuestas'
 export const registerSurveyModuleLabel = 'Registrar encuesta'
+export const surveyListModuleLabel = 'Listado de encuestas'
 export const surveyModule: PlatformModule = {
   label: surveyModuleLabel,
   children: [
     {
       label: registerSurveyModuleLabel
+    },
+    {
+      label: surveyListModuleLabel
     }
   ]
 }

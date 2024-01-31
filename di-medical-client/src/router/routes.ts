@@ -131,6 +131,16 @@ const routes: RouteRecordRaw[] = [
             path: RoutesPath.survey.register.route,
             name: RoutesPath.survey.register.name,
             component: () => import('pages/survey/RegisterSurveyPage.vue')
+          },
+          {
+            path: RoutesPath.survey.list.route,
+            name: RoutesPath.survey.list.name,
+            component: () => import('pages/survey/SurveyListPage.vue')
+          },
+          {
+            path: RoutesPath.survey.detail.route,
+            name: RoutesPath.survey.detail.name,
+            component: () => import('pages/survey/SurveyDetailPage.vue')
           }
         ]
       }
@@ -144,6 +154,11 @@ const routes: RouteRecordRaw[] = [
         path: RoutesPath.survey.answerClient.route,
         name: RoutesPath.survey.answerClient.name,
         component: () => import('pages/survey/ClientAnswerPage.vue')
+      },
+      {
+        path: RoutesPath.survey.thanks.route,
+        name: RoutesPath.survey.thanks.name,
+        component: () => import('pages/survey/ThanksPage.vue')
       }
     ]
   },

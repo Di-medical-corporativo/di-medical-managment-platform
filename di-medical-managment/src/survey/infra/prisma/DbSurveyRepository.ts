@@ -15,6 +15,7 @@ import { SurveyResponse } from '../../domain/SurveyResponse'
 export class DbSurveyRepository implements SurveyRepository {
   private prismaClient = new PrismaClient()
   private pageSize: number = 10
+  
   async getQuestionTypes(): Promise<Either<ServerError, QuestionType[]>> {
     try {
       const questionTypes = await this.prismaClient.questionType.findMany({})
