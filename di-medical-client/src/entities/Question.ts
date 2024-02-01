@@ -1,9 +1,12 @@
+import { AnswerQuestion } from './AnswerQuestion';
 import { Option } from './Option';
 import { QuestionType } from './QuestionType'
 
 export class Question {
   private _typeId: string | undefined
   private _options: Option[] = []
+  private _totalAnswers = 0
+  private _answers: AnswerQuestion[] = []
   constructor(
     private _questionId: string | undefined,
     private _text: string,
@@ -57,5 +60,21 @@ export class Question {
 
   set typeId(id: string | undefined) {
     this._typeId = id
+  }
+
+  set totalAnswers(total: number) {
+    this._totalAnswers = total
+  }
+
+  get totalAnswers() {
+    return this._totalAnswers
+  }
+
+  get answers() {
+    return this._answers
+  }
+
+  set answers(answers: AnswerQuestion[]) {
+    this._answers = answers
   }
 }

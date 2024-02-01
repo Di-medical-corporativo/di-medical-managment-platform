@@ -141,7 +141,7 @@ const getQuestionTypes = async () => {
 const addQuestion = (type: QuestionType) => {
   const questionToAdd = new Question(
     UUID.generate(),
-    "Tu pregunta va aqui",
+    "Tu pregunta va aquí",
     questionIndex.value,
     type
   )
@@ -350,9 +350,6 @@ getQuestionTypes()
     height: 80vh;
 
     position: relative;
-    background: rgb(189, 189, 189);
-    background: linear-gradient(270deg, rgba(189, 189, 189, 1) 0%, rgba(255, 255, 255, 1) 100%);
-
     &-preview {
       width: 100%;
 

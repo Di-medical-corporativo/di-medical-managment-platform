@@ -27,4 +27,19 @@ export class ModelToDomainSurvey {
 
     return surveysDomain
   }
+
+  public static fromSurveyInsights(survey: any) {
+    const surveyDomain = new DomainSurvey(
+      survey.id,
+      survey.name,
+      survey.description,
+      survey.startDate,
+      survey.active
+    )
+    surveyDomain.totalAnswers = survey._count.responses
+    surveyDomain.endDate = survey.endDate
+    surveyDomain.questions = ModelToDomainQuestion.fromQuestionsInsights(survey.questions)
+    return surveyDomain
+  }
+
 }

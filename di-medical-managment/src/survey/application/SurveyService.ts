@@ -25,6 +25,16 @@ export class SurveyService {
     private readonly surveyRepository: SurveyRepository
   ) {}
 
+  public async getSurveyInsights(surveyId: string) {
+    const surveyOrError = await this.surveyRepository.getSurveyInsights(surveyId)
+
+    if(surveyOrError.isLeft()) {
+      return this.unfoldError(surveyOrError.error)
+    }
+
+    return surveyOrError
+  }
+
   public async getSurveysPaginated(pagination: number = 1): Promise<Either<BaseError, PaginatedResult<Survey>>> {   
     const usersOrError = await this.surveyRepository.getSurveysPaginated(pagination)
     

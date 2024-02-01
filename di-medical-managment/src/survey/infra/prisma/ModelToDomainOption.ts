@@ -10,4 +10,14 @@ export class ModelToDomainOption {
 
    return domainOptions
   }
+
+  public static fromOptionsInsights(options: any[]) {
+    const domainOptions = options.map((option) => {
+     const domainOption = new DomainOption(option.id, option.value, option.order)
+     domainOption.totalAnswers = option._count.answerOption
+     return domainOption
+    }) 
+ 
+    return domainOptions
+   }
 }

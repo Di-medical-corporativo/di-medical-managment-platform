@@ -21,7 +21,7 @@
         </q-card-section>
         <q-card-actions>
           <q-btn flat  no-caps :to="{ name: 'survey-detail', params: { id: survey.surveyId } }">Resultados</q-btn>
-          <q-btn flat  no-caps :to="{ name: 'itinerary-detail', params: { id: survey.surveyId } }" :disable="!survey.active">Enlace de encuesta</q-btn>
+          <q-btn flat  no-caps :disable="!survey.active" @click="pasteUrlToClip(survey.surveyId!)">Enlace de encuesta</q-btn>
         </q-card-actions>
       </q-card>
     </div>
@@ -42,8 +42,8 @@
 </template>
 
 <script setup lang="ts">
-import { useItineraryStore } from 'src/stores/itinerary-store'
-import { useSurveyStore } from 'src/stores/survey-store';
+import { useClipboard } from 'src/composables/useClipboard'
+import { useSurveyStore } from 'src/stores/survey-store'
 import { ref, watch } from 'vue'
 const seamless = ref(false)
 const ok = ref(false)
@@ -51,6 +51,7 @@ const message = ref('')
 
 const current = ref(1)
 const surveyStore = useSurveyStore()
+const clipboard = useClipboard()
 
 watch(current, async (value) => {
   const surveys = await surveyStore.surveysPaginated(value)
@@ -60,6 +61,14 @@ watch(current, async (value) => {
     seamless.value = true
   }
 })
+
+const pasteUrlToClip = async(id: string) => {
+  const url = `localhost:3050/#/survey/${id}/answer`
+  await clipboard.paste(url)
+  ok.value = true
+  message.value = 'Se ha copiado al portapapeles'
+  seamless.value = true
+}
 
 const formattedDate = (date: Date) => {
   const dateToParse = new Date(date)

@@ -14,7 +14,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" class="bg-white">
+    <q-drawer show-if-above v-model="leftDrawerOpen" side="left">
 
       <div class="bg-primary flex flex-center" style="height: 68px;">
         <q-img src="../../assets/images/logos/dimedical-logo.png" style="max-width: 45px"></q-img>
@@ -30,7 +30,7 @@
       </div>
     </q-drawer>
 
-    <q-page-container class="bg-content">
+    <q-page-container>
       <router-view />
     </q-page-container>
   </q-layout>

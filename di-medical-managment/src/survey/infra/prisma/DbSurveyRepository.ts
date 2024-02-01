@@ -229,4 +229,41 @@ export class DbSurveyRepository implements SurveyRepository {
       return Left.create(ServerError.SERVER_ERROR)
     }
   }
+
+  async getSurveyInsights(surveyId: string): Promise<Either<ServerError, Survey>> {
+    try {
+      const survey = await this.prismaClient.survey.findFirst({
+        where: {
+          id: surveyId
+        },
+        include: {
+          questions: {
+            orderBy: {
+              order: 'asc'
+            },
+            include: {
+              options: {
+                orderBy: {
+                  order: 'asc'
+                },
+                include: {
+                  _count: true
+                }
+              },
+              type: true,
+              _count: true,
+              answers: true      
+            },
+          },
+          _count: true
+        }
+      })
+      const surveyDomain = ModelToDomainSurvey.fromSurveyInsights(survey)
+
+      return Right.create(surveyDomain)
+    } catch (error) {
+      return Left.create(ServerError.SERVER_ERROR)
+    }
+  }
+
 }

@@ -101,4 +101,18 @@ export class SurveyRestController {
 
     return responseSurveyOrError.value
   }
+
+  @Get('/:surveyId/insights')
+  public async getSurveyInsights(
+    @Param('surveyId') surveyId: string,
+    @Res() response: Response
+  ) {
+    const surveyOrError = await this.surveyService.getSurveyInsights(surveyId)
+    if(surveyOrError.isLeft()) {
+      response.status(surveyOrError.error.status)
+      return surveyOrError.error
+    }
+
+    return surveyOrError.value
+  }
 }

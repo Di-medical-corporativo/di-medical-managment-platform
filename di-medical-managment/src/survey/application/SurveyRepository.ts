@@ -13,4 +13,5 @@ export interface SurveyRepository {
   getSurveysPaginated(page: number): Promise<Either<ServerError, PaginatedResult<Survey>>>
   getQuestionTypes(): Promise<Either<ServerError, QuestionType[]>>
   answerSurveyClient(surveyResponse: SurveyResponse): Promise<Either<ServerError, SurveyResponse>>
+  getSurveyInsights(surveyId: string): Promise<Either<ServerError, Survey>>
 }

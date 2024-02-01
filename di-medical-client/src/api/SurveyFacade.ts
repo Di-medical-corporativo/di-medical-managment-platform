@@ -1,5 +1,6 @@
 import { AxiosError } from "axios"
 import { api } from "src/boot/axios"
+import { AnswerQuestion } from "src/entities/AnswerQuestion"
 import { Either, Left, Right } from "src/entities/Either"
 import { Option } from "src/entities/Option"
 import { PaginatedResult } from "src/entities/PaginatedResult"
@@ -7,7 +8,7 @@ import { Question } from "src/entities/Question"
 import { QuestionType } from "src/entities/QuestionType"
 import { Survey } from "src/entities/Survey"
 import { SurveyResponse } from "src/entities/SurveyResponse"
-import { multipleOptionQuestion } from "src/helpers/questionTypes"
+import { multipleOptionQuestion, openQuestion } from "src/helpers/questionTypes"
 
 export interface SurveyFacadeI {
   getAllSurveysPaginated(page: number): Promise<Either<string, PaginatedResult<Survey>>>
@@ -15,6 +16,7 @@ export interface SurveyFacadeI {
   getQuestionTypes(): Promise<Either<string, QuestionType[]>>
   getSurveyById(id: string): Promise<Either<string, Survey>>
   answerSurveyId(response: SurveyResponse): Promise<Either<string, boolean>>
+  getSurveyinsights(id: string): Promise<Either<string, Survey>>
 }
 
 export class SurveyFacade implements SurveyFacadeI {
@@ -144,6 +146,64 @@ export class SurveyFacade implements SurveyFacadeI {
       return Right.create(survey)
     } catch (error) {
       console.log(error);
+      const axiosError: AxiosError = error as AxiosError
+      const data = axiosError.response?.data as { message: string }
+      return Left.create(data.message)
+    }
+  }
+
+  async getSurveyinsights(surveyId: string): Promise<Either<string, Survey>> {
+    try {
+      const { data } = await api.get(`/survey/${surveyId}/insights`)
+      const surveyDomain = new Survey(
+        data._surveyId,
+        data._name,
+        data._description,
+        data._startDate,
+        data._active
+      )
+      surveyDomain.totalAnswers = data._totalAnswers
+      surveyDomain.endDate = data._endDate
+
+      const questions = data._questions.map((question: any) => {
+        const type = new QuestionType(question._type._questionTypeId, question._type._type)
+        const questionDomain = new Question(
+          question._questionId,
+          question._text,
+          question._order,
+          type
+        )
+        questionDomain.totalAnswers = question._totalAnswers
+
+        if(type.type == openQuestion) {
+          questionDomain.answers = question._answers.map((q: any) => {
+            const answerQuestionDomain = new AnswerQuestion(q._answerId, q._responseId, q._questionId)
+            answerQuestionDomain.answer = q._answer
+            return answerQuestionDomain
+          })
+        }
+
+        if(question._type._type === multipleOptionQuestion) {
+          questionDomain.options = question._options.map((option: any) => {
+            const domainOption = new Option(
+              option._id,
+              option._value,
+              option._order
+            )
+            domainOption.totalAnswers = option._totalAnswers
+            return domainOption
+          })
+        }
+
+        return questionDomain
+      })
+    
+      surveyDomain.questions = questions
+      console.log(surveyDomain
+        );
+      
+      return Right.create(surveyDomain)
+    } catch (error) {
       const axiosError: AxiosError = error as AxiosError
       const data = axiosError.response?.data as { message: string }
       return Left.create(data.message)

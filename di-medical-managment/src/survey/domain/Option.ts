@@ -1,4 +1,5 @@
 export class Option {
+  private _totalAnswers = 0
   constructor(
     private _id: string | undefined,
     private _value: string,
@@ -27,5 +28,13 @@ export class Option {
 
   set order(value: number) {
     this._order = value;
+  }
+
+  set totalAnswers(total: number) {
+    this._totalAnswers = total
+  }
+
+  get totalAnswers() {
+    return this._totalAnswers
   }
 }

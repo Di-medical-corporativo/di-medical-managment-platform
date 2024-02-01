@@ -3,6 +3,8 @@ import { Question } from "./Question"
 export class Survey {
   private _questions: Question[] = []
   private _endDate: Date | undefined
+  private _totalAnswers = 0
+
   constructor(
     private _surveyId: string | undefined,
     private _name: string,
@@ -66,5 +68,13 @@ export class Survey {
 
   set questions(questions: Question[]) {
     this._questions = questions
+  }
+  
+  set totalAnswers(total: number) {
+    this._totalAnswers = total
+  }
+
+  get totalAnswers() {
+    return this._totalAnswers
   }
 }
