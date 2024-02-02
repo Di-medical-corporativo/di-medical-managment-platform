@@ -6,10 +6,54 @@ import { Itinerary } from '../../domain/Itinerary'
 import { PrismaClient } from '@prisma/client'
 import { ModelTodomainItinerary } from './ModelToDomainItinerary'
 import { PaginatedResult } from '../../../shared/domain/PaginatedResult'
+import { Point } from '../../domain/Point'
+import { ModelToDomainPoint } from './ModelToDomainPoint'
 
 @Service()
 export class DbItineraryRepository implements ItineraryRepository {
   private readonly prismaClient = new PrismaClient()
+
+  async updatePointById(point: Point): Promise<Either<ServerError, Point>> {
+    try {
+      await this.prismaClient.point.update({
+        where: {
+          id: point.pointId
+        },
+        data: {
+          comment: point.comment,
+          done: true,
+          problem: true
+        }
+      })
+      return Right.create(point)
+    } catch (error) {
+      return Left.create(ServerError.SERVER_ERROR)
+    }
+  }
+
+  async getPointById(pointId: string): Promise<Either<ServerError, Point>> {
+    try {
+      const point = await this.prismaClient.point.findFirst({
+        where: {
+          id: pointId
+        },
+        include: {
+          client: true,
+          invoices: true
+        }
+      })
+
+      if(!point) {
+        return Left.create(ServerError.NOT_FOUND)
+      }
+
+      const domainPoint = ModelToDomainPoint.fromPoint(point)
+
+      return Right.create(domainPoint)
+    } catch (error) {
+      return Left.create(ServerError.SERVER_ERROR)
+    }
+  }
 
   async getItineraryById(itineraryId: string): Promise<Either<ServerError, Itinerary>> {
     try {
@@ -24,16 +68,7 @@ export class DbItineraryRepository implements ItineraryRepository {
               truck: true,
               client: true,
               user: true,
-              survey: {
-                include: {
-                  questions: {
-                    include: {
-                      options: true,
-                      type: true
-                    }
-                  }
-                }
-              }
+              response: true
             }
           },
           sucursal: true,

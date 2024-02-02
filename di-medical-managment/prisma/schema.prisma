@@ -129,6 +129,7 @@ model Point {
   responseId String? @unique
   response SurveyResponse? @relation(fields: [responseId], references: [id])
   done Boolean @default(false)
+  problem Boolean @default(false)
   comment String?
 }
 

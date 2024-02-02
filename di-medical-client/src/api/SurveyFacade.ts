@@ -115,7 +115,6 @@ export class SurveyFacade implements SurveyFacadeI {
       ))
 
       return Right.create(new PaginatedResult<Survey>(resultsDomain, data._pages))
-
     } catch (error) {
       const axiosError: AxiosError = error as AxiosError
       const data = axiosError.response?.data as { message: string }
@@ -142,10 +141,8 @@ export class SurveyFacade implements SurveyFacadeI {
         })
       })
 
-      console.log(data);
       return Right.create(survey)
     } catch (error) {
-      console.log(error);
       const axiosError: AxiosError = error as AxiosError
       const data = axiosError.response?.data as { message: string }
       return Left.create(data.message)
@@ -199,9 +196,6 @@ export class SurveyFacade implements SurveyFacadeI {
       })
     
       surveyDomain.questions = questions
-      console.log(surveyDomain
-        );
-      
       return Right.create(surveyDomain)
     } catch (error) {
       const axiosError: AxiosError = error as AxiosError

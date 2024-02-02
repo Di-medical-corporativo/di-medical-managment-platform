@@ -163,6 +163,17 @@ const routes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: RoutesPath.fleet.deliver.route,
+    component: () => import('layouts/backoffice/DeliverLayout.vue'),
+    children: [
+      {
+        path: RoutesPath.fleet.deliverPoint.route,
+        name: RoutesPath.fleet.deliverPoint.name,
+        component: () => import('pages/fleet/DeliverPointPage.vue')
+      }
+    ]
+  },
+  {
     path: '/:catchAll(.*)*',
     name: 'not-found',
     component: () => import('pages/ErrorNotFound.vue'),

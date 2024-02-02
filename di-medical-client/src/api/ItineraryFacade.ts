@@ -13,9 +13,52 @@ export interface ItineraryFacadeI {
   registerItinerary(itinerary: Itinerary): Promise<Either<string, Itinerary>>
   getItineraryPaginated(page: number): Promise<Either<string, PaginatedResult<Itinerary>>>
   getItineraryById(itineraryId: string): Promise<Either<string, Itinerary>>
+  getPointById(pointById: string): Promise<Either<string, Point>>
+  deliverPoint(point: Point): Promise<Either<string, Point>>
 }
 
 export class ItineraryFacade implements ItineraryFacadeI {
+
+  async getPointById(pointId: string): Promise<Either<string, Point>> {
+    try {
+      const { data } = await api.get(`/itinerary/point/${pointId}`)
+      const pointDomain = new Point(
+        data._pointId
+      )
+      pointDomain.problem = data._problem
+      pointDomain.done = data._done
+      pointDomain.client = new Client(
+        data._clientId,
+        data._client._name,
+        data._client._address,
+        data._client._isActive
+      )
+      
+      return Right.create(pointDomain)
+    } catch (error) {
+      const axiosError: AxiosError = error as AxiosError
+      const data = axiosError.response?.data as { message: string }
+      return Left.create(data.message)
+    }
+  }
+
+  async deliverPoint(point: Point): Promise<Either<string, Point>> {
+    try {
+      let data: any = {
+        problem: point.hasProblem
+      }
+      if(point.comment) {
+        data.comment = point.comment
+      }
+      await api.put(`itinerary/point/${point.pointId}`, data)
+      return Right.create(point)
+    } catch (error) {
+      console.log(error)
+      const axiosError: AxiosError = error as AxiosError
+      const data = axiosError.response?.data as { message: string }
+      return Left.create(data.message)
+    }
+  }
 
   async getItineraryById(itineraryId: string): Promise<Either<string, Itinerary>> {
     try {
@@ -25,6 +68,12 @@ export class ItineraryFacade implements ItineraryFacadeI {
       itineraryDomain.scheduleDate = data._scheduleDate
       itineraryDomain.points = data._points.map((point: any) => {
         const pointDomain = new Point(point._pointId)
+
+        if(point._comment) {
+          pointDomain.comment = point._comment
+        }
+        pointDomain.problem = point._problem
+        pointDomain.done = point._done
         pointDomain.assignedDriver = new User(
           point._assignedDriver._userId,
           point._assignedDriver._firstName,

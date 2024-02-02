@@ -15,7 +15,8 @@ export class ModelToDomainPoint {
       pointDomain.client = ModelToClientDomain.from(point.client)
       pointDomain.invoices = ModelToDomainInvoice.fromInvoices(point.invoices)
       pointDomain.truck = ModelToDomainTruck.from(point.truck)
-
+      pointDomain.done = point.done
+      pointDomain.problem = point.problem
       if(point.comment) {
         pointDomain.comment = point.comment
       }
@@ -30,14 +31,16 @@ export class ModelToDomainPoint {
     return domainPoints
   }
 
-  public static fromPointsClient(points: { 
-    id: string; 
-    sign: string | null; 
-    clientId: string; 
-    truckId: string; 
-    userId: string; 
-    itineraryId: string | null; 
-  }) {
-
+  public static fromPoint(point: any) {
+    const domainPoint = new DomainPoint(
+      point.id
+    )
+    domainPoint.client = ModelToClientDomain.from(point.client)
+    domainPoint.done = point.done
+    domainPoint.problem = point.problem
+    if(point.comment) {
+      domainPoint.comment = point.comment
+    }
+    return domainPoint
   }
 }

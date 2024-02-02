@@ -14,6 +14,7 @@ import { UserService } from '../../shared/application/UserService'
 import { TruckService } from './TruckService'
 import { NotFound } from '../domain/Errors'
 import { SurveyService } from '../../survey/application/SurveyService'
+import { UpdatePoinDto } from '../infra/dto/UpdatePointDto'
 
 @Service()
 export class ItineraryService {
@@ -40,6 +41,16 @@ export class ItineraryService {
     }
 
     return itinerariesOrError
+  }
+
+  public async getPointById(pointId: string) {
+    const pointOrError = await this.itineraryRepository.getPointById(pointId)
+    
+    if(pointOrError.isLeft()) {
+      return this.unfoldError(pointOrError.error)
+    }
+
+    return pointOrError
   }
 
   public async createItinerary (itineraryToCreate: CreateItineraryDto): Promise<Either<BaseError, Itinerary>> {
@@ -144,6 +155,29 @@ export class ItineraryService {
     }
 
     return itineraryOrError
+  }
+
+  public async updatePointById(itineraryId: string, updateItineraryDto: UpdatePoinDto) {
+    const pointOrError = await this.getPointById(itineraryId)
+
+    if(pointOrError.isLeft()) {
+      return pointOrError
+    }
+
+    pointOrError.value.done = true
+    if(updateItineraryDto.comment) {
+      pointOrError.value.comment = updateItineraryDto.comment
+    }
+
+    pointOrError.value.problem = updateItineraryDto.problem
+    console.log(pointOrError.value)
+    const updatedPointOrError = await this.itineraryRepository.updatePointById(pointOrError.value)
+
+    if(updatedPointOrError.isLeft()) {
+      return this.unfoldError(updatedPointOrError.error)
+    }
+
+    return updatedPointOrError
   }
 
   private unfoldError (error: ServerError) {

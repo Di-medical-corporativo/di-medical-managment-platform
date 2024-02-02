@@ -1,11 +1,12 @@
 import 'reflect-metadata'
 
-import { Body, Get, JsonController, Param, Post, QueryParams, Res } from 'routing-controllers'
+import { Body, Get, JsonController, Param, Post, Put, QueryParams, Res } from 'routing-controllers'
 import { Service } from 'typedi'
 import { CreateItineraryDto } from '../dto/CreateItinearyDto'
 import { ItineraryService } from '../../application/ItineraryService';
 import { PaginationDto } from '../../../shared/infra/dto/PaginationDto';
 import { Response } from 'express';
+import { UpdatePoinDto } from '../dto/UpdatePointDto';
 
 @JsonController('/itinerary')
 @Service()
@@ -57,5 +58,36 @@ export class ItineraryRestController {
     }
 
     return itineraryOrError.value
+  }
+
+  @Get('/point/:pointId')
+  public async getPointById (
+    @Param('pointId') pointId: string,
+    @Res() response: Response
+  ) {
+    const pointOrError = await this.itineraryService.getPointById(pointId)
+
+    if(pointOrError.isLeft()) {
+      response.status(pointOrError.error.status)
+      return pointOrError.error
+    }
+
+    return pointOrError.value
+  }
+
+  @Put('/point/:pointId')
+  public async updatePointById(
+    @Param('pointId') pointId: string,
+    @Body() updatePointDto: UpdatePoinDto,
+    @Res() response: Response
+  ) {
+    const pointUpdateOrError = await this.itineraryService.updatePointById(pointId, updatePointDto)
+    console.log(updatePointDto)
+    if(pointUpdateOrError.isLeft()) {
+      response.status(pointUpdateOrError.error.status)
+      return pointUpdateOrError.error
+    }
+
+    return pointUpdateOrError.value
   }
 }

@@ -23,7 +23,7 @@ export class JsonWebToken implements JWTservice {
       },
       'kevin',
       {
-        expiresIn: '1h'
+        expiresIn: '5h'
       }
     )
   }

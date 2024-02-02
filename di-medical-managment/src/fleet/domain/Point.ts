@@ -16,6 +16,8 @@ export class Point {
   private _survey: Survey
   private _comment: string | null
   private _assignedDriver: User
+  private _done: boolean = false
+  private _problem: boolean = false
   constructor (
     private _pointId: string | undefined,
   ) { }
@@ -90,6 +92,22 @@ export class Point {
 
   public set comment(comment: string | null) {
     this._comment = comment
+  }
+
+  public get isDone() {
+    return this._done
+  }
+
+  public set done(status: boolean) {
+    this._done = status
+  }
+
+  public get hasProblem() {
+    return this._problem
+  }
+
+  public set problem(status: boolean) {
+    this._problem = status
   }
 
 }

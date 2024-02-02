@@ -80,6 +80,13 @@ export const RoutesPath = {
     itineraryDetail: {
       route: 'itinerary/:id/detail',
       name: 'itinerary-detail'
+    },
+    deliver: {
+      route: '/deliver'
+    },
+    deliverPoint: {
+      route: 'point/:id',
+      name: 'point-deliver'
     }
   },
   survey: {
