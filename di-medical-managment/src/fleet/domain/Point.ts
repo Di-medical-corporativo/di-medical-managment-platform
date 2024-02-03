@@ -5,6 +5,8 @@ import { User } from '../../shared/domain/User'
 import { Truck } from './Truck'
 import { Invoice } from './Invoice'
 import { Survey } from '../../survey/domain/Survey'
+import { AnswerQuestion } from '../../survey/domain/AnswerQuestion'
+import { SurveyResponse } from '../../survey/domain/SurveyResponse'
 
 export class Point {
   private _responseId: string
@@ -18,6 +20,7 @@ export class Point {
   private _assignedDriver: User
   private _done: boolean = false
   private _problem: boolean = false
+  private _response: SurveyResponse
   constructor (
     private _pointId: string | undefined,
   ) { }
@@ -110,4 +113,11 @@ export class Point {
     this._problem = status
   }
 
+  public get response() {
+    return this._response
+  }
+
+  public set response(answers: SurveyResponse) {
+    this._response = answers
+  }
 }

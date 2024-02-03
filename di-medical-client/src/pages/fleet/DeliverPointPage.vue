@@ -23,8 +23,15 @@
 
       </div>
     </div>
-    <div v-else class="bg-primary">
-      Ya se ha entregado este pedido
+    <div v-else class="bg-primary already-answer column items-center">
+      <q-img src="../../assets/images/logos/corporativo-logo.png" style="width: 170px;"></q-img>
+      <p class="text-h5">Ya se ha entregado este punto</p>
+      <q-btn label="Responder encuesta" color="secondary" class="q-mt-md" :to="{ 
+        name: 'survey-client-answer', 
+        query: { pointId: getPointToDeliver.pointId }, 
+        params: { id: getPointToDeliver.survey.surveyId } 
+      }">
+      </q-btn>
     </div>
 
     <q-inner-loading :showing="getLoading" 
@@ -74,17 +81,17 @@ const getPoint = async () => {
     router.push({ name: 'not-found' })
     return
   }
+  console.log(pointOrError.value)
   loading.value = false
   point.value = pointOrError.value
 }
 
 const deliver = async (problem: boolean) => {
-
   if(comment.value.length > 0) {
     point.value!.comment = comment.value
   }
+
   point.value!.problem = problem
-  console.log(point.value)
   loading.value = true
   const pointUpdated = await itineraryApi.deliverPoint(point.value!)
   if(pointUpdated.isLeft()) {
@@ -105,6 +112,11 @@ getPoint()
 </script>
 
 <style lang="scss" scoped>
+
+.already-answer {
+  width: 100vw;
+  height: 100vh;
+}
 .deliver {
   width: 100vw;
   height: 100vh;

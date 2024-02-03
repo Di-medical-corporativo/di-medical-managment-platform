@@ -1,8 +1,10 @@
 import { AnswerOption } from './AnswerOption';
+import { Question } from './Question';
 
 export class AnswerQuestion {
   private _answer: string | undefined;
   private _option: AnswerOption | undefined;
+  private _question:  Question
 
   constructor(
     private _answerId: string | undefined,
@@ -49,4 +51,12 @@ export class AnswerQuestion {
   set option(value: AnswerOption | undefined) {
     this._option = value;
   }
+
+  public get question() {
+    return this._question
+  }
+
+  public set question(question: Question) {
+    this._question = question
+  } 
 }

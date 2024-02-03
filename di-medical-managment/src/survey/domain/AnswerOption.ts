@@ -1,4 +1,7 @@
+import { Option } from "./Option";
+
 export class AnswerOption {
+  private _option: Option
   constructor(
     private _answerOptionId: string | undefined,
     private _answerQuestionId: string | undefined,
@@ -27,5 +30,13 @@ export class AnswerOption {
 
   set optionId(value: string) {
     this._optionId = value;
+  }
+
+  get option() {
+    return this._option
+  }
+
+  set option(option: Option) {
+    this._option = option
   }
 }

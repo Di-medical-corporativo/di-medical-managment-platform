@@ -24,8 +24,9 @@
                 {{ point.truck.plates }}
               </q-item-label>
             </q-item-section>
-            <q-chip :icon="true ? 'done' : 'local_shipping'" :color="true ? 'secondary' : 'grey'" text-color="white"
-              size="sm">En ruta</q-chip>
+            <q-chip :icon="point.isDone ? 'done' : 'local_shipping'" :color="true ? 'secondary' : 'grey'" text-color="white"
+              size="sm">{{ point?.isDone ? 'Completado' : 'En ruta' }}</q-chip>
+              <q-chip icon="warning" color="red" text-color="white" size="sm" v-if="point.hasProblem">Revisar comentario</q-chip>
           </q-item>
           <q-item>
             {{ point.invoices.length }} facturas por entregar
@@ -38,12 +39,15 @@
           <div class="info-point bg-white shadow-1 column">
             <q-item clickables>
               <q-item-section avatar>
-                <q-icon :name="true ? 'done' : 'local_shipping'" :color="true ? 'secondary' : 'grey'" text-color="white"
-                  size="sm"></q-icon>
+                <q-icon :name="currentPoint?.isDone ? 'done' : 'local_shipping'" :color="true ? 'secondary' : 'grey'" text-color="white"
+                  size="sm">
+                </q-icon>
               </q-item-section>
               <q-item-section>
                 <q-item-label>Estatus</q-item-label>
-                <q-item-label caption>En ruta</q-item-label>
+                <q-item-label caption>
+                  {{ currentPoint?.isDone ? 'Completado' : 'En ruta' }}
+                </q-item-label>
               </q-item-section>
             </q-item>
           </div>
@@ -81,6 +85,17 @@
               </q-item-section>
             </q-item>
           </div>
+          <div class="info-point bg-white shadow-1 column">
+            <q-item clickables>
+              <q-item-section avatar>
+                <q-avatar square :color="currentPoint?.hasProblem ? 'red' : 'green'" text-color="white" icon="warning" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Problema en la entrega</q-item-label>
+                <q-item-label caption>{{currentPoint?.hasProblem ? 'Problema en la entrega, revisar comentario' : 'Sin problema'}}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </div>
         </div>
         <div class="row q-mt-lg justify-between">
           <div class="detail-point-map bg-white shadow-1">
@@ -94,6 +109,13 @@
           </q-timeline>
           </div>
         </div>
+
+        <div class="row q-mt-lg justify-between">
+          <div class="comment bg-white shadow-1 column items-center">
+            <p class="q-ml-md q-mt-sm text-body1 self-start">Comentario del operador</p>
+            <p class="q-mt-sm text-body2 comment-text">{{currentPoint?.comment}}</p>
+          </div>
+        </div>
       </div>
     </div>
   </q-page>
@@ -101,44 +123,23 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import mapboxgl, { Point } from 'mapbox-gl'
 import { useItineraryStore } from 'stores/itinerary-store'
 import { useRoute, useRouter } from 'vue-router'
 import { Itinerary } from 'src/entities/Itinerary'
 
 const route = useRoute()
 const router = useRouter()
-
-const mapDiv = ref<HTMLElement | null>(null)
-const map = ref<mapboxgl.Map | null>(null)
-const accessToken = ref('pk.eyJ1Ijoia2V2YXJvbjI4IiwiYSI6ImNscXd1OWphMzA3M2YydXFmcTkzM2ZwaDgifQ.k6SFzwdnDmbWOibTg0iiMQ')
 const itinerary = ref<Itinerary | null>(null)
 const itineraryStore = useItineraryStore()
 const currentPointIndex = ref(0)
+
 onMounted(async () => {
-  mapboxgl.accessToken = accessToken.value
-  map.value = new mapboxgl.Map({
-    container: mapDiv.value!,
-    style: 'mapbox://styles/mapbox/streets-v11',
-    center: [-99.0577865313392, 19.34055939879581],
-    zoom: 15
-  })
-
-  map.value.on('load', () => {
-    new mapboxgl.Marker()
-      .setLngLat([-99.0577865313392, 19.34055939879581])
-      .setPopup(new mapboxgl.Popup({ className: 'popup-content' }).setHTML('<h3>Marker Popup</h3><p>This is a popup on the marker.</p>'))
-      .addTo(map.value!)
-  })
-
-  map.value.resize()
   const id = route.params.id as string
   const itineraryOrError = await itineraryStore.getItineraryById(id)
 
   if(itineraryOrError.isLeft()) {
     return router.push({ name: 'not-found' })
   }
-
   itinerary.value = itineraryOrError.value
 })
 
@@ -177,12 +178,12 @@ const setCurrentIndex = (index: number) => {
 .detail-point {
   &-map {
     width: 70%;
-    height: 450px;
+    height: 350px;
   }
 
   &-invoices {
     width: 25%;
-    height: 450px;
+    height: 350px;
     overflow-y: scroll;
   }
 }
@@ -202,5 +203,15 @@ const setCurrentIndex = (index: number) => {
 .detail-point {
   width: 60%;
   height: 80vh;
+}
+
+.comment {
+  width: 550px;
+  height: 200px;
+
+  &-text {
+    word-wrap: break-word;
+    width: 95%;
+  }
 }
 </style>

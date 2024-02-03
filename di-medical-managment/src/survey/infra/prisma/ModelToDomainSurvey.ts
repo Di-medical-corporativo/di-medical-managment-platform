@@ -28,6 +28,17 @@ export class ModelToDomainSurvey {
     return surveysDomain
   }
 
+  public static fromSurveySimplified(survey: any) {
+    return new Survey(
+      survey.id,
+      survey.name,
+      survey.description,
+      survey.startDate,
+      survey.active
+    )
+  }
+
+
   public static fromSurveyInsights(survey: any) {
     const surveyDomain = new DomainSurvey(
       survey.id,

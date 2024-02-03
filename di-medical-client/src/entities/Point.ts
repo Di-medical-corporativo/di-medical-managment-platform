@@ -2,6 +2,7 @@ import { Client } from './Client'
 import { Invoice } from './Invoice'
 import { Itinerary } from './Itinerary'
 import { Survey } from './Survey'
+import { SurveyResponse } from './SurveyResponse'
 import { Truck } from './Truck'
 import { User } from './User'
 
@@ -16,6 +17,8 @@ export class Point {
   private _done: boolean = false
   private _problem: boolean = false
   private _comment: string | null = null
+  private _response!: SurveyResponse
+
   constructor (
     private _pointId: string | undefined,
   ) { }
@@ -98,5 +101,13 @@ export class Point {
 
   public set comment(comment: string | null) {
     this._comment = comment
+  }
+
+  public get response() {
+    return this._response
+  }
+
+  public set response(answers: SurveyResponse) {
+    this._response = answers
   }
 }

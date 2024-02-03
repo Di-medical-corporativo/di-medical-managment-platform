@@ -29,6 +29,10 @@ export class SurveyFacade implements SurveyFacadeI {
         surveyId: response.surveyId,
       }
 
+      if(response.pointId) {
+        requestData.pointId = response.pointId
+      }
+
       requestData.answers = response.answers.map((answer) => {
         if(answer.option) {
           return { questionId: answer.questionId, optionId: answer.option?.optionId }
@@ -106,7 +110,7 @@ export class SurveyFacade implements SurveyFacadeI {
         }
       })
 
-      const resultsDomain = data._results.map((survey: { _surveyId: string | undefined; _name: string; _description: string; _startDate: Date; _active: boolean }) => new Survey(
+      const resultsDomain = data._results.map((survey:any) => new Survey(
         survey._surveyId,
         survey._name,
         survey._description,

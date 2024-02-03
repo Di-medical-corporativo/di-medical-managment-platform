@@ -169,12 +169,18 @@ const answerMultipleQuestion = (optionId: string, questionId: string) => {
 
 const sendResponse = async () => {
   isLoading.value = true
+  
+  const pointId = route.query.pointId as string
   const surveyId = route.params.id as string
   const surveyResponse = new SurveyResponse(undefined, surveyId, beginDate, new Date(), answers.value as AnswerQuestion[])
+
+  if(pointId) {
+    surveyResponse.pointId = pointId
+  }
+
   const response = await surveyApi.answerSurveyId(surveyResponse)
   if(response.isLeft()) {
     isLoading.value = false
-    console.log(response)
     return
   }
   isLoading.value = false

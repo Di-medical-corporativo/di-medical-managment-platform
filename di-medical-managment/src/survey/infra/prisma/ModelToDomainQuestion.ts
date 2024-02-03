@@ -17,6 +17,17 @@ export class ModelToDomainQuestion {
     return domainQuestions
   }
 
+  public static fromQuestion(question: any) {
+    const domainQuestion = new DomainQuestion(
+      question.id,
+      question.text,
+      question.order
+    )
+
+    domainQuestion.type = ModelToDomainQuestionType.from(question.type)
+    return domainQuestion
+  }
+
   public static fromQuestionsInsights(questions: any[]) {
     const domainQuestions = questions.map((question) => {
       const domainQuestion = new DomainQuestion(question.id, question.text, question.order)

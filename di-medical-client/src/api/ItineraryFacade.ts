@@ -6,6 +6,7 @@ import { Invoice } from "src/entities/Invoice"
 import { Itinerary } from "src/entities/Itinerary" 
 import { PaginatedResult } from "src/entities/PaginatedResult" 
 import { Point } from "src/entities/Point" 
+import { Survey } from "src/entities/Survey"
 import { Truck } from "src/entities/Truck"
 import { User } from "src/entities/User"
 
@@ -33,7 +34,17 @@ export class ItineraryFacade implements ItineraryFacadeI {
         data._client._address,
         data._client._isActive
       )
-      
+
+      if(data._survey) {
+        pointDomain.survey = new Survey(
+          data._survey._surveyId,
+          data._survey._name,
+          data._survey.description,
+          data._survey._startDate,
+          data._survey._active
+        )
+      }
+
       return Right.create(pointDomain)
     } catch (error) {
       const axiosError: AxiosError = error as AxiosError
@@ -63,6 +74,7 @@ export class ItineraryFacade implements ItineraryFacadeI {
   async getItineraryById(itineraryId: string): Promise<Either<string, Itinerary>> {
     try {
       const { data } = await api.get(`/itinerary/${itineraryId}`)
+      console.log(data)
       const itineraryDomain = new Itinerary(data._itineraryId, data._createdAt, data._updatedAt)
       itineraryDomain.done = data._done
       itineraryDomain.scheduleDate = data._scheduleDate

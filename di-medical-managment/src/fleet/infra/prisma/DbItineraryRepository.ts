@@ -39,7 +39,8 @@ export class DbItineraryRepository implements ItineraryRepository {
         },
         include: {
           client: true,
-          invoices: true
+          invoices: true,
+          survey: true
         }
       })
 
@@ -68,7 +69,24 @@ export class DbItineraryRepository implements ItineraryRepository {
               truck: true,
               client: true,
               user: true,
-              response: true
+              response: {
+                include: {
+                  answers: {
+                    include: {
+                      question: {
+                        include: {
+                          type: true
+                        }
+                      },
+                      answerOption: {
+                        include: {
+                          option: true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           sucursal: true,
@@ -84,6 +102,7 @@ export class DbItineraryRepository implements ItineraryRepository {
       return Right.create(domainItinerary)
 
     } catch (error) {
+      console.log(error)
       return Left.create(ServerError.SERVER_ERROR)
     }
   }
