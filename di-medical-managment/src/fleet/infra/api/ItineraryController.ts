@@ -5,13 +5,12 @@ import { Service } from 'typedi'
 import { CreateItineraryDto } from '../dto/CreateItinearyDto'
 import { ItineraryService } from '../../application/ItineraryService';
 import { PaginationDto } from '../../../shared/infra/dto/PaginationDto';
-import { Response } from 'express';
+import { Response, response } from 'express';
 import { UpdatePoinDto } from '../dto/UpdatePointDto';
 
 @JsonController('/itinerary')
 @Service()
 export class ItineraryRestController {
-
   constructor(
     private itineraryService: ItineraryService
   ) {}
@@ -82,7 +81,6 @@ export class ItineraryRestController {
     @Res() response: Response
   ) {
     const pointUpdateOrError = await this.itineraryService.updatePointById(pointId, updatePointDto)
-    console.log(updatePointDto)
     if(pointUpdateOrError.isLeft()) {
       response.status(pointUpdateOrError.error.status)
       return pointUpdateOrError.error
@@ -90,4 +88,18 @@ export class ItineraryRestController {
 
     return pointUpdateOrError.value
   }
+
+  @Put('/:itineraryId')
+  public async finishItineraryId(
+    @Param('itineraryId') itineraryId: string,
+    @Res() response: Response
+  ) {
+    const itineraryUpdated = await this.itineraryService.finishItineraryById(itineraryId)
+    if(itineraryUpdated.isLeft()) {
+      response.status(itineraryUpdated.error.status)
+      return itineraryUpdated.error
+    }
+
+    return itineraryUpdated.value
+   }
 }

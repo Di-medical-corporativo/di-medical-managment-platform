@@ -12,7 +12,7 @@ export class ModelTodomainItinerary {
       itinerary.updatedAt,
       itinerary.scheduleDate
     )
-
+    itineraryDomain.done = itinerary.done
     itineraryDomain.points = ModelToDomainPoint.fromPoints(itinerary.points)
     return itineraryDomain
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="column">
-    <header class="full-width bg-primary relative-position flex flex-center">
+    <header class="full-width bg-primary relative-position">
       <div class="flex flex-center user-info absolute">
         <div class="user-image flex flex-center">
           <q-img :src="user?.picture" style="width: 95%; height: 95%; border-radius: 50%;"></q-img>
@@ -10,9 +10,14 @@
           <small>{{user?.job}}</small>
         </div>
       </div>
+      <div class="absolute vcard-link">
+        <q-btn label="Vcard" icon="link" outline color="accent" no-caps></q-btn>
+      </div>
     </header>
-    <main>
-
+    <main class="column items-center q-mt-xl">
+      <div class="user-summary">
+        <div class="itineraries"></div>
+      </div>
     </main>
   </div>
 </template>
@@ -28,17 +33,19 @@ const user = authStore.getUser
 @media screen and (min-width: $breakpoint-md-min) {
   header {
     display: flex;
-    align-items: initial;
-    justify-content: initial;
   }
 }
 
   header {
     height: 200px;
   }
+  
+  .vcard-link {
+    right: 20px;
+    top: 10px;
+  }
 
   .user {
-    
     &-image {
       width: 150px;
       height: 150px;
@@ -55,6 +62,12 @@ const user = authStore.getUser
 
     &-info {
       bottom: -55px;
+    }
+
+    &-summary {
+      width: 100%;
+      background-color: red;
+      height: 100px;
     }
 
     @media screen and (min-width: $breakpoint-md-min) {

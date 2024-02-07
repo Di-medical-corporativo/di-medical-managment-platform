@@ -83,6 +83,7 @@ export class UserService {
       new Date(),
       new Date()
     )
+    
     user.sucursal = sucursalOrError.value
     const userCreated = await 
     this

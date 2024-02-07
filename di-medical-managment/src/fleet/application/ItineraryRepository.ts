@@ -10,4 +10,5 @@ export interface ItineraryRepository {
   getItineraryById(itineraryId: string): Promise<Either<ServerError, Itinerary>>
   getPointById(pointId: string): Promise<Either<ServerError, Point>>
   updatePointById(point: Point): Promise<Either<ServerError, Point>>
+  finishItinerary(itinerary: Itinerary): Promise<Either<ServerError, boolean>>
 }

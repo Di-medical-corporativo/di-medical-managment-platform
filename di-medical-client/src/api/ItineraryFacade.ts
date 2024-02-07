@@ -1,12 +1,17 @@
 import { AxiosError } from "axios" 
 import { api } from "src/boot/axios" 
+import { AnswerQuestion } from "src/entities/AnswerQuestion"
 import { Client } from "src/entities/Client"
 import { Either, Left, Right } from "src/entities/Either"
 import { Invoice } from "src/entities/Invoice"
 import { Itinerary } from "src/entities/Itinerary" 
+import { Option } from "src/entities/Option"
 import { PaginatedResult } from "src/entities/PaginatedResult" 
 import { Point } from "src/entities/Point" 
+import { Question } from "src/entities/Question"
+import { QuestionType } from "src/entities/QuestionType"
 import { Survey } from "src/entities/Survey"
+import { SurveyResponse } from "src/entities/SurveyResponse"
 import { Truck } from "src/entities/Truck"
 import { User } from "src/entities/User"
 
@@ -74,7 +79,6 @@ export class ItineraryFacade implements ItineraryFacadeI {
   async getItineraryById(itineraryId: string): Promise<Either<string, Itinerary>> {
     try {
       const { data } = await api.get(`/itinerary/${itineraryId}`)
-      console.log(data)
       const itineraryDomain = new Itinerary(data._itineraryId, data._createdAt, data._updatedAt)
       itineraryDomain.done = data._done
       itineraryDomain.scheduleDate = data._scheduleDate
@@ -84,6 +88,43 @@ export class ItineraryFacade implements ItineraryFacadeI {
         if(point._comment) {
           pointDomain.comment = point._comment
         }
+
+        if(point._response) {
+          const { _response } = point
+          const answers = _response._answers.map(({ _answerId, _responseId, _questionId, _answer, _question, _option }: any) => {
+            const { _type } = _question
+            const questionType = new QuestionType(_type._questionTypeId, _type._type)
+            const question = new Question(
+              _question._questionId,
+              _question._text,
+              _question._order,
+              questionType
+            )
+            const answer = new AnswerQuestion(_answerId, _responseId, _questionId)
+            answer.question = question
+            answer.answer = _answer
+            
+            if(_option) {
+              const option = new Option(
+                _option._option._id,
+                _option._option._value,
+                _option._option._order,
+              )
+              answer.option = option
+            }
+
+            return answer
+          })
+
+          pointDomain.response = new SurveyResponse(
+            _response._responseId,
+            _response._surveyId,
+            _response._beginDate,
+            _response._endDate,
+            answers
+          )
+        }
+
         pointDomain.problem = point._problem
         pointDomain.done = point._done
         pointDomain.assignedDriver = new User(
@@ -120,9 +161,9 @@ export class ItineraryFacade implements ItineraryFacadeI {
 
         return pointDomain
       })
-
       return Right.create(itineraryDomain)
     } catch (error) {
+      console.log(error)
       const axiosError: AxiosError = error as AxiosError
       const data = axiosError.response?.data as { message: string }
       return Left.create(data.message)

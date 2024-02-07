@@ -170,7 +170,6 @@ export class ItineraryService {
     }
 
     pointOrError.value.problem = updateItineraryDto.problem
-    console.log(pointOrError.value)
     const updatedPointOrError = await this.itineraryRepository.updatePointById(pointOrError.value)
 
     if(updatedPointOrError.isLeft()) {
@@ -178,6 +177,22 @@ export class ItineraryService {
     }
 
     return updatedPointOrError
+  }
+
+  public async finishItineraryById(itineraryId: string) {
+    const itineraryOrError = await this.getItineraryById(itineraryId)
+    console.log(itineraryOrError)
+    if(itineraryOrError.isLeft()) {
+      return itineraryOrError
+    }
+
+    const updatedItinerary = await this.itineraryRepository.finishItinerary(itineraryOrError.value)
+    
+    if(updatedItinerary.isLeft()) {
+      return this.unfoldError(updatedItinerary.error)
+    }
+
+    return updatedItinerary
   }
 
   private unfoldError (error: ServerError) {

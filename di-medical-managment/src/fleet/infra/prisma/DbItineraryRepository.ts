@@ -13,6 +13,23 @@ import { ModelToDomainPoint } from './ModelToDomainPoint'
 export class DbItineraryRepository implements ItineraryRepository {
   private readonly prismaClient = new PrismaClient()
 
+  async finishItinerary(itinerary: Itinerary): Promise<Either<ServerError, boolean>> {
+    try {
+      await this.prismaClient.itinerary.update({
+        where: {
+          id: itinerary.itineraryId
+        },
+        data: {
+          updatedAt: itinerary.updatedAt,
+          done: true,
+        }
+      })
+      return Right.create(true)
+    } catch (error) {
+      return Left.create(ServerError.SERVER_ERROR)
+    }
+  }
+
   async updatePointById(point: Point): Promise<Either<ServerError, Point>> {
     try {
       await this.prismaClient.point.update({
@@ -83,6 +100,11 @@ export class DbItineraryRepository implements ItineraryRepository {
                           option: true
                         }
                       }
+                    },
+                    orderBy: {
+                      question: {
+                        order: 'asc'
+                      }
                     }
                   }
                 }
@@ -90,19 +112,18 @@ export class DbItineraryRepository implements ItineraryRepository {
             }
           },
           sucursal: true,
-        }
+        },
+
       })
 
       if(!itinerary) {
         return Left.create(ServerError.NOT_FOUND)
       }
-
       const domainItinerary = ModelTodomainItinerary.from(itinerary)
 
       return Right.create(domainItinerary)
 
     } catch (error) {
-      console.log(error)
       return Left.create(ServerError.SERVER_ERROR)
     }
   }

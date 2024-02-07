@@ -16,7 +16,6 @@ export class ClientService {
   constructor(
     @Inject(() => DbClientRepository)
     private readonly clientRepository: ClientRepository
-
   ) {}
 
 

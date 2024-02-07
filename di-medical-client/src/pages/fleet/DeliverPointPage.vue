@@ -81,7 +81,6 @@ const getPoint = async () => {
     router.push({ name: 'not-found' })
     return
   }
-  console.log(pointOrError.value)
   loading.value = false
   point.value = pointOrError.value
 }
@@ -92,6 +91,7 @@ const deliver = async (problem: boolean) => {
   }
 
   point.value!.problem = problem
+  point.value!.done = true
   loading.value = true
   const pointUpdated = await itineraryApi.deliverPoint(point.value!)
   if(pointUpdated.isLeft()) {
