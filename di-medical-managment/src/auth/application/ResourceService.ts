@@ -7,7 +7,6 @@ import { Resource } from '../domain/Resource'
 import { CreateResourceDto } from '../infra/dto/CreateResourceDto'
 import { UpdateResourceDto } from '../infra/dto/UpdateResourceDto'
 import { DbResourceRepository } from '../infra/prisma/DbResourceRepository'
-import { Role } from '../domain/Role'
 
 @Service()
 export class ResourceService {

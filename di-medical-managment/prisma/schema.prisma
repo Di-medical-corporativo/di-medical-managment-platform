@@ -27,6 +27,7 @@ model User {
   sucursal Sucursal @relation(fields: [sucursalId], references: [id])
   roles UserHasRole[]
   points Point[]
+  tasks Task[]
 }
 
 model Login {
@@ -218,4 +219,19 @@ model AnswerOption {
   answer AnswerQuestion @relation(fields: [answerId], references: [id])
   optionId String
   option QuestionOption @relation(fields: [optionId], references: [id])
+}
+
+model Task {
+  id String @id @default(uuid())
+  title String
+  description String
+  userAssignedId String
+  userAssigned User @relation(fields: [userAssignedId], references: [id])
+  statusId String
+  status TaskStatus @relation(fields: [statusId], references: [name])
+}
+
+model TaskStatus {
+  name String @unique
+  tasks Task[]
 }

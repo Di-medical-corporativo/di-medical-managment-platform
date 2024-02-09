@@ -1,0 +1,19 @@
+{
+  "services": {
+    "Tasks.infra.repository": {
+      "class": "../../../tasks/infra/prisma/PrismaRepository"
+    },
+    "Tasks.application.Create.TaskCreator": {
+      "class": "../../../tasks/application/Create/TaskCreator",
+      "arguments": [
+        "@Tasks.infra.repository"
+      ]
+    },
+    "Tasks.controller.TaskPostController": {
+      "class": "../../../tasks/infra/controllers/TaskPostController",
+      "arguments": [
+        "@Tasks.application.Create.TaskCreator"
+      ]
+    }
+  }
+}

@@ -3,6 +3,7 @@ import express, { Express } from 'express'
 import { useContainer, useExpressServer } from 'routing-controllers'
 import Container, { Inject, Service } from 'typedi'
 import helmet from 'helmet'
+import path from 'path'
 
 import { LoggerI } from './shared/application/LoggerInterface'
 import { ServerI } from './shared/application/Server'
@@ -18,6 +19,9 @@ import { TruckRestController } from './fleet/infra/api/TruckController'
 import { ClientRestController } from './fleet/infra/api/ClientController'
 import { ItineraryRestController } from './fleet/infra/api/ItineraryController'
 import { SurveyRestController } from './survey/infra/api/SurveyController'
+import { TaskRouter } from './tasks/infra/routes/TaskRouter'
+import { ContainerBuilder, JsonFileLoader } from 'node-dependency-injection'
+
 
 @Service()
 export class Server implements ServerI {
@@ -59,8 +63,14 @@ export class Server implements ServerI {
   private initMiddlewares (): void {
     this._app.use(helmet())
   }
+  
 
-  public start (): void {
+  private initRoutes (container: any) {
+    this._app.use(TaskRouter.getRouter(container))
+  }
+
+  public start (container: any): void {
+    this.initRoutes(container)
     this._app.listen(this.PORT, () => {
       this._logger.info(`Server running on port ${this.PORT}`)
     })
