@@ -21,6 +21,23 @@ export class User {
     private _updatedAt: Date
   ) { }
 
+  public toPrimitives() {
+    return {
+      id: this._userId,
+      firstName: this._firstName,
+      lastName: this._lastName,
+      birthDate: this.birthDate,
+      nss: this._nss,
+      job: this._job,
+      picture: this._picture,
+      phone: this._phone,
+      email: this._email,
+      isActive: this._isActive,
+      createdAt: this._createdAt,
+      updatedAt: this._updatedAt
+    }
+  }
+
   public get userId (): string | undefined {
     return this._userId
   }

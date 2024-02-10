@@ -222,13 +222,16 @@ model AnswerOption {
 }
 
 model Task {
-  id String @id @default(uuid())
+  id String @id
   title String
   description String
   userAssignedId String
   userAssigned User @relation(fields: [userAssignedId], references: [id])
   statusId String
   status TaskStatus @relation(fields: [statusId], references: [name])
+  dueTo DateTime
+  startedDate DateTime
+  endDate DateTime
 }
 
 model TaskStatus {
