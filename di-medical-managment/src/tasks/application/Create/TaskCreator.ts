@@ -1,14 +1,27 @@
-import { User } from '../../../shared/domain/User'
+import { Task } from '../../domain/Task'
 import { TaskDescription } from '../../domain/TaskDescription'
+import { TaskDueToDate } from '../../domain/TaskDueToDate'
 import { TaskId } from '../../domain/TaskId'
 import { TaskRepository } from '../../domain/TaskRepository'
-import { TaskStatus } from '../../domain/TaskStatus'
+import { TaskStartDate } from '../../domain/TaskStartDate'
+import { Backlog, TaskStatus } from '../../domain/TaskStatus'
 import { TaskTitle } from '../../domain/TaskTitle'
+import { UserAssignedId } from '../../domain/UserAssignedId'
 
 export class TaskCreator {
   constructor(private taskRepository: TaskRepository) {}
 
-  async run(params: { taskId: TaskId, title: TaskTitle, description: TaskDescription, userAssigned: string, status: TaskStatus }) {
-    console.log('CREATING...')
+  async run(params: { taskId: TaskId, title: TaskTitle, description: TaskDescription, userAssigned: UserAssignedId, startedDate: TaskStartDate, dueToDate: TaskDueToDate }) {
+    const task = Task.create(
+      params.taskId,
+      params.title,
+      params.description,
+      params.userAssigned,
+      Backlog.create(),
+      params.startedDate,
+      params.dueToDate
+    )
+
+    await this.taskRepository.save(task)
   }
 }

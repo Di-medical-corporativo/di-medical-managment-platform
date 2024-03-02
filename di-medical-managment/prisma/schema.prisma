@@ -226,15 +226,9 @@ model Task {
   title String
   description String
   userAssignedId String
-  userAssigned User @relation(fields: [userAssignedId], references: [id])
-  statusId String
-  status TaskStatus @relation(fields: [statusId], references: [name])
+  userAssigned User? @relation(fields: [userAssignedId], references: [id])
+  status String
   dueTo DateTime
   startedDate DateTime
   endDate DateTime
-}
-
-model TaskStatus {
-  name String @unique
-  tasks Task[]
 }
