@@ -119,6 +119,17 @@ export const RoutesPath = {
       route: ':id/detail',
       name: 'survey-detail'
     }
+  },
+  task: {
+    route: 'task',
+    default: {
+      route: '',
+      name: 'task'
+    },
+    register: {
+      route: 'register',
+      name: 'task-register'
+    }
   }
 }
 
@@ -213,10 +224,22 @@ export const surveyModule: PlatformModule = {
   ]
 }
 
+export const taskModuleLabel = 'Asignaciones'
+export const registerTaskModuleLabel = 'Registrar asignacion'
+export const taskModule: PlatformModule = {
+  label: taskModuleLabel,
+  children: [
+    {
+      label: registerTaskModuleLabel
+    }
+  ]
+} 
+
 export const modules: PlatformModule[] = [
   usersModule,
+  taskModule,
   sucursalModule,
   clientsModule,
   fleetModule,
-  surveyModule
+  surveyModule,
 ]

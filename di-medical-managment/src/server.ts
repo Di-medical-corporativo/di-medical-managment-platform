@@ -61,6 +61,7 @@ export class Server implements ServerI {
   }
 
   private initMiddlewares (): void {
+    this._app.use(express.json())
     this._app.use(helmet())
   }
   

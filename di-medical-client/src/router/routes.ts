@@ -143,6 +143,17 @@ const routes: RouteRecordRaw[] = [
             component: () => import('pages/survey/SurveyDetailPage.vue')
           }
         ]
+      },
+      {
+        path: RoutesPath.task.route,
+        component: () => import('layouts/backoffice/TaskLayout.vue'),
+        children: [
+          {
+            path: RoutesPath.task.default.route,
+            name: RoutesPath.task.default.name,
+            component: () => import('pages/task/DefaultTaskPage.vue')
+          }
+        ]
       }
     ]
   },

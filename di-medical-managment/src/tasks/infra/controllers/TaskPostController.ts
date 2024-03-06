@@ -8,7 +8,6 @@ import { UserAssignedId } from "../../domain/UserAssignedId"
 import { TaskStartDate } from "../../domain/TaskStartDate"
 import { TaskDueToDate } from "../../domain/TaskDueToDate"
 
-
 interface CreateTaskRequest extends Request {
   body: {
     title: string;
@@ -16,24 +15,29 @@ interface CreateTaskRequest extends Request {
     userAssignedId: string;
     startDate: string;
     dueToDate: string;
-  };
+  }
 }
 
 export class TaskPostController implements Controller {
   constructor(
     private taskCreator: TaskCreator
-  ) {}
+  ) { }
 
   async run(req: CreateTaskRequest, res: Response): Promise<any> {
-    const { title, description, userAssignedId, startDate, dueToDate } = req.body
-  
-    await this.taskCreator.run({
-      taskId: TaskId.random(),
-      title: new TaskTitle(title),
-      description: new TaskDescription(description),
-      userAssigned: new UserAssignedId(userAssignedId),
-      startedDate: new TaskStartDate(startDate),
-      dueToDate: new TaskDueToDate(dueToDate)
-    })
+    try {
+      const { title, description, userAssignedId, startDate, dueToDate } = req.body
+      await this.taskCreator.run({
+        taskId: TaskId.random(),
+        title: new TaskTitle(title),
+        description: new TaskDescription(description),
+        userAssigned: new UserAssignedId(userAssignedId),
+        startedDate: new TaskStartDate(startDate as unknown as Date),
+        dueToDate: new TaskDueToDate(dueToDate as unknown as Date)
+      })
+
+      res.status(201).send()
+    } catch (error) {
+      res.status(500).send()
+    }
   }
 }

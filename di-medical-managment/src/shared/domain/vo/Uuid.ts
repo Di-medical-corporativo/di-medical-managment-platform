@@ -6,6 +6,10 @@ export class Uuid extends ValueObject<string> {
     super(value)
   }
 
+  toString(): string {
+    return this.value.toString()
+  }
+
   static random(): Uuid {
     return new Uuid(uuid())
   }
