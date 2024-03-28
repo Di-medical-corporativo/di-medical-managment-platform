@@ -58,7 +58,8 @@ import {
   surveyModuleLabel,
   registerSurveyModuleLabel,
   surveyListModuleLabel,
-  taskModuleLabel
+  taskModuleLabel,
+  registerTaskModuleLabel
 } from '../../router/routesNames'
 import { useAuth } from 'src/composables/useAuth'
 import { QTreeNode } from 'quasar';
@@ -162,7 +163,11 @@ watch(
     }
 
     if(value == taskModuleLabel) {
-      route = RoutesPath.task.name
+      route = RoutesPath.task.default.name
+    }
+
+    if(value === registerTaskModuleLabel) {
+      route = RoutesPath.task.register.name
     }
     
     router.push({ name: route })

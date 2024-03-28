@@ -140,7 +140,7 @@ export class ApiFacade implements ApiFacadeI {
     }
   }
 
-  async createTruck(truck: Truck): Promise<Either<string, Truck>> {
+  createTask(task: Task): Promise<Either<string, void>> {
     throw new Error()
   }
 }
