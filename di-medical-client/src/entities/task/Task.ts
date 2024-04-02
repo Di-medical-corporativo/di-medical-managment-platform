@@ -40,12 +40,12 @@ export class Task {
   public toPrimitives() {
     return {
       id: this.taskId.value,
-      name: this.title.value,
+      title: this.title.value,
       description: this.description.value,
-      userAssigned: this.userAssigned.toString(),
+      userAssignedId: this.userAssigned.toString(),
       status: this.status.toPrimitives(),
-      startedDate: this.startedDate.toString(),
-      dueDate: this.dueToDate.toString()
+      startDate: this.startedDate.toString(),
+      dueToDate: this.dueToDate.toString()
     }
   }
 }

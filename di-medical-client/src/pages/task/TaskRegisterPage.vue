@@ -41,6 +41,7 @@
 
 <script setup lang="ts">
 import { ApiFacade } from 'src/api/ApiFacade'
+import { TaskFacade } from 'src/api/TaskFacade';
 import { useDate } from 'src/composables/useDate';
 import { Task } from 'src/entities/task/Task';
 import { TaskDescription } from 'src/entities/task/TaskDescription';
@@ -56,7 +57,7 @@ import { ref } from 'vue'
 const title = ref('')
 const description = ref('')
 const userAssigned = ref()
-const date = ref({ from:'', to: '' })
+const date = ref()
 const seamless = ref(false)
 const message = ref('')
 const ok = ref(false)
@@ -65,11 +66,13 @@ const userStore = useUserStore()
 const userCurrentPagination = ref(1)
 
 const { getCurrentDate } = useDate()
-const apiFacade = new ApiFacade()
+const apiFacade = new TaskFacade()
 
 const cleanForm = () => {
   title.value = ''
   description.value = ''
+  userAssigned.value = null
+  date.value = {}
 }
 
 const registerTask = async () => {
@@ -79,16 +82,32 @@ const registerTask = async () => {
     ok.value = false
     return
   }
-  console.log(date.value)
+
+  let endDate, startDate;
+  if(!date.value.from || !date.value.to) {
+    endDate = startDate = new Date(date.value)
+  } else {
+    startDate = new Date(date.value.from)
+    endDate = new Date(date.value.to)
+  }
+
   const task = Task.create(
     new TaskId(UUID.generate()),
     new TaskTitle(title.value),
     new TaskDescription(description.value),
     new TaskUserAssignedId(userAssigned.value._userId),
     Backlog.create(),
-    new TaskStartDate(new Date(date.value.from)),
-    new TaskStartDate(new Date(date.value.to))
+    new TaskStartDate(new Date(startDate)),
+    new TaskStartDate(new Date(endDate))
   )
+  
+  const result = await apiFacade.registerTask(task)
+  if(result.isLeft()){
+    message.value = 'Ocurrio un error al crear la tarea, intenta de nuevo'
+    seamless.value = true
+    ok.value = false
+    return
+  }
 
   message.value = 'Se creo exitosamente la tarea'
   seamless.value = true

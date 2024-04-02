@@ -24,4 +24,8 @@ export class PrismaRepository implements TaskRepository {
       }
     })
   }
+
+  find(): Promise<Task[]> {
+    throw new Error()
+  }
 }

@@ -1,4 +1,6 @@
-import { Either } from "src/entities/Either";
+import { AxiosError } from "axios";
+import { api } from "src/boot/axios";
+import { Either, Left, Right } from "src/entities/Either";
 import { Task } from "src/entities/task/Task";
 
 export interface TaskFacadeI {
@@ -6,11 +8,16 @@ export interface TaskFacadeI {
 }
 
 export class TaskFacade implements TaskFacadeI{
-  async registerTask(task: Task): Either<string, void> {
+  async registerTask(task: Task): Promise<Either<string, void>> {
     try {
-      
+      const { id, status, ...data } = task.toPrimitives()
+      await api.post('/task/new', data)
+      return Right.create(undefined)
     } catch (error) {
-      
+      console.log(error)  
+      const axiosError: AxiosError = error as AxiosError
+      const data = axiosError.response?.data as { message: string }
+      return Left.create(data.message)
     }
   }
 }
