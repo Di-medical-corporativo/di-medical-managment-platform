@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
-import { ParamsDictionary } from "express-serve-static-core";
-import { ParsedQs } from "qs";
 import { Controller } from "../../../shared/infra/Controller";
+import { TaskFinder } from "../../application/Finder/TaskFinder";
 
 export class TaskGetController implements Controller {
-  run(req: Request, res: Response): Promise<void> {
-    throw new Error()
+  constructor(
+    private taskFinder: TaskFinder
+  ) {}
+
+  async run(req: Request, res: Response): Promise<void> {
+    await res.status(200).send(this.taskFinder.run())
   }
 }

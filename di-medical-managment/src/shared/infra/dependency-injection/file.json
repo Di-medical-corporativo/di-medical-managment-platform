@@ -14,6 +14,18 @@
       "arguments": [
         "@Tasks.application.Create.TaskCreator"
       ]
+    },
+    "Task.application.Finder.TaskFinder": {
+      "class": "../../../tasks/application/Finder/TaskFinder",
+      "arguments": [
+        "@Tasks.infra.repository"
+      ]
+    },
+    "Task.controller.TaskGetController": {
+      "class": "../../../tasks/infra/controllers/TaskGetController",
+      "arguments": [
+        "@Task.application.Finder.TaskFinder"
+      ]
     }
   }
 }
