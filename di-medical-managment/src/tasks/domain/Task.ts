@@ -3,7 +3,7 @@ import { TaskDescription } from "./TaskDescription"
 import { TaskDueToDate } from "./TaskDueToDate"
 import { TaskId } from "./TaskId"
 import { TaskStartDate } from "./TaskStartDate"
-import { TaskStatus } from "./TaskStatus"
+import { Backlog, TaskStatus } from "./TaskStatus"
 import { TaskTitle } from "./TaskTitle"
 import { UserAssignedId } from "./UserAssignedId"
 
@@ -35,6 +35,26 @@ export class Task {
       status,
       startedDate,
       dueToDate
+    )
+  }
+
+  public static fromPrimitives(
+    id: string,
+    title: string,
+    description: string,
+    userAssigned: string,
+    status: string,
+    startedDate: string,
+    dueToDate: string
+  ) {
+    return new Task(
+      new TaskId(id),
+      new TaskTitle(title),
+      new TaskDescription(description),
+      new UserAssignedId(userAssigned),
+      TaskStatus.fromPrimitive(status),
+      new TaskStartDate(startedDate as unknown as Date),
+      new TaskDueToDate(dueToDate as unknown as Date)
     )
   }
 

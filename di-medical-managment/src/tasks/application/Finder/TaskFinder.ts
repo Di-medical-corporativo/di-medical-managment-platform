@@ -1,3 +1,5 @@
+import { Criteria } from "../../../shared/domain/criteria/Criteria";
+import { FiltersPrimitives } from "../../../shared/domain/criteria/Filter";
 import { TaskRepository } from "../../domain/TaskRepository";
 
 export class TaskFinder {
@@ -5,8 +7,15 @@ export class TaskFinder {
     private taskRepository: TaskRepository
   ) {}
 
-  run() {
-    return "Hola mundo"
+  async run(filters: FiltersPrimitives[], orderBy: string | null, order: string | null) {
+    const criteria = Criteria.fromPrimitives(
+      filters,
+      orderBy,
+      order
+    )
+    
+    const tasks = await this.taskRepository.matching(criteria)
+    return tasks
   }
 
 }
