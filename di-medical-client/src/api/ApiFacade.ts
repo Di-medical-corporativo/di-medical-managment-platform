@@ -1,15 +1,12 @@
-import { Credentials } from "src/entities/Credentials";
 import { Either, Left, Right } from "src/entities/Either";
 import { User } from "src/entities/User";
 import { ApiFacadeI } from "./ApiFacadeInterface";
-import axios, { api } from "src/boot/axios";
+import { api } from "src/boot/axios";
 import { AxiosError } from "axios";
-import { Resource } from "src/entities/Resource";
 import { Sucursal } from "src/entities/Sucursal";
 import { Role } from "src/entities/Role";
 import { PaginatedResult } from "src/entities/PaginatedResult";
 import { Client } from "src/entities/Client";
-import { Truck } from "src/entities/Truck";
 
 export class ApiFacade implements ApiFacadeI {
   async registerSucursal(sucursal: Sucursal): Promise<Either<string, Sucursal>> {
@@ -138,9 +135,5 @@ export class ApiFacade implements ApiFacadeI {
       const data = axiosError.response?.data as { message: string }
       return Left.create(data.message)
     }
-  }
-
-  createTask(task: Task): Promise<Either<string, void>> {
-    throw new Error()
   }
 }

@@ -15,11 +15,11 @@
       </div>
     </header>
     <main class="column items-center insights">
-      <div class="user-summary column items-center">
+      <div class="user-summary column items-center q-mt-xl">
         <div class="user-summary-tasks row items-center">
           <p class="q-ml-sm text-body1">Asignaciones activas</p>
           <div class="tasks-list">
-            <q-card flat bordered v-for="i in 4" :key="i" class="task-preview">
+            <q-card flat bordered v-for="i in 5" :key="i" class="task-preview">
               <q-card-section horizontal>
                 <q-card-section class="q-pt-xs">
                   <div class="text-overline">Overline</div>

@@ -129,6 +129,10 @@ export const RoutesPath = {
     register: {
       route: 'register',
       name: 'task-register'
+    },
+    globalView: {
+      route: 'global',
+      name: 'task-global'
     }
   }
 }
@@ -226,11 +230,15 @@ export const surveyModule: PlatformModule = {
 
 export const taskModuleLabel = 'Asignaciones'
 export const registerTaskModuleLabel = 'Registrar asignacion'
+export const taskModuleGlobalLabel = 'Tareas global'
 export const taskModule: PlatformModule = {
   label: taskModuleLabel,
   children: [
     {
       label: registerTaskModuleLabel
+    },
+    {
+      label: taskModuleGlobalLabel
     }
   ]
 } 

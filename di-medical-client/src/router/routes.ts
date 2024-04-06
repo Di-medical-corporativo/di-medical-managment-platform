@@ -157,6 +157,11 @@ const routes: RouteRecordRaw[] = [
             path: RoutesPath.task.register.route,
             name: RoutesPath.task.register.name,
             component: () => import('pages/task/TaskRegisterPage.vue')
+          },
+          {
+            path: RoutesPath.task.globalView.route,
+            name: RoutesPath.task.globalView.name,
+            component: () => import('pages/task/GlobalTasksPage.vue')
           }
         ]
       }
