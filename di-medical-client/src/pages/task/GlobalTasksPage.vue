@@ -79,9 +79,7 @@
       
             <q-card-actions>
               <q-btn flat>
-                7:30PM
-              </q-btn>
-              <q-btn flat color="primary">
+                7:30PM 
                 Editar
               </q-btn>
             </q-card-actions>

@@ -6,13 +6,17 @@ import { TaskStartDate } from "./TaskStartDate"
 import { Backlog, TaskStatus } from "./TaskStatus"
 import { TaskTitle } from "./TaskTitle"
 import { UserAssignedId } from "./UserAssignedId"
+import { UserAssignedName } from "./UserAssignedName"
+import { UserAssignedPicture } from "./UserAssignedPicture"
 
 export class Task {
   constructor(
     private readonly taskId: TaskId,
     private readonly title: TaskTitle,
     private readonly description: TaskDescription,
-    private readonly userAssigned: UserAssignedId,
+    private readonly userAssignedId: UserAssignedId,
+    private readonly userAssignedName: UserAssignedName,
+    private readonly userAssignedPicture: UserAssignedPicture,
     private readonly status: TaskStatus,
     private readonly startedDate: TaskStartDate,
     private readonly dueToDate: TaskDueToDate,
@@ -22,7 +26,9 @@ export class Task {
     id: TaskId,
     title: TaskTitle,
     description: TaskDescription,
-    userAssigned: UserAssignedId,
+    userAssignedId: UserAssignedId,
+    userAssignedName: UserAssignedName,
+    userAssignedPiture: UserAssignedPicture,
     status: TaskStatus,
     startedDate: TaskStartDate,
     dueToDate: TaskDueToDate
@@ -31,7 +37,9 @@ export class Task {
       id,
       title,
       description,
-      userAssigned,
+      userAssignedId,
+      userAssignedName,
+      userAssignedPiture,
       status,
       startedDate,
       dueToDate
@@ -42,7 +50,9 @@ export class Task {
     id: string,
     title: string,
     description: string,
-    userAssigned: string,
+    userAssignedId: string,
+    userAssignedName: string,
+    userAssignedPicture: string,
     status: string,
     startedDate: string,
     dueToDate: string
@@ -51,7 +61,9 @@ export class Task {
       new TaskId(id),
       new TaskTitle(title),
       new TaskDescription(description),
-      new UserAssignedId(userAssigned),
+      new UserAssignedId(userAssignedId),
+      new UserAssignedName(userAssignedName),
+      new UserAssignedPicture(userAssignedPicture),
       TaskStatus.fromPrimitive(status),
       new TaskStartDate(startedDate as unknown as Date),
       new TaskDueToDate(dueToDate as unknown as Date)
@@ -63,7 +75,9 @@ export class Task {
       id: this.taskId.value,
       name: this.title.value,
       description: this.description.value,
-      userAssigned: this.userAssigned.toString(),
+      userAssignedId: this.userAssignedId.toString(),
+      userAssignedName: this.userAssignedName.toString(),
+      userAssignedPicture: this.userAssignedPicture.toString(),
       status: this.status.toPrimitives(),
       startedDate: this.startedDate.toString(),
       dueDate: this.dueToDate.toString()

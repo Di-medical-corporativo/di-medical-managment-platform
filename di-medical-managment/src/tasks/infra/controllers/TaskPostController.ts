@@ -7,12 +7,16 @@ import { TaskDescription } from "../../domain/TaskDescription"
 import { UserAssignedId } from "../../domain/UserAssignedId"
 import { TaskStartDate } from "../../domain/TaskStartDate"
 import { TaskDueToDate } from "../../domain/TaskDueToDate"
+import { UserAssignedName } from "../../domain/UserAssignedName"
+import { UserAssignedPicture } from "../../domain/UserAssignedPicture"
 
 interface CreateTaskRequest extends Request {
   body: {
     title: string;
     description: string;
     userAssignedId: string;
+    userAssignedName: string;
+    userAssignedPicture: string;
     startDate: string;
     dueToDate: string;
   }
@@ -25,12 +29,14 @@ export class TaskPostController implements Controller {
 
   async run(req: CreateTaskRequest, res: Response): Promise<any> {
     try {
-      const { title, description, userAssignedId, startDate, dueToDate } = req.body
+      const { title, description, userAssignedId, userAssignedName, userAssignedPicture, startDate, dueToDate } = req.body
       await this.taskCreator.run({
         taskId: TaskId.random(),
         title: new TaskTitle(title),
         description: new TaskDescription(description),
         userAssigned: new UserAssignedId(userAssignedId),
+        userAssignedName: new UserAssignedName(userAssignedName),
+        userAssignedPicture: new UserAssignedPicture(userAssignedPicture),
         startedDate: new TaskStartDate(startDate as unknown as Date),
         dueToDate: new TaskDueToDate(dueToDate as unknown as Date)
       })

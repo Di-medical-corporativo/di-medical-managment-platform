@@ -11,7 +11,7 @@ export class TaskFacade implements TaskFacadeI{
   async registerTask(task: Task): Promise<Either<string, void>> {
     try {
       const { id, status, ...data } = task.toPrimitives()
-      await api.post('/task/new', data)
+      await api.post('/tasks/new', data)
       return Right.create(undefined)
     } catch (error) {
       console.log(error)  

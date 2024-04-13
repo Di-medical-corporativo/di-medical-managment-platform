@@ -9,6 +9,8 @@ interface TaskDb {
   title: string;
   description: string;
   userAssignedId: string;
+  userAssignedName: string;
+  userAssignedPicture: string;
   status: string;
   dueTo: string;
   endDate: string;
@@ -29,9 +31,11 @@ export class PrismaRepository implements TaskRepository {
         endDate: primitives.dueDate,
         startedDate: primitives.startedDate,
         status: primitives.status.name,
+        userAssignedName: primitives.userAssignedName,
+        userAssgnedPicture: primitives.userAssignedPicture,
         userAssigned: {
           connect: {
-            id: primitives.userAssigned
+            id: primitives.userAssignedId
           }
         }
       }
@@ -48,9 +52,60 @@ export class PrismaRepository implements TaskRepository {
       task.title,
       task.description,
       task.userAssignedId,
+      task.userAssignedName,
+      task.userAssignedPicture,
       task.status,
       task.startedDate,
       task.dueTo
+    ))
+
+    return tasks
+  }
+
+  async searchAll(): Promise<Task[]> {
+    const today = new Date()
+    const fiveDaysAgo = new Date(today)
+    fiveDaysAgo.setDate(today.getDate() - 5)
+
+    const results = await this.prismaClient.task.findMany({
+      where: {
+        OR: [
+          {
+            status: {
+              equals: "Backlog"
+            }
+          },
+          {
+            status: {
+              equals: "En curso"
+            }
+          },
+          {
+            status: {
+              equals: "Hecho"
+            },
+            AND: [
+              { startedDate: 
+                {
+                  gte: fiveDaysAgo
+                } 
+              }
+            ]
+          }
+        ]
+      }
+    })
+
+    const tasks = results.map(task => Task.fromPrimitives(
+      task.id,
+      task.title,
+      task.description,
+      task.userAssignedId,
+      task.userAssignedName,
+      task.userAssgnedPicture,
+      task.status,
+      task.startedDate.toISOString(),
+      task.dueTo.toISOString()
     ))
 
     return tasks

@@ -26,6 +26,18 @@
       "arguments": [
         "@Task.application.Finder.TaskFinder"
       ]
+    },
+    "Task.application.Searchall.TaskSearchAll": {
+      "class": "../../../tasks/application/SearchAll/TaskSearchAll",
+      "arguments": [
+        "@Tasks.infra.repository"
+      ]
+    },
+    "Task.controller.TaskSearchAllController": {
+      "class": "../../../tasks/infra/controllers/TaskSearchAllController",
+      "arguments": [
+        "@Task.application.Searchall.TaskSearchAll"
+      ]
     }
   }
 }
