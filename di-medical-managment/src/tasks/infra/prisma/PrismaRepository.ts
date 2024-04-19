@@ -21,25 +21,29 @@ export class PrismaRepository implements TaskRepository {
   private readonly prismaClient = new PrismaClient()
 
   async save(task: Task): Promise<void> {
-    const primitives = task.toPrimitives()
-    await this.prismaClient.task.create({
-      data: {
-        id: primitives.id,
-        description: primitives.description,
-        dueTo: primitives.dueDate,
-        title: primitives.name,
-        endDate: primitives.dueDate,
-        startedDate: primitives.startedDate,
-        status: primitives.status.name,
-        userAssignedName: primitives.userAssignedName,
-        userAssgnedPicture: primitives.userAssignedPicture,
-        userAssigned: {
-          connect: {
-            id: primitives.userAssignedId
+    try {
+      const primitives = task.toPrimitives()
+      await this.prismaClient.task.create({
+        data: {
+          id: primitives.id,
+          description: primitives.description,
+          dueTo: primitives.dueDate,
+          title: primitives.name,
+          endDate: primitives.dueDate,
+          startedDate: primitives.startedDate,
+          status: primitives.status.name,
+          userAssignedName: primitives.userAssignedName,
+          userAssgnedPicture: primitives.userAssignedPicture,
+          userAssigned: {
+            connect: {
+              id: primitives.userAssignedId
+            }
           }
         }
-      }
-    })
+      }) 
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async matching(criteria: Criteria): Promise<Task[]> {

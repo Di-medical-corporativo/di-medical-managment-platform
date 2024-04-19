@@ -10,6 +10,26 @@ export abstract class TaskStatus {
       name: this.name.value
     }
   }
+
+  public static fromPrimitive(name: string): TaskStatus {
+    let status = Backlog.create()
+    switch(name) {
+      case "Backlog":
+        status = Backlog.create()
+        break
+      case "En curso":
+        status = Doing.create()
+        break
+      case "Hecho":
+        status = Done.create()
+        break
+      case "Destiempo":
+        status = Delayed.create()
+        break
+    }
+
+    return status
+  }
 }
 
 export class Backlog extends TaskStatus {

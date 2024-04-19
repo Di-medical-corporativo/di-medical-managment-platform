@@ -50,6 +50,8 @@ import { TaskStartDate } from 'src/entities/task/TaskStartDate';
 import { Backlog } from 'src/entities/task/TaskStatus';
 import { TaskTitle } from 'src/entities/task/TaskTitle';
 import { TaskUserAssignedId } from 'src/entities/task/TaskUserAssigned';
+import { TaskUserAssignedName } from 'src/entities/task/TaskUserAssignedName';
+import { TaskUserAssignedPicture } from 'src/entities/task/TaskUserAssignedPicture';
 import { UUID } from 'src/helpers/uuid';
 import { useUserStore } from 'src/stores/user-store';
 import { ref } from 'vue'
@@ -96,12 +98,14 @@ const registerTask = async () => {
     new TaskTitle(title.value),
     new TaskDescription(description.value),
     new TaskUserAssignedId(userAssigned.value._userId),
+    new TaskUserAssignedName(`${userAssigned.value._firstName} ${userAssigned.value._lastName}`),
+    new TaskUserAssignedPicture(userAssigned.value._picture),
     Backlog.create(),
     new TaskStartDate(new Date(startDate)),
     new TaskStartDate(new Date(endDate))
   )
-  
   const result = await apiFacade.registerTask(task)
+
   if(result.isLeft()){
     message.value = 'Ocurrio un error al crear la tarea, intenta de nuevo'
     seamless.value = true

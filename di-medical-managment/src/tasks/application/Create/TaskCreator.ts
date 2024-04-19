@@ -25,7 +25,6 @@ export class TaskCreator {
   }) {
     const task = Task.create(
       params.taskId,
-
       params.title,
       params.description,
       params.userAssigned,
@@ -35,7 +34,6 @@ export class TaskCreator {
       params.startedDate,
       params.dueToDate
     )
-
     await this.taskRepository.save(task)
   }
 }

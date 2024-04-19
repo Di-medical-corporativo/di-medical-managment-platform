@@ -5,6 +5,8 @@ import { TaskStartDate } from "./TaskStartDate";
 import { TaskStatus } from "./TaskStatus";
 import { TaskTitle } from "./TaskTitle";
 import { TaskUserAssignedId } from "./TaskUserAssigned";
+import { TaskUserAssignedName } from "./TaskUserAssignedName";
+import { TaskUserAssignedPicture } from "./TaskUserAssignedPicture";
 
 export class Task {
   constructor(
@@ -12,6 +14,8 @@ export class Task {
     private readonly title: TaskTitle,
     private readonly description: TaskDescription,
     private readonly userAssigned: TaskUserAssignedId,
+    private readonly userAssignedName: TaskUserAssignedName,
+    private readonly userAssignedPicture: TaskUserAssignedPicture,
     private readonly status: TaskStatus,
     private readonly startedDate: TaskStartDate,
     private readonly dueToDate: TaskDueToDate
@@ -22,6 +26,8 @@ export class Task {
     title: TaskTitle,
     description: TaskDescription,
     userAssigned: TaskUserAssignedId,
+    userAssignedName: TaskUserAssignedName,
+    userAssignedPicture: TaskUserAssignedPicture,
     status: TaskStatus,
     startedDate: TaskStartDate,
     dueToDate: TaskDueToDate
@@ -31,6 +37,8 @@ export class Task {
       title,
       description,
       userAssigned,
+      userAssignedName,
+      userAssignedPicture,
       status,
       startedDate,
       dueToDate
@@ -43,9 +51,35 @@ export class Task {
       title: this.title.value,
       description: this.description.value,
       userAssignedId: this.userAssigned.toString(),
+      userAssignedName: this.userAssignedName.toString(),
+      userAssignedPicture: this.userAssignedPicture.toString(),
       status: this.status.toPrimitives(),
       startDate: this.startedDate.toString(),
       dueToDate: this.dueToDate.toString()
     }
+  }
+
+  public static fromPrimitives(
+    id: string,
+    title: string,
+    description: string,
+    userAssignedId: string,
+    userAssignedName: string,
+    userAssignedPicture: string,
+    status: string,
+    startedDate: string,
+    dueToDate: string
+  ) {
+    return new Task(
+      new TaskId(id),
+      new TaskTitle(title),
+      new TaskDescription(description),
+      new TaskUserAssignedId(userAssignedId),
+      new TaskUserAssignedName(userAssignedName),
+      new TaskUserAssignedPicture(userAssignedPicture),
+      TaskStatus.fromPrimitive(status),
+      new TaskStartDate(startedDate as unknown as Date),
+      new TaskDueToDate(dueToDate as unknown as Date)
+    )
   }
 }
