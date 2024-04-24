@@ -59,6 +59,20 @@ export class Task {
     }
   }
 
+  public changeStatus(status: TaskStatus) {
+    return new Task(
+      this.taskId,
+      this.title,
+      this.description,
+      this.userAssigned,
+      this.userAssignedName,
+      this.userAssignedPicture,
+      status,
+      this.startedDate,
+      this.dueToDate
+    )
+  }
+
   public static fromPrimitives(
     id: string,
     title: string,
@@ -78,8 +92,8 @@ export class Task {
       new TaskUserAssignedName(userAssignedName),
       new TaskUserAssignedPicture(userAssignedPicture),
       TaskStatus.fromPrimitive(status),
-      new TaskStartDate(startedDate as unknown as Date),
-      new TaskDueToDate(dueToDate as unknown as Date)
+      new TaskStartDate(new Date(startedDate)),
+      new TaskDueToDate(new Date(dueToDate))
     )
   }
 }

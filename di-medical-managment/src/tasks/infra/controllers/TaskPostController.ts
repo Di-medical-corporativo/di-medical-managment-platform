@@ -37,8 +37,8 @@ export class TaskPostController implements Controller {
         userAssigned: new UserAssignedId(userAssignedId),
         userAssignedName: new UserAssignedName(userAssignedName),
         userAssignedPicture: new UserAssignedPicture(userAssignedPicture),
-        startedDate: new TaskStartDate(startDate as unknown as Date),
-        dueToDate: new TaskDueToDate(dueToDate as unknown as Date)
+        startedDate: new TaskStartDate(new Date(startDate)),
+        dueToDate: new TaskDueToDate(new Date(dueToDate))
       })
 
       res.status(201).send()

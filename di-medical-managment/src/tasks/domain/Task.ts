@@ -65,8 +65,8 @@ export class Task {
       new UserAssignedName(userAssignedName),
       new UserAssignedPicture(userAssignedPicture),
       TaskStatus.fromPrimitive(status),
-      new TaskStartDate(startedDate as unknown as Date),
-      new TaskDueToDate(dueToDate as unknown as Date)
+      new TaskStartDate(new Date(startedDate)),
+      new TaskDueToDate(new Date(dueToDate))
     )
   }
 

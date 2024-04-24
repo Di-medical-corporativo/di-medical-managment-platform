@@ -11,6 +11,18 @@ export abstract class TaskStatus {
     }
   }
 
+  public isBacklog() {
+    return this.name.value === "Backlog"
+  }
+
+  public isDoing() {
+    return this.name.value === "En curso"
+  }
+
+  public isDone() {
+    return this.name.value === "Hecho"
+  }
+
   public static fromPrimitive(name: string): TaskStatus {
     let status = Backlog.create()
     switch(name) {

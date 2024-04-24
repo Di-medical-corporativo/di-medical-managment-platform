@@ -13,6 +13,8 @@ export class TaskFinder {
       orderBy,
       order
     )
+
+    console.log(criteria)
     
     const tasks = await this.taskRepository.matching(criteria)
     return tasks
