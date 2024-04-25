@@ -21,6 +21,42 @@ export class Task {
     private readonly startedDate: TaskStartDate,
     private readonly dueToDate: TaskDueToDate,
   ) {}
+
+  getTaskId(): TaskId {
+    return this.taskId;
+  }
+
+  getTitle(): TaskTitle {
+    return this.title;
+  }
+
+  getDescription(): TaskDescription {
+    return this.description;
+  }
+
+  getUserAssignedId(): UserAssignedId {
+    return this.userAssignedId;
+  }
+
+  getUserAssignedName(): UserAssignedName {
+    return this.userAssignedName;
+  }
+
+  getUserAssignedPicture(): UserAssignedPicture {
+    return this.userAssignedPicture;
+  }
+
+  getStatus(): TaskStatus {
+    return this.status;
+  }
+
+  getStartedDate(): TaskStartDate {
+    return this.startedDate;
+  }
+
+  getDueToDate(): TaskDueToDate {
+    return this.dueToDate;
+  }
   
   public static create(
     id: TaskId,
@@ -45,6 +81,7 @@ export class Task {
       dueToDate
     )
   }
+
 
   public static fromPrimitives(
     id: string,

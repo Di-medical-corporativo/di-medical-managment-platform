@@ -1,4 +1,3 @@
-import { OutputInfo } from 'sharp'
 import { Either } from '../domain/Either'
 import { BaseError } from '../domain/errors/Error'
 

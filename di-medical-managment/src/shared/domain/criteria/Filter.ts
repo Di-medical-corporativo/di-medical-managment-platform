@@ -16,7 +16,7 @@ export class Filter {
     public readonly value: FilterValue
   ) {}
 
-  static fromPrimitives(field: string, operator: string, value: string): any {
+  static fromPrimitives(field: string, operator: string, value: string): Filter {
     return new Filter(
 			new FilterField(field),
 			new FilterOperator(Operator[operator as keyof typeof Operator]),

@@ -10,7 +10,7 @@ interface TaskDb {
   description: string;
   userAssignedId: string;
   userAssignedName: string;
-  userAssignedPicture: string;
+  userAssgnedPicture: string;
   status: string;
   dueTo: string;
   endDate: string;
@@ -57,12 +57,11 @@ export class PrismaRepository implements TaskRepository {
       task.description,
       task.userAssignedId,
       task.userAssignedName,
-      task.userAssignedPicture,
+      task.userAssgnedPicture,
       task.status,
       task.startedDate,
       task.dueTo
     ))
-
     return tasks
   }
 
@@ -113,5 +112,9 @@ export class PrismaRepository implements TaskRepository {
     ))
 
     return tasks
+  }
+
+  async update(task: Task): Promise<void> {
+    
   }
 }

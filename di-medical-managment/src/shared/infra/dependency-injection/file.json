@@ -38,6 +38,19 @@
       "arguments": [
         "@Task.application.Searchall.TaskSearchAll"
       ]
+    },
+    "Task.application.Update.TaskUpdator": {
+      "class": "../../../tasks/application/Update/TaskUpdator",
+      "arguments": [
+        "@Task.application.Finder.TaskFinder",
+        "@Tasks.infra.repository"
+      ]
+    },
+    "Task.controller.TaskPutController": {
+      "class": "../../../tasks/infra/controllers/TaskPutController",
+      "arguments": [
+        "@Task.application.Update.TaskUpdator"
+      ]
     }
   }
 }
