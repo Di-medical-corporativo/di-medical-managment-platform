@@ -32,6 +32,7 @@ export class TaskCreator {
       params.userAssignedPicture,
       Backlog.create(),
       params.startedDate,
+      params.dueToDate,
       params.dueToDate
     )
     await this.taskRepository.save(task)

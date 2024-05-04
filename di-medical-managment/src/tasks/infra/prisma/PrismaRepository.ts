@@ -60,7 +60,8 @@ export class PrismaRepository implements TaskRepository {
       task.userAssgnedPicture,
       task.status,
       task.startedDate,
-      task.dueTo
+      task.dueTo,
+      task.endDate
     ))
     return tasks
   }
@@ -108,13 +109,27 @@ export class PrismaRepository implements TaskRepository {
       task.userAssgnedPicture,
       task.status,
       task.startedDate.toISOString(),
-      task.dueTo.toISOString()
+      task.dueTo.toISOString(),
+      task.endDate.toISOString()
     ))
 
     return tasks
   }
 
   async update(task: Task): Promise<void> {
-    
+    const tasksPrimitives = task.toPrimitives()
+    await this.prismaClient.task.update({
+      where: {
+        id: tasksPrimitives.id
+      },
+      data: {
+        description: tasksPrimitives.description,
+        status: tasksPrimitives.status.name,
+        title: tasksPrimitives.name,
+        dueTo: tasksPrimitives.dueDate,
+        endDate: tasksPrimitives.endDate,
+        startedDate: tasksPrimitives.startedDate
+      }
+    })
   }
 }

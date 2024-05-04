@@ -6,14 +6,26 @@ import { Task } from "src/entities/task/Task";
 export interface TaskFacadeI {
   registerTask(task: Task): Promise<Either<string, void>>
   kanban(): Promise<Either<string, Task[]>>
+  updateTask(updateValues: { taskId: string; status: string }): Promise<Either<string, void>>
 }
 
 export class TaskFacade implements TaskFacadeI{
   async registerTask(task: Task): Promise<Either<string, void>> {
     try {
       const { id, status, ...data } = task.toPrimitives()
-      console.log(data)
       await api.post('/tasks/new', data)
+      return Right.create(undefined)
+    } catch (error) {
+      const axiosError: AxiosError = error as AxiosError
+      const data = axiosError.response?.data as { message: string }
+      return Left.create(data.message)
+    }
+  }
+
+  async updateTask(updateValues: { taskId: string; status: string }): Promise<Either<string, void>> {
+    try {
+      const { taskId, ...taskValues } = updateValues
+      await api.put(`/tasks/${updateValues.taskId}/`, taskValues)
       return Right.create(undefined)
     } catch (error) {
       const axiosError: AxiosError = error as AxiosError

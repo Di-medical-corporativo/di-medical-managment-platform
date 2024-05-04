@@ -60,7 +60,8 @@ import {
   surveyListModuleLabel,
   taskModuleLabel,
   registerTaskModuleLabel,
-  taskModuleGlobalLabel
+  taskModuleGlobalLabel,
+  taskListModuleLabel
 } from '../../router/routesNames'
 import { useAuth } from 'src/composables/useAuth'
 import { QTreeNode } from 'quasar';
@@ -173,6 +174,10 @@ watch(
 
     if(value === taskModuleGlobalLabel) {
       route = RoutesPath.task.globalView.name
+    }
+
+    if(value === taskListModuleLabel) {
+      route = RoutesPath.task.list.name
     }
     
     router.push({ name: route })

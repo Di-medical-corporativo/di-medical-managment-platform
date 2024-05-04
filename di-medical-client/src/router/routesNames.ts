@@ -133,6 +133,10 @@ export const RoutesPath = {
     globalView: {
       route: 'global',
       name: 'task-global'
+    },
+    list: {
+      route: 'list',
+      name: 'task-list'
     }
   }
 }
@@ -230,7 +234,8 @@ export const surveyModule: PlatformModule = {
 
 export const taskModuleLabel = 'Asignaciones'
 export const registerTaskModuleLabel = 'Registrar asignacion'
-export const taskModuleGlobalLabel = 'Tareas global'
+export const taskModuleGlobalLabel = 'Kanban'
+export const taskListModuleLabel = 'Listado de tareas'
 export const taskModule: PlatformModule = {
   label: taskModuleLabel,
   children: [
@@ -239,6 +244,9 @@ export const taskModule: PlatformModule = {
     },
     {
       label: taskModuleGlobalLabel
+    },
+    {
+      label: taskListModuleLabel
     }
   ]
 } 

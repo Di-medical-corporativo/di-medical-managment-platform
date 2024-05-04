@@ -210,7 +210,7 @@ const totalDoing = computed(() => doing.value.length || 0)
 const getDone = computed(() => done.value.map(task => task.toPrimitives()))
 const totalDone = computed(() => done.value.length || 0)
 
-const moveTaskToState = (taskId: string, taskType: string, nextState: TaskStatus) => {
+const moveTaskToState = async (taskId: string, taskType: string, nextState: TaskStatus) => {
   let taskToUpdate
   // First get the task and delete it from current status array
   switch (taskType) {
@@ -232,7 +232,7 @@ const moveTaskToState = (taskId: string, taskType: string, nextState: TaskStatus
 
   // Depending on the nextState, move it
   taskToUpdate = taskToUpdate?.changeStatus(nextState)
-  
+
   if(nextState.isBacklog()) {
     backlog.value.push(taskToUpdate!)
   }
@@ -244,6 +244,8 @@ const moveTaskToState = (taskId: string, taskType: string, nextState: TaskStatus
   if(nextState.isDone()) {
     done.value.push(taskToUpdate!)
   }
+
+  await tasksApi.updateTask({ taskId, status: nextState.toPrimitives().name })
 
 }
 

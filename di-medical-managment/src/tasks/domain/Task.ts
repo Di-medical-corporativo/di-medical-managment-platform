@@ -1,6 +1,7 @@
 import { User } from "../../shared/domain/User"
 import { TaskDescription } from "./TaskDescription"
 import { TaskDueToDate } from "./TaskDueToDate"
+import { TaskEndDate } from "./TaskEndDate"
 import { TaskId } from "./TaskId"
 import { TaskStartDate } from "./TaskStartDate"
 import { Backlog, TaskStatus } from "./TaskStatus"
@@ -11,15 +12,16 @@ import { UserAssignedPicture } from "./UserAssignedPicture"
 
 export class Task {
   constructor(
-    private readonly taskId: TaskId,
-    private readonly title: TaskTitle,
-    private readonly description: TaskDescription,
-    private readonly userAssignedId: UserAssignedId,
-    private readonly userAssignedName: UserAssignedName,
-    private readonly userAssignedPicture: UserAssignedPicture,
-    private readonly status: TaskStatus,
-    private readonly startedDate: TaskStartDate,
-    private readonly dueToDate: TaskDueToDate,
+    private taskId: TaskId,
+    private title: TaskTitle,
+    private description: TaskDescription,
+    private userAssignedId: UserAssignedId,
+    private userAssignedName: UserAssignedName,
+    private userAssignedPicture: UserAssignedPicture,
+    private status: TaskStatus,
+    private startedDate: TaskStartDate,
+    private dueToDate: TaskDueToDate,
+    private endDate: TaskEndDate
   ) {}
 
   getTaskId(): TaskId {
@@ -57,6 +59,10 @@ export class Task {
   getDueToDate(): TaskDueToDate {
     return this.dueToDate;
   }
+
+  getEndDate(): TaskEndDate {
+    return this.endDate
+  }
   
   public static create(
     id: TaskId,
@@ -67,7 +73,8 @@ export class Task {
     userAssignedPiture: UserAssignedPicture,
     status: TaskStatus,
     startedDate: TaskStartDate,
-    dueToDate: TaskDueToDate
+    dueToDate: TaskDueToDate,
+    endDate: TaskEndDate
   ) {
     return new Task(
       id,
@@ -78,10 +85,34 @@ export class Task {
       userAssignedPiture,
       status,
       startedDate,
-      dueToDate
+      dueToDate,
+      endDate
     )
   }
 
+  public updateDueToDate(newDueToDate: TaskDueToDate) {
+    this.dueToDate = newDueToDate
+  }
+
+  public updateTitle(newTitle: TaskTitle) {
+    this.title = newTitle
+  }
+
+  public updateStatus(newStatus: TaskStatus) {
+    this.status = newStatus
+
+    if(newStatus.isDone()) {
+      this.endDate = new TaskEndDate(new Date())
+    }
+
+    if(newStatus.isDoing()) {
+      this.startedDate = new TaskStartDate(new Date())
+    }
+  }
+
+  public updateDescription(newDescription: TaskDescription) {
+    this.description = newDescription
+  }
 
   public static fromPrimitives(
     id: string,
@@ -92,7 +123,8 @@ export class Task {
     userAssignedPicture: string,
     status: string,
     startedDate: string,
-    dueToDate: string
+    dueToDate: string,
+    endDate: string
   ) {
     return new Task(
       new TaskId(id),
@@ -103,7 +135,8 @@ export class Task {
       new UserAssignedPicture(userAssignedPicture),
       TaskStatus.fromPrimitive(status),
       new TaskStartDate(new Date(startedDate)),
-      new TaskDueToDate(new Date(dueToDate))
+      new TaskDueToDate(new Date(dueToDate)),
+      new TaskEndDate(new Date(endDate))
     )
   }
 
@@ -117,7 +150,8 @@ export class Task {
       userAssignedPicture: this.userAssignedPicture.toString(),
       status: this.status.toPrimitives(),
       startedDate: this.startedDate.toString(),
-      dueDate: this.dueToDate.toString()
+      dueDate: this.dueToDate.toString(),
+      endDate: this.endDate.toString()
     }
   }
 }
