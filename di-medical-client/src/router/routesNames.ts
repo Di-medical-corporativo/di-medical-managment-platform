@@ -235,7 +235,7 @@ export const surveyModule: PlatformModule = {
 export const taskModuleLabel = 'Asignaciones'
 export const registerTaskModuleLabel = 'Registrar asignacion'
 export const taskModuleGlobalLabel = 'Kanban'
-export const taskListModuleLabel = 'Listado de tareas'
+export const taskListModuleLabel = 'Listado de asignaciones'
 export const taskModule: PlatformModule = {
   label: taskModuleLabel,
   children: [
