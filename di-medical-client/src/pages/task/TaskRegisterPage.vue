@@ -40,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import { ApiFacade } from 'src/api/ApiFacade'
 import { TaskFacade } from 'src/api/TaskFacade';
 import { useDate } from 'src/composables/useDate';
 import { Task } from 'src/entities/task/Task';
