@@ -7,7 +7,7 @@ export class TaskSearchAll {
   ) {}
 
   public async run() {
-    const tasks = await this.taskRepository.searchAll()
+    const tasks = await this.taskRepository.kanban()
     const taskPrimitives = tasks.map(task => task.toPrimitives())
     return taskPrimitives
   }

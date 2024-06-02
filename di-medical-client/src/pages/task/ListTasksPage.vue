@@ -18,7 +18,6 @@
         label="Usuario" 
         :options="userStore.getUsers" 
         v-model="userAssigned" 
-        emit-value
         :option-value="opt => opt" :option-label="opt => opt.firstName + ' ' + opt.lastName">
           <template v-slot:option="scope">
             <q-item v-bind="scope.itemProps">
@@ -39,11 +38,8 @@
         </q-select>
 
         <q-select v-model="status" :options="['Backlog', 'En curso', 'Hecho', 'Destiempo']" label="Estatus" class="q-ml-lg"/>
-
-
         <q-space />
-        <q-btn label="Buscar" no-caps icon="search" color="primary">
-        </q-btn>
+        <q-btn label="Buscar" no-caps icon="search" color="primary"></q-btn>
     </template>
 
       <template v-slot:body="props">

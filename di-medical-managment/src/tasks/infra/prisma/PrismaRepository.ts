@@ -66,7 +66,7 @@ export class PrismaRepository implements TaskRepository {
     return tasks
   }
 
-  async searchAll(): Promise<Task[]> {
+  async kanban(): Promise<Task[]> {
     const today = new Date()
     const fiveDaysAgo = new Date(today)
     fiveDaysAgo.setDate(today.getDate() - 5)
