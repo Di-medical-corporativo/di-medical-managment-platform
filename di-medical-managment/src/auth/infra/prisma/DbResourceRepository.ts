@@ -22,6 +22,7 @@ export class DbResourceRepository implements ResourceRepository {
       resource.name = createdResource.name
       return Right.create(resource)
     } catch (error) {
+      console.log(error)
       return Left.create(ServerError.SERVER_ERROR)
     }
   }

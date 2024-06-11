@@ -21,7 +21,9 @@ export class ResourceService {
     const roleCreatedOrError: Either<ServerError, Resource> = await this.resourceRepository.createResource(
       resource    
     )
+
     if(roleCreatedOrError.isLeft()) {
+      console.log(roleCreatedOrError.error)
       return this.unfoldError(roleCreatedOrError.error)
     }
     return roleCreatedOrError

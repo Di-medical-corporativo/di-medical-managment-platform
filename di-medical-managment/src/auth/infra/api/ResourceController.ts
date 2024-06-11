@@ -18,6 +18,7 @@ export class ResourceRestController {
   public async createResource (@Body() resource: CreateResourceDto, @Res() response: Response) {
     const viewCreated = await this.resourceService.createResource(resource)
     if(viewCreated.isLeft()){
+      console.log(viewCreated.error)
       response.status(viewCreated.error.status)
       return viewCreated.error
     }
