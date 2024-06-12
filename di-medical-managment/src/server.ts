@@ -3,8 +3,6 @@ import express, { Express } from 'express'
 import { useContainer, useExpressServer } from 'routing-controllers'
 import Container, { Inject, Service } from 'typedi'
 import helmet from 'helmet'
-import path from 'path'
-
 import { LoggerI } from './shared/application/LoggerInterface'
 import { ServerI } from './shared/application/Server'
 import { Logger } from './shared/application/Logs4js'
@@ -20,8 +18,6 @@ import { ClientRestController } from './fleet/infra/api/ClientController'
 import { ItineraryRestController } from './fleet/infra/api/ItineraryController'
 import { SurveyRestController } from './survey/infra/api/SurveyController'
 import { TaskRouter } from './tasks/infra/routes/TaskRouter'
-import { ContainerBuilder, JsonFileLoader } from 'node-dependency-injection'
-
 
 @Service()
 export class Server implements ServerI {
@@ -65,7 +61,6 @@ export class Server implements ServerI {
     this._app.use(helmet())
   }
   
-
   private initRoutes (container: any) {
     this._app.use(TaskRouter.getRouter(container))
   }
