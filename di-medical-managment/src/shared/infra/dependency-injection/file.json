@@ -51,6 +51,15 @@
       "arguments": [
         "@Task.application.Update.TaskUpdator"
       ]
+    },
+    "Roles.application.Create.TaskCreator": {
+      "class": "../../../roles/application/Create/RoleCreator"
+    },
+    "Roles.controllers.RoleCreateController": {
+      "class": "../../../roles/infra/controllers/RoleCreateController",
+      "arguments": [
+        "@Roles.application.Create.TaskCreator"
+      ]
     }
   }
 }

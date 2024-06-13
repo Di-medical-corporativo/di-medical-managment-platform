@@ -4,11 +4,17 @@ const common = [
 ]
 
 const users = [
-  '--require-module ts-node/register',
+  ...common,
   'test/integration/features/users/*.feature', // Path to feature files
   '--require test/integration/features/users/step_definitions/*.steps.ts' // Path to step definitions
 ].join(' ');
 
+const roles = [
+  '--require-module ts-node/register',
+  'test/integration/features/roles/*.feature', // Path to feature files
+  '--require test/integration/features/roles/step_definitions/*.steps.ts' // Path to step definitions
+].join(' ');
+
 module.exports = {
-  default: users
+  default: roles
 }

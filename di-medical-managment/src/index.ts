@@ -6,12 +6,11 @@ import Container from 'typedi'
 import { setUpContainer } from './shared/infra/dependency-injection'
 
 class Bootstrap {
-  private readonly server: ServerI = Container.get<ServerI>(Server)
-
   async start () {
-    const container = await setUpContainer()
-    return this.server.start(container)
+    const container = await setUpContainer();
+    const server: ServerI = new Server(container); 
+    return server.start();
   }
 }
 
-new Bootstrap().start()
+new Bootstrap().start();

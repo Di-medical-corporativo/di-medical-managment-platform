@@ -1,3 +1,4 @@
 export interface ServerI {
-  start: (container: any) => void
+  start: () => void
+  stop: () => void
 }
