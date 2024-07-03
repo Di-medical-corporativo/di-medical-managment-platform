@@ -18,7 +18,7 @@ interface TaskDb {
 }
 
 export class PrismaRepository implements TaskRepository {
-  private readonly prismaClient = new PrismaClient()
+  private readonly prismaClient = new PrismaClient();
 
   async save(task: Task): Promise<void> {
     try {

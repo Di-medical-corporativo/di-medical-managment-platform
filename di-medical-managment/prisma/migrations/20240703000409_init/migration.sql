@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "birthDate" SET DATA TYPE TEXT,
+ALTER COLUMN "updatedAt" DROP NOT NULL;

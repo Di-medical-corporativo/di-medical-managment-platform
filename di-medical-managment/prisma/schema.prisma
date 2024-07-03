@@ -9,29 +9,25 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id        String @id
   firstName String
   lastName  String
-  birthDate DateTime
-  NSS       String
   job       String
-  picture   String
   phone     String
   email     String
   isActive  Boolean
   createdAt DateTime
-  updatedAt DateTime
   loginId String? @unique
+  admin Boolean
   login     Login? @relation(fields: [loginId], references: [id])
   sucursalId String
   sucursal Sucursal @relation(fields: [sucursalId], references: [id])
-  roles UserHasRole[]
   points Point[]
   tasks Task[]
 }
 
 model Login {
-  id           String   @id @default(uuid())
+  id           String @id
   email        String @unique
   passwordHash String
   passwordSalt String
@@ -41,50 +37,16 @@ model Login {
 }
 
 model Sucursal {
-  id             String @id @default(uuid())
+  id             String @id
   name           String
   address        String
   phone          String
-  dimedicalBrand String
   user User[]
   itineraries Itinerary[]
 }
 
-model Role {
-  id              String            @id @default(uuid())
-  name            String
-  description     String
-  resources ResourcesByRole[]
-  users UserHasRole[]
-}
-
-model Resource {
-  id              String            @id @default(uuid())
-  name            String
-  description     String
-  roles ResourcesByRole[]
-}
-
-model ResourcesByRole {
-  role      Role     @relation(fields: [roleId], references: [id])
-  roleId     String
-  resource   Resource @relation(fields: [resourceId], references: [id])
-  resourceId String
-
-  @@id([roleId, resourceId])
-}
-
-model UserHasRole {
-  user User @relation(fields: [userId], references: [id])
-  userId String
-  role Role @relation(fields: [roleId], references: [id])
-  roleId String
-
-  @@id([userId, roleId])
-}
-
 model Truck {
-  id String @id @default(uuid())
+  id String @id
   plates String
   model String
   brand String
@@ -95,7 +57,7 @@ model Truck {
 }
 
 model Incident {
-  id String @id @default(uuid())
+  id String @id
   description String
   picture String
   truck Truck @relation(fields: [truckId], references: [id])
@@ -106,7 +68,7 @@ model Incident {
 }
 
 model Client {
-  id String @id @default(uuid())
+  id String @id
   name String
   address String
   isActive Boolean
@@ -114,7 +76,7 @@ model Client {
 }
 
 model Point {
-  id String @id @default(uuid())
+  id String @id
   sign String?
   client Client @relation(fields: [clientId], references: [id])
   clientId String
@@ -135,7 +97,7 @@ model Point {
 }
 
 model Invoce {
-  invoceId String @id @default(uuid())
+  invoceId String @id
   invoiceNumber String
   description String?
   point Point @relation(fields: [pointId], references: [id])
@@ -143,7 +105,7 @@ model Invoce {
 }
 
 model Itinerary {
-  id String @id @default(uuid())
+  id String @id
   sucursal Sucursal @relation(fields: [sucursalId], references: [id])
   sucursalId String
   points Point[]
@@ -155,7 +117,7 @@ model Itinerary {
 }
 
 model Survey {
-  id String @id @default(uuid())
+  id String @id
   name String
   description String
   startDate DateTime
@@ -167,7 +129,7 @@ model Survey {
 }
 
 model Question {
-  id String @id @default(uuid())
+  id String @id
   text String
   order Int
   surveyId String
@@ -179,13 +141,13 @@ model Question {
 }
 
 model QuestionType {
-  id String @id @default(uuid())
+  id String @id
   type String
   questions Question[]
 }
 
 model QuestionOption {
-  id String @id @default(uuid())
+  id String @id
   value String
   order Int
   questionId String
@@ -194,7 +156,7 @@ model QuestionOption {
 }
 
 model SurveyResponse {
-  id String @id @default(uuid())
+  id String @id
   surveyId String
   survey Survey  @relation(fields: [surveyId], references: [id])
   point Point?
@@ -204,7 +166,7 @@ model SurveyResponse {
 }
 
 model AnswerQuestion {
-  id String @id @default(uuid())
+  id String @id
   responseId String
   response SurveyResponse @relation(fields: [responseId], references: [id])
   questionId String
@@ -214,7 +176,7 @@ model AnswerQuestion {
 }
 
 model AnswerOption {
-  answerOptionId String @id @default(uuid())
+  answerOptionId String @id
   answerId String
   answer AnswerQuestion @relation(fields: [answerId], references: [id])
   optionId String

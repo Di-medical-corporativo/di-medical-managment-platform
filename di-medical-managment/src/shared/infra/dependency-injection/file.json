@@ -52,14 +52,17 @@
         "@Task.application.Update.TaskUpdator"
       ]
     },
-    "Roles.application.Create.TaskCreator": {
-      "class": "../../../roles/application/Create/RoleCreator"
+
+    "Sucursal.infra.repository": {
+      "class": "../../../sucursal/infra/prisma/PrismaSucursalRepository"
     },
-    "Roles.controllers.RoleCreateController": {
-      "class": "../../../roles/infra/controllers/RoleCreateController",
-      "arguments": [
-        "@Roles.application.Create.TaskCreator"
-      ]
+    "Sucural.application.Create.SucursalCreator": {
+      "class": "../../../sucursal/application/Create/SucursalCreator",
+      "arguments": ["@Sucursal.infra.repository"]
+    },
+    "Sucural.controller.SucursalCreateController": {
+      "class": "../../../sucursal/infra/controllers/SucursalCreateController",
+      "arguments": ["@Sucural.application.Create.SucursalCreator"]
     }
   }
 }

@@ -9,12 +9,12 @@ const users = [
   '--require test/integration/features/users/step_definitions/*.steps.ts' // Path to step definitions
 ].join(' ');
 
-const roles = [
+const sucursal = [
   '--require-module ts-node/register',
-  'test/integration/features/roles/*.feature', // Path to feature files
-  '--require test/integration/features/roles/step_definitions/*.steps.ts' // Path to step definitions
+  'test/integration/features/sucursal/*.feature', // Path to feature files
+  '--require test/integration/features/sucursal/step_definitions/*.steps.ts' // Path to step definitions
 ].join(' ');
 
 module.exports = {
-  default: roles
+  default: sucursal
 }
