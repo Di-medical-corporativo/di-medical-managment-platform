@@ -1,12 +1,10 @@
-import { Server } from '../../../../../src/server';
-import { setUpContainer } from '../../../../../src/shared/infra/dependency-injection';
+import { WarehouseBackendApp } from '../../../../../src/apps/warehouse/backend/WarehouseBackendApp';
 import { AfterAll, BeforeAll } from '@cucumber/cucumber';
 
-let application: Server;
+let application: WarehouseBackendApp;
 
 BeforeAll(async () => {
-  const container = await setUpContainer();
-  application = new Server(container);
+  application = new WarehouseBackendApp();
   await application.start();
 });
 

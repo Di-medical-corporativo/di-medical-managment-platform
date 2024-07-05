@@ -1,5 +1,5 @@
 import { Server } from '../../../../../src/server';
-import { setUpContainer } from '../../../../../src/shared/infra/dependency-injection';
+import { setUpContainer } from '../../../../../src/apps/warehouse/backend/dependency-injection';
 import { AfterAll, BeforeAll } from '@cucumber/cucumber';
 
 let application: Server;

@@ -3,7 +3,7 @@ const common = [
   '--format progress'
 ]
 
-const users = [
+const user = [
   ...common,
   'test/integration/features/users/*.feature', // Path to feature files
   '--require test/integration/features/users/step_definitions/*.steps.ts' // Path to step definitions
@@ -16,5 +16,6 @@ const sucursal = [
 ].join(' ');
 
 module.exports = {
-  default: sucursal
+  sucursal,
+  user
 }
