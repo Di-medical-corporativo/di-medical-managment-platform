@@ -18,17 +18,6 @@ services:
       - "8080:5432"
     volumes:
       - db:/var/lib/postgresql/data
-  api:
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./di-medical-managment
-    depends_on:
-      - db
-    volumes:
-      - /server/node_modules/
-      - ./di-medical-managment:/server
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres
   client:
     build:
       dockerfile: Dockerfile.dev
