@@ -1,23 +1,19 @@
-import { Either, Left, Right } from '../Shared/domain/Either'
-import { BaseError } from '../Shared/domain/errors/Error'
 import { AuthenticationService } from './AuthenticationService'
 import bcrypt from 'bcrypt'
-import { UnknowError } from '../auth/domain/Errors'
-import { Service } from 'typedi'
 const SALT_ROUNDS = 10
 
-@Service()
 export class Bcrypt implements AuthenticationService {
-  async encryptPassword(password: string): Promise<Either<BaseError, { hash: string; salt: string; }>> {
+  async encryptPassword(password: string): Promise<{ hash: string; salt: string; }> {
     try {
-      const salt = await bcrypt.genSalt(SALT_ROUNDS)
-      const hash = await bcrypt.hash(password, salt)
-      return Right.create({ hash, salt })
+      const salt = await bcrypt.genSaltSync(SALT_ROUNDS)
+      const hash = await bcrypt.hashSync(password, salt)
+      return { hash, salt }
     } catch (error) {
-      return Left.create(new UnknowError())
+      throw new Error();
     }
   }
-  async validatePassword (password: string, hash: string): Promise<Either<boolean, boolean>> {
+
+  async validatePassword (password: string, hash: string): Promise<boolean>> {
     try {
       const isCorrect = await bcrypt.compare(password, hash)
 

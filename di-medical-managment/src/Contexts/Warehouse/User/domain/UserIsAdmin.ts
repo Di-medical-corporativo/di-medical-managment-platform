@@ -1,3 +1,3 @@
-import { ValueObject } from "../../shared/domain/vo/ValueObject";
+import { ValueObject } from "../../../Shared/domain/vo/ValueObject";
 
 export class UserIsAdmin extends ValueObject<boolean> {}

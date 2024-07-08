@@ -1,3 +1,4 @@
+import prisma from '../../../Contexts/Shared/infra/persistence/PrismaDbConnection';
 import { WarehouseBackendApp } from './WarehouseBackendApp';
 
 try {

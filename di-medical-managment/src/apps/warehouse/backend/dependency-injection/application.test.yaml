@@ -1,17 +1,29 @@
 services:
   Contexts.Warehouse.Sucursal.infra.persistence.SucursalRepository:
     class: ../../../../Contexts/Warehouse/Sucursal/infra/persistence/FakeSucursalRepository
-  
   Contexts.Warehouse.Sucursal.application.Create.SucursalCreator:
     class: ../../../../Contexts/Warehouse/Sucursal/application/Create/SucursalCreator
     arguments: ["@Contexts.Warehouse.Sucursal.infra.persistence.SucursalRepository"]
   Contexts.Warehouse.Sucursal.application.Update.SucursalUpdator:
     class: ../../../../Contexts/Warehouse/Sucursal/application/Update/SucursalUpdator
     arguments: ["@Contexts.Warehouse.Sucursal.infra.persistence.SucursalRepository"]
- 
   Apps.warehouse.backend.controllers.SucursalCreateController:
     class: ../controllers/SucursalCreateController
     arguments: ["@Contexts.Warehouse.Sucursal.application.Create.SucursalCreator"]
   Apps.warehouse.backend.controllers.SucursalUpdateController:
     class: ../controllers/SucursalUpdateController
     arguments: ["@Contexts.Warehouse.Sucursal.application.Update.SucursalUpdator"]
+
+  Contexts.Warehouse.User.infra.persistence.UserRepository:
+    class: ../../../../Contexts/Warehouse/User/infra/persistence/FakeUserRepository
+  Contexts.Warehouse.User.application.Create.UserCreator:
+    class: ../../../../Contexts/Warehouse/User/application/Create/UserCreator
+    arguments: [
+    "@Contexts.Warehouse.User.infra.persistence.UserRepository",
+    "@Contexts.Warehouse.Sucursal.infra.persistence.SucursalRepository"
+    ]
+  Apps.warehouse.backend.controllers.UserCreateController:
+    class: ../controllers/UserCreateController
+    arguments: [
+      "@Contexts.Warehouse.User.application.Create.UserCreator"
+    ]

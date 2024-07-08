@@ -1,14 +1,14 @@
-import { PrismaClient } from "@prisma/client";
 import { SucursalRepository } from "../../domain/SucursalRepository";
 import { Sucursal } from "../../domain/Sucursal";
 import { SucursalId } from "../../domain/SucursalId";
+import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
 
 export class PrismaSucursalRepository implements SucursalRepository {
-  private readonly prismaClient = new PrismaClient();
 
   async save(sucursal: Sucursal): Promise<void> {
     const sucursalPlain = sucursal.toPrimitives();
-    await this.prismaClient.sucursal.create({
+    console.log(sucursalPlain);
+    await prisma.sucursal.create({
       data: {
         id: sucursalPlain.id,
         address: sucursalPlain.address,
@@ -20,7 +20,7 @@ export class PrismaSucursalRepository implements SucursalRepository {
 
   async update(sucursal: Sucursal): Promise<void> {
     const sucursalPlain = sucursal.toPrimitives();
-    await this.prismaClient.sucursal.update({
+    await prisma.sucursal.update({
       where: {
         id: sucursalPlain.id
       },
@@ -33,7 +33,7 @@ export class PrismaSucursalRepository implements SucursalRepository {
   }
 
   async search(id: SucursalId): Promise<Sucursal | null> {
-    const result = await this.prismaClient.sucursal.findFirst({
+    const result = await prisma.sucursal.findFirst({
       where: {
         id: id.toString()
       }

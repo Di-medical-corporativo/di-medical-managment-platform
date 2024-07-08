@@ -14,7 +14,8 @@
     "lint": "npx ts-standard --fix",
     "start": "node ./dist/src/index.js",
     "dev:warehouse:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/warehouse/backend/start.ts",
-    "test:warehouse:backend": "NODE_ENV=test cucumber-js -p sucursal"
+    "test:warehouse:backend:sucursal": "NODE_ENV=test cucumber-js -p sucursal",
+    "test:warehouse:backend:user": "NODE_ENV=test cucumber-js -p user"
   },
   "dependencies": {
     "@prisma/client": "5.5.2",

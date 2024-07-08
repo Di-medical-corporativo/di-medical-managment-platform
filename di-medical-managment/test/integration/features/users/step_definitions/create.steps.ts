@@ -6,8 +6,13 @@ import assert from "assert";
 let _request: request.Test;
 let _response: request.Response;
 
-Given('I send a PUT request to {string} with body:', (route: string, body: string) => {
-  _request = request(application.getHttpServer()).put(route).send(JSON.parse(body))
+
+Given('I create a sucursal {string} with body:', async (route: string,body: string) => {
+  await request(application.httpServer).post(route).send(JSON.parse(body)).expect(201);
+})
+
+Given('I send a POST request to {string} with body:', (route: string, body: string) => {
+  _request = request(application.httpServer).post(route).send(JSON.parse(body))
 });
 
 Then('the response status code should be {int}', async (status: number) => {
@@ -15,5 +20,5 @@ Then('the response status code should be {int}', async (status: number) => {
 });
 
 Then('the body should be empty', () => {
- assert.deepStrictEqual(_response.body, {})
+  assert.deepStrictEqual(_response.body, {})
 });

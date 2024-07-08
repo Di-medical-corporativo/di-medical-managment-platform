@@ -1,12 +1,5 @@
-version: '1'
+version: '3.8'
 services:
-  nginx:
-    restart: always
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./nginx
-    ports:
-      - "3050:80"
   db:
     image: postgres:14.1-alpine
     restart: always
@@ -18,18 +11,5 @@ services:
       - "8080:5432"
     volumes:
       - db:/var/lib/postgresql/data
-  client:
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./di-medical-client
-    depends_on:
-      - api
-    volumes:
-      - /client/node_modules/
-      - ./di-medical-client:/client
-    environment:
-      - WDS_SOCKET_PORT=0
-    ports:
-      - "9000:9000"
 volumes:
   db:

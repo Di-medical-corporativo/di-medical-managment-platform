@@ -1,3 +1,4 @@
+import { Sucursal } from "../../Sucursal/domain/Sucursal";
 import { UserDate } from "./UserDate";
 import { UserEmail } from "./UserEmail";
 import { UserFirstName } from "./UserFirstName";
@@ -16,6 +17,7 @@ export class User {
     private phone: UserPhone,
     private email: UserEmail,
     private isAdmin: UserIsAdmin,
+    private sucursal: Sucursal,
     private createdAt: UserDate
   ) {}
 
@@ -27,6 +29,7 @@ export class User {
     phone: UserPhone,
     email: UserEmail,
     isAdmin: UserIsAdmin,
+    sucursal: Sucursal
     createdAt: UserDate
   }) {
     return new User(
@@ -37,6 +40,7 @@ export class User {
       data.phone,
       data.email,
       data.isAdmin,
+      data.sucursal,
       data.createdAt
     );
   }
@@ -49,6 +53,12 @@ export class User {
     phone: string;
     email: string;
     isAdmin: boolean;
+    sucursal: {
+      sucursalId: string;
+      sucursalName: string;
+      sucursalAddress: string;
+      sucursalPhone: string;
+    };
     createdAt: string;
   }) {
     return new User(
@@ -59,8 +69,14 @@ export class User {
       new UserPhone(data.phone),
       new UserEmail(data.email),
       new UserIsAdmin(data.isAdmin),
+      Sucursal.fromPrimitives({
+        id: data.sucursal.sucursalId,
+        name: data.sucursal.sucursalName,
+        address: data.sucursal.sucursalAddress,
+        phone: data.sucursal.sucursalPhone
+      }),
       new UserDate(data.createdAt)
-    )
+    );
   }
 
   public toPrimitives() {
@@ -72,6 +88,7 @@ export class User {
       phone: this.phone.toString(),
       email: this.email.toString(),
       isAdmin: this.isAdmin.value,
+      sucursal: this.sucursal.toPrimitives(),
       createdAt: this.createdAt.toString()
     }
   }
