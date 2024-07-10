@@ -15,7 +15,14 @@ const sucursal = [
   '--require test/integration/features/sucursal/step_definitions/*.steps.ts' // Path to step definitions
 ].join(' ');
 
+const truck = [
+  '--require-module ts-node/register',
+  'test/integration/features/truck/*.feature', // Path to feature files
+  '--require test/integration/features/truck/step_definitions/*.steps.ts' // Path to step definitions
+].join(' ');
+
 module.exports = {
   sucursal,
-  user
+  user,
+  truck
 }

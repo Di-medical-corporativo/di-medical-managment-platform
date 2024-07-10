@@ -50,7 +50,6 @@ model Truck {
   plates String
   model String
   brand String
-  picture String
   isActive Boolean @default(true)
   incidents Incident[]
   points Point[]
@@ -59,7 +58,6 @@ model Truck {
 model Incident {
   id String @id
   description String
-  picture String
   truck Truck @relation(fields: [truckId], references: [id])
   truckId String
   isActive Boolean

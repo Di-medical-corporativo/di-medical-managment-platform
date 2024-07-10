@@ -3,16 +3,13 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
-    "birthDate" TIMESTAMP(3) NOT NULL,
-    "NSS" TEXT NOT NULL,
     "job" TEXT NOT NULL,
-    "picture" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "isActive" BOOLEAN NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
     "loginId" TEXT,
+    "admin" BOOLEAN NOT NULL,
     "sucursalId" TEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -36,43 +33,8 @@ CREATE TABLE "Sucursal" (
     "name" TEXT NOT NULL,
     "address" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
-    "dimedicalBrand" TEXT NOT NULL,
 
     CONSTRAINT "Sucursal_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Role" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-
-    CONSTRAINT "Role_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Resource" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-
-    CONSTRAINT "Resource_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "ResourcesByRole" (
-    "roleId" TEXT NOT NULL,
-    "resourceId" TEXT NOT NULL,
-
-    CONSTRAINT "ResourcesByRole_pkey" PRIMARY KEY ("roleId","resourceId")
-);
-
--- CreateTable
-CREATE TABLE "UserHasRole" (
-    "userId" TEXT NOT NULL,
-    "roleId" TEXT NOT NULL,
-
-    CONSTRAINT "UserHasRole_pkey" PRIMARY KEY ("userId","roleId")
 );
 
 -- CreateTable
@@ -81,7 +43,6 @@ CREATE TABLE "Truck" (
     "plates" TEXT NOT NULL,
     "model" TEXT NOT NULL,
     "brand" TEXT NOT NULL,
-    "picture" TEXT NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "Truck_pkey" PRIMARY KEY ("id")
@@ -250,18 +211,6 @@ ALTER TABLE "User" ADD CONSTRAINT "User_loginId_fkey" FOREIGN KEY ("loginId") RE
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_sucursalId_fkey" FOREIGN KEY ("sucursalId") REFERENCES "Sucursal"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ResourcesByRole" ADD CONSTRAINT "ResourcesByRole_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ResourcesByRole" ADD CONSTRAINT "ResourcesByRole_resourceId_fkey" FOREIGN KEY ("resourceId") REFERENCES "Resource"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "UserHasRole" ADD CONSTRAINT "UserHasRole_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "UserHasRole" ADD CONSTRAINT "UserHasRole_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Incident" ADD CONSTRAINT "Incident_truckId_fkey" FOREIGN KEY ("truckId") REFERENCES "Truck"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
