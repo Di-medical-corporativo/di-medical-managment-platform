@@ -16,4 +16,40 @@ export class PrismaTruckRepository implements TruckRepository {
       }
     });
   }
+
+  async update(truck: Truck): Promise<void> {
+    const plainTruck = truck.toPrimitives();
+
+    await prisma.truck.update({
+      where: {
+        id: plainTruck.id
+      },
+      data: {
+        brand: plainTruck.brand,
+        model: plainTruck.model,
+        plates: plainTruck.plate
+      }
+    });
+  }
+
+  async search(id: string): Promise<Truck | null> {
+    const truckDB = await prisma.truck.findFirst({
+      where: {
+        id
+      }
+    });
+
+    if(!truckDB) {
+      return null;
+    }
+    
+    const truck = Truck.fromPrimities({
+      id: truckDB.id,
+      brand: truckDB.brand,
+      model: truckDB.model,
+      plate: truckDB.plates
+    });
+
+    return truck;
+  }
 }

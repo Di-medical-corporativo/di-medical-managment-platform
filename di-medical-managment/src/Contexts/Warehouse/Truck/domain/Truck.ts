@@ -12,6 +12,18 @@ export class Truck {
     private brand: TruckBrand
   ) {}
 
+  public updatePlate(plate: TruckPlate) {
+    this.plate = plate;
+  }
+
+  public updateModel(model: TruckModel) {
+    this.model = model;
+  }
+
+  public updateBrand(brand: TruckBrand) {
+    this.brand = brand;
+  }
+
   static create(data: {
     id: TruckId,
     plate: TruckPlate,

@@ -8,7 +8,9 @@ export class PrismaUserRepository implements UserRepository {
   
   async save(user: User, password: UserPassword): Promise<void> {
     const userPlain = user.toPrimitives();
+
     const passwordPlain = password.toPrimitives();
+    
     await prisma.user.create({
       data: {
         id: userPlain.id,
@@ -54,7 +56,9 @@ export class PrismaUserRepository implements UserRepository {
       }
     });
 
-    if(!userDB) return null;
+    if(!userDB) {
+      return null
+    };
 
     const user = User.fromPrimitives({
       id: userDB.id,

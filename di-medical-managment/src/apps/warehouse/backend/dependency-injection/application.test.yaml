@@ -35,8 +35,18 @@ services:
     arguments: [
     "@Contexts.Warehouse.Truck.infra.persistence.TruckRepository",
     ]
+  Contexts.Warehouse.Truck.application.Update.TruckUpdator:
+    class: ../../../../Contexts/Warehouse/Truck/application/Update/TruckUpdator
+    arguments: [
+    "@Contexts.Warehouse.Truck.infra.persistence.TruckRepository",
+  ]
   Apps.warehouse.backend.controllers.TruckCreateController:
     class: ../controllers/truck/TruckCreateController
     arguments: [
       "@Contexts.Warehouse.Truck.application.Create.TruckCreator"
+    ]
+  Apps.warehouse.backend.controllers.TruckUpdateController:
+    class: ../controllers/truck/TruckUpdateController
+    arguments: [
+      "@Contexts.Warehouse.Truck.application.Update.TruckUpdator"
     ]
