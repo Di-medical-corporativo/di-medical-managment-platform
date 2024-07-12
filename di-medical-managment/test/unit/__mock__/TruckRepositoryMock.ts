@@ -1,18 +1,36 @@
 import { Incident } from "../../../src/Contexts/Warehouse/Truck/domain/Incident";
+import { IncidentDate } from "../../../src/Contexts/Warehouse/Truck/domain/IncidentDate";
+import { IncidentId } from "../../../src/Contexts/Warehouse/Truck/domain/IncidentId";
 import { Truck } from "../../../src/Contexts/Warehouse/Truck/domain/Truck";
 import { TruckRepository } from "../../../src/Contexts/Warehouse/Truck/domain/TruckRepository";
 
 export class TruckRepositoryMock implements TruckRepository {
   private saveMock: jest.Mock;
+  
   private searchMock: jest.Mock;
+  
+  private searchIncidentMock: jest.Mock;
+  
   private updateMock: jest.Mock;
+  
   private saveIncidentMock: jest.Mock;
+  
+  private removeIncidentMock: jest.Mock;
 
   private truck = Truck.fromPrimities({
     "id": "fc30f0f9-0294-44c0-93e5-01a9ec2446ed",
     "plate": "12345",
     "model": "model",
     "brand": "brand"
+  });
+
+  private incident = Incident.fromPrimitives({
+    "id": "e3b51eb6-05ad-4a76-8497-d782d5f0aa20",
+    "description": "test",
+    "startDate": "2023-07-02T14:30:00.123Z",
+    "truckId": "fc30f0f9-0294-44c0-93e5-01a9ec2446ed",
+    "isActive": true,
+    "finishDate": "2023-07-02T14:30:00.123Z"
   });
 
   constructor() {
@@ -29,8 +47,21 @@ export class TruckRepositoryMock implements TruckRepository {
 
       return foundTruck || null;
     });
+
+
+    this.searchIncidentMock = jest.fn().mockImplementation((id) => {
+      const incidents: Incident[] = [];
+
+      incidents.push(this.incident);
+
+      const foundIncident = incidents.find(incident => incident.toPrimitives().id === id.toString());
+
+      return foundIncident || null;
+    });
     
     this.saveIncidentMock = jest.fn();
+
+    this.removeIncidentMock = jest.fn();
   }
 
   async save(truck: Truck): Promise<void> {
@@ -47,6 +78,14 @@ export class TruckRepositoryMock implements TruckRepository {
 
   async saveIncident(incident: Incident): Promise<void> {
     this.saveIncidentMock(incident);
+  }
+
+  async searchIncident(id: IncidentId): Promise<Incident | null> {
+    return this.searchIncidentMock(id);
+  }
+
+  async removeIncident(data: { id: IncidentId; finishDate: IncidentDate; }): Promise<void> {
+    this.removeIncidentMock(data);
   }
 
   assertSaveHaveBeenCalledWith(expected: Truck): void {
@@ -67,5 +106,9 @@ export class TruckRepositoryMock implements TruckRepository {
 
   assertSaveIncidentHaveWith(expected: Incident) {
     expect(this.saveIncidentMock).toHaveBeenCalledWith(expected);
+  }
+
+  assertRemoveIncidentHaveBeenCalledWith(expected: { id: IncidentId; finishDate: IncidentDate; }) {
+    expect(this.removeIncidentMock).toHaveBeenCalledWith(expected);
   }
 }

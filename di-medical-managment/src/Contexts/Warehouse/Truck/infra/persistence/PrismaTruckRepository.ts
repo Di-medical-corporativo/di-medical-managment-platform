@@ -1,5 +1,7 @@
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
 import { Incident } from "../../domain/Incident";
+import { IncidentDate } from "../../domain/IncidentDate";
+import { IncidentId } from "../../domain/IncidentId";
 import { Truck } from "../../domain/Truck";
 import { TruckRepository } from "../../domain/TruckRepository";
 
@@ -71,5 +73,40 @@ export class PrismaTruckRepository implements TruckRepository {
         }
       }
     });
+  }
+
+  async removeIncident(data: { id: IncidentId, finishDate: IncidentDate }): Promise<void> {
+    await prisma.incident.update({
+      where: {
+        id: data.id.toString()
+      },
+      data: {
+        finishedDate: data.finishDate.toString(),
+        isActive: false
+      }
+    });
+  }
+
+  async searchIncident(id: IncidentId): Promise<Incident | null> {
+    const incidentDB = await prisma.incident.findFirst({
+      where: {
+        id: id.toString()
+      }
+    });
+  
+    if(!incidentDB) {
+      return null;
+    }
+
+    const incident = Incident.fromPrimitives({
+      id: incidentDB.id,
+      description: incidentDB.description,
+      finishDate: incidentDB.finishedDate.toISOString(),
+      isActive: incidentDB.isActive,
+      startDate: incidentDB.startDate.toISOString(),
+      truckId: incidentDB.truckId
+    });
+
+    return incident;
   }
 }

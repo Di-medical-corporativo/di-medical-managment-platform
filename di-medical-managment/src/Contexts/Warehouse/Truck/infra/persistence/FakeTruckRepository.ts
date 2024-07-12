@@ -1,4 +1,6 @@
 import { Incident } from "../../domain/Incident";
+import { IncidentDate } from "../../domain/IncidentDate";
+import { IncidentId } from "../../domain/IncidentId";
 import { Truck } from "../../domain/Truck";
 import { TruckRepository } from "../../domain/TruckRepository";
 
@@ -38,5 +40,14 @@ export class FakeTruckRepository implements TruckRepository {
     } else {
       this.incidents.push(incident);
     }
+  }
+
+  async removeIncident(data: { id: IncidentId; finishDate: IncidentDate; }): Promise<void> {
+    
+  }
+
+  async searchIncident(id: IncidentId): Promise<Incident | null> {
+    const incident = this.incidents.find(i => i.toPrimitives().id === id.toString());
+    return incident ? incident : null;
   }
 }
