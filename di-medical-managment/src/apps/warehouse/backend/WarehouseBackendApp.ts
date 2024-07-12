@@ -7,7 +7,9 @@ export class WarehouseBackendApp {
 
   async start() {
     const port = process.env.PORT || '3000';
+
     this.server = new Server(port);
+    
     return this.server.listen();
   }
 
@@ -16,6 +18,7 @@ export class WarehouseBackendApp {
   }
 
   async stop() {
+    
     return this.server?.stop();
   }
 }

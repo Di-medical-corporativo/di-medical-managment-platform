@@ -1,8 +1,6 @@
 import { Express } from "express";
 import { Request, Response } from "express";
-import { SucursalCreateController } from "../controllers/SucursalCreateController";
 import container from "../dependency-injection";
-import { SucursalUpdateController } from "../controllers/SucursalUpdateController";
 import { TruckCreateController } from "../controllers/truck/TruckCreateController";
 import { TruckUpdateController } from "../controllers/truck/TruckUpdateController";
 
