@@ -12,3 +12,4 @@ Scenario: A valid non existing truck
   """
   Then the response status code should be 201
   And the body should be empty
+  

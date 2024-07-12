@@ -44,6 +44,7 @@ export class UserCreator {
   }) {
 
     const idExists = await this.ensureUserIdDoesNotExist(params.id);
+    
     const emailExists = await this.ensureUserIdDoesNotExist(params.email);
     
     if(emailExists || idExists) {
@@ -69,7 +70,6 @@ export class UserCreator {
     });
 
     await this.userRepository.save(user, password);
-
   }
 
   private async ensureUserIdDoesNotExist(id: UserId): Promise<boolean> {

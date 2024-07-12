@@ -1,9 +1,10 @@
+import { Incident } from "../../domain/Incident";
 import { Truck } from "../../domain/Truck";
 import { TruckRepository } from "../../domain/TruckRepository";
 
 export class FakeTruckRepository implements TruckRepository {
   private trucks: Truck[] = [];
-
+  private incidents: Incident[] = [];
   async save(truck: Truck): Promise<void> {
     const existingTruckIndex = this.trucks.findIndex(t => t.toPrimitives().id === truck.toPrimitives().id);
 
@@ -26,6 +27,16 @@ export class FakeTruckRepository implements TruckRepository {
       this.trucks[existingTruckIndex] = truck;
     } else {
       throw new Error(`Truck with id ${truck.toPrimitives().id} not found`);
+    }
+  }
+
+  async saveIncident(incident: Incident): Promise<void> {
+    const existingTruckIndex = this.incidents.findIndex(t => t.toPrimitives().id === incident.toPrimitives().id);
+
+    if (existingTruckIndex !== -1) {
+      this.incidents[existingTruckIndex] = incident;
+    } else {
+      this.incidents.push(incident);
     }
   }
 }

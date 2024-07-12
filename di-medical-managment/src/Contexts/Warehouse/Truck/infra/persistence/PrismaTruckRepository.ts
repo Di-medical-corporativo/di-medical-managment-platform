@@ -1,4 +1,5 @@
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
+import { Incident } from "../../domain/Incident";
 import { Truck } from "../../domain/Truck";
 import { TruckRepository } from "../../domain/TruckRepository";
 
@@ -51,5 +52,24 @@ export class PrismaTruckRepository implements TruckRepository {
     });
 
     return truck;
+  }
+
+  async saveIncident(incident: Incident): Promise<void> {
+    const incidentPlain = incident.toPrimitives();
+    
+    await prisma.incident.create({
+      data: {
+        description: incidentPlain.description,
+        id: incidentPlain.id,
+        finishedDate: incidentPlain.finishDate,
+        startDate: incidentPlain.startDate,
+        isActive: incidentPlain.isActive,
+        truck: {
+          connect: {
+            id: incidentPlain.truckId
+          }
+        }
+      }
+    });
   }
 }

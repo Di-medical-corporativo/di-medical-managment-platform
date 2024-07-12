@@ -1,3 +1,4 @@
+import { Incident } from "../../../src/Contexts/Warehouse/Truck/domain/Incident";
 import { Truck } from "../../../src/Contexts/Warehouse/Truck/domain/Truck";
 import { TruckRepository } from "../../../src/Contexts/Warehouse/Truck/domain/TruckRepository";
 
@@ -5,6 +6,7 @@ export class TruckRepositoryMock implements TruckRepository {
   private saveMock: jest.Mock;
   private searchMock: jest.Mock;
   private updateMock: jest.Mock;
+  private saveIncidentMock: jest.Mock;
 
   private truck = Truck.fromPrimities({
     "id": "fc30f0f9-0294-44c0-93e5-01a9ec2446ed",
@@ -15,7 +17,9 @@ export class TruckRepositoryMock implements TruckRepository {
 
   constructor() {
     this.saveMock = jest.fn();
+
     this.updateMock = jest.fn();
+    
     this.searchMock = jest.fn().mockImplementation((id) => {
       const trucks: Truck[] = [];
 
@@ -25,6 +29,8 @@ export class TruckRepositoryMock implements TruckRepository {
 
       return foundTruck || null;
     });
+    
+    this.saveIncidentMock = jest.fn();
   }
 
   async save(truck: Truck): Promise<void> {
@@ -37,6 +43,10 @@ export class TruckRepositoryMock implements TruckRepository {
 
   async update(truck: Truck): Promise<void> {
     this.updateMock(truck);
+  }
+
+  async saveIncident(incident: Incident): Promise<void> {
+    this.saveIncidentMock(incident);
   }
 
   assertSaveHaveBeenCalledWith(expected: Truck): void {
@@ -53,5 +63,9 @@ export class TruckRepositoryMock implements TruckRepository {
 
   assertSearchReturnTruck(): void {
     expect(this.searchMock).toHaveReturnedWith(this.truck);
+  }
+
+  assertSaveIncidentHaveWith(expected: Incident) {
+    expect(this.saveIncidentMock).toHaveBeenCalledWith(expected);
   }
 }
