@@ -74,3 +74,12 @@ services:
     arguments: [
       "@Contexts.Warehouse.Truck.application.AddIncident.TruckIncidentAdder"
     ]
+
+  Contexts.Warehouse.Client.infra.persistence.ClientRepository:
+    class: ../../../../Contexts/Warehouse/Client/infra/persistence/PrismaClientRepository
+
+  Contexts.Warehouse.Client.application.Create.ClientCreator:
+    class: ../../../../Contexts/Warehouse/Client/application/Create/ClientCreator
+    arguments: [
+    "@Contexts.Warehouse.Client.infra.persistence.ClientRepository",
+    ]
