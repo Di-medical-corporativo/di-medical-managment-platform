@@ -1,11 +1,11 @@
-import { TruckUpdator } from "../../../../../../src/Contexts/Warehouse/Truck/application/Update/TruckUpdator";
-import { Truck } from "../../../../../../src/Contexts/Warehouse/Truck/domain/Truck";
-import { TruckBrand } from "../../../../../../src/Contexts/Warehouse/Truck/domain/TruckBrand";
-import { TruckId } from "../../../../../../src/Contexts/Warehouse/Truck/domain/TruckId";
-import { TruckModel } from "../../../../../../src/Contexts/Warehouse/Truck/domain/TruckModel";
-import { TruckNotFound } from "../../../../../../src/Contexts/Warehouse/Truck/domain/TruckNotFound";
-import { TruckPlate } from "../../../../../../src/Contexts/Warehouse/Truck/domain/TruckPlate";
-import { TruckRepository } from "../../../../../../src/Contexts/Warehouse/Truck/domain/TruckRepository";
+import { TruckUpdator } from "../../../../../../src/Contexts/Backoffice/Truck/application/Update/TruckUpdator";
+import { Truck } from "../../../../../../src/Contexts/Backoffice/Truck/domain/Truck";
+import { TruckBrand } from "../../../../../../src/Contexts/Backoffice/Truck/domain/TruckBrand";
+import { TruckId } from "../../../../../../src/Contexts/Backoffice/Truck/domain/TruckId";
+import { TruckModel } from "../../../../../../src/Contexts/Backoffice/Truck/domain/TruckModel";
+import { TruckNotFound } from "../../../../../../src/Contexts/Backoffice/Truck/domain/TruckNotFound";
+import { TruckPlate } from "../../../../../../src/Contexts/Backoffice/Truck/domain/TruckPlate";
+import { TruckRepository } from "../../../../../../src/Contexts/Backoffice/Truck/domain/TruckRepository";
 import { TruckRepositoryMock } from "../../../../__mock__/TruckRepositoryMock";
 
 describe('TruckUpdator', () => {

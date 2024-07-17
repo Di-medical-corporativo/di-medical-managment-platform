@@ -1,4 +1,4 @@
-import { WarehouseBackendApp } from '../../../../../src/apps/warehouse/backend/WarehouseBackendApp';
+import { WarehouseBackendApp } from '../../../../../src/apps/backoffice/backend/WarehouseBackendApp';
 import { AfterAll, BeforeAll } from '@cucumber/cucumber';
 
 let application: WarehouseBackendApp;

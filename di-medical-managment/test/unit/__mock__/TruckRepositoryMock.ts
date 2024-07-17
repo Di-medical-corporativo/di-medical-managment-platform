@@ -1,8 +1,8 @@
-import { Incident } from "../../../src/Contexts/Warehouse/Truck/domain/Incident";
-import { IncidentDate } from "../../../src/Contexts/Warehouse/Truck/domain/IncidentDate";
-import { IncidentId } from "../../../src/Contexts/Warehouse/Truck/domain/IncidentId";
-import { Truck } from "../../../src/Contexts/Warehouse/Truck/domain/Truck";
-import { TruckRepository } from "../../../src/Contexts/Warehouse/Truck/domain/TruckRepository";
+import { Incident } from "../../../src/Contexts/Backoffice/Truck/domain/Incident";
+import { IncidentDate } from "../../../src/Contexts/Backoffice/Truck/domain/IncidentDate";
+import { IncidentId } from "../../../src/Contexts/Backoffice/Truck/domain/IncidentId";
+import { Truck } from "../../../src/Contexts/Backoffice/Truck/domain/Truck";
+import { TruckRepository } from "../../../src/Contexts/Backoffice/Truck/domain/TruckRepository";
 
 export class TruckRepositoryMock implements TruckRepository {
   private saveMock: jest.Mock;

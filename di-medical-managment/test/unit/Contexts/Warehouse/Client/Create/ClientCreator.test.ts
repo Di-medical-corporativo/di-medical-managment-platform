@@ -1,9 +1,9 @@
-import { ClientCreator } from "../../../../../../src/Contexts/Warehouse/Client/application/Create/ClientCreator";
-import { Client } from "../../../../../../src/Contexts/Warehouse/Client/domain/Client";
-import { ClientAddress } from "../../../../../../src/Contexts/Warehouse/Client/domain/ClientAddress";
-import { ClientId } from "../../../../../../src/Contexts/Warehouse/Client/domain/ClientId";
-import { ClientIsActive } from "../../../../../../src/Contexts/Warehouse/Client/domain/ClientIsActive";
-import { ClientName } from "../../../../../../src/Contexts/Warehouse/Client/domain/ClientName";
+import { ClientCreator } from "../../../../../../src/Contexts/Backoffice/Client/application/Create/ClientCreator";
+import { Client } from "../../../../../../src/Contexts/Backoffice/Client/domain/Client";
+import { ClientAddress } from "../../../../../../src/Contexts/Backoffice/Client/domain/ClientAddress";
+import { ClientId } from "../../../../../../src/Contexts/Backoffice/Client/domain/ClientId";
+import { ClientIsActive } from "../../../../../../src/Contexts/Backoffice/Client/domain/ClientIsActive";
+import { ClientName } from "../../../../../../src/Contexts/Backoffice/Client/domain/ClientName";
 import { ClientRepositoryMock } from "../../../../__mock__/ClientRepositoryMock";
 
 describe("ClientCreator", () => {

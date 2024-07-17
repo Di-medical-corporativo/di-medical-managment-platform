@@ -1,6 +1,6 @@
-import { TruckIncidentRemover } from "../../../../../../src/Contexts/Warehouse/Truck/application/RemoveIncident/TruckIncidentRemover";
-import { IncidentDate } from "../../../../../../src/Contexts/Warehouse/Truck/domain/IncidentDate";
-import { IncidentId } from "../../../../../../src/Contexts/Warehouse/Truck/domain/IncidentId";
+import { TruckIncidentRemover } from "../../../../../../src/Contexts/Backoffice/Truck/application/RemoveIncident/TruckIncidentRemover";
+import { IncidentDate } from "../../../../../../src/Contexts/Backoffice/Truck/domain/IncidentDate";
+import { IncidentId } from "../../../../../../src/Contexts/Backoffice/Truck/domain/IncidentId";
 import { TruckRepositoryMock } from "../../../../__mock__/TruckRepositoryMock";
 
 describe('TruckIncidentRemover', () => {

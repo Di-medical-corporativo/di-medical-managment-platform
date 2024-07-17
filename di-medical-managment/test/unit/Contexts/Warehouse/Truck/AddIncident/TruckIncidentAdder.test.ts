@@ -1,10 +1,10 @@
-import { TruckIncidentAdder } from "../../../../../../src/Contexts/Warehouse/Truck/application/AddIncident/TruckIncidentAdder";
-import { Incident } from "../../../../../../src/Contexts/Warehouse/Truck/domain/Incident";
-import { IncidentDate } from "../../../../../../src/Contexts/Warehouse/Truck/domain/IncidentDate";
-import { IncidentDescription } from "../../../../../../src/Contexts/Warehouse/Truck/domain/IncidentDescription";
-import { IncidentId } from "../../../../../../src/Contexts/Warehouse/Truck/domain/IncidentId";
-import { TruckId } from "../../../../../../src/Contexts/Warehouse/Truck/domain/TruckId";
-import { TruckNotFound } from "../../../../../../src/Contexts/Warehouse/Truck/domain/TruckNotFound";
+import { TruckIncidentAdder } from "../../../../../../src/Contexts/Backoffice/Truck/application/AddIncident/TruckIncidentAdder";
+import { Incident } from "../../../../../../src/Contexts/Backoffice/Truck/domain/Incident";
+import { IncidentDate } from "../../../../../../src/Contexts/Backoffice/Truck/domain/IncidentDate";
+import { IncidentDescription } from "../../../../../../src/Contexts/Backoffice/Truck/domain/IncidentDescription";
+import { IncidentId } from "../../../../../../src/Contexts/Backoffice/Truck/domain/IncidentId";
+import { TruckId } from "../../../../../../src/Contexts/Backoffice/Truck/domain/TruckId";
+import { TruckNotFound } from "../../../../../../src/Contexts/Backoffice/Truck/domain/TruckNotFound";
 import { TruckRepositoryMock } from "../../../../__mock__/TruckRepositoryMock";
 
 describe('Add a new incident', () => {

@@ -1,9 +1,9 @@
-import { TruckCreator } from "../../../../../../src/Contexts/Warehouse/Truck/application/Create/TruckCreator";
-import { Truck } from "../../../../../../src/Contexts/Warehouse/Truck/domain/Truck";
-import { TruckBrand } from "../../../../../../src/Contexts/Warehouse/Truck/domain/TruckBrand";
-import { TruckId } from "../../../../../../src/Contexts/Warehouse/Truck/domain/TruckId";
-import { TruckModel } from "../../../../../../src/Contexts/Warehouse/Truck/domain/TruckModel";
-import { TruckPlate } from "../../../../../../src/Contexts/Warehouse/Truck/domain/TruckPlate";
+import { TruckCreator } from "../../../../../../src/Contexts/Backoffice/Truck/application/Create/TruckCreator";
+import { Truck } from "../../../../../../src/Contexts/Backoffice/Truck/domain/Truck";
+import { TruckBrand } from "../../../../../../src/Contexts/Backoffice/Truck/domain/TruckBrand";
+import { TruckId } from "../../../../../../src/Contexts/Backoffice/Truck/domain/TruckId";
+import { TruckModel } from "../../../../../../src/Contexts/Backoffice/Truck/domain/TruckModel";
+import { TruckPlate } from "../../../../../../src/Contexts/Backoffice/Truck/domain/TruckPlate";
 import { TruckRepositoryMock } from "../../../../__mock__/TruckRepositoryMock";
 
 describe('TrukCreator', () => {

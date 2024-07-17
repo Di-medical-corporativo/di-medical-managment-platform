@@ -109,7 +109,7 @@
   "include": [
     "src/**/**.ts",
     "test/**/**.ts"
-  ],
+, "test/unit/Contexts/Warehouse/Client/Update/ClientUpdator.test,ts"  ],
   "exclude": [
     "node_modules"
   ]

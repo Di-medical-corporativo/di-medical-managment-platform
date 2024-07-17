@@ -1,7 +1,7 @@
-import { Truck } from "../../../../../../src/Contexts/Warehouse/Truck/domain/Truck";
-import { TruckFinder } from "../../../../../../src/Contexts/Warehouse/Truck/domain/TruckFinder";
-import { TruckId } from "../../../../../../src/Contexts/Warehouse/Truck/domain/TruckId";
-import { TruckNotFound } from "../../../../../../src/Contexts/Warehouse/Truck/domain/TruckNotFound";
+import { Truck } from "../../../../../../src/Contexts/Backoffice/Truck/domain/Truck";
+import { TruckFinder } from "../../../../../../src/Contexts/Backoffice/Truck/domain/TruckFinder";
+import { TruckId } from "../../../../../../src/Contexts/Backoffice/Truck/domain/TruckId";
+import { TruckNotFound } from "../../../../../../src/Contexts/Backoffice/Truck/domain/TruckNotFound";
 import { TruckRepositoryMock } from "../../../../__mock__/TruckRepositoryMock";
 
 describe('TruckFinder', () => {
