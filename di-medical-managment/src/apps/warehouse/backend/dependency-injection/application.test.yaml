@@ -72,3 +72,18 @@ services:
     arguments: [
       "@Contexts.Warehouse.Truck.application.AddIncident.TruckIncidentAdder"
     ]
+
+  Contexts.Warehouse.Client.infra.persistence.ClientRepository:
+    class: ../../../../Contexts/Warehouse/Client/infra/persistence/FakeClientRepository
+
+  Contexts.Warehouse.Client.application.Create.ClientCreator:
+    class: ../../../../Contexts/Warehouse/Client/application/Create/ClientCreator
+    arguments: [
+    "@Contexts.Warehouse.Client.infra.persistence.ClientRepository",
+    ]
+
+  Apps.warehouse.backend.controllers.ClientCreateController:
+    class: ../controllers/client/ClientCreateController
+    arguments: [
+      "@Contexts.Warehouse.Client.application.Create.ClientCreator"
+    ]

@@ -17,6 +17,7 @@
     "test:warehouse:backend:sucursal": "NODE_ENV=test cucumber-js -p sucursal",
     "test:warehouse:backend:user": "NODE_ENV=test cucumber-js -p user",
     "test:warehouse:backend:truck": "NODE_ENV=test cucumber-js -p truck",
+    "test:warehouse:backend:client": "NODE_ENV=test cucumber-js -p client",
     "test:unit": "NODE_ENV=test jest"
   },
   "dependencies": {

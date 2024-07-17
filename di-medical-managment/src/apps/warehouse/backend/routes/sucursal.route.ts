@@ -6,7 +6,10 @@ import { SucursalUpdateController } from "../controllers/SucursalUpdateControlle
 
 export const register = (app: Express) => {
   const createSucursalController: SucursalCreateController = container.get('Apps.warehouse.backend.controllers.SucursalCreateController');
+  
   const updateSucursalController: SucursalUpdateController = container.get('Apps.warehouse.backend.controllers.SucursalUpdateController');
+  
   app.post('/sucursal/:id', (req: Request, res: Response) => createSucursalController.run(req, res));
+  
   app.put('/sucursal/:id', (req: Request, res: Response) => updateSucursalController.run(req, res));
 }

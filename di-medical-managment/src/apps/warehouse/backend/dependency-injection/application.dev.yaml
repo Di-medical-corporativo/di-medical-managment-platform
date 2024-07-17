@@ -83,3 +83,9 @@ services:
     arguments: [
     "@Contexts.Warehouse.Client.infra.persistence.ClientRepository",
     ]
+
+  Apps.warehouse.backend.controllers.ClientCreateController:
+    class: ../controllers/client/ClientCreateController
+    arguments: [
+      "@Contexts.Warehouse.Client.application.Create.ClientCreator"
+    ]
