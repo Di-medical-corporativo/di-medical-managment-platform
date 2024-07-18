@@ -13,7 +13,7 @@
     "standard": "npx ts-standard src tests",
     "lint": "npx ts-standard --fix",
     "start": "node ./dist/src/index.js",
-    "dev:warehouse:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/warehouse/backend/start.ts",
+    "dev:warehouse:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/backoffice/backend/start.ts",
     "test:warehouse:backend:sucursal": "NODE_ENV=test cucumber-js -p sucursal",
     "test:warehouse:backend:user": "NODE_ENV=test cucumber-js -p user",
     "test:warehouse:backend:truck": "NODE_ENV=test cucumber-js -p truck",

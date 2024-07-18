@@ -1,0 +1,14 @@
+.button {
+  width: 100px;
+  height: 34px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.button.primary {
+  background-color: var(--color-primary);
+  color: var(--color-tertiary);
+}

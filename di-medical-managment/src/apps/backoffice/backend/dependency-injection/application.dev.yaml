@@ -55,46 +55,46 @@ services:
     "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
     ]
 
-  Apps.backoffice.backend.controllers.TruckCreateController:
+  Apps.Backoffice.backend.controllers.TruckCreateController:
     class: ../controllers/truck/TruckCreateController
     arguments: [
       "@Contexts.Backoffice.Truck.application.Create.TruckCreator"
     ]
   
-  Apps.backoffice.backend.controllers.TruckUpdateController:
+  Apps.Backoffice.backend.controllers.TruckUpdateController:
     class: ../controllers/truck/TruckUpdateController
     arguments: [
       "@Contexts.Backoffice.Truck.application.Update.TruckUpdator"
     ]
 
-  Apps.backoffice.backend.controllers.IncidentCreateController:
+  Apps.Backoffice.backend.controllers.IncidentCreateController:
     class: ../controllers/truck/IncidentCreateController
     arguments: [
       "@Contexts.Backoffice.Truck.application.AddIncident.TruckIncidentAdder"
     ]
 
-  Contexts.Warehouse.Client.infra.persistence.ClientRepository:
+  Contexts.Backoffice.Client.infra.persistence.ClientRepository:
     class: ../../../../Contexts/Backoffice/Client/infra/persistence/PrismaClientRepository
 
-  Contexts.Warehouse.Client.application.Create.ClientCreator:
+  Contexts.Backoffice.Client.application.Create.ClientCreator:
     class: ../../../../Contexts/Backoffice/Client/application/Create/ClientCreator
     arguments: [
     "@Contexts.Backoffice.Client.infra.persistence.ClientRepository",
     ]
   
-  Contexts.Warehouse.Client.application.Update.ClientUpdator:
+  Contexts.Backoffice.Client.application.Update.ClientUpdator:
     class: ../../../../Contexts/Backoffice/Client/application/Update/ClientUpdator
     arguments: [
     "@Contexts.Backoffice.Client.infra.persistence.ClientRepository"
     ]
 
-  Apps.backoffice.backend.controllers.ClientCreateController:
+  Apps.Backoffice.backend.controllers.ClientCreateController:
     class: ../controllers/client/ClientCreateController
     arguments: [
       "@Contexts.Backoffice.Client.application.Create.ClientCreator"
     ]
 
-  Apps.backoffice.backend.controllers.ClientUpdateController:
+  Apps.Backoffice.backend.controllers.ClientUpdateController:
     class: ../controllers/client/ClientUpdateController
     arguments: [
       "@Contexts.Backoffice.Client.application.Update.ClientUpdator"
