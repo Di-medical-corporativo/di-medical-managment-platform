@@ -99,3 +99,18 @@ services:
     arguments: [
       "@Contexts.Backoffice.Client.application.Update.ClientUpdator"
     ]
+
+  Contexts.Backoffice.Survey.infra.persistence.SurveyRepository:
+    class: ../../../../Contexts/Backoffice/Survey/infra/persistence/FakeSurveyRepository
+
+  Contexts.Backoffice.Survey.application.Create.SurveyCreator:
+    class: ../../../../Contexts/Backoffice/Survey/application/Create/SurveyCreator
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveyCreateController:
+    class: ../controllers/survey/SurveyCreateController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.Create.SurveyCreator"
+    ]

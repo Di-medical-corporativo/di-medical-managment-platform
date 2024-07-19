@@ -27,10 +27,17 @@ const client = [
   '--require test/integration/features/client/step_definitions/*.steps.ts' // Path to step definitions
 ].join(' ');
 
+const survey = [
+  '--require-module ts-node/register',
+  'test/integration/features/survey/*.feature', // Path to feature files
+  '--require test/integration/features/survey/step_definitions/*.steps.ts' // Path to step definitions
+].join(' ');
+
 
 module.exports = {
   sucursal,
   user,
   truck,
-  client
+  client,
+  survey
 }

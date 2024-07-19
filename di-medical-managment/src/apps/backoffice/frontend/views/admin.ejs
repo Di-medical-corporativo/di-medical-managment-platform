@@ -9,7 +9,15 @@
 <body>
   <div id="admin-dash">
 
-    <aside id="aside-admin"></aside>
+    <aside id="aside-admin">
+      <p>Perfil</p>
+      <p>Clientes</p>
+      <p>Camionetas</p>
+      <p>Sucursales</p>
+      <p>Ruta</p>
+      <p>Tareas</p>
+      <p>Encuestas</p>
+    </aside>
     
     <main id="main-admin">
 
@@ -25,19 +33,80 @@
     
       <section id="admin-tasks">
         <div class="task-list">
+          <div class="task-title">
+            <small>Tareas asignadas</small>
+          </div>
 
+          <div class="tasks">
+            <% for(let i = 0; i < 10; i++) { %>
+              <div class="task">
+                <header>
+                  <p>Nombre de la tarea</p>
+                  <small>Fecha de termino: 7/18/2024</small>
+                </header>
+                <footer>
+                  <button class="button primary">Iniciar tarea</button>
+                </footer>
+              </div>
+            <% } %>
+          </div>
         </div>
 
         <div class="task-list">
+          <div class="task-title">
+            <small>Tareas en progreso</small>
+          </div>
 
+          <div class="tasks">
+            <% for(let i = 0; i < 5; i++) { %>
+              <div class="task">
+                <header>
+                  <p>Nombre de la tarea</p>
+                  <small>Fecha de termino: 7/18/2024</small>
+                </header>
+                <footer>
+                  <button class="button primary">Continuar tarea</button>
+                </footer>
+              </div>
+            <% } %>
+          </div>
         </div>
 
         <div class="task-list">
+          <div class="task-title">
+            <small>Tareas concluidas</small>
+          </div>
 
+          <div class="tasks">
+            <% for(let i = 0; i < 3; i++) { %>
+              <div class="task">
+                <header>
+                  <p>Nombre de la tarea</p>
+                  <small>Fecha de termino: 7/18/2024</small>
+                </header>
+              </div>
+            <% } %>
+          </div>
         </div>
 
         <div class="task-list">
+          <div class="task-title">
+            <small>Tareas vencidas</small>
+          </div>
 
+          <div class="tasks">
+            <% for(let i = 0; i < 1; i++) { %>
+              <div class="task">
+                <header>
+                  <p>Nombre de la tarea</p>
+                  <small>Fecha de termino: 7/18/2024</small>
+                </header>
+                <footer>
+                  <button class="button primary">Continuar tarea</button>
+                </footer>
+              </div>
+            <% } %>
+          </div>
         </div>
       </section>
 

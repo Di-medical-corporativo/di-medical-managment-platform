@@ -116,10 +116,8 @@ model Itinerary {
 
 model Survey {
   id String @id
-  name String
+  title String
   description String
-  startDate DateTime
-  endDate DateTime
   active Boolean
   questions Question[]
   responses SurveyResponse[]
@@ -132,16 +130,9 @@ model Question {
   order Int
   surveyId String
   survey Survey @relation(fields: [surveyId], references: [id])
-  typeId String
-  type QuestionType @relation(fields: [typeId], references: [id])
+  type String
   options QuestionOption[]
   answers AnswerQuestion[]
-}
-
-model QuestionType {
-  id String @id
-  type String
-  questions Question[]
 }
 
 model QuestionOption {
@@ -149,7 +140,7 @@ model QuestionOption {
   value String
   order Int
   questionId String
-  quesion Question @relation(fields: [questionId], references: [id])
+  question Question @relation(fields: [questionId], references: [id])
   answerOption AnswerOption[]
 }
 
@@ -158,8 +149,6 @@ model SurveyResponse {
   surveyId String
   survey Survey  @relation(fields: [surveyId], references: [id])
   point Point?
-  beginDate DateTime
-  endDate DateTime
   answers AnswerQuestion[]
 }
 
