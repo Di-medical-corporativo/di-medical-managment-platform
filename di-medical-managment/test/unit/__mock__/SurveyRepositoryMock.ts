@@ -1,18 +1,40 @@
+import { Response } from "../../../src/Contexts/Backoffice/Survey/domain/Response";
 import { Survey } from "../../../src/Contexts/Backoffice/Survey/domain/Survey";
+import { SurveyId } from "../../../src/Contexts/Backoffice/Survey/domain/SurveyId";
 import { SurveyRepository } from "../../../src/Contexts/Backoffice/Survey/domain/SurveyRepository";
 
 export class SurveyRepositoryMock implements SurveyRepository {
   private saveMock: jest.Mock;
+  private answerMock: jest.Mock;
+  private searchMock: jest.Mock;
 
   constructor() {
     this.saveMock = jest.fn();
+    this.answerMock = jest.fn();
+    this.searchMock = jest.fn();
   }
   
   async save(survey: Survey): Promise<void> {
     this.saveMock(survey);
   }
 
+  async answer(response: Response): Promise<void> {
+    this.answerMock(response);
+  }
+
+  async search(id: SurveyId): Promise<Survey | null> {
+    return this.searchMock(id);
+  }
+
   assertSaveHaveBeenCalledWith(expected: Survey) {
     expect(this.saveMock).toHaveBeenCalledWith(expected);
+  }
+
+  assertAnswerHaveBeenCalledWith(expected: Response) {
+    expect(this.answerMock).toHaveBeenCalledWith(expected);
+  }
+
+  setReturnForSearch(returnValue: Survey | null) {
+    this.searchMock.mockReturnValue(returnValue);
   }
 }

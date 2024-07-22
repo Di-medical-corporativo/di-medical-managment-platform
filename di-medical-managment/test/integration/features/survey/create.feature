@@ -1,5 +1,5 @@
-Feature: Create a survey
-  Scenario: A valid survey
+Feature: Create a survey  
+  Scenario: A valid survey with questions type multiple
   Given I send a POST request to "/survey/fc30f0f9-0294-44c0-93e5-01a9ec2446ed" with body:
   """
   {
@@ -11,10 +11,8 @@ Feature: Create a survey
         "id": "5740f837-cb68-4f2c-8ac0-5873fd38c8b1",
         "text": "Test question",
         "order": 1,
-        "type": "multiple",
-        "options": [
-          { "id": "id", "order": 1, "value": "value" }
-        ]
+        "type": "open",
+        "options": []
       }
   ]
 }

@@ -109,8 +109,20 @@ services:
     "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
     ]
 
+  Contexts.Backoffice.Survey.application.Create.SurveyAnswerer:
+    class: ../../../../Contexts/Backoffice/Survey/application/Answer/SurveyAnswerer
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+    ]
+
   Apps.Backoffice.backend.controllers.SurveyCreateController:
     class: ../controllers/survey/SurveyCreateController
     arguments: [
       "@Contexts.Backoffice.Survey.application.Create.SurveyCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveyAnswerController:
+    class: ../controllers/survey/SurveyAnswerController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.Create.SurveyAnswerer"
     ]

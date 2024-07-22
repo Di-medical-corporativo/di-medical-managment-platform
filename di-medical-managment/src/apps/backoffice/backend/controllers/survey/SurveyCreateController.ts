@@ -1,4 +1,4 @@
-import { Request, Response } from "express"
+import { Request, Response } from "express";
 import { SurveyCreator } from "../../../../../Contexts/Backoffice/Survey/application/Create/SurveyCreator";
 import { Question } from "../../../../../Contexts/Backoffice/Survey/domain/Question";
 import { SurveyDescription } from "../../../../../Contexts/Backoffice/Survey/domain/SurveyDescription";
@@ -9,7 +9,9 @@ import { QuestionText } from "../../../../../Contexts/Backoffice/Survey/domain/Q
 import { QuestionOrder } from "../../../../../Contexts/Backoffice/Survey/domain/QuestionOrder";
 import { QuestionType } from "../../../../../Contexts/Backoffice/Survey/domain/QuestionType";
 import { Option } from "../../../../../Contexts/Backoffice/Survey/domain/Option";
-import { Survey } from "../../../../../Contexts/Backoffice/Survey/domain/Survey";
+import { OptionId } from "../../../../../Contexts/Backoffice/Survey/domain/OptionId";
+import { OptionOrder } from "../../../../../Contexts/Backoffice/Survey/domain/OptionOrder";
+import { OptionValue } from "../../../../../Contexts/Backoffice/Survey/domain/OptionValue";
 
 export class SurveyCreateController {
   constructor(
@@ -26,9 +28,9 @@ export class SurveyCreateController {
         q.options.forEach((o: any) => 
         options.push(Option
           .create({
-            id: o.id,
-            order: o.order,
-            value: o.value
+            id: new OptionId(o.id),
+            order: new OptionOrder(o.order),
+            value: new OptionValue(o.value)
           })
         ));
       }
@@ -42,14 +44,12 @@ export class SurveyCreateController {
         });
     });
 
-    const survey = Survey.create({
+    await this.surveyCreator.run({
       id: new SurveyId(id),
       description: new SurveyDescription(description),
       title: new SurveyTitle(title),
       questions: questionsDomain
     });
-
-    console.log(survey, questionsDomain);
 
     res.sendStatus(201);
   }

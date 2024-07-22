@@ -15,7 +15,6 @@ export class SurveyCreator {
     id: SurveyId,
     title: SurveyTitle,
     description: SurveyDescription,
-    isActive: SurveyIsActive,
     questions: Question[]
   }) {
     const survey = Survey.create(params);

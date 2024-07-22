@@ -17,6 +17,7 @@ export class SucursalCreator {
     phone: SucursalPhone;
   }) {
     const sucursal = Sucursal.create(params);
+    
     await this.sucursalRepository.save(sucursal);
   }
 }

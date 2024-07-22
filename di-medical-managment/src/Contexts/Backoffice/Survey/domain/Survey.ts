@@ -13,6 +13,14 @@ export class Survey {
     private questions: Question[]
   ) {}
 
+  public isAcceptingAnswers() {
+    return this.isActive.value;
+  }
+
+  public stopAcceptingAnswers() {
+    this.isActive = new SurveyIsActive(false);
+  }
+
   public static create(params: {
     id: SurveyId,
     title: SurveyTitle,
