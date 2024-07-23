@@ -7,7 +7,6 @@ import { AnswerOption } from "./AnswerOption";
 export abstract class Answer {
   constructor(
     protected id: AnswerId,
-    protected question: QuestionText,
     protected questionid: QuestionId
   ) {}
 
@@ -17,22 +16,19 @@ export abstract class Answer {
 export class AnswerOpen extends Answer {
   constructor(
     id: AnswerId,
-    question: QuestionText,
     questionId: QuestionId,
     private answerText: AnswerText
   ) {
-    super(id, question, questionId);
+    super(id, questionId);
   }
 
   static create(params: {
     id: AnswerId,
-    question: QuestionText,
     questionId: QuestionId,
     answerText: AnswerText
   }) {
     return new AnswerOpen(
       params.id,
-      params.question,
       params.questionId,
       params.answerText
     );
@@ -40,13 +36,11 @@ export class AnswerOpen extends Answer {
   
   static fromPrimitives(params: {
     id: string;
-    question: string;
     answerText: string;
     questionId: string;
   }) {
     return new AnswerOpen(
       new AnswerId(params.id),
-      new QuestionText(params.question),
       new QuestionId(params.questionId),
       new AnswerText(params.answerText)
     );
@@ -55,7 +49,6 @@ export class AnswerOpen extends Answer {
   toPrimitives() {
     return {
       id: this.id.toString(),
-      question: this.question.toString(),
       questionId: this.questionid.toString(),
       answerText: this.answerText.toString()
     }
@@ -65,22 +58,19 @@ export class AnswerOpen extends Answer {
 export class AnswerMultiple extends Answer {
   constructor(
     id: AnswerId,
-    question: QuestionText,
     questionId: QuestionId,
     private option: AnswerOption
   ) {
-    super(id, question, questionId);
+    super(id, questionId);
   }
 
   static create(params: {
     id: AnswerId,
-    question: QuestionText,
     option: AnswerOption
     questionId: QuestionId
   }) {
     return new AnswerMultiple(
       params.id,
-      params.question,
       params.questionId,
       params.option
     );
@@ -88,7 +78,6 @@ export class AnswerMultiple extends Answer {
 
   static fromPrimitives(params: {
     id: string;
-    question: string;
     questionId: string;
     option: {
       id: string;
@@ -97,7 +86,6 @@ export class AnswerMultiple extends Answer {
   }) {
     return new AnswerMultiple(
       new AnswerId(params.id),
-      new QuestionText(params.question),
       new QuestionId(params.questionId),
       AnswerOption.fromPrimitives(params.option)
     );
@@ -106,11 +94,8 @@ export class AnswerMultiple extends Answer {
   toPrimitives() {
     return {
       id: this.id.toString(),
-      question: this.question.toString(),
       questionId: this.questionid.toString(),
       option: this.option.toPrimitives()
     }
   }
-
-
 }

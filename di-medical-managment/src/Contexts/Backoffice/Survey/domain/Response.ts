@@ -14,7 +14,7 @@ export class Response {
     surveyId: string;
     answers: {
       id: string;
-      question: string;
+      questionId: string;
       answerText?: string;
       option?: { id: string; optionId:string; };
     }[];
@@ -24,8 +24,7 @@ export class Response {
         return AnswerOpen.fromPrimitives({
           id: a.id,
           answerText: a.answerText,
-          questionId: '',
-          question: a.question
+          questionId: a.questionId,
         });
       }
 
@@ -35,8 +34,7 @@ export class Response {
         option: {
           id: a.option?.id!,
           optionId: a.option?.optionId!
-        },
-        question: a.question
+        }
       });
     });
 

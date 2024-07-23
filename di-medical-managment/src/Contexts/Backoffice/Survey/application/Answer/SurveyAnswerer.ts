@@ -7,7 +7,6 @@ import { SurveyId } from "../../domain/SurveyId";
 import { SurveyRepository } from "../../domain/SurveyRepository";
 
 export class SurveyAnswerer {
-
   private surveyFinder: SurveyFinder;
 
   constructor(
@@ -21,7 +20,6 @@ export class SurveyAnswerer {
     surveyId: SurveyId,
     answers: Answer[]
   }) {
-
     const survey = await this.surveyFinder.run({
       id: params.surveyId
     });
