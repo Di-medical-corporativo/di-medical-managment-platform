@@ -16,17 +16,14 @@ export class TruckIncidentRemover {
     id: IncidentId,
     finishDate: IncidentDate
   }) {
-
     await this.ensureIncidentExists(params.id);
 
     await this.repository.removeIncident(params);
   }
 
   async ensureIncidentExists(id: IncidentId) {
-
     await this.incidentFinder.run({
       id
     });
-    
   }
 }

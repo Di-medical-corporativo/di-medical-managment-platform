@@ -22,4 +22,8 @@ export class FakeClientRepository implements ClientRepository {
       throw new Error('Client not found');
     }
   }
+
+  async findAll(): Promise<Client[]> {
+    return this.clients;
+  }
 }

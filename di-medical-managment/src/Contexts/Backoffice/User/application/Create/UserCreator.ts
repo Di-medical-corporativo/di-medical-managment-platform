@@ -16,9 +16,10 @@ import { UserPhone } from "../../domain/UserPhone";
 import { UserRepository } from "../../domain/UserRepository";
 
 export class UserCreator {
-
   private sucursalFinder: SucursalFinder;
+  
   private passwordEncryptor: UserPasswordEncryptor;
+  
   private userFinder: UserFinder;
 
   constructor(
@@ -26,7 +27,9 @@ export class UserCreator {
     private sucursalRepository: SucursalRepository
   ) {
     this.passwordEncryptor = new UserPasswordEncryptor();
+    
     this.sucursalFinder = new SucursalFinder(this.sucursalRepository);
+    
     this.userFinder = new UserFinder(this.userRepository);
   }
   
@@ -42,7 +45,6 @@ export class UserCreator {
     createdAt: UserDate,
     password: string
   }) {
-
     const idExists = await this.ensureUserIdDoesNotExist(params.id);
     
     const emailExists = await this.ensureUserIdDoesNotExist(params.email);
@@ -75,18 +77,20 @@ export class UserCreator {
   private async ensureUserIdDoesNotExist(id: UserId): Promise<boolean> {
     try {
       await this.userFinder.run(id.toString());
-      return true;  // User with this ID exists
+
+      return true;
     } catch (error) {
-      return false; // User with this ID does not exist
+      return false;
     }
   }
 
   private async ensureUserEmailDoesNotExist(email: UserEmail): Promise<boolean> {
     try {
       await this.userFinder.run(email.toString());
-      return true;  // User with this email exists
+
+      return true;
     } catch (error) {
-      return false; // User with this email does not exist
+      return false;
     }
   }
 }

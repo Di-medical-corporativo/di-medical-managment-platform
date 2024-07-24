@@ -41,9 +41,9 @@ export class Server {
     
     const router = Router();
     
-    router.use(cors());
+    this.express.use(cors());
     
-    this.express.use(router);
+    this.express.use('/backoffice', router);
     
     registerRoutes(router);
 

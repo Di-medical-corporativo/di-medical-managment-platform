@@ -58,7 +58,6 @@ describe('SurveyAnswerer', () => {
       AnswerOpen.create({
         id: new AnswerId('d20e57b1-7fe5-4234-89e8-46ae4af9d574'),
         answerText: new AnswerText('Hey there'),
-        question: new QuestionText('test question'),
         questionId: new QuestionId('84b100e7-8efe-4f6b-9e91-99099df18c4c')
       })
     ]
@@ -81,7 +80,6 @@ describe('SurveyAnswerer', () => {
       AnswerOpen.create({
         id: new AnswerId('d20e57b1-7fe5-4234-89e8-46ae4af9d574'),
         answerText: new AnswerText('Hey there'),
-        question: new QuestionText('test question'),
         questionId: new QuestionId('84b100e7-8efe-4f6b-9e91-99099df18c4c')
       })
     ]
@@ -127,7 +125,6 @@ describe('SurveyAnswerer', () => {
       AnswerOpen.create({
         id: new AnswerId('d20e57b1-7fe5-4234-89e8-46ae4af9d574'),
         answerText: new AnswerText('Hey there'),
-        question: new QuestionText('test question'),
         questionId: new QuestionId('84b100e7-8efe-4f6b-9e91-99099df18c4c')
       })
     ]

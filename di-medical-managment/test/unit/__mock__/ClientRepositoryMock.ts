@@ -6,11 +6,13 @@ export class ClientRepositoryMock implements ClientRepository {
   private saveMock: jest.Mock;
   private searchMock: jest.Mock;
   private updateMock: jest.Mock;
+  private findAllMock: jest.Mock;
 
   constructor() {
     this.saveMock = jest.fn();
     this.searchMock = jest.fn();
     this.updateMock = jest.fn();
+    this.findAll = jest.fn();
   }
   
   async save(client: Client): Promise<void> {
@@ -25,6 +27,10 @@ export class ClientRepositoryMock implements ClientRepository {
     this.updateMock(client);
   }
 
+  findAll(): Promise<Client[]> {
+    return this.findAll();
+  }
+
   assertSaveHaveBeenCalledWith(expected: Client): void {
     expect(this.saveMock).toHaveBeenCalledWith(expected);
   }
@@ -35,6 +41,10 @@ export class ClientRepositoryMock implements ClientRepository {
 
   assertUpdateHaveBeenCalledWith(client: Client): void {
     expect(this.updateMock).toHaveBeenCalledWith(client);
+  }
+
+  assertSearchHaveBeenCalled() {
+    expect(this.findAll).toHaveBeenCalled();
   }
 
   setReturnForSearch(returnValue: Client | null): void {

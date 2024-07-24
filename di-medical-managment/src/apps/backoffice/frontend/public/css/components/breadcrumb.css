@@ -1,0 +1,13 @@
+.breadcrumb a{
+  text-decoration: underline;
+  color: #535353;
+  transition: .2s;
+}
+
+.breadcrumb a:hover {
+  color: #001219;
+}
+
+.breadcrumb .breadcrumb-slash {
+  color: #0b2545;
+}

@@ -1,6 +1,10 @@
 @import url('variables.css');
 @import url('components/button.css');
+@import url('components/breadcrumb.css');
+@import url('components/input.css');
+@import url('components/table.css');
 @import url('views/admin.css');
+@import url('views/client.css');
 
 * {
   margin: 0;
@@ -11,5 +15,12 @@
 
 body {
   background-color: var(--color-secondary);
-  
+}
+
+#error-view {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

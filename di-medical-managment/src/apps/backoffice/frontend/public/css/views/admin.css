@@ -14,7 +14,20 @@
   flex-direction: column;
   gap: 25px;
   padding: 40px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 }
+
+#aside-admin a{
+  color: #001219;
+  text-decoration: none;
+  transition: .1s;
+}
+
+#aside-admin a:hover{
+  color: #ffa62b;
+  text-decoration: underline;
+}
+
 
 #main-admin {
   width: 82vw;

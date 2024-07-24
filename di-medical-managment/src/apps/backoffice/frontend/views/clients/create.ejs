@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clientes</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuario</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/client">
+            <small>Clientes</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/client/new">
+            <small>Nuevo cliente</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="new-client-form">
+        <form action="/backoffice/client/<%= id %>" method="post">
+          <input type="text" hidden id="id" name="id" value="<%= id %>">
+          <label for="name">Nombre:</label>
+          <input type="text" name="name" id="name" class="input" required>
+          <label for="address">Dirección:</label>
+          <input type="text" name="address" id="address" class="input" required>
+          <button type="submit" class="button primary">Nuevo cliente</button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
+
+</body>
+</html>

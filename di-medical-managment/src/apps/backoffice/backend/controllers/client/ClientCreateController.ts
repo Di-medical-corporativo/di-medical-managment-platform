@@ -11,14 +11,20 @@ export class ClientCreateController implements Controller {
   ) {}
 
   async run(req: Request, res: Response): Promise<void> {
-    const { id, name, address } = req.body;
-
-    await this.clientCreator.run({
-      id: new ClientId(id),
-      name: new ClientName(name),
-      address: new ClientAddress(address)
-    });
-
-    res.sendStatus(201);
+    try {
+      const { id, name, address } = req.body;
+  
+      await this.clientCreator.run({
+        id: new ClientId(id),
+        name: new ClientName(name),
+        address: new ClientAddress(address)
+      });
+  
+      res.status(201).redirect('/backoffice/client');
+    } catch (error) {
+      res.render('error/error', {
+        message: 'Ocurrio un error, contacta soporte'
+      });
+    }
   }
 }

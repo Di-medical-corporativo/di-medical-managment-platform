@@ -51,4 +51,17 @@ export class PrismaClientRepository implements ClientRepository {
       }
     });
   }
+
+  async findAll(): Promise<Client[]> {
+    const clientsDB = await prisma.client.findMany({});
+
+    const clients = clientsDB.map(c => Client.fromPrimitives({
+      id: c.id,
+      address: c.address,
+      isActive: c.isActive,
+      name: c.name
+    }));
+
+    return clients;
+  }
 }

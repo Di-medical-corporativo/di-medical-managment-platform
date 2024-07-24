@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clientes</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuario</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/client">
+            <small>Clientes</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+        </section>
+
+        <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/client/new'">Nuevo cliente</button>
+      </header>
+
+      <section id="client-list">
+        <table class="table">
+          <thead>
+              <tr>
+                  <th>Nombre</th>
+                  <th>Direccion</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+            <% for(let i = 0; i < clients.length; i++) { %>
+              <tr>
+                <td><%= clients[i].name %></td>
+                <td><%= clients[i].address %></td>
+                <td style="text-align: right;">
+                  <button class="button primary">Actualizar</button>  
+                  <button class="button danger">Eliminar</button>
+                </td>
+            </tr>
+            <% } %>
+          </tbody>
+      </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
+
+</body>
+</html>

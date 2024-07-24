@@ -6,9 +6,27 @@
   cursor: pointer;
   border-radius: 3px;
   font-size: 12px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+  text-align: center;
 }
 
 .button.primary {
   background-color: var(--color-primary);
   color: var(--color-tertiary);
 }
+
+.button.secondary {
+  background-color: var(--color-secondary);
+  color: #000000;
+}
+
+.button.danger {
+  background-color: var(--color-danger);
+  color: var(--color-tertiary);
+}
+
+.button.tertiary {
+  background-color: var(--color-tertiary);
+  color: var(--color-tertiary);
+}
+
