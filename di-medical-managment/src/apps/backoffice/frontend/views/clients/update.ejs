@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clientes</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/client">
+            <small>Clientes</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/client/<%= clientData.id %>/update">
+            <small>Actualizar</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="new-client-form">
+        <form action="/backoffice/client/<%= clientData.id %>" method="post">
+          <input type="hidden" name="_method" value="PUT">
+          <input type="text" hidden id="id" name="id" value="<%= clientData.id %>">
+          <label for="name">Nombre:</label>
+          <input type="text" name="name" id="name" value="<%= clientData.name %>" class="input" required>
+          <label for="address">Dirección:</label>
+          <input type="text" name="address" id="address" value="<%= clientData.address %>" class="input" required>
+          <button type="submit" class="button primary">Actualizar cliente</button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

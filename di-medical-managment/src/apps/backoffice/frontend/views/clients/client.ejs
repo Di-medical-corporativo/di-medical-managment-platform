@@ -48,7 +48,9 @@
                 <td><%= clients[i].name %></td>
                 <td><%= clients[i].address %></td>
                 <td style="text-align: right;">
-                  <button class="button primary">Actualizar</button>  
+                  <button class="button primary"
+                    onclick="window.location.href='/backoffice/client/<%= clients[i].id %>/update'"
+                  >Actualizar</button>  
                   <button class="button danger">Eliminar</button>
                 </td>
             </tr>

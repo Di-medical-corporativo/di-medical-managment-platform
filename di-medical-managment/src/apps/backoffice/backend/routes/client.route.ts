@@ -4,6 +4,7 @@ import container from "../dependency-injection"
 import { ClientUpdateController } from "../controllers/client/ClientUpdateController";
 import { v4 as uuid } from "uuid";
 import { ClientFindAllController } from "../controllers/client/ClientFindAllController";
+import { ClientSearchController } from "../controllers/client/ClientSearchController";
 
 
 //TODO:Validate body with express validator
@@ -14,10 +15,14 @@ export const register = (app: Express) => {
 
   const findAllClientController: ClientFindAllController = container.get('Apps.Backoffice.backend.controllers.ClientFindAllController');
 
+  const searchClientController: ClientSearchController = container.get('Apps.Backoffice.backend.controllers.ClientSearchController');
+
   app.post('/client/:id', (req: Request, res: Response) => createClientController.run(req, res));
   
   app.put('/client/:id', (req: Request, res: Response) => updateClientController.run(req, res));
 
+  app.get('/client/:id/update', (req: Request, res: Response) => searchClientController.run(req, res));
+  
   app.get('/client/', (req: Request, res: Response) => findAllClientController.run(req, res));
 
   app.get('/client/new', (req: Request, res: Response) => {

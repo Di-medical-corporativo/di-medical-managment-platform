@@ -87,6 +87,18 @@ services:
     arguments: [
     "@Contexts.Backoffice.Client.infra.persistence.ClientRepository"
     ]
+  
+  Contexts.Backoffice.Client.application.SearchAll.ClientSearcher:
+    class: ../../../../Contexts/Backoffice/Client/application/SearchAll/ClientSearcher
+    arguments: [
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository"
+    ]
+  
+  Apps.Backoffice.backend.controllers.ClientFindAllController:
+    class: ../controllers/client/ClientFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher"
+    ]
 
   Apps.Backoffice.backend.controllers.ClientCreateController:
     class: ../controllers/client/ClientCreateController

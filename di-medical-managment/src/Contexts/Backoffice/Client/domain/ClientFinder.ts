@@ -1,3 +1,4 @@
+import { Client } from "./Client";
 import { ClientId } from "./ClientId";
 import { ClientNotFound } from "./ClientNotFound";
 import { ClientRepository } from "./ClientRepository";

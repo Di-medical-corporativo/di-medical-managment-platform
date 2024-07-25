@@ -73,11 +73,19 @@ services:
       "@Contexts.Backoffice.Truck.application.AddIncident.TruckIncidentAdder"
     ]
 
+
+
   Contexts.Backoffice.Client.infra.persistence.ClientRepository:
     class: ../../../../Contexts/Backoffice/Client/infra/persistence/PrismaClientRepository
 
   Contexts.Backoffice.Client.application.Create.ClientCreator:
     class: ../../../../Contexts/Backoffice/Client/application/Create/ClientCreator
+    arguments: [
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository",
+    ]
+  
+  Contexts.Backoffice.Client.application.Find.ClientFinder:
+    class: ../../../../Contexts/Backoffice/Client/domain/ClientFinder
     arguments: [
     "@Contexts.Backoffice.Client.infra.persistence.ClientRepository",
     ]
@@ -111,6 +119,15 @@ services:
     arguments: [
       "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher"
     ]
+
+  Apps.Backoffice.backend.controllers.ClientSearchController:
+    class: ../controllers/client/ClientSearchController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.Find.ClientFinder"
+    ]
+
+
+
 
   Contexts.Backoffice.Survey.infra.persistence.SurveyRepository:
     class: ../../../../Contexts/Backoffice/Survey/infra/persistence/PrismaSurveyRepository
