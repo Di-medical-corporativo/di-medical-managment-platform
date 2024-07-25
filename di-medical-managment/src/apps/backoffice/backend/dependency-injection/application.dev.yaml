@@ -73,8 +73,6 @@ services:
       "@Contexts.Backoffice.Truck.application.AddIncident.TruckIncidentAdder"
     ]
 
-
-
   Contexts.Backoffice.Client.infra.persistence.ClientRepository:
     class: ../../../../Contexts/Backoffice/Client/infra/persistence/PrismaClientRepository
 
@@ -82,6 +80,18 @@ services:
     class: ../../../../Contexts/Backoffice/Client/application/Create/ClientCreator
     arguments: [
     "@Contexts.Backoffice.Client.infra.persistence.ClientRepository",
+    ]
+  
+  Contexts.Backoffice.Client.application.Delete.ClientDeleter:
+    class: ../../../../Contexts/Backoffice/Client/application/Delete/ClientDeleter
+    arguments: [
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository"
+    ]
+  
+  Apps.Backoffice.backend.controllers.ClientDeleteController:
+    class: ../controllers/client/ClientDeleteController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.Delete.ClientDeleter"
     ]
   
   Contexts.Backoffice.Client.application.Find.ClientFinder:
@@ -125,9 +135,6 @@ services:
     arguments: [
       "@Contexts.Backoffice.Client.application.Find.ClientFinder"
     ]
-
-
-
 
   Contexts.Backoffice.Survey.infra.persistence.SurveyRepository:
     class: ../../../../Contexts/Backoffice/Survey/infra/persistence/PrismaSurveyRepository

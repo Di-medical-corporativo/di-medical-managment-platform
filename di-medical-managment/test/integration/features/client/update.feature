@@ -1,6 +1,6 @@
 Feature: Update a client
   Scenario: Update an existing sucursal
-    Given I send a PUT request to "backoffice//client/fc30f0f9-0294-44c0-93e5-01a9ec2446ed" with body:
+    Given I send a PUT request to "/backoffice//client/fc30f0f9-0294-44c0-93e5-01a9ec2446ed" with body:
      """
       {
         "name": "Test role modified",

@@ -41,3 +41,8 @@
 #new-client-form form button{
   width: 100%;
 }
+
+#actions {
+  display: flex;
+  justify-content: flex-end;
+}
