@@ -22,7 +22,7 @@ export class ClientCreateController implements Controller {
   
       res.status(201).redirect('/backoffice/client');
     } catch (error) {
-      res.render('error/error', {
+      res.status(500).render('error/error', {
         message: 'Ocurrio un error, contacta soporte'
       });
     }

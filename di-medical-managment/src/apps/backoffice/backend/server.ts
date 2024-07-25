@@ -2,10 +2,10 @@ import bodyParser from 'body-parser';
 import express, { Request, Response, Router } from 'express';
 import helmet from 'helmet';
 import * as http from 'http';
-import container from './dependency-injection';
 import { registerRoutes } from './routes';
 import cors from 'cors';
 import path from "path";
+import methodOverride from 'method-override';
 
 export class Server {
   private express: express.Express;
@@ -30,6 +30,8 @@ export class Server {
     this.express.use(bodyParser.json());
     
     this.express.use(bodyParser.urlencoded({ extended: true }));
+
+    this.express.use(methodOverride('_method'));
     
     this.express.use(helmet.xssFilter());
     

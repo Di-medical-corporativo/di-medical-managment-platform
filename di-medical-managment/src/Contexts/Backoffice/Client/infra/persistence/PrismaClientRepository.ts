@@ -49,7 +49,7 @@ export class PrismaClientRepository implements ClientRepository {
         address: clientPlain.address,
         name: clientPlain.name
       }
-    });
+    }); 
   }
 
   async findAll(): Promise<Client[]> {
@@ -63,5 +63,13 @@ export class PrismaClientRepository implements ClientRepository {
     }));
 
     return clients;
+  }
+
+  async delete(id: ClientId): Promise<void> {
+    await prisma.client.delete({
+      where: {
+        id: id.toString()
+      }
+    });
   }
 }

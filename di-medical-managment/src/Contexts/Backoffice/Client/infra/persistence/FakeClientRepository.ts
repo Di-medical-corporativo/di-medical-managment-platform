@@ -26,4 +26,13 @@ export class FakeClientRepository implements ClientRepository {
   async findAll(): Promise<Client[]> {
     return this.clients;
   }
+
+  async delete(id: ClientId): Promise<void> {
+    const index = this.clients.findIndex(c => c.toPrimitives().id === id.toString());
+    if (index !== -1) {
+      this.clients.splice(index, 1);
+    } else {
+      throw new Error('Client not found');
+    }
+  }
 }

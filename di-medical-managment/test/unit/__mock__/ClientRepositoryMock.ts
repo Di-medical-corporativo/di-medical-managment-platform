@@ -7,12 +7,14 @@ export class ClientRepositoryMock implements ClientRepository {
   private searchMock: jest.Mock;
   private updateMock: jest.Mock;
   private findAllMock: jest.Mock;
+  private deleteMock: jest.Mock;
 
   constructor() {
     this.saveMock = jest.fn();
     this.searchMock = jest.fn();
     this.updateMock = jest.fn();
-    this.findAll = jest.fn();
+    this.findAllMock = jest.fn();
+    this.deleteMock = jest.fn();
   }
   
   async save(client: Client): Promise<void> {
@@ -28,7 +30,11 @@ export class ClientRepositoryMock implements ClientRepository {
   }
 
   findAll(): Promise<Client[]> {
-    return this.findAll();
+    return this.findAllMock();
+  }
+
+  async delete(id: ClientId) {
+    this.deleteMock(id);
   }
 
   assertSaveHaveBeenCalledWith(expected: Client): void {
@@ -44,7 +50,11 @@ export class ClientRepositoryMock implements ClientRepository {
   }
 
   assertSearchHaveBeenCalled() {
-    expect(this.findAll).toHaveBeenCalled();
+    expect(this.findAllMock).toHaveBeenCalled();
+  }
+
+  assertDeleteHaveBeenCalled(expected: ClientId) {
+    expect(this.deleteMock).toHaveBeenCalledWith(expected);
   }
 
   setReturnForSearch(returnValue: Client | null): void {

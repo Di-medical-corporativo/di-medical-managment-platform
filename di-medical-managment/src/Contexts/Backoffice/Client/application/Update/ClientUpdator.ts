@@ -20,9 +20,9 @@ export class ClientUpdator {
   }) {
     const client = await this.clientFinder.run({ id: params.id });
 
-    client.updateAddress(params.name);
-    
     client.updateAddress(params.address);
+    
+    client.updateName(params.name);
 
     await this.repository.update(client);
   }

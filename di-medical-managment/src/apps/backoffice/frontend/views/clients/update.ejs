@@ -26,8 +26,7 @@
       </header>
 
       <section id="new-client-form">
-        <form action="/backoffice/client/<%= clientData.id %>" method="post">
-          <input type="hidden" name="_method" value="PUT">
+        <form action="/backoffice/client/<%= clientData.id %>?_method=PUT" method="post">
           <input type="text" hidden id="id" name="id" value="<%= clientData.id %>">
           <label for="name">Nombre:</label>
           <input type="text" name="name" id="name" value="<%= clientData.name %>" class="input" required>

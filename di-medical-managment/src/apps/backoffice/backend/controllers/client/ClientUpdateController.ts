@@ -25,10 +25,14 @@ export class ClientUpdateController implements Controller {
       res.status(200).redirect('/backoffice/client');
     } catch (error) {
       if(error instanceof ClientNotFound) {
-        res.sendStatus(404);
+        res.status(404).render('error/error', {
+          message: 'El cliente no se encontro'
+        });
       }
 
-      res.sendStatus(500);
+      res.status(500).render('error/error', {
+        message: 'Ocurrio un error, contacte'
+      });
     }
     
   }
