@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clientes</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camionetas</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/truck">
+            <small>Camionetas</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+        </section>
+
+        <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/client/new'">Nueva camioneta</button>
+      </header>
+
+      <section id="client-list">
+        <table class="table">
+          <thead>
+              <tr>
+                  <th>Placas</th>
+                  <th>Modelo</th>
+                  <th>Marca</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+            <% for(let i = 0; i < 2; i++) { %>
+              <tr>
+                <td>Test</td>
+                <td>Test</td>
+                <td>Test</td>
+                <td style="text-align: right;" id="actions">
+                  <button class="button warning"
+                  onclick="window.location.href='/backoffice/client/update'"
+                >Actualizar</button>
+                  <button class="button primary"
+                    onclick="window.location.href='/backoffice/client/update'"
+                  >Actualizar</button>
+                  <form action="/backoffice/client/?_method=DELETE" method="post">
+                    <input type="text" value="" name="id" hidden>
+                    <button class="button danger" type="submit">Eliminar</button>
+                  </form> 
+                </td>
+            </tr>
+            <% } %>
+          </tbody>
+      </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
+
+</body>
+</html>

@@ -30,3 +30,8 @@
   color: var(--color-tertiary);
 }
 
+.button.warning {
+  background-color: var(--color-warning);
+  color: var(--color-tertiary);
+}
+

@@ -73,6 +73,10 @@ services:
       "@Contexts.Backoffice.Truck.application.AddIncident.TruckIncidentAdder"
     ]
 
+  Apps.Backoffice.backend.controllers.TruckFindAllController:
+    class: ../controllers/truck/TruckFindAllController
+    arguments: []
+
   Contexts.Backoffice.Client.infra.persistence.ClientRepository:
     class: ../../../../Contexts/Backoffice/Client/infra/persistence/PrismaClientRepository
 
