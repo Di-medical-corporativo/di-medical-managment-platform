@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camionetas</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuario</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/truck">
+            <small>Camionetas</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/truck/new">
+            <small>Nueva camioneta</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="new-client-form">
+        <form action="/backoffice/truck/<%= id %>" method="post">
+          <input type="text" hidden value="<%= id %>" name="id">
+          
+          <label for="plate">Placas:</label>
+          <input type="text" id="plate" name="plate" class="input" required>
+          
+          <label for="model">Modelo:</label>
+          <input type="text" name="model" id="model" class="input" required>
+          
+          <label for="brand">Marca:</label>
+          <input type="text" name="brand" id="brand" class="input" required>
+          
+          <button type="submit" class="button primary">Nueva camioneta</button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
+
+</body>
+</html>

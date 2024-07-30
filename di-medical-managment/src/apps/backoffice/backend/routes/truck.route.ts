@@ -6,6 +6,7 @@ import { TruckUpdateController } from "../controllers/truck/TruckUpdateControlle
 import { IncidentCreateController } from "../controllers/truck/IncidentCreateController";
 import { TruckFindAllController } from "../controllers/truck/TruckFindAllController";
 import { TruckSearchController } from "../controllers/truck/TruckSearchController";
+import { v4 as uuid } from "uuid";
 
 export const register = (app: Express) => {
   const createTruckController: TruckCreateController = container.get('Apps.Backoffice.backend.controllers.TruckCreateController');
@@ -27,4 +28,12 @@ export const register = (app: Express) => {
   app.post('/truck/:truckId/incident/:incidentId', (req: Request, res: Response) => createIncidentController.run(req, res));
 
   app.get('/truck', (req: Request, res: Response) => findAllTruckController.run(req, res));
+
+  app.get('/truck/new', (req: Request, res: Response) => {
+    const id = uuid();
+
+    res.render('trucks/create', {
+      id
+    });
+  });
 }

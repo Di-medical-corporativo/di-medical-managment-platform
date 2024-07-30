@@ -31,7 +31,7 @@ export const register = (app: Express) => {
   app.get('/client/new', (req: Request, res: Response) => {
     const id = uuid();
     
-    res.render('clients/create.ejs', {
+    res.render('clients/create', {
       id
     })
   });
