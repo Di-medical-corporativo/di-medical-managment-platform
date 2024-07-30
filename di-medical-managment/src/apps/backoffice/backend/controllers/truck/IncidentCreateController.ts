@@ -24,10 +24,12 @@ export class IncidentCreateController implements Controller {
         truckId: new TruckId(truckId)
       });
   
-      res.sendStatus(201); 
+      res.sendStatus(302); 
     } catch (error) {
       if(error instanceof TruckNotFound) {
-        res.sendStatus(404);
+        res.status(404).render('error/error', {
+          message: 'No se encontro la camioneta'
+        });
       }
     }
   }

@@ -7,8 +7,6 @@ import { ClientFindAllController } from "../controllers/client/ClientFindAllCont
 import { ClientSearchController } from "../controllers/client/ClientSearchController";
 import { ClientDeleteController } from "../controllers/client/ClientDeleteController";
 
-
-//TODO:Validate body with express validator
 export const register = (app: Express) => {
   const createClientController: ClientCreateController = container.get('Apps.Backoffice.backend.controllers.ClientCreateController');
   
@@ -32,6 +30,7 @@ export const register = (app: Express) => {
 
   app.get('/client/new', (req: Request, res: Response) => {
     const id = uuid();
+    
     res.render('clients/create.ejs', {
       id
     })

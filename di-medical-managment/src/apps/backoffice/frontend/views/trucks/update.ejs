@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clientes</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/truck">
+            <small>Camionetas</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/truck/<%= truckData.id %>/update">
+            <small>Actualizar</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="new-client-form">
+        <form action="/backoffice/truck/<%= truckData.id %>?_method=PUT" method="post">
+          <input type="text" hidden value="<%= truckData.id %>" name="id">
+          
+          <label for="plate">Placas:</label>
+          <input type="text" id="plate" name="plate" value="<%= truckData.plate %>" class="input" required>
+          
+          <label for="model">Modelo:</label>
+          <input type="text" name="model" id="model" value="<%= truckData.model %>" class="input" required>
+          
+          <label for="brand">Marca:</label>
+          <input type="text" name="brand" id="brand" value="<%= truckData.brand %>" class="input" required>
+          <button type="submit" class="button primary">Actualizar camioneta</button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -44,20 +44,20 @@
               </tr>
           </thead>
           <tbody>
-            <% for(let i = 0; i < 2; i++) { %>
+            <% for(let i = 0; i < trucks.length; i++) { %>
               <tr>
-                <td>Test</td>
-                <td>Test</td>
-                <td>Test</td>
-                <td style="text-align: right;" id="actions">
+                <td><%= trucks[i].plate %></td>
+                <td><%= trucks[i].model %></td>
+                <td><%= trucks[i].brand %></td>
+                <td style="text-align: right;" id="truck_actions">
                   <button class="button warning"
-                  onclick="window.location.href='/backoffice/client/update'"
-                >Actualizar</button>
+                  onclick="window.location.href='/backoffice/truck/<%= trucks[i].id %>/incidents'"
+                >Incidencias</button>
                   <button class="button primary"
-                    onclick="window.location.href='/backoffice/client/update'"
+                    onclick="window.location.href='/backoffice/truck/<%= trucks[i].id %>/update'"
                   >Actualizar</button>
-                  <form action="/backoffice/client/?_method=DELETE" method="post">
-                    <input type="text" value="" name="id" hidden>
+                  <form action="/backoffice/client/<%= trucks[i].id %>?_method=DELETE" method="post">
+                    <input type="text" value="<%= trucks[i].id %>" name="id" hidden>
                     <button class="button danger" type="submit">Eliminar</button>
                   </form> 
                 </td>

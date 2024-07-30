@@ -22,7 +22,7 @@ export class ClientUpdateController implements Controller {
         address: new ClientAddress(address)
       });
 
-      res.status(200).redirect('/backoffice/client');
+      res.redirect('/backoffice/client');
     } catch (error) {
       if(error instanceof ClientNotFound) {
         res.status(404).render('error/error', {

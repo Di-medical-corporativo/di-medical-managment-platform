@@ -7,6 +7,11 @@ import { TruckRepository } from "../../domain/TruckRepository";
 export class FakeTruckRepository implements TruckRepository {
   private trucks: Truck[] = [];
   private incidents: Incident[] = [];
+
+  async findAll(): Promise<Truck[]> {
+    return this.trucks;
+  }
+
   async save(truck: Truck): Promise<void> {
     const existingTruckIndex = this.trucks.findIndex(t => t.toPrimitives().id === truck.toPrimitives().id);
 

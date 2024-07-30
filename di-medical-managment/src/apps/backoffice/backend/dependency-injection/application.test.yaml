@@ -55,6 +55,25 @@ services:
     "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
     ]
 
+  Contexts.Backoffice.Truck.application.SearchAll.TruckSearcher:
+    class: ../../../../Contexts/Backoffice/Truck/application/SearchAll/TruckSearcher
+    arguments: [
+    "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
+    ]
+
+  Contexts.Backoffice.Truck.application.Find.TruckFinder:
+    class: ../../../../Contexts/Backoffice/Truck/domain/TruckFinder
+    arguments: [
+    "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
+    ]
+
+  Apps.Backoffice.backend.controllers.TruckSearchControllers:
+    class: ../controllers/truck/TruckSearchController
+    arguments: [
+      "@Contexts.Backoffice.Truck.application.Find.TruckFinder"
+    ]
+  
+
   Apps.Backoffice.backend.controllers.TruckCreateController:
     class: ../controllers/truck/TruckCreateController
     arguments: [
@@ -73,6 +92,11 @@ services:
       "@Contexts.Backoffice.Truck.application.AddIncident.TruckIncidentAdder"
     ]
 
+  Apps.Backoffice.backend.controllers.TruckFindAllController:
+    class: ../controllers/truck/TruckFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Truck.application.SearchAll.TruckSearcher"
+    ]
 
   Contexts.Backoffice.Client.infra.persistence.ClientRepository:
     class: ../../../../Contexts/Backoffice/Client/infra/persistence/FakeClientRepository
@@ -83,24 +107,6 @@ services:
     "@Contexts.Backoffice.Client.infra.persistence.ClientRepository",
     ]
   
-  Contexts.Backoffice.Client.application.Find.ClientFinder:
-    class: ../../../../Contexts/Backoffice/Client/domain/ClientFinder
-    arguments: [
-    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository",
-    ]
-
-  Contexts.Backoffice.Client.application.Update.ClientUpdator:
-    class: ../../../../Contexts/Backoffice/Client/application/Update/ClientUpdator
-    arguments: [
-    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository"
-    ]
-  
-  Contexts.Backoffice.Client.application.SearchAll.ClientSearcher:
-    class: ../../../../Contexts/Backoffice/Client/application/SearchAll/ClientSearcher
-    arguments: [
-    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository"
-    ]
-
   Contexts.Backoffice.Client.application.Delete.ClientDeleter:
     class: ../../../../Contexts/Backoffice/Client/application/Delete/ClientDeleter
     arguments: [
@@ -112,12 +118,23 @@ services:
     arguments: [
       "@Contexts.Backoffice.Client.application.Delete.ClientDeleter"
     ]
-
-
-  Apps.Backoffice.backend.controllers.ClientFindAllController:
-    class: ../controllers/client/ClientFindAllController
+  
+  Contexts.Backoffice.Client.application.Find.ClientFinder:
+    class: ../../../../Contexts/Backoffice/Client/domain/ClientFinder
     arguments: [
-      "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher"
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository",
+    ]
+  
+  Contexts.Backoffice.Client.application.Update.ClientUpdator:
+    class: ../../../../Contexts/Backoffice/Client/application/Update/ClientUpdator
+    arguments: [
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository"
+    ]
+
+  Contexts.Backoffice.Client.application.SearchAll.ClientSearcher:
+    class: ../../../../Contexts/Backoffice/Client/application/SearchAll/ClientSearcher
+    arguments: [
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository"
     ]
 
   Apps.Backoffice.backend.controllers.ClientCreateController:
@@ -131,7 +148,13 @@ services:
     arguments: [
       "@Contexts.Backoffice.Client.application.Update.ClientUpdator"
     ]
-  
+
+  Apps.Backoffice.backend.controllers.ClientFindAllController:
+    class: ../controllers/client/ClientFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher"
+    ]
+
   Apps.Backoffice.backend.controllers.ClientSearchController:
     class: ../controllers/client/ClientSearchController
     arguments: [

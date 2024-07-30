@@ -9,5 +9,5 @@ Scenario: A valid client
     "address": "model"
   }
   """
-  Then the response status code should be 201
+  Then the response status code should be 302
   

@@ -15,4 +15,6 @@ export interface TruckRepository {
   saveIncident(incident: Incident): Promise<void>
   
   removeIncident(data: { id: IncidentId, finishDate: IncidentDate }): Promise<void>
+
+  findAll(): Promise<Truck[]>
 }

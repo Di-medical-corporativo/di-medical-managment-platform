@@ -6,5 +6,5 @@ Feature: Delete a client
         "id": "fc30f0f9-0294-44c0-93e5-01a9ec2446ed"
       }
     """
-    Then the response status code should be 404
+    Then the response status code should be 302
     And the body should be empty

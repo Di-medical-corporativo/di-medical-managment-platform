@@ -55,6 +55,25 @@ services:
     "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
     ]
 
+  Contexts.Backoffice.Truck.application.SearchAll.TruckSearcher:
+    class: ../../../../Contexts/Backoffice/Truck/application/SearchAll/TruckSearcher
+    arguments: [
+    "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
+    ]
+
+  Contexts.Backoffice.Truck.application.Find.TruckFinder:
+    class: ../../../../Contexts/Backoffice/Truck/domain/TruckFinder
+    arguments: [
+    "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
+    ]
+
+  Apps.Backoffice.backend.controllers.TruckSearchControllers:
+    class: ../controllers/truck/TruckSearchController
+    arguments: [
+      "@Contexts.Backoffice.Truck.application.Find.TruckFinder"
+    ]
+  
+
   Apps.Backoffice.backend.controllers.TruckCreateController:
     class: ../controllers/truck/TruckCreateController
     arguments: [
@@ -75,7 +94,9 @@ services:
 
   Apps.Backoffice.backend.controllers.TruckFindAllController:
     class: ../controllers/truck/TruckFindAllController
-    arguments: []
+    arguments: [
+      "@Contexts.Backoffice.Truck.application.SearchAll.TruckSearcher"
+    ]
 
   Contexts.Backoffice.Client.infra.persistence.ClientRepository:
     class: ../../../../Contexts/Backoffice/Client/infra/persistence/PrismaClientRepository

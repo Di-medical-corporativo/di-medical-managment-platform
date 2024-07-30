@@ -6,6 +6,22 @@ import { Truck } from "../../domain/Truck";
 import { TruckRepository } from "../../domain/TruckRepository";
 
 export class PrismaTruckRepository implements TruckRepository {
+  
+  async findAll(): Promise<Truck[]> {
+    const truckDB = await prisma.truck.findMany({});
+
+    const trucks = truckDB.map(t => {
+      return Truck.fromPrimities({
+        id: t.id,
+        brand: t.brand,
+        model: t.model,
+        plate: t.plates
+      });
+    });
+
+    return trucks;
+  }
+  
   async save(truck: Truck): Promise<void> {
     const truckPlain = truck.toPrimitives();
 
