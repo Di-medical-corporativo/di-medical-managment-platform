@@ -3,6 +3,7 @@ import { Incident } from "../../domain/Incident";
 import { IncidentDate } from "../../domain/IncidentDate";
 import { IncidentId } from "../../domain/IncidentId";
 import { Truck } from "../../domain/Truck";
+import { TruckId } from "../../domain/TruckId";
 import { TruckRepository } from "../../domain/TruckRepository";
 
 export class PrismaTruckRepository implements TruckRepository {
@@ -124,5 +125,25 @@ export class PrismaTruckRepository implements TruckRepository {
     });
 
     return incident;
+  }
+
+  async findAllIncidents(truckId: TruckId): Promise<Incident[]> {
+    const incidentsDB = await prisma.incident.findMany({
+      where: {
+        truckId: truckId.toString(),
+        isActive: true
+      }
+    });
+  
+    const incidents = incidentsDB.map(i => Incident.fromPrimitives({
+      id: i.id,
+      description: i.description,
+      finishDate: i.finishedDate.toISOString(),
+      isActive: i.isActive,
+      startDate: i.startDate.toISOString(),
+      truckId: i.truckId
+    }));
+
+    return incidents;
   }
 }

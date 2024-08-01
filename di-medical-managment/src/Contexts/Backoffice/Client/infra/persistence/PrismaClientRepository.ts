@@ -53,7 +53,11 @@ export class PrismaClientRepository implements ClientRepository {
   }
 
   async findAll(): Promise<Client[]> {
-    const clientsDB = await prisma.client.findMany({});
+    const clientsDB = await prisma.client.findMany({
+      where: {
+        isActive: true
+      }
+    });
 
     const clients = clientsDB.map(c => Client.fromPrimitives({
       id: c.id,
@@ -66,9 +70,12 @@ export class PrismaClientRepository implements ClientRepository {
   }
 
   async delete(id: ClientId): Promise<void> {
-    await prisma.client.delete({
+    await prisma.client.update({
       where: {
         id: id.toString()
+      },
+      data: {
+        isActive: false
       }
     });
   }

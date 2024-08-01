@@ -16,7 +16,7 @@ export class TruckSearchController {
         id: new TruckId(id)
       });
 
-      res.render('trucks/update', {
+      res.status(200).render('trucks/update', {
         truckData: truck.toPrimitives()
       });
     } catch (error) {
@@ -28,7 +28,7 @@ export class TruckSearchController {
 
       res.status(500).render('error/error', {
         message: 'Ocurrio un error, contacta soporte'
-      })
+      });
     }
   }
 }

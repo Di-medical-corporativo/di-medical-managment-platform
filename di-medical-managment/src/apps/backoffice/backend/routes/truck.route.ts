@@ -7,6 +7,8 @@ import { IncidentCreateController } from "../controllers/truck/IncidentCreateCon
 import { TruckFindAllController } from "../controllers/truck/TruckFindAllController";
 import { TruckSearchController } from "../controllers/truck/TruckSearchController";
 import { v4 as uuid } from "uuid";
+import { IncidentFindAllController } from "../controllers/truck/IncidentFindAllController";
+import { IncidentRemoveController } from "../controllers/truck/IncidentRemoveController";
 
 export const register = (app: Express) => {
   const createTruckController: TruckCreateController = container.get('Apps.Backoffice.backend.controllers.TruckCreateController');
@@ -19,20 +21,39 @@ export const register = (app: Express) => {
 
   const searchTruckController: TruckSearchController = container.get('Apps.Backoffice.backend.controllers.TruckSearchControllers');
   
+  const findAllIncidentController: IncidentFindAllController = container.get('Apps.Backoffice.backend.controllers.IncidentFindAllController');
+
+  const removeIncidentController: IncidentRemoveController = container.get('Apps.Backoffice.backend.controllers.IncidentRemoveController');
+
   app.post('/truck/:id', (req: Request, res: Response) => createTruckController.run(req, res));
+
+  app.get('/truck/:truckId/incidents', (req: Request, res: Response) => findAllIncidentController.run(req, res));
+
+  app.delete('/truck/:truckId/incident/:incidentId', (req: Request, res: Response) => removeIncidentController.run(req, res));
 
   app.put('/truck/:id', (req: Request, res: Response) => updateTruckController.run(req, res));
   
   app.get('/truck/:id/update', (req: Request, res: Response) => searchTruckController.run(req, res));
 
-  app.post('/truck/:truckId/incident/:incidentId', (req: Request, res: Response) => createIncidentController.run(req, res));
+  app.post('/truck/:truckId/incident/new', (req: Request, res: Response) => createIncidentController.run(req, res));
+  
+  app.get('/truck/:truckId/incident/new', (req: Request, res: Response) => {
+    const id = uuid();
 
+    const { truckId } = req.params;
+    
+    res.render('trucks/incident-create', {
+      id,
+      truckId
+    })
+  });
+  
   app.get('/truck', (req: Request, res: Response) => findAllTruckController.run(req, res));
 
   app.get('/truck/new', (req: Request, res: Response) => {
     const id = uuid();
 
-    res.render('trucks/create', {
+    res.status(200).render('trucks/create', {
       id
     });
   });

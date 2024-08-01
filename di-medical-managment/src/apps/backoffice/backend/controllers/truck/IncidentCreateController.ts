@@ -15,16 +15,17 @@ export class IncidentCreateController implements Controller {
   
   async run(req: Request, res: Response): Promise<void> {
     try {
-      const { id, description, startDate, truckId } = req.body;
+      const { id, description } = req.body;
+      const { truckId } = req.params;
 
       await this.truckIncidentAdder.run({
         id: new IncidentId(id),
         description: new IncidentDescription(description),
-        startDate: new IncidentDate(startDate),
+        startDate: new IncidentDate(new Date().toISOString()),
         truckId: new TruckId(truckId)
       });
   
-      res.sendStatus(302); 
+      res.redirect(`/backoffice/truck/${truckId}/incidents`); 
     } catch (error) {
       if(error instanceof TruckNotFound) {
         res.status(404).render('error/error', {

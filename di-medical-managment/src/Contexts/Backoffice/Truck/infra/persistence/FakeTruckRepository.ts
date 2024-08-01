@@ -2,11 +2,16 @@ import { Incident } from "../../domain/Incident";
 import { IncidentDate } from "../../domain/IncidentDate";
 import { IncidentId } from "../../domain/IncidentId";
 import { Truck } from "../../domain/Truck";
+import { TruckId } from "../../domain/TruckId";
 import { TruckRepository } from "../../domain/TruckRepository";
 
 export class FakeTruckRepository implements TruckRepository {
   private trucks: Truck[] = [];
   private incidents: Incident[] = [];
+
+  async findAllIncidents(truckId: TruckId): Promise<Incident[]> {
+    return this.incidents;
+  }
 
   async findAll(): Promise<Truck[]> {
     return this.trucks;

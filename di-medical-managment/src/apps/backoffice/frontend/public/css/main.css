@@ -14,14 +14,15 @@
   font-family: sans-serif;
 }
 
-body {
-  background-color: var(--color-secondary);
-}
-
 #error-view {
   width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+
+body {
+  background-color: var(--color-secondary);
 }

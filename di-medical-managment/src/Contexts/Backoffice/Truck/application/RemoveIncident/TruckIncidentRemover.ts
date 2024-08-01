@@ -21,7 +21,7 @@ export class TruckIncidentRemover {
     await this.repository.removeIncident(params);
   }
 
-  async ensureIncidentExists(id: IncidentId) {
+  private async ensureIncidentExists(id: IncidentId) {
     await this.incidentFinder.run({
       id
     });

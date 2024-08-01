@@ -2,6 +2,7 @@ import { Incident } from "../../../src/Contexts/Backoffice/Truck/domain/Incident
 import { IncidentDate } from "../../../src/Contexts/Backoffice/Truck/domain/IncidentDate";
 import { IncidentId } from "../../../src/Contexts/Backoffice/Truck/domain/IncidentId";
 import { Truck } from "../../../src/Contexts/Backoffice/Truck/domain/Truck";
+import { TruckId } from "../../../src/Contexts/Backoffice/Truck/domain/TruckId";
 import { TruckRepository } from "../../../src/Contexts/Backoffice/Truck/domain/TruckRepository";
 
 export class TruckRepositoryMock implements TruckRepository {
@@ -16,6 +17,10 @@ export class TruckRepositoryMock implements TruckRepository {
   private saveIncidentMock: jest.Mock;
   
   private removeIncidentMock: jest.Mock;
+
+  private findAllMock: jest.Mock;
+
+  private findAllIncidentsMock: jest.Mock;
 
   private truck = Truck.fromPrimities({
     "id": "fc30f0f9-0294-44c0-93e5-01a9ec2446ed",
@@ -37,6 +42,10 @@ export class TruckRepositoryMock implements TruckRepository {
     this.saveMock = jest.fn();
 
     this.updateMock = jest.fn();
+
+    this.findAllMock = jest.fn();
+
+    this.findAllIncidentsMock = jest.fn();
     
     this.searchMock = jest.fn().mockImplementation((id) => {
       const trucks: Truck[] = [];
@@ -62,6 +71,14 @@ export class TruckRepositoryMock implements TruckRepository {
     this.saveIncidentMock = jest.fn();
 
     this.removeIncidentMock = jest.fn();
+  }
+
+  async findAll(): Promise<Truck[]> {
+    return this.findAllMock();
+  }
+
+  findAllIncidents(truckId: TruckId): Promise<Incident[]> {
+    return this.findAllIncidentsMock();
   }
 
   async save(truck: Truck): Promise<void> {

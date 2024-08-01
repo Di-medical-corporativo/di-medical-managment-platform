@@ -55,6 +55,18 @@ services:
     "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
     ]
 
+  Contexts.Backoffice.Truck.application.RemoveIncident.TruckIncidentRemover:
+    class: ../../../../Contexts/Backoffice/Truck/application/RemoveIncident/TruckIncidentRemover
+    arguments: [
+    "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
+    ]
+
+  Contexts.Backoffice.Truck.application.SearchAllIncident.IncidentSearcher:
+    class: ../../../../Contexts/Backoffice/Truck/application/SearchAllIncident/IncidentSearcher
+    arguments: [
+    "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
+    ]  
+
   Contexts.Backoffice.Truck.application.SearchAll.TruckSearcher:
     class: ../../../../Contexts/Backoffice/Truck/application/SearchAll/TruckSearcher
     arguments: [
@@ -72,7 +84,6 @@ services:
     arguments: [
       "@Contexts.Backoffice.Truck.application.Find.TruckFinder"
     ]
-  
 
   Apps.Backoffice.backend.controllers.TruckCreateController:
     class: ../controllers/truck/TruckCreateController
@@ -90,6 +101,18 @@ services:
     class: ../controllers/truck/IncidentCreateController
     arguments: [
       "@Contexts.Backoffice.Truck.application.AddIncident.TruckIncidentAdder"
+    ]
+
+  Apps.Backoffice.backend.controllers.IncidentFindAllController:
+    class: ../controllers/truck/IncidentFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Truck.application.SearchAllIncident.IncidentSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.IncidentRemoveController:
+    class: ../controllers/truck/IncidentRemoveController
+    arguments: [
+      "@Contexts.Backoffice.Truck.application.RemoveIncident.TruckIncidentRemover"
     ]
 
   Apps.Backoffice.backend.controllers.TruckFindAllController:
