@@ -15,13 +15,13 @@
 
       <header class="section-header">
         <section class="breadcrumb">
-          <a href="/backoffice/client">
+          <a href="/backoffice/sucursal">
             <small>Sucursales</small>
           </a>
           <span class="breadcrumb-slash">/</span>
         </section>
 
-        <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/client/new'">Nueva sucursal</button>
+        <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/sucursal/new'">Nueva sucursal</button>
       </header>
 
       <section id="client-list">
@@ -42,7 +42,7 @@
                 <td><%= branches[i].phone %></td>
                 <td style="text-align: right;" id="actions">
                   <button class="button primary"
-                    onclick="window.location.href='/backoffice/client/<%= branches[i].id %>/update'"
+                    onclick="window.location.href='/backoffice/sucursal/<%= branches[i].id %>/update'"
                   >Actualizar</button>
                 </td>
             </tr>

@@ -13,6 +13,14 @@ services:
   Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher:
     class: ../../../../Contexts/Backoffice/Sucursal/application/SearchAll/SucursalSearcher
     arguments: ["@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository"]
+
+  Contexts.Backoffice.Sucursal.application.Find.SucursalFinder:
+    class: ../../../../Contexts/Backoffice/Sucursal/domain/SucursalFinder
+    arguments: ["@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository"]
+
+  Apps.Backoffice.backend.controllers.SucursalSearchController:
+    class: ../controllers/sucursal/SucursalSearchController
+    arguments: ["@Contexts.Backoffice.Sucursal.application.Find.SucursalFinder"]
   
   Apps.Backoffice.backend.controllers.SucursalCreateController:
     class: ../controllers/SucursalCreateController

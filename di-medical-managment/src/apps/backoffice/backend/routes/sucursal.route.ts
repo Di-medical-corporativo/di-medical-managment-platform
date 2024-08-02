@@ -2,8 +2,10 @@ import { Express } from "express";
 import { Request, Response } from "express";
 import { SucursalCreateController } from "../controllers/SucursalCreateController";
 import container from "../dependency-injection";
+import { v4 as uuid } from "uuid";
 import { SucursalUpdateController } from "../controllers/SucursalUpdateController";
 import { SucursalFindAllController } from "../controllers/sucursal/SucursalFindAllController";
+import { SucursalSearchController } from "../controllers/sucursal/SucursalSearchController";
 
 export const register = (app: Express) => {
   const createSucursalController: SucursalCreateController = container.get('Apps.Backoffice.backend.controllers.SucursalCreateController');
@@ -12,9 +14,21 @@ export const register = (app: Express) => {
   
   const findAllSucursalController: SucursalFindAllController = container.get('Apps.Backoffice.backend.controllers.SucursalFindAllController');
 
+  const searchSucursalController: SucursalSearchController = container.get('Apps.Backoffice.backend.controllers.SucursalSearchController');
+
   app.post('/sucursal/:id', (req: Request, res: Response) => createSucursalController.run(req, res));
   
+  app.get('/sucursal/:id/update', (req: Request, res: Response) => searchSucursalController.run(req, res));
+
   app.put('/sucursal/:id', (req: Request, res: Response) => updateSucursalController.run(req, res));
 
   app.get('/sucursal', (req: Request, res: Response) => findAllSucursalController.run(req, res));
+
+  app.get('/sucursal/new', (req: Request, res: Response) => {
+    const id = uuid();
+
+    res.render('branches/create', {
+      id
+    });
+  })
 }

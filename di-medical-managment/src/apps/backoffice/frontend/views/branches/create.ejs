@@ -15,24 +15,26 @@
 
       <header class="section-header">
         <section class="breadcrumb">
-          <a href="/backoffice/client">
-            <small>Clientes</small>
+          <a href="/backoffice/sucursal">
+            <small>Sucursales</small>
           </a>
           <span class="breadcrumb-slash">/</span>
-          <a href="/backoffice/client/new">
-            <small>Nuevo cliente</small>
+          <a href="/backoffice/sucursal/new">
+            <small>Nueva sucursal</small>
           </a>
         </section>
       </header>
 
       <section id="new-client-form">
-        <form action="/backoffice/client/<%= id %>" method="post">
+        <form action="/backoffice/sucursal/<%= id %>" method="post">
           <input type="text" hidden id="id" name="id" value="<%= id %>">
           <label for="name">Nombre:</label>
           <input type="text" name="name" id="name" class="input" required>
           <label for="address">Dirección:</label>
           <input type="text" name="address" id="address" class="input" required>
-          <button type="submit" class="button primary">Nuevo cliente</button>
+          <label for="phone">Teléfono:</label>
+          <input type="text" name="phone" id="phone" class="input" required>
+          <button type="submit" class="button primary">Nueva sucursal</button>
         </form>
       </section>
     </main>

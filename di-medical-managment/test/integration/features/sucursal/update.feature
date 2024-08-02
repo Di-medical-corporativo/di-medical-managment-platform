@@ -1,6 +1,6 @@
 Feature: Update a sucursal
   Scenario: Update an existing sucursal
-    Given I send a PUT request to "/sucursal/fc30f0f9-0294-44c0-93e5-01a9ec2446ed" with body:
+    Given I send a PUT request to "/backoffice/sucursal/fc30f0f9-0294-44c0-93e5-01a9ec2446ed" with body:
      """
       {
         "name": "Test role modified",
@@ -8,10 +8,11 @@ Feature: Update a sucursal
         "phone": "5525179478"
       }
     """
-    Then the response status code should be 200
+    Then the response status code should be 302
     And the body should be empty
+
   Scenario: Update a non existing sucursal
-    Given I send a PUT request to "/sucursal/123" with body:
+    Given I send a PUT request to "/backoffice/sucursal/123" with body:
      """
       {
         "name": "Test role modified",

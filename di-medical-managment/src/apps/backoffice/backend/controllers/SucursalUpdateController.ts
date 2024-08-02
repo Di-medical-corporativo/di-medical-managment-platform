@@ -25,12 +25,18 @@ export class SucursalUpdateController implements Controller {
         address: new SucursalAddress(address)
       });
 
-      res.sendStatus(200);
+      res.redirect('/backoffice/sucursal');
     } catch (error) {
       
       if(error instanceof SucursalNotFound) {
-        res.sendStatus(404);
+        res.status(404).render('error/error', {
+          message: 'No se encontro la sucural'
+        });
       }
+
+      res.status(500).render('error/error', {
+        message: 'Ocurrio un error, contacta soporte'
+      });
     }
   }
 }

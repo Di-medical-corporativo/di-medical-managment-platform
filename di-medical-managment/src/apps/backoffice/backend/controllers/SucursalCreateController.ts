@@ -21,15 +21,21 @@ export class SucursalCreateController implements Controller {
   ) {}
 
   async run(req: CreateRequest, res: Response): Promise<void> {
-    const { address, id, name, phone } = req.body;
+    try {
+      const { address, id, name, phone } = req.body;
 
-    await this.sucursalCreator.run({
-      id: new SucursalId(id),
-      name: new SucursalName(name),
-      address: new SucursalAddress(address),
-      phone: new SucursalPhone(phone)
-    });
+      await this.sucursalCreator.run({
+        id: new SucursalId(id),
+        name: new SucursalName(name),
+        address: new SucursalAddress(address),
+        phone: new SucursalPhone(phone)
+      });
     
-    res.status(201).send();
+      res.redirect('/backoffice/sucursal');
+    } catch (error) {
+      res.status(500).render('error/error', {
+        message: 'Ocurrio un error, contacta soporte'
+      });
+    }
   }
 }
