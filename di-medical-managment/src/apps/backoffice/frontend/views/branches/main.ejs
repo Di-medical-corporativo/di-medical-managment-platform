@@ -16,12 +16,12 @@
       <header class="section-header">
         <section class="breadcrumb">
           <a href="/backoffice/client">
-            <small>Clientes</small>
+            <small>Sucursales</small>
           </a>
           <span class="breadcrumb-slash">/</span>
         </section>
 
-        <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/client/new'">Nuevo cliente</button>
+        <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/client/new'">Nueva sucursal</button>
       </header>
 
       <section id="client-list">
@@ -29,23 +29,21 @@
           <thead>
               <tr>
                   <th>Nombre</th>
-                  <th>Direccion</th>
+                  <th>Dirección</th>
+                  <th>Teléfono</th>
                   <th></th>
               </tr>
           </thead>
           <tbody>
-            <% for(let i = 0; i < clients.length; i++) { %>
+            <% for(let i = 0; i < branches.length; i++) { %>
               <tr>
-                <td><%= clients[i].name %></td>
-                <td><%= clients[i].address %></td>
+                <td><%= branches[i].name %></td>
+                <td><%= branches[i].address %></td>
+                <td><%= branches[i].phone %></td>
                 <td style="text-align: right;" id="actions">
                   <button class="button primary"
-                    onclick="window.location.href='/backoffice/client/<%= clients[i].id %>/update'"
+                    onclick="window.location.href='/backoffice/client/<%= branches[i].id %>/update'"
                   >Actualizar</button>
-                  <form action="/backoffice/client/<%= clients[i].id %>?_method=DELETE" method="post">
-                    <input type="text" value="<%= clients[i].id %>" name="id" hidden>
-                    <button class="button danger" type="submit">Eliminar</button>
-                  </form> 
                 </td>
             </tr>
             <% } %>

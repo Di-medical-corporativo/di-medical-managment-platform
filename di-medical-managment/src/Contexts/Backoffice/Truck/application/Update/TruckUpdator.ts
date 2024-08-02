@@ -23,7 +23,9 @@ export class TruckUpdator {
     const truck = await this.truckFinder.run({ id: params.id });
 
     truck.updateBrand(params.brand);
+
     truck.updateModel(params.model);
+    
     truck.updatePlate(params.plate);
 
     await this.repository.update(truck);

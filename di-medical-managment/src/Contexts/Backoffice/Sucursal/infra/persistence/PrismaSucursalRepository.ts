@@ -4,10 +4,9 @@ import { SucursalId } from "../../domain/SucursalId";
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
 
 export class PrismaSucursalRepository implements SucursalRepository {
-
   async save(sucursal: Sucursal): Promise<void> {
     const sucursalPlain = sucursal.toPrimitives();
-    console.log(sucursalPlain);
+
     await prisma.sucursal.create({
       data: {
         id: sucursalPlain.id,
@@ -20,6 +19,7 @@ export class PrismaSucursalRepository implements SucursalRepository {
 
   async update(sucursal: Sucursal): Promise<void> {
     const sucursalPlain = sucursal.toPrimitives();
+
     await prisma.sucursal.update({
       where: {
         id: sucursalPlain.id
@@ -49,5 +49,18 @@ export class PrismaSucursalRepository implements SucursalRepository {
     });
 
     return sucursal;
+  }
+
+  async findAll(): Promise<Sucursal[]> {
+    const branchesDB = await prisma.sucursal.findMany({});
+
+    const branches = branchesDB.map(b => Sucursal.fromPrimitives({
+      id: b.id,
+      name: b.name,
+      address: b.address,
+      phone: b.phone
+    }));
+  
+    return branches;
   }
 }

@@ -9,6 +9,10 @@ services:
   Contexts.Backoffice.Sucursal.application.Update.SucursalUpdator:
     class: ../../../../Contexts/Backoffice/Sucursal/application/Update/SucursalUpdator
     arguments: ["@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository"]
+
+  Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher:
+    class: ../../../../Contexts/Backoffice/Sucursal/application/SearchAll/SucursalSearcher
+    arguments: ["@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository"]
   
   Apps.Backoffice.backend.controllers.SucursalCreateController:
     class: ../controllers/SucursalCreateController
@@ -17,6 +21,10 @@ services:
   Apps.Backoffice.backend.controllers.SucursalUpdateController:
     class: ../controllers/SucursalUpdateController
     arguments: ["@Contexts.Backoffice.Sucursal.application.Update.SucursalUpdator"]
+  
+  Apps.Backoffice.backend.controllers.SucursalFindAllController:
+    class: ../controllers/sucursal/SucursalFindAllController
+    arguments: ["@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher"]
 
   Contexts.Backoffice.User.infra.persistence.UserRepository:
     class: ../../../../Contexts/Backoffice/User/infra/persistence/FakeUserRepository

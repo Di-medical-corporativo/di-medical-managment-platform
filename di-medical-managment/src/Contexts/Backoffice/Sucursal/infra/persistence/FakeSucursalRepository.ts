@@ -15,6 +15,10 @@ interface SucursalDb {
 export class FakeSucursalRepository implements SucursalRepository {
   private sucursales: SucursalDb[] = [];
 
+  async findAll(): Promise<Sucursal[]> {
+    return []; 
+  }
+
   async save(sucursal: Sucursal): Promise<void> {
     const sucursalPlain = sucursal.toPrimitives();
     this.sucursales.push({

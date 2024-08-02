@@ -14,7 +14,7 @@ export class IncidentFindAllController {
       const incidents = await this.incidentSearcher.run({ truckId: new TruckId(truckId)  });
 
       res.status(200).render('trucks/incidents', {
-        incidents,
+        incidents: incidents.map(i => i.toPrimitives()),
         truckId
       });
     } catch (error) {
