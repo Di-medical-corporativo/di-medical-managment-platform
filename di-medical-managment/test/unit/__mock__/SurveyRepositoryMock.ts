@@ -1,19 +1,26 @@
 import { Response } from "../../../src/Contexts/Backoffice/Survey/domain/Response";
 import { Survey } from "../../../src/Contexts/Backoffice/Survey/domain/Survey";
 import { SurveyId } from "../../../src/Contexts/Backoffice/Survey/domain/SurveyId";
+import { SurveyPreview } from "../../../src/Contexts/Backoffice/Survey/domain/SurveyPreview";
 import { SurveyRepository } from "../../../src/Contexts/Backoffice/Survey/domain/SurveyRepository";
 
 export class SurveyRepositoryMock implements SurveyRepository {
   private saveMock: jest.Mock;
   private answerMock: jest.Mock;
   private searchMock: jest.Mock;
+  private findAllMock: jest.Mock;
 
   constructor() {
     this.saveMock = jest.fn();
     this.answerMock = jest.fn();
     this.searchMock = jest.fn();
+    this.findAllMock = jest.fn();
   }
   
+  async findAll(): Promise<SurveyPreview[]> {
+    return this.findAllMock() as SurveyPreview[];
+  }
+
   async save(survey: Survey): Promise<void> {
     this.saveMock(survey);
   }

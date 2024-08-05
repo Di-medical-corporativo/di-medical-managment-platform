@@ -6,6 +6,7 @@ import { Response } from "../../domain/Response";
 import { Survey } from "../../domain/Survey";
 import { SurveyDescription } from "../../domain/SurveyDescription";
 import { SurveyId } from "../../domain/SurveyId";
+import { SurveyPreview } from "../../domain/SurveyPreview";
 import { SurveyRepository } from "../../domain/SurveyRepository";
 
 export class PrismaSurveyRepository implements SurveyRepository {
@@ -136,5 +137,27 @@ export class PrismaSurveyRepository implements SurveyRepository {
     });
 
     return survey;
+  }
+
+  async findAll(): Promise<SurveyPreview[]> {
+    const surveysDB = await prisma.survey.findMany({
+      include: {
+       _count: {
+        select: {
+          responses: true
+        }
+       }
+      }
+    });
+
+    const surveys = surveysDB.map(s => SurveyPreview.fromPrimitives({
+      id: s.id,
+      description: s.description,
+      totalAnswers: s._count.responses,
+      title: s.title,
+      isActive: s.active
+    }));
+
+    return surveys;
   }
 }

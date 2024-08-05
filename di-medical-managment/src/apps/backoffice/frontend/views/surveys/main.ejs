@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encuestas</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/survey">
+            <small>Encuestas</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+        </section>
+
+        <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/survey/new'">Nueva sucursal</button>
+      </header>
+
+      <section id="client-list">
+        <table class="table">
+          <thead>
+              <tr>
+                  <th>Titulo</th>
+                  <th>Descripcion</th>
+                  <th>No. respuestas</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+            <% for(let i = 0; i < surveys.length; i++) { %>
+              <tr>
+                <td><%= surveys[i].title %></td>
+                <td><%= surveys[i].description %></td>
+                <td><%= surveys[i].totalAnswers %></td>
+                <td style="text-align: right;" id="actions">
+                  <button class="button primary"
+                    onclick="window.location.href='/backoffice/sucursal/<%= surveys[i].id %>/update'"
+                  >Respuestas</button>
+
+                  <% if (surveys[i].isActive) { %>
+                    <button class="button"
+                    onclick="window.location.href='/backoffice/sucursal/<%= surveys[i].id %>/update'"
+                    >Enlace</button>
+                    <form action="/backoffice/client/<%= surveys[i].id %>?_method=DELETE" method="post">
+                      <input type="text" value="<%= surveys[i].id %>" name="id" hidden>
+                      <button class="button danger" type="submit">Cerrar encuesta</button>
+                    </form> 
+                  <% } %>
+                </td>
+            </tr>
+            <% } %>
+          </tbody>
+      </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
+
+</body>
+</html>
