@@ -26,11 +26,12 @@
       </header>
 
       <section id="new-client-form">
-        <form action="/backoffice/survey/<%= id %>" method="post">
+        <form action="/backoffice/survey/<%= id %>" method="post" id="survey-form">
           <div id="survey-title">
+            <input type="hidden" name="id" value="<%= id %>">
             <input 
               type="text" 
-              name="" 
+              name="title" 
               class="input" 
               placeholder="Titulo de la encuesta" 
               required 
@@ -38,39 +39,19 @@
               pattern="^[A-Za-z]{1,50}$"
             >
 
-            <input type="text" name="" class="input" placeholder="Descripción de la encuesta" maxlength="80" pattern="^[A-Za-z]{1,50}$">
+            <input type="text" name="description" class="input" placeholder="Descripción de la encuesta" maxlength="80" pattern="^[A-Za-z]{1,50}$">
 
           </div>
 
-          <div class="question open">
-            <div class="question-content">
-              <div class="question-x">x</div>
-              <div class="question-type">
-                <small>Respuesta corta</small>
-              </div>
-              <input type="text" name="" class="input" placeholder="Ingresa tu pregunta" required>
-            </div>
-          </div>
-          
-          <div class="question multiple">
-            <div class="question-content">
-              <div class="question-x">x</div>
-              <div class="question-type">
-                <small>Varias opciones</small>
-              </div>
-              <input type="text" name="" class="input" placeholder="Ingresa tu pregunta" required>
-            
-              <div class="question-option">
-                <input type="text" class="input" required placeholder="Ingresa tu opción">
-              </div>
-
-              <button class="button" type="button">Agrega opción</button>
-            </div>
-          </div>
-
+      
+        
           <div id="question-creator">
-            <button class="button" type="button">Varias opciones</button>
-            <button class="button" type="button">Respuesta corta</button>
+            <button class="button" type="button" id="create-option">Varias opciones</button>
+            <button class="button" type="button" id="create-open">Respuesta corta</button>
+          </div>
+
+          <div class="question-list" id="question-list">
+
           </div>
 
           <button type="submit" class="button primary">Crear encuesta</button>
@@ -78,5 +59,7 @@
       </section>
     </main>
   </div>
+
+  <script src="/js/survey.js"></script>
 </body>
 </html>

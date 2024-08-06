@@ -34,6 +34,7 @@
   flex-direction: column;
   align-items: center;
   padding-bottom: 5px;
+  transition: .2s;
 }
 
 .question .question-content {
@@ -105,3 +106,8 @@
   cursor: pointer;
 }
 
+#question-list {
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+}
