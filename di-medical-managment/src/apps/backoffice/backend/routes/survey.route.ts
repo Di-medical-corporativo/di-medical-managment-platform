@@ -1,6 +1,7 @@
 import { Express, Request, Response } from "express"
 import { SurveyCreateController } from "../controllers/survey/SurveyCreateController";
 import container from "../dependency-injection";
+import { v4 as uuid } from "uuid";
 import { SurveyAnswerController } from "../controllers/survey/SurveyAnswerController";
 import { SurveyFindAllController } from "../controllers/survey/SurveyFindAllController";
 
@@ -16,4 +17,12 @@ export const register = (app: Express) => {
   app.post('/survey/:id/answer', (req: Request, res: Response) => answerSurveyController.run(req, res));
 
   app.get('/survey/', (req: Request, res: Response) => findAllSurveyController.run(req, res));
+
+  app.get('/survey/new', (req: Request, res: Response) => {
+    const id = uuid();
+
+    res.status(200).render('surveys/create', {
+      id
+    });
+  });
 }

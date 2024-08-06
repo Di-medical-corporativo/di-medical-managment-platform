@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nueva encuesta</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/survey">
+            <small>Encuestas</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/survey/new">
+            <small>Nueva encuesta</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="new-client-form">
+        <form action="/backoffice/survey/<%= id %>" method="post">
+          <div id="survey-title">
+            <input 
+              type="text" 
+              name="" 
+              class="input" 
+              placeholder="Titulo de la encuesta" 
+              required 
+              maxlength="80" 
+              pattern="^[A-Za-z]{1,50}$"
+            >
+
+            <input type="text" name="" class="input" placeholder="Descripción de la encuesta" maxlength="80" pattern="^[A-Za-z]{1,50}$">
+
+          </div>
+
+          <div class="question open">
+            <div class="question-content">
+              <div class="question-x">x</div>
+              <div class="question-type">
+                <small>Respuesta corta</small>
+              </div>
+              <input type="text" name="" class="input" placeholder="Ingresa tu pregunta" required>
+            </div>
+          </div>
+          
+          <div class="question multiple">
+            <div class="question-content">
+              <div class="question-x">x</div>
+              <div class="question-type">
+                <small>Varias opciones</small>
+              </div>
+              <input type="text" name="" class="input" placeholder="Ingresa tu pregunta" required>
+            
+              <div class="question-option">
+                <input type="text" class="input" required placeholder="Ingresa tu opción">
+              </div>
+
+              <button class="button" type="button">Agrega opción</button>
+            </div>
+          </div>
+
+          <div id="question-creator">
+            <button class="button" type="button">Varias opciones</button>
+            <button class="button" type="button">Respuesta corta</button>
+          </div>
+
+          <button type="submit" class="button primary">Crear encuesta</button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
