@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encuestas</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="answer">
+    <form id="survey-content">
+      
+      <div id="survey-desc" class="border">
+        <img src="/images/logo.png" alt="Logo dimedical corporativo" id="logo-survey">
+        <h2><%= survey.title %></h2>
+        <small><%= survey.description %></small>
+      </div>
+      <% for(let i = 0; i < survey.questions.length; i++) { %>
+        <div class="survey-question border">
+          <p><%= survey.questions[i].text %></p>
+          
+        </div>
+      <% } %>
+    </form>
+  </div>
+</body>
+</html>
+
+</body>
+</html>

@@ -4,6 +4,7 @@ import container from "../dependency-injection";
 import { v4 as uuid } from "uuid";
 import { SurveyAnswerController } from "../controllers/survey/SurveyAnswerController";
 import { SurveyFindAllController } from "../controllers/survey/SurveyFindAllController";
+import { SurveySearchController } from "../controllers/survey/SurveySearchController";
 
 export const register = (app: Express) => {
   const createSurveyController: SurveyCreateController = container.get('Apps.Backoffice.backend.controllers.SurveyCreateController');
@@ -12,9 +13,13 @@ export const register = (app: Express) => {
 
   const findAllSurveyController: SurveyFindAllController = container.get('Apps.Backoffice.backend.controllers.SurveyFindAllController');
 
+  const searchSurveyController: SurveySearchController = container.get('Apps.Backoffice.backend.controllers.SurveySearchController');
+
   app.post('/survey/:id', (req: Request, res: Response) => createSurveyController.run(req, res));
 
   app.post('/survey/:id/answer', (req: Request, res: Response) => answerSurveyController.run(req, res));
+
+  app.get('/survey/:id/answer', (req: Request, res: Response) => searchSurveyController.run(req, res));
 
   app.get('/survey/', (req: Request, res: Response) => findAllSurveyController.run(req, res));
 

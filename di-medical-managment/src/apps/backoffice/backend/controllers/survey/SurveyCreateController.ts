@@ -21,6 +21,9 @@ export class SurveyCreateController {
   async run(req: Request, res: Response) {
     const { id, title, description, questions = [] } = req.body;
 
+    console.log(questions[0].options);
+    console.log(questions)
+
     const questionsDomain = questions.map((q: any) => {
       const options: Option[] = [];
 
@@ -29,7 +32,7 @@ export class SurveyCreateController {
         options.push(Option
           .create({
             id: new OptionId(o.id),
-            order: new OptionOrder(o.order),
+            order: new OptionOrder(parseInt(o.order)),
             value: new OptionValue(o.value)
           })
         ));
@@ -38,7 +41,7 @@ export class SurveyCreateController {
       return Question.create({
           id: new QuestionId(q.id),
           text: new QuestionText(q.text),
-          order: new QuestionOrder(q.order),
+          order: new QuestionOrder(parseInt(q.order)),
           type: new QuestionType(q.type),
           options
         });

@@ -77,6 +77,10 @@
   font-size: 12px;
 }
 
+.question-options {
+  width: 100%;
+}
+
 .question-option {
   display: flex;
   align-items: center;

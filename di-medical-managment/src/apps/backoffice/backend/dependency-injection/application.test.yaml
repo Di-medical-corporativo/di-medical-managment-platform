@@ -222,6 +222,12 @@ services:
     "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
     ]
 
+  Contexts.Backoffice.Survey.application.Find.SurveyFinder:
+    class: ../../../../Contexts/Backoffice/Survey/domain/SurveyFinder
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+    ]
+
   Apps.Backoffice.backend.controllers.SurveyCreateController:
     class: ../controllers/survey/SurveyCreateController
     arguments: [
@@ -238,4 +244,10 @@ services:
     class: ../controllers/survey/SurveyFindAllController
     arguments: [
       "@Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveySearchController:
+    class: ../controllers/survey/SurveySearchController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.Find.SurveyFinder"
     ]
