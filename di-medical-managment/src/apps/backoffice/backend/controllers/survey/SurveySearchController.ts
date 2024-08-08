@@ -3,6 +3,7 @@ import { SurveyFinder } from "../../../../../Contexts/Backoffice/Survey/domain/S
 import { SurveyId } from "../../../../../Contexts/Backoffice/Survey/domain/SurveyId";
 import { SurveyNotFound } from "../../../../../Contexts/Backoffice/Survey/domain/SurveyNotFound";
 import { Request, Response } from "express";
+import { v4 as uuid } from "uuid";
 
 export class SurveySearchController {
   constructor(
@@ -17,8 +18,11 @@ export class SurveySearchController {
         id: new SurveyId(id)
       });
 
+      const answerId = uuid();
+
       res.status(200).render('surveys/answer', {
-        survey: survey.toPrimitives()
+        survey: survey.toPrimitives(),
+        id: answerId
       });
     } catch (error) {
       if(error instanceof SurveyNotFound) {

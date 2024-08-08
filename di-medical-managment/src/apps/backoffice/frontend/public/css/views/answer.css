@@ -1,5 +1,4 @@
 #answer {
-  width: 100vw;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -26,6 +25,7 @@
   box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
   margin-top: 10px;
   border-radius: 3px;
+  border-top: 3px solid #f8a900;
 }
 
 #logo-survey {
@@ -43,4 +43,24 @@
   background-color: #ffffff;
   box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.survey-question .input {
+  border: none;
+  border-bottom: 1px solid #000000;
+  border-radius: 1px;
+}
+
+.answer-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 5px;
+}
+
+.answer-option label {
+  font-size: 13px;
 }

@@ -6,3 +6,24 @@
   padding: 5px;
   border: 1px solid #000000;
 }
+
+.input[type="radio"] {
+  outline: none;
+  width: 25px;
+  height: 25px;
+  appearance: none;
+  background-color: var(--color-secondary);
+  cursor: pointer;
+  border: none !important;
+  border-radius: 50% !important;
+  transition: .2s;
+  color: #ffff;
+}
+
+.input[type="radio"]:checked {
+  background: #f8a900;
+}
+
+.input[type="radio"]:hover {
+  background: #f8a900;
+}

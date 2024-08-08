@@ -1,5 +1,5 @@
 import { SurveyAnswerer } from "../../../../../Contexts/Backoffice/Survey/application/Answer/SurveyAnswerer";
-import e, { Request, Response } from "express";
+import { Request, Response } from "express";
 import { ResponseId } from "../../../../../Contexts/Backoffice/Survey/domain/ResponseId";
 import { SurveyId } from "../../../../../Contexts/Backoffice/Survey/domain/SurveyId";
 import { AnswerMultiple, AnswerOpen } from "../../../../../Contexts/Backoffice/Survey/domain/Answer";
@@ -11,6 +11,7 @@ import { AnswerOptionId } from "../../../../../Contexts/Backoffice/Survey/domain
 import { OptionId } from "../../../../../Contexts/Backoffice/Survey/domain/OptionId";
 import { SurveyNotFound } from "../../../../../Contexts/Backoffice/Survey/domain/SurveyNotFound";
 import { SurveyClosed } from "../../../../../Contexts/Backoffice/Survey/domain/SurveyClosed";
+import { v4 as uuid } from "uuid";
 
 export class SurveyAnswerController {
   constructor(
@@ -19,49 +20,53 @@ export class SurveyAnswerController {
 
   async run(req: Request, res: Response) {
    try {
-    const { id, surveyId, answers = [] } = req.body;
+    const { surveyId, answers = [] } = req.body;
 
     const answersDomain = answers.map((a: { 
       id: string;
       answerText?: string;
       questionId: string;
-      option?: {
-        id: string;
-        optionId: string
-      };
+      optionId?: string
     }) => {
 
       if(a.answerText) {
         return AnswerOpen.create({
-          id: new AnswerId(a.id), 
+          id: new AnswerId(uuid()), 
           questionId: new QuestionId(a.questionId), 
           answerText: new AnswerText(a.answerText)
         });
       }
       return AnswerMultiple.create({
-        id: new AnswerId(a.id),
+        id: new AnswerId(uuid()),
         questionId: new QuestionId(a.questionId),
         option: AnswerOption.create({
-          id: new AnswerOptionId(a.option?.id as string),
-          optionId: new OptionId(a.option?.optionId as string)
+          id: new AnswerOptionId(uuid()),
+          optionId: new OptionId(a.optionId as string)
         })
       });
     });
 
     await this.surveyAnswerer.run({
-      id: new ResponseId(id),
+      id: new ResponseId(uuid()),
       surveyId: new SurveyId(surveyId),
       answers: answersDomain
     });
 
-    res.sendStatus(201);
+    res.redirect('/backoffice/survey');
    } catch (error) {
+    console.log(error)
     if(error instanceof SurveyNotFound) {
-      res.sendStatus(404);
+      res.status(404).render('error/error', {
+        message: 'No se encontro la encuesta'
+      });
     } else if(error instanceof SurveyClosed) {
-      res.sendStatus(400);
+      res.status(400).render('error/error', {
+        message: 'La encuesta no recibe mas respuestas'
+      });
     } else {
-      res.sendStatus(500);
+      res.status(500).render('error/error', {
+        message: 'Ocurrio un error, contacta soporte'
+      });
     }
    }
   }

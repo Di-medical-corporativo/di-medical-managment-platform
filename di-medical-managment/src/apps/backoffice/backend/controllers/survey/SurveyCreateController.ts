@@ -21,9 +21,6 @@ export class SurveyCreateController {
   async run(req: Request, res: Response) {
     const { id, title, description, questions = [] } = req.body;
 
-    console.log(questions[0].options);
-    console.log(questions)
-
     const questionsDomain = questions.map((q: any) => {
       const options: Option[] = [];
 
