@@ -31,4 +31,8 @@ export class FakeSurveyRepository implements SurveyRepository {
       isActive: s.toPrimitives().isActive
     }));
   }
+
+  async close(id: SurveyId): Promise<void> {
+    
+  }
 }

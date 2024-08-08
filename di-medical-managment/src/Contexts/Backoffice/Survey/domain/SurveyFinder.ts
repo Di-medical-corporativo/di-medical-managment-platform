@@ -1,3 +1,4 @@
+import { SurveyClosed } from "./SurveyClosed";
 import { SurveyId } from "./SurveyId";
 import { SurveyNotFound } from "./SurveyNotFound";
 import { SurveyRepository } from "./SurveyRepository";
@@ -14,6 +15,10 @@ export class SurveyFinder {
 
     if(survey === null) {
       throw new SurveyNotFound(); 
+    }
+
+    if(!survey.isAcceptingAnswers()) {
+      throw new SurveyClosed();
     }
 
     return survey;

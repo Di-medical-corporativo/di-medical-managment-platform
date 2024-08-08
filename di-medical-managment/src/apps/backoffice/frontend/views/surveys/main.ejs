@@ -49,7 +49,7 @@
                     <button class="button"
                     onclick="window.location.href='/backoffice/sucursal/<%= surveys[i].id %>/update'"
                     >Enlace</button>
-                    <form action="/backoffice/client/<%= surveys[i].id %>?_method=DELETE" method="post">
+                    <form action="/backoffice/survey/<%= surveys[i].id %>/close" method="post">
                       <input type="text" value="<%= surveys[i].id %>" name="id" hidden>
                       <button class="button danger" type="submit">Cerrar encuesta</button>
                     </form> 

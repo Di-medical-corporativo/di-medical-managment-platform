@@ -160,4 +160,16 @@ export class PrismaSurveyRepository implements SurveyRepository {
 
     return surveys;
   }
+
+  async close(id: SurveyId): Promise<void> {
+    await prisma.survey.update({
+      where: {
+        id: id.toString()
+      },
+      data: {
+        active: false
+      }
+    })
+  }
+
 }

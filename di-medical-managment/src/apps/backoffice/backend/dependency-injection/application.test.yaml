@@ -228,6 +228,12 @@ services:
     "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
     ]
 
+  Contexts.Backoffice.Survey.application.Close.SurveyTerminator:
+    class: ../../../../Contexts/Backoffice/Survey/application/Close/SurveyTerminator
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+  ]
+
   Apps.Backoffice.backend.controllers.SurveyCreateController:
     class: ../controllers/survey/SurveyCreateController
     arguments: [
@@ -250,4 +256,10 @@ services:
     class: ../controllers/survey/SurveySearchController
     arguments: [
       "@Contexts.Backoffice.Survey.application.Find.SurveyFinder"
+    ]
+
+   Apps.Backoffice.backend.controllers.SurveyCloseController:
+    class: ../controllers/survey/SurveyCloseController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.Close.SurveyTerminator"
     ]

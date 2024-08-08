@@ -54,7 +54,6 @@ export class SurveyAnswerController {
 
     res.redirect('/backoffice/survey');
    } catch (error) {
-    console.log(error)
     if(error instanceof SurveyNotFound) {
       res.status(404).render('error/error', {
         message: 'No se encontro la encuesta'

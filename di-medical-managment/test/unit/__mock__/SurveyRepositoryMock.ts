@@ -9,12 +9,14 @@ export class SurveyRepositoryMock implements SurveyRepository {
   private answerMock: jest.Mock;
   private searchMock: jest.Mock;
   private findAllMock: jest.Mock;
+  private closeMock: jest.Mock;
 
   constructor() {
     this.saveMock = jest.fn();
     this.answerMock = jest.fn();
     this.searchMock = jest.fn();
     this.findAllMock = jest.fn();
+    this.closeMock = jest.fn();
   }
   
   async findAll(): Promise<SurveyPreview[]> {
@@ -33,12 +35,20 @@ export class SurveyRepositoryMock implements SurveyRepository {
     return this.searchMock(id);
   }
 
+  async close(id: SurveyId): Promise<void> {
+    this.closeMock(id);
+  }
+
   assertSaveHaveBeenCalledWith(expected: Survey) {
     expect(this.saveMock).toHaveBeenCalledWith(expected);
   }
 
   assertAnswerHaveBeenCalledWith(expected: Response) {
     expect(this.answerMock).toHaveBeenCalledWith(expected);
+  }
+
+  assertCloseHaveBeenCalledWith(expected: SurveyId) {
+    expect(this.closeMock).toHaveBeenCalledWith(expected);
   }
 
   setReturnForSearch(returnValue: Survey | null) {
