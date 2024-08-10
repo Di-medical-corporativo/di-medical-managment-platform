@@ -28,7 +28,6 @@ export class SurveyAnswerController {
       questionId: string;
       optionId?: string
     }) => {
-
       if(a.answerText) {
         return AnswerOpen.create({
           id: new AnswerId(uuid()), 
@@ -52,7 +51,7 @@ export class SurveyAnswerController {
       answers: answersDomain
     });
 
-    res.redirect('/backoffice/survey');
+    res.redirect('/backoffice/survey/thx');
    } catch (error) {
     if(error instanceof SurveyNotFound) {
       res.status(404).render('error/error', {

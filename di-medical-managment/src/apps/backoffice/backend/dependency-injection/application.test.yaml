@@ -13,7 +13,7 @@ services:
   Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher:
     class: ../../../../Contexts/Backoffice/Sucursal/application/SearchAll/SucursalSearcher
     arguments: ["@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository"]
-
+  
   Contexts.Backoffice.Sucursal.application.Find.SucursalFinder:
     class: ../../../../Contexts/Backoffice/Sucursal/domain/SucursalFinder
     arguments: ["@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository"]
@@ -21,7 +21,7 @@ services:
   Apps.Backoffice.backend.controllers.SucursalSearchController:
     class: ../controllers/sucursal/SucursalSearchController
     arguments: ["@Contexts.Backoffice.Sucursal.application.Find.SucursalFinder"]
-  
+
   Apps.Backoffice.backend.controllers.SucursalCreateController:
     class: ../controllers/SucursalCreateController
     arguments: ["@Contexts.Backoffice.Sucursal.application.Create.SucursalCreator"]
@@ -71,17 +71,17 @@ services:
     "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
     ]
 
-  Contexts.Backoffice.Truck.application.SearchAllIncident.IncidentSearcher:
-    class: ../../../../Contexts/Backoffice/Truck/application/SearchAllIncident/IncidentSearcher
-    arguments: [
-    "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
-    ]
-
   Contexts.Backoffice.Truck.application.RemoveIncident.TruckIncidentRemover:
     class: ../../../../Contexts/Backoffice/Truck/application/RemoveIncident/TruckIncidentRemover
     arguments: [
     "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
     ]
+
+  Contexts.Backoffice.Truck.application.SearchAllIncident.IncidentSearcher:
+    class: ../../../../Contexts/Backoffice/Truck/application/SearchAllIncident/IncidentSearcher
+    arguments: [
+    "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
+    ]  
 
   Contexts.Backoffice.Truck.application.SearchAll.TruckSearcher:
     class: ../../../../Contexts/Backoffice/Truck/application/SearchAll/TruckSearcher
@@ -100,7 +100,6 @@ services:
     arguments: [
       "@Contexts.Backoffice.Truck.application.Find.TruckFinder"
     ]
-  
 
   Apps.Backoffice.backend.controllers.TruckCreateController:
     class: ../controllers/truck/TruckCreateController
@@ -215,7 +214,7 @@ services:
     arguments: [
     "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
     ]
-
+  
   Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher:
     class: ../../../../Contexts/Backoffice/Survey/application/SearchAll/SurveySearcher
     arguments: [
@@ -230,6 +229,12 @@ services:
 
   Contexts.Backoffice.Survey.application.Close.SurveyTerminator:
     class: ../../../../Contexts/Backoffice/Survey/application/Close/SurveyTerminator
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+  ]
+
+  Contexts.Backoffice.Survey.application.Results.SurveyResultsDisplayer:
+    class: ../../../../Contexts/Backoffice/Survey/application/Results/SurveyResultsDisplayer
     arguments: [
     "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
   ]
@@ -258,8 +263,14 @@ services:
       "@Contexts.Backoffice.Survey.application.Find.SurveyFinder"
     ]
 
-   Apps.Backoffice.backend.controllers.SurveyCloseController:
+  Apps.Backoffice.backend.controllers.SurveyCloseController:
     class: ../controllers/survey/SurveyCloseController
     arguments: [
       "@Contexts.Backoffice.Survey.application.Close.SurveyTerminator"
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveyResultsController:
+    class: ../controllers/survey/SurveyResultsController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.Results.SurveyResultsDisplayer"
     ]

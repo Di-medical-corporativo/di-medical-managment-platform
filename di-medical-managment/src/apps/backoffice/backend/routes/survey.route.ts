@@ -6,6 +6,7 @@ import { SurveyAnswerController } from "../controllers/survey/SurveyAnswerContro
 import { SurveyFindAllController } from "../controllers/survey/SurveyFindAllController";
 import { SurveySearchController } from "../controllers/survey/SurveySearchController";
 import { SurveyCloseController } from "../controllers/survey/SurveyCloseController";
+import { SurveyResultsController } from "../controllers/survey/SurveyResultsController";
 
 export const register = (app: Express) => {
   const createSurveyController: SurveyCreateController = container.get('Apps.Backoffice.backend.controllers.SurveyCreateController');
@@ -18,6 +19,8 @@ export const register = (app: Express) => {
 
   const closeSurveyController: SurveyCloseController = container.get('Apps.Backoffice.backend.controllers.SurveyCloseController');
  
+  const resultsSurveyController: SurveyResultsController = container.get('Apps.Backoffice.backend.controllers.SurveyResultsController');
+
   app.post('/survey/:id', (req: Request, res: Response) => createSurveyController.run(req, res));
 
   app.post('/survey/:id/answer', (req: Request, res: Response) => answerSurveyController.run(req, res));
@@ -25,6 +28,8 @@ export const register = (app: Express) => {
   app.post('/survey/:id/close', (req: Request, res: Response) => closeSurveyController.run(req, res));
 
   app.get('/survey/:id/answer', (req: Request, res: Response) => searchSurveyController.run(req, res));
+
+  app.get('/survey/:id/results', (req: Request, res: Response) => resultsSurveyController.run(req, res));
 
   app.get('/survey/', (req: Request, res: Response) => findAllSurveyController.run(req, res));
 
@@ -34,5 +39,9 @@ export const register = (app: Express) => {
     res.status(200).render('surveys/create', {
       id
     });
+  });
+
+  app.get('/survey/thx', (req: Request, res: Response) => {
+    res.status(200).render('surveys/thx');
   });
 }

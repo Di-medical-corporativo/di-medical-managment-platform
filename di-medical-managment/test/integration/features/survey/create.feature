@@ -1,6 +1,6 @@
 Feature: Create a survey  
   Scenario: A valid survey with questions type multiple
-  Given I send a POST request to "/survey/fc30f0f9-0294-44c0-93e5-01a9ec2446ed" with body:
+  Given I send a POST request to "/backoffice/survey/fc30f0f9-0294-44c0-93e5-01a9ec2446ed" with body:
   """
   {
     "id": "fc30f0f9-0294-44c0-93e5-01a9ec2446ed",

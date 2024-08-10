@@ -19,7 +19,8 @@ export class SurveyCreateController {
   ) {}
 
   async run(req: Request, res: Response) {
-    const { id, title, description, questions = [] } = req.body;
+    try {
+      const { id, title, description, questions = [] } = req.body;
 
     const questionsDomain = questions.map((q: any) => {
       const options: Option[] = [];
@@ -51,6 +52,11 @@ export class SurveyCreateController {
       questions: questionsDomain
     });
 
-    res.sendStatus(201);
+    res.redirect('/backoffice/survey');
+    } catch (error) {
+      res.status(500).render('error/error', {
+        message: 'Ocurrio un error, contacta soporte'
+      });
+    }
   }
 }

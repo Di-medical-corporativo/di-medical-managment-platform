@@ -1,13 +1,13 @@
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
 import { AnswerOption } from "../../domain/AnswerOption";
-import { Option } from "../../domain/Option";
-import { Question } from "../../domain/Question";
+import { QuestionResult, QuestionResultMultiple, QuestionResultOpen } from "../../domain/QuestionResult";
 import { Response } from "../../domain/Response";
 import { Survey } from "../../domain/Survey";
-import { SurveyDescription } from "../../domain/SurveyDescription";
 import { SurveyId } from "../../domain/SurveyId";
 import { SurveyPreview } from "../../domain/SurveyPreview";
 import { SurveyRepository } from "../../domain/SurveyRepository";
+import { SurveyResult } from "../../domain/SurveyResult";
+import { SurveyTotalAnswers } from "../../domain/SurveyTotalAnswers";
 
 export class PrismaSurveyRepository implements SurveyRepository {
   async save(survey: Survey): Promise<void> {
@@ -172,4 +172,78 @@ export class PrismaSurveyRepository implements SurveyRepository {
     })
   }
 
+  async results(id: SurveyId): Promise<SurveyResult | null> {
+    const surveyDB = await prisma.survey.findFirst({
+     where: {
+        id: id.toString()
+     },
+     include: {
+        questions: {
+          orderBy: {
+            order: "asc"
+          },
+          include: {
+            _count: {
+              select: {
+                answers: true
+              }
+            },
+            answers: {
+              select: {
+                answer: true
+              }
+            },
+            options: {
+              orderBy: {
+                order: "asc"
+              },
+              include: {
+                _count: {
+                  select: { answerOption: true }
+                }
+              }
+            }
+          }
+        },
+        _count: {
+          select: {
+            responses: true
+          }
+        }
+     }
+    });
+
+    if(!surveyDB){
+      return null;
+    }
+
+    const summaryPerQuestion: QuestionResult[] = surveyDB.questions.map(question => {
+      if(question.type == 'open') {
+        return QuestionResultOpen.fromPrimitives({
+          id: question.id,
+          question: question.text,
+          response: question.answers.map(a => a.answer)
+        });
+      }
+
+      return QuestionResultMultiple.fromPrimitives({
+        id: question.id,
+        question: question.text,
+        responses: question.options.map(option => ({
+          optionText: option.value,
+          optionTotal: option._count.answerOption,
+          questionTotal: question._count.answers
+        }))
+      })
+    });
+
+    const surveyResult = SurveyResult.create({
+      id,
+      total: new SurveyTotalAnswers(surveyDB._count.responses),
+      results: summaryPerQuestion
+    });
+
+
+    return surveyResult;
+  }
 }

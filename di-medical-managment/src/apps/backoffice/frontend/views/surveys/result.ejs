@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encuestas</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/survey">
+            <small>Encuestas</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/survey/<%= result.id %>/results">
+            <small>Resultados</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="client-list" class="summary-survey">
+        <h3>Resumen de encuesta: <span class="summary-survey-total"><%=result.total%> resp.</span></h3>
+        <% for(let i = 0; i < result.results.length; i++) { %>
+          <div class="question-result">
+            <% const currentQuestion = result.results[i] %> 
+            <p class="question-result-text"><%= currentQuestion.question %></p>
+
+            <% if(currentQuestion.type == 'open') {%>
+              <div class="question-result-open">
+                <% currentQuestion.response.forEach(r => { %>
+                  <div class="open-response">
+                    <p><%= r %></p>
+                  </div>
+                <% }) %> 
+              </div>
+            <% } else {%>
+              <div class="question-result-multiple">
+                <% currentQuestion.responses.forEach(r => { %>
+                <div class="multiple-response">
+                  <div class="option-info">
+                    <p> <%= r.optionText %> </p>
+                    <div class="option-info-total">
+                      <span><%= r.optionTotal %> resp.</span>
+                      <span><%= r.optionPercentage %>%</span>
+                    </div>                    
+                  </div>
+                  <progress max="100" class="progress" value="<%= r.optionPercentage %>"></progress>
+                </div>
+                <% }) %> 
+              </div>
+            <% } %> 
+          </div>
+        <% } %>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
+
+</body>
+</html>

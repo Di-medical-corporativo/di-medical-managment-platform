@@ -3,11 +3,13 @@
 @import url('components/breadcrumb.css');
 @import url('components/input.css');
 @import url('components/table.css');
+@import url('components/progress.css');
 @import url('views/admin.css');
 @import url('views/client.css');
 @import url('views/truck.css');
 @import url('views/survey.css');
 @import url('views/answer.css');
+@import url('views/result-survey.css');
 
 
 * {

@@ -3,6 +3,7 @@ import { Survey } from "../../../src/Contexts/Backoffice/Survey/domain/Survey";
 import { SurveyId } from "../../../src/Contexts/Backoffice/Survey/domain/SurveyId";
 import { SurveyPreview } from "../../../src/Contexts/Backoffice/Survey/domain/SurveyPreview";
 import { SurveyRepository } from "../../../src/Contexts/Backoffice/Survey/domain/SurveyRepository";
+import { SurveyResult } from "../../../src/Contexts/Backoffice/Survey/domain/SurveyResult";
 
 export class SurveyRepositoryMock implements SurveyRepository {
   private saveMock: jest.Mock;
@@ -10,6 +11,7 @@ export class SurveyRepositoryMock implements SurveyRepository {
   private searchMock: jest.Mock;
   private findAllMock: jest.Mock;
   private closeMock: jest.Mock;
+  private resultsMock: jest.Mock;
 
   constructor() {
     this.saveMock = jest.fn();
@@ -17,8 +19,13 @@ export class SurveyRepositoryMock implements SurveyRepository {
     this.searchMock = jest.fn();
     this.findAllMock = jest.fn();
     this.closeMock = jest.fn();
+    this.resultsMock =jest.fn();
   }
   
+  async results(id: SurveyId): Promise<SurveyResult> {
+    return this.resultsMock(id) as SurveyResult;
+  }
+
   async findAll(): Promise<SurveyPreview[]> {
     return this.findAllMock() as SurveyPreview[];
   }
@@ -51,7 +58,15 @@ export class SurveyRepositoryMock implements SurveyRepository {
     expect(this.closeMock).toHaveBeenCalledWith(expected);
   }
 
+  assertResultsHaveBeenCalledWith(expected: SurveyId) {
+    expect(this.resultsMock).toHaveBeenCalledWith(expected)
+  }
+
   setReturnForSearch(returnValue: Survey | null) {
     this.searchMock.mockReturnValue(returnValue);
+  }
+
+  setReturnForResults(returnValue: SurveyResult | null) {
+    this.resultsMock.mockReturnValue(returnValue);
   }
 }

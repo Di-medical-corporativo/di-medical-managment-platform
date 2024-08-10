@@ -42,12 +42,12 @@
                 <td><%= surveys[i].totalAnswers %></td>
                 <td style="text-align: right;" id="actions">
                   <button class="button primary"
-                    onclick="window.location.href='/backoffice/sucursal/<%= surveys[i].id %>/update'"
+                    onclick="window.location.href='/backoffice/survey/<%= surveys[i].id %>/results'"
                   >Respuestas</button>
 
                   <% if (surveys[i].isActive) { %>
                     <button class="button"
-                    onclick="window.location.href='/backoffice/sucursal/<%= surveys[i].id %>/update'"
+                    onclick="window.location.href='/backoffice/survey/<%= surveys[i].id %>/answer'"
                     >Enlace</button>
                     <form action="/backoffice/survey/<%= surveys[i].id %>/close" method="post">
                       <input type="text" value="<%= surveys[i].id %>" name="id" hidden>

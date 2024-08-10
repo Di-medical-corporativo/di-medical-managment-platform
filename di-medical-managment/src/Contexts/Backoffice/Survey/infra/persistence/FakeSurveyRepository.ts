@@ -3,11 +3,16 @@ import { Survey } from "../../domain/Survey";
 import { SurveyId } from "../../domain/SurveyId";
 import { SurveyPreview } from "../../domain/SurveyPreview";
 import { SurveyRepository } from "../../domain/SurveyRepository";
+import { SurveyResult } from "../../domain/SurveyResult";
 
 export class FakeSurveyRepository implements SurveyRepository {
   
   private surveys: Survey[] = [];
   private reponses: Response[] = [];
+
+  async results(id: SurveyId): Promise<SurveyResult | null> {
+    return null;
+  }
 
   async save(survey: Survey): Promise<void> {
     this.surveys.push(survey);    
