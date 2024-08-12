@@ -1,5 +1,4 @@
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
-import { Sucursal } from "../../../Sucursal/domain/Sucursal";
 import { User } from "../../domain/User";
 import { UserPassword } from "../../domain/UserPassword";
 import { UserRepository } from "../../domain/UserRepository";
@@ -13,7 +12,7 @@ export class PrismaUserRepository implements UserRepository {
     await prisma.user.create({
       data: {
         id: userPlain.id,
-        admin: userPlain.isAdmin,
+        role: userPlain.role,
         createdAt: userPlain.createdAt,
         firstName: userPlain.firstName,
         lastName: userPlain.lastName,
@@ -64,7 +63,7 @@ export class PrismaUserRepository implements UserRepository {
       createdAt: userDB.createdAt.toISOString(),
       email:userDB.email,
       firstName: userDB.firstName,
-      isAdmin: userDB.admin,
+      role: userDB.role,
       job: userDB.job,
       lastName: userDB.lastName,
       phone: userDB.phone,
@@ -77,5 +76,32 @@ export class PrismaUserRepository implements UserRepository {
     });
 
     return user;
+  }
+
+  async findAll(): Promise<User[]> {
+    const usersDB = await prisma.user.findMany({
+      include: {
+        sucursal: true
+      }
+    });
+
+    const users: User[] = usersDB.map(u => User.fromPrimitives({
+      createdAt: u.createdAt.toISOString(),
+      email: u.email,
+      firstName: u.firstName,
+      lastName: u.lastName,
+      id: u.id,
+      job: u.job,
+      phone: u.phone,
+      role: u.role,
+      sucursal: {
+        sucursalAddress: u.sucursal.address,
+        sucursalId: u.sucursal.id,
+        sucursalName: u.sucursal.name,
+        sucursalPhone: u.sucursal.phone
+      } 
+    }));
+
+    return users;
   }
 }

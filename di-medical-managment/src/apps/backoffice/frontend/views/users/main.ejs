@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camionetas</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/truck">
+            <small>Camionetas</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+        </section>
+
+        <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/truck/new'">Nuevo usuario</button>
+      </header>
+
+      <section id="client-list">
+        <table class="table">
+          <thead>
+              <tr>
+                  <th>Nombre</th>
+                  <th>Puesto</th>
+                  <th>Telefono</th>
+                  <th>Correo</th>
+                  <th>Sucursal</th>
+                  <th>Rol</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+            <% for(let i = 0; i < users.length; i++) { %>
+              <tr>
+                <td><%= users[i].firstName %></td>
+                <td><%= users[i].job %></td>
+                <td><%= users[i].phone %></td>
+                <td><%= users[i].email %></td>
+                <td><%= users[i].sucursal.sucursalName %></td>
+                <td><%= users[i].role %></td>
+                <td style="text-align: right;" id="truck_actions">
+                  <button class="button warning"
+                  onclick="window.location.href='/backoffice/truck/<%= users[i].id %>/incidents'"
+                >Incidencias</button>
+                  <button class="button primary"
+                    onclick="window.location.href='/backoffice/truck/<%= users[i].id %>/update'"
+                  >Actualizar</button>
+                  <form action="/backoffice/client/<%= users[i].id %>?_method=DELETE" method="post">
+                    <input type="text" value="<%= users[i].id %>" name="id" hidden>
+                    <button class="button danger" type="submit">Eliminar</button>
+                  </form> 
+                </td>
+            </tr>
+            <% } %>
+          </tbody>
+      </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

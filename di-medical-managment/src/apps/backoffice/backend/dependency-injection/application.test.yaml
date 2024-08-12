@@ -43,11 +43,23 @@ services:
     "@Contexts.Backoffice.User.infra.persistence.UserRepository",
     "@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository"
     ]
+
+  Contexts.Backoffice.User.application.SearchAll.UserSearcher:
+    class: ../../../../Contexts/Backoffice/User/application/SearchAll/UserSearcher
+    arguments: [
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
+    ]
   
   Apps.Backoffice.backend.controllers.UserCreateController:
     class: ../controllers/UserCreateController
     arguments: [
       "@Contexts.Backoffice.User.application.Create.UserCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.UserSearchAllController:
+    class: ../controllers/users/UserSearchAllController
+    arguments: [
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher"
     ]
 
   Contexts.Backoffice.Truck.infra.persistence.TruckRepository:

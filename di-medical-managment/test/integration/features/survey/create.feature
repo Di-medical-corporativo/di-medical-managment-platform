@@ -17,5 +17,5 @@ Feature: Create a survey
   ]
 }
   """
-  Then the response status code should be 201
+  Then the response status code should be 302
   And the body should be empty

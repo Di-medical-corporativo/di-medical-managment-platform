@@ -8,7 +8,7 @@ import { UserEmail } from "../../domain/UserEmail";
 import { UserFinder } from "../../domain/UserFinder";
 import { UserFirstName } from "../../domain/UserFirstName";
 import { UserId } from "../../domain/UserId";
-import { UserIsAdmin } from "../../domain/UserIsAdmin";
+import { Role } from "../../domain/UserIsAdmin";
 import { UserJob } from "../../domain/UserJob";
 import { UserLastName } from "../../domain/UserLastName";
 import { UserPasswordEncryptor } from "../../domain/UserPasswordEncryptor";
@@ -40,14 +40,14 @@ export class UserCreator {
     job: UserJob,
     phone: UserPhone,
     email: UserEmail,
-    isAdmin: UserIsAdmin,
+    role: Role,
     sucursalId: SucursalId,
     createdAt: UserDate,
     password: string
   }) {
     const idExists = await this.ensureUserIdDoesNotExist(params.id);
     
-    const emailExists = await this.ensureUserIdDoesNotExist(params.email);
+    const emailExists = await this.ensureUserEmailDoesNotExist(params.email);
     
     if(emailExists || idExists) {
       throw new DuplicatedUser();
@@ -66,7 +66,7 @@ export class UserCreator {
       job: params.job,
       phone: params.phone,
       email: params.email,
-      isAdmin: params.isAdmin,
+      role: params.role,
       sucursal,
       createdAt: params.createdAt
     });

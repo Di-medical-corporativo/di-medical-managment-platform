@@ -17,7 +17,7 @@ Feature: Answer a survey
       ]
     }
     """
-    Then the response status code should be 201
+    Then the response status code should be 302
 
   Scenario: A Answer for an active survey
     Given I send a POST request to "/backoffice/survey/d20e57b1-7fe5-4234-89e8-46ae4af9d574/answer" with body:

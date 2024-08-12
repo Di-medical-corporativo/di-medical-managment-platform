@@ -18,7 +18,7 @@ model User {
   isActive  Boolean
   createdAt DateTime
   loginId String? @unique
-  admin Boolean
+  role String
   login     Login? @relation(fields: [loginId], references: [id])
   sucursalId String
   sucursal Sucursal @relation(fields: [sucursalId], references: [id])

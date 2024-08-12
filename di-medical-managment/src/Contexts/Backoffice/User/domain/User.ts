@@ -3,7 +3,7 @@ import { UserDate } from "./UserDate";
 import { UserEmail } from "./UserEmail";
 import { UserFirstName } from "./UserFirstName";
 import { UserId } from "./UserId";
-import { UserIsAdmin } from "./UserIsAdmin";
+import { Role } from "./UserIsAdmin";
 import { UserJob } from "./UserJob";
 import { UserLastName } from "./UserLastName";
 import { UserPhone } from "./UserPhone";
@@ -16,7 +16,7 @@ export class User {
     private job: UserJob,
     private phone: UserPhone,
     private email: UserEmail,
-    private isAdmin: UserIsAdmin,
+    private role: Role,
     private sucursal: Sucursal,
     private createdAt: UserDate
   ) {}
@@ -28,7 +28,7 @@ export class User {
     job: UserJob,
     phone: UserPhone,
     email: UserEmail,
-    isAdmin: UserIsAdmin,
+    role: Role,
     sucursal: Sucursal
     createdAt: UserDate
   }) {
@@ -39,7 +39,7 @@ export class User {
       data.job,
       data.phone,
       data.email,
-      data.isAdmin,
+      data.role,
       data.sucursal,
       data.createdAt
     );
@@ -52,7 +52,7 @@ export class User {
     job: string;
     phone: string;
     email: string;
-    isAdmin: boolean;
+    role: string;
     sucursal: {
       sucursalId: string;
       sucursalName: string;
@@ -68,7 +68,7 @@ export class User {
       new UserJob(data.job),
       new UserPhone(data.phone),
       new UserEmail(data.email),
-      new UserIsAdmin(data.isAdmin),
+      new Role(data.role),
       Sucursal.fromPrimitives({
         id: data.sucursal.sucursalId,
         name: data.sucursal.sucursalName,
@@ -87,7 +87,7 @@ export class User {
       job: this.job.toString(),
       phone: this.phone.toString(),
       email: this.email.toString(),
-      isAdmin: this.isAdmin.value,
+      role: this.role.toString(),
       sucursal: this.sucursal.toPrimitives(),
       createdAt: this.createdAt.toString()
     }

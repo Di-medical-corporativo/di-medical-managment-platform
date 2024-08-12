@@ -1,3 +1,4 @@
+import { StringValueObject } from "../../../Shared/domain/vo/StringValueObject";
 import { ValueObject } from "../../../Shared/domain/vo/ValueObject";
 
-export class UserIsAdmin extends ValueObject<boolean> {}
+export class Role extends StringValueObject {}
