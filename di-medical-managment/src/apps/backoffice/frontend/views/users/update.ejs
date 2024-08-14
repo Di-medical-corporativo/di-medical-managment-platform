@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actualizar usuario</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/user">
+            <small>Usuarios</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/user/<%= user.id %>/update">
+            <small>Actualizar</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="new-client-form">
+        <form action="/backoffice/user/<%= user.id %>?_method=PUT" method="post">
+          <input type="text" hidden value="<%= user.id %>" name="id">
+          
+          <label for="firstName">Nombre:</label>
+          <input type="text" id="firstName" name="firstName" class="input" value="<%= user.firstName %>" required>
+          
+          <label for="lastName">Apellido:</label>
+          <input type="text" name="lastName" id="lastName" class="input" value="<%= user.lastName %>" required>
+          
+          <label for="job">Puesto:</label>
+          <input type="text" name="job" id="job" class="input" value="<%= user.job %>" required>
+          
+
+          <label for="phone">Telefono: </label>
+          <input type="text" class="input" id="phone" name="phone" value="<%= user.phone %>" required>
+
+          <label for="email">Correo: </label>
+          <input type="text" class="input" required id="email" name="email" value="<%= user.email %>">
+
+          <label for="password">Contraseña</label>
+          <input type="text" class="input" required id="password" name="password" placeholder="Ingresa la Contraseña">
+
+          <label for="sucursalId">Sucursal</label>
+          <select name="sucursalId" class="input">
+            <% for (let i = 0; i < sucursals.length; i++) { %>
+              <% if(sucursals[i].id == user.sucursal.id) { %>
+                <option value="<%= sucursals[i].id %>" selected><%= sucursals[i].name %> </option>
+              <% } else { %>
+                <option value="<%= sucursals[i].id %>"><%= sucursals[i].name %> </option>
+              <% } %>
+            <% } %>
+          </select>
+
+          <label for="role">Rol: </label>
+          <select name="role" class="input">
+            <% for (let j = 0; j < roles.length; j++) {%>
+              <% if(roles[j] == user.role) { %>
+                <option value="<%= roles[j] %>" selected><%= roles[j] %> </option>
+              <% } else { %>
+                <option value="<%= roles[j] %>"><%= roles[j] %> </option>
+              <% } %>
+            <% } %>
+          </select>
+      
+          <button type="submit" class="button primary">Nueva usuario</button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

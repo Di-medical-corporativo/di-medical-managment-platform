@@ -21,6 +21,31 @@ export class User {
     private createdAt: UserDate
   ) {}
 
+  public updateName(firstName: UserFirstName, lastName: UserLastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+
+  public updateJob(job: UserJob) {
+    this.job = job;
+  }
+
+  public updatePhone(phone: UserPhone) {
+    this.phone = phone;
+  }
+
+  public updateEmail(email: UserEmail) {
+    this.email = email;
+  }
+
+  public updateRole(role: Role) {
+    this.role = role;
+  }
+
+  public updateSucursal(sucursal: Sucursal) {
+    this.sucursal = sucursal;
+  }
+ 
   static create(data: {
     id: UserId,
     firstName: UserFirstName,

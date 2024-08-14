@@ -30,4 +30,8 @@ export class FakeUserRepository implements UserRepository {
       user.toPrimitives().id === term || user.toPrimitives().email === term
     ) || null;
   }
+
+  async update(user: User, password: UserPassword): Promise<void> {
+      
+  }
 }

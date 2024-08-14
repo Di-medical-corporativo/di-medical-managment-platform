@@ -1,8 +1,6 @@
 import { SucursalFinder } from "../../../Sucursal/domain/SucursalFinder";
 import { SucursalId } from "../../../Sucursal/domain/SucursalId";
 import { SucursalRepository } from "../../../Sucursal/domain/SucursalRepository";
-import { DuplicatedUser } from "../../domain/DuplicatedUser";
-import { User } from "../../domain/User";
 import { UserDate } from "../../domain/UserDate";
 import { UserEmail } from "../../domain/UserEmail";
 import { UserFinder } from "../../domain/UserFinder";
@@ -16,7 +14,7 @@ import { UserPasswordEncryptor } from "../../domain/UserPasswordEncryptor";
 import { UserPhone } from "../../domain/UserPhone";
 import { UserRepository } from "../../domain/UserRepository";
 
-export class UserCreator {
+export class UserUpdator {
   private sucursalFinder: SucursalFinder;
   
   private passwordEncryptor: UserPasswordEncryptor;
@@ -46,13 +44,8 @@ export class UserCreator {
     createdAt: UserDate,
     password: string
   }) {
-    const idExists = await this.ensureUserIdDoesNotExist(params.id);
     
-    const emailExists = await this.ensureUserEmailDoesNotExist(params.email);
-    
-    if(emailExists || idExists) {
-      throw new DuplicatedUser();
-    }
+    const user = await this.userFinder.run(params.id.toString());
 
     const sucursal = await this.sucursalFinder.run({
       id: params.sucursalId
@@ -60,38 +53,18 @@ export class UserCreator {
 
     const password: UserPassword = this.passwordEncryptor.run(params.password);
 
-    const user = User.create({
-      id: params.id,
-      firstName: params.firstName,
-      lastName: params.lastName,
-      job: params.job,
-      phone: params.phone,
-      email: params.email,
-      role: params.role,
-      sucursal,
-      createdAt: params.createdAt
-    });
+    user.updateEmail(params.email);
 
-    await this.userRepository.save(user, password);
-  }
-
-  private async ensureUserIdDoesNotExist(id: UserId): Promise<boolean> {
-    try {
-      await this.userFinder.run(id.toString());
-
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
-  private async ensureUserEmailDoesNotExist(email: UserEmail): Promise<boolean> {
-    try {
-      await this.userFinder.run(email.toString());
-
-      return true;
-    } catch (error) {
-      return false;
-    }
+    user.updateJob(params.job);
+    
+    user.updateName(params.firstName, params.lastName);
+    
+    user.updatePhone(params.phone);
+    
+    user.updateRole(params.role);
+    
+    user.updateSucursal(sucursal);
+    
+    await this.userRepository.update(user, password);
   }
 }

@@ -19,7 +19,7 @@ export class UserCreateController implements Controller {
   ) {}
 
   async run(req: Request, res: Response): Promise<void> {
-    const { id, firstName, lastName, job, phone, email, role, sucursalId, createdAt, password } = req.body;
+    const { id, firstName, lastName, job, phone, email, role, sucursalId, password } = req.body;
     
     try {
       await this.userCreator.run({
@@ -31,20 +31,28 @@ export class UserCreateController implements Controller {
         email: new UserEmail(email),
         role: new Role(role),
         sucursalId: new SucursalId(sucursalId),
-        createdAt: new UserDate(createdAt),
+        createdAt: new UserDate(new Date().toISOString()),
         password
       });
   
-      res.sendStatus(201);
+      res.redirect('/backoffice/user');
     } catch (error) {
-      
+      console.log(error);
       if(error instanceof SucursalNotFound) {
-        res.sendStatus(404);
+        res.status(404).render('error/error', {
+          message: 'No se encontro la sucursal seleccionada'
+        });
       }
 
       if(error instanceof DuplicatedUser) {
-        res.sendStatus(400);
+        res.status(400).render('error/error', {
+          message: 'El correo proporcionado ya fue usado, utilizar otro'
+        });
       }
+
+      res.status(500).render('error/error', {
+        message: 'Ocurrio un error, contacta soporte'
+      });
     }
   }
 }

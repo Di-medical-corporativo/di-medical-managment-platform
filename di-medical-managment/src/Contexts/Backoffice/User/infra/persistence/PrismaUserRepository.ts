@@ -1,10 +1,10 @@
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
 import { User } from "../../domain/User";
+import { UserId } from "../../domain/UserId";
 import { UserPassword } from "../../domain/UserPassword";
 import { UserRepository } from "../../domain/UserRepository";
 
 export class PrismaUserRepository implements UserRepository {
-  
   async save(user: User, password: UserPassword): Promise<void> {
     const userPlain = user.toPrimitives();
     const passwordPlain = password.toPrimitives();
@@ -47,7 +47,8 @@ export class PrismaUserRepository implements UserRepository {
           {
             email: term
           }
-        ]
+        ],
+        isActive: true
       },
       include: {
         sucursal: true
@@ -82,6 +83,9 @@ export class PrismaUserRepository implements UserRepository {
     const usersDB = await prisma.user.findMany({
       include: {
         sucursal: true
+      },
+      where: {
+        isActive: true
       }
     });
 
@@ -103,5 +107,48 @@ export class PrismaUserRepository implements UserRepository {
     }));
 
     return users;
+  }
+
+  async update(user: User, password: UserPassword): Promise<void> {
+    const userPlain = user.toPrimitives();
+
+    await prisma.user.update({
+      where: {
+        id: userPlain.id
+      },
+      data: {
+        email: userPlain.email,
+        firstName: userPlain.firstName,
+        lastName: userPlain.lastName,
+        job: userPlain.job,
+        phone: userPlain.phone,
+        role: userPlain.role,
+        sucursal: {
+          connect: {
+            id: userPlain.sucursal.id
+          }
+        },
+        login: {
+          update: {
+            passwordHash: password.toPrimitives().hash,
+            passwordSalt: password.toPrimitives().salt
+          }
+        }
+      }
+    });
+  }
+
+  async delete(id: UserId): Promise<void> {
+    await prisma.user.update({
+      where: {
+        id: id.toString()
+      },
+      data: {
+        isActive: false,
+        login: {
+          delete: true
+        }
+      }
+    });
   }
 }
