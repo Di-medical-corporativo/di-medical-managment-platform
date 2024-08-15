@@ -15,7 +15,7 @@ export class PrismaTaskRepository implements TaskRepository {
         title: taskPlain.title,
         userAssigned: {
           connect: {
-            id: taskPlain.id
+            id: taskPlain.userAssigned.id
           }
         }
       }

@@ -4,7 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nueva tarea</title>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/main.css">
+
+  <style>
+
+    .editor-task {
+      background-color: #ffffff;
+    }
+ 
+    #toolbar-container {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .ql-formats {
+      display: flex;
+      flex-direction: row;
+    }
+
+  </style>
 
   
 </head>
@@ -28,21 +50,44 @@
       </header>
 
       <section id="new-client-form">
-        <form action="/backoffice/client/<%= id %>" method="post">
+        <form action="/backoffice/task/<%= id %>" method="post">
           <input type="text" hidden id="id" name="id" value="<%= id %>">
           
           <label for="title">Titulo:</label>
-          <input type="text" name="title" id="title" class="input" required>
+          <input type="text" name="title" id="title" class="input" placeholder="Titulo de la tarea" required> 
           
-          <label for="description">Descripcion:</label>
-          <input type="text" name="description" id="description"required hidden>
+          <label for="description">Instruciones:</label>
+          <input type="text" name="description" id="description" hidden>
 
-  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 
-          <div id="task-editor">
-            <p>Hello World!</p>
-            <p>Some initial <strong>bold</strong> text</p>
-            <p><br /></p>
+          <div class="editor-task">
+            <div id="toolbar-container">
+              <span class="ql-formats">
+                <select class="ql-font"></select>
+                <select class="ql-size"></select>
+              </span>
+              <span class="ql-formats">
+                <button class="ql-bold"></button>
+                <button class="ql-italic"></button>
+                <button class="ql-underline"></button>
+                <button class="ql-strike"></button>
+              </span>
+              <span class="ql-formats">
+                <button class="ql-list" value="ordered"></button>
+                <button class="ql-list" value="bullet"></button>
+                <button class="ql-indent" value="-1"></button>
+                <button class="ql-indent" value="+1"></button>
+              </span>
+              <span class="ql-formats">
+                <button class="ql-direction" value="rtl"></button>
+                <select class="ql-align"></select>
+                <button class="ql-blockquote"></button>
+                <button class="ql-link"></button>
+
+              </span>
+            </div>
+            <div id="editor">
+            </div>
           </div>
         
           <label for="userId">Usuario:</label>
@@ -52,33 +97,56 @@
             <% } %>
           </select>
 
-          <label for="meeting-time">Choose a time for your appointment:</label>
+          <label for="dueTo">Fecha límite:</label>
           <input
+            class="input"
             type="datetime-local"
-            id="meeting-time"
-            name="meeting-time"
-            value="2018-06-12T19:30"
-            min="2018-06-07T00:00" />
+            id="dueTo"
+            name="dueTo" 
+            required
+            />
           
-          <button type="submit" class="button primary">Nuevo cliente</button>
+          <button type="submit" class="button primary">Asignar tarea</button>
         </form>
       </section>
     </main>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
   <script>
     // Initialize Quill editor
-    const quill = new Quill('#task-editor', {
+    const quill = new Quill('#editor', {
+    modules: {
+        toolbar: '#toolbar-container',
+      },
+      placeholder: 'Instruciones de la tarea...',
       theme: 'snow',
-      placeholder: 'Descripcion de la tarea'
     });
 
     // On form submit, copy the content of the editor to the hidden input
-    document.querySelector('form').onsubmit = function() {
+    document.querySelector('form').onsubmit = function(e) {
       const descriptionInput = document.querySelector('input[name=description]');
-      descriptionInput.value = quill.root.innerHTML;
+      
+      if(quill.getLength() == 1) {
+        alert('Debes de dar instruciones para realizar las tarea');
+        e.preventDefault();
+        return;
+      }
+
+      descriptionInput.value = quill.getSemanticHTML();    
     };
+
+    function getMinDateTime() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses en JS van de 0 a 11
+      const day = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+    
+      return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
+  document.getElementById('dueTo').min = getMinDateTime();
   </script>
 </body>
 </html>

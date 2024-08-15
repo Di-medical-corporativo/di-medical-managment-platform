@@ -95,8 +95,7 @@ services:
 
   Apps.Backoffice.backend.controllers.UserSearchController:
     class: ../controllers/users/UserSearchController
-    arguments: [
-      "@Contexts.Backoffice.User.application.Find.UserFinder",
+    arguments: ,
       "@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher"
     ]
 
@@ -336,17 +335,17 @@ services:
    Contexts.Backoffice.Task.infra.persistence.TaskRepository:
     class: ../../../../Contexts/Backoffice/Task/infra/persistence/PrismaTaskRepository
   
-  CContexts.Backoffice.Task.application.Create.TaskCreator:
+  Contexts.Backoffice.Task.application.Create.TaskCreator:
     class: ../../../../Contexts/Backoffice/Task/application/Create/TaskCreator
     arguments: [
     "@Contexts.Backoffice.Task.infra.persistence.TaskRepository",
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
   ]
 
   Apps.Backoffice.backend.controllers.TaskCreateController:
     class: ../controllers/tasks/TaskCreateController
     arguments: [
-      "@Contexts.Backoffice.Task.application.Create.TaskCreator",
-      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher"
+      "@Contexts.Backoffice.Task.application.Create.TaskCreator"
     ]
 
   Apps.Backoffice.backend.controllers.TaskCreatePageController:

@@ -338,6 +338,7 @@ services:
     class: ../../../../Contexts/Backoffice/Task/application/Create/TaskCreator
     arguments: [
     "@Contexts.Backoffice.Task.infra.persistence.TaskRepository",
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
   ]
 
   Apps.Backoffice.backend.controllers.TaskCreateController:
