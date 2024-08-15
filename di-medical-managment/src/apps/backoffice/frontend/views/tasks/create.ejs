@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nueva tarea</title>
+  <link rel="stylesheet" href="/css/main.css">
+
+  
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/task">
+            <small>Tareas</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/task/new">
+            <small>Asignar tarea</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="new-client-form">
+        <form action="/backoffice/client/<%= id %>" method="post">
+          <input type="text" hidden id="id" name="id" value="<%= id %>">
+          
+          <label for="title">Titulo:</label>
+          <input type="text" name="title" id="title" class="input" required>
+          
+          <label for="description">Descripcion:</label>
+          <input type="text" name="description" id="description"required hidden>
+
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+
+          <div id="task-editor">
+            <p>Hello World!</p>
+            <p>Some initial <strong>bold</strong> text</p>
+            <p><br /></p>
+          </div>
+        
+          <label for="userId">Usuario:</label>
+          <select name="userId" class="input">
+            <% for (let i = 0; i < users.length; i++) {%>
+              <option value="<%= users[i].id %>"><%= users[i].firstName %> </option>
+            <% } %>
+          </select>
+
+          <label for="meeting-time">Choose a time for your appointment:</label>
+          <input
+            type="datetime-local"
+            id="meeting-time"
+            name="meeting-time"
+            value="2018-06-12T19:30"
+            min="2018-06-07T00:00" />
+          
+          <button type="submit" class="button primary">Nuevo cliente</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+  <script>
+    // Initialize Quill editor
+    const quill = new Quill('#task-editor', {
+      theme: 'snow',
+      placeholder: 'Descripcion de la tarea'
+    });
+
+    // On form submit, copy the content of the editor to the hidden input
+    document.querySelector('form').onsubmit = function() {
+      const descriptionInput = document.querySelector('input[name=description]');
+      descriptionInput.value = quill.root.innerHTML;
+    };
+  </script>
+</body>
+</html>

@@ -330,3 +330,24 @@ services:
     arguments: [
       "@Contexts.Backoffice.Survey.application.Results.SurveyResultsDisplayer"
     ]
+
+  Contexts.Backoffice.Task.infra.persistence.TaskRepository:
+    class: ../../../../Contexts/Backoffice/Task/infra/persistence/PrismaTaskRepository
+
+  Contexts.Backoffice.Task.application.Create.TaskCreator:
+    class: ../../../../Contexts/Backoffice/Task/application/Create/TaskCreator
+    arguments: [
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository",
+  ]
+
+  Apps.Backoffice.backend.controllers.TaskCreateController:
+    class: ../controllers/tasks/TaskCreateController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.Create.TaskCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.TaskCreatePageController:
+    class: ../controllers/tasks/TaskCreatePageController
+    arguments: [
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher"
+    ]

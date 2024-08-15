@@ -1,4 +1,5 @@
 import { User } from "../../domain/User";
+import { UserId } from "../../domain/UserId";
 import { UserPassword } from "../../domain/UserPassword";
 import { UserRepository } from "../../domain/UserRepository";
 
@@ -32,6 +33,10 @@ export class FakeUserRepository implements UserRepository {
   }
 
   async update(user: User, password: UserPassword): Promise<void> {
+      
+  }
+
+  async delete(id: UserId): Promise<void> {
       
   }
 }

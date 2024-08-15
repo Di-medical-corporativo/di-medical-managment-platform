@@ -176,10 +176,10 @@ model Task {
   description String
   userAssignedId String
   userAssigned User? @relation(fields: [userAssignedId], references: [id])
-  userAssignedName String
-  userAssgnedPicture String
   status String
   dueTo DateTime
-  startedDate DateTime
-  endDate DateTime
+
+  @@index([status])
+  @@index([dueTo])
+  @@index([userAssignedId])
 }
