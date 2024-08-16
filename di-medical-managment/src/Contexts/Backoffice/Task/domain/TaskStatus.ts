@@ -2,7 +2,7 @@ import { StringValueObject } from "../../../Shared/domain/vo/StringValueObject";
 
 export enum StatusList {
   Assigned = 'assigned',
-  Progress = 'progress',
+  Progress = 'in-progress',
   Completed = 'completed',
   PastDue = 'pastdue'
 }

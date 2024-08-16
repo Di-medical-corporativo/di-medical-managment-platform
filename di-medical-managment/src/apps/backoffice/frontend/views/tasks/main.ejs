@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camionetas</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/task">
+            <small>Kanban general</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+        </section>
+
+        <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/task/new'">Asignar tarea</button>
+      </header>
+
+      <section id="admin-tasks">
+        <div class="task-list">
+          <div class="task-title">
+            <small>Tareas asignadas</small>
+          </div>
+
+          <div class="tasks">
+            <% assignedTasks.forEach(task => { 
+              const formattedDate = new Date(task.dueTo).toLocaleString('es-MX', {
+                day: '2-digit', month: '2-digit', year: 'numeric', 
+                hour: '2-digit', minute: '2-digit'
+              });
+            %>
+              <div class="task">
+                <header>
+                  <p><%= task.title %></p>
+                  <small>Fecha de termino: <%= formattedDate %></small>
+                </header>
+                <footer>
+                  <small>
+                    <%= task.userAssigned.firstName %>
+                    <%= task.userAssigned.lastName %>
+                  </small>
+                  <button class="button primary">Iniciar tarea</button>
+                </footer>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+
+        <div class="task-list">
+          <div class="task-title">
+            <small>Tareas en progreso</small>
+          </div>
+
+          <div class="tasks">
+            <% inProgressTasks.forEach(task => { %>
+              <div class="task">
+                <header>
+                  <p><%= task.title %></p>
+                  <small>Fecha de termino: <%= task.dueTo %></small>
+                </header>
+                <footer>
+                  <button class="button primary">Continuar tarea</button>
+                </footer>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+
+        <div class="task-list">
+          <div class="task-title">
+            <small>Tareas concluidas</small>
+          </div>
+
+          <div class="tasks">
+            <% completedTasks.forEach(task => { %>
+              <div class="task">
+                <header>
+                  <p><%= task.title %></p>
+                  <small>Fecha de termino: <%= task.dueTo %></small>
+                </header>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+
+        <div class="task-list">
+          <div class="task-title">
+            <small>Tareas vencidas</small>
+          </div>
+
+          <div class="tasks">
+            <% overdueTasks.forEach(task => { %>
+              <div class="task">
+                <header>
+                  <p><%= task.title %></p>
+                  <small>Fecha de termino: <%= task.dueTo %></small>
+                </header>
+                <footer>
+                  <button class="button primary">Continuar tarea</button>
+                </footer>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -3,13 +3,20 @@ import { TaskRepository } from "../../../src/Contexts/Backoffice/Task/domain/Tas
 
 export class TaskRepositoryMock implements TaskRepository {
   private saveMock: jest.Mock;
-  
+  private findAllMock: jest.Mock;
+
   constructor() {
     this.saveMock = jest.fn();
+  
+    this.findAllMock = jest.fn();
   }
   
   async save(task: Task): Promise<void> {
     await this.saveMock(task);
+  }
+
+  async findAll(): Promise<Task[]> {
+    return await this.findAllMock() as Task[]
   }
 
   assertSaveHaveBeenCalledWith(expected: Task) {

@@ -175,7 +175,7 @@ model Task {
   title String
   description String
   userAssignedId String
-  userAssigned User? @relation(fields: [userAssignedId], references: [id])
+  userAssigned User @relation(fields: [userAssignedId], references: [id])
   status String
   dueTo DateTime
 

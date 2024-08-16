@@ -341,6 +341,12 @@ services:
     "@Contexts.Backoffice.User.infra.persistence.UserRepository"
   ]
 
+  Contexts.Backoffice.Task.application.SearchAll.TaskSearcher:
+    class: ../../../../Contexts/Backoffice/Task/application/SearchAll/TaskSearcher
+    arguments: [
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
+  ]
+
   Apps.Backoffice.backend.controllers.TaskCreateController:
     class: ../controllers/tasks/TaskCreateController
     arguments: [
@@ -351,4 +357,10 @@ services:
     class: ../controllers/tasks/TaskCreatePageController
     arguments: [
       "@Contexts.Backoffice.User.application.SearchAll.UserSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.TaskGlobalKanban:
+    class: ../controllers/tasks/TaskGlobalKanban
+    arguments: [
+      "@Contexts.Backoffice.Task.application.SearchAll.TaskSearcher"
     ]

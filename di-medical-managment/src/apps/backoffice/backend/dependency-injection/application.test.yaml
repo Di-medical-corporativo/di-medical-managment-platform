@@ -1,6 +1,6 @@
 services:
   Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository:
-    class: ../../../../Contexts/Backoffice/Sucursal/infra/persistence/FakeSucursalRepository
+    class: ../../../../Contexts/Backoffice/Sucursal/infra/persistence/PrismaSucursalRepository
   
   Contexts.Backoffice.Sucursal.application.Create.SucursalCreator:
     class: ../../../../Contexts/Backoffice/Sucursal/application/Create/SucursalCreator
@@ -35,7 +35,7 @@ services:
     arguments: ["@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher"]
 
   Contexts.Backoffice.User.infra.persistence.UserRepository:
-    class: ../../../../Contexts/Backoffice/User/infra/persistence/FakeUserRepository
+    class: ../../../../Contexts/Backoffice/User/infra/persistence/PrismaUserRepository
   
   Contexts.Backoffice.User.application.Create.UserCreator:
     class: ../../../../Contexts/Backoffice/User/application/Create/UserCreator
@@ -95,7 +95,8 @@ services:
 
   Apps.Backoffice.backend.controllers.UserSearchController:
     class: ../controllers/users/UserSearchController
-    arguments: ,
+    arguments: [
+      "@Contexts.Backoffice.User.application.Find.UserFinder",
       "@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher"
     ]
 
@@ -105,10 +106,8 @@ services:
       "@Contexts.Backoffice.User.application.Delete.UserDeleter"
     ]
 
-  
-
   Contexts.Backoffice.Truck.infra.persistence.TruckRepository:
-    class: ../../../../Contexts/Backoffice/Truck/infra/persistence/FakeTruckRepository
+    class: ../../../../Contexts/Backoffice/Truck/infra/persistence/PrismaTruckRepository
   
   Contexts.Backoffice.Truck.application.Create.TruckCreator:
     class: ../../../../Contexts/Backoffice/Truck/application/Create/TruckCreator
@@ -195,7 +194,7 @@ services:
     ]
 
   Contexts.Backoffice.Client.infra.persistence.ClientRepository:
-    class: ../../../../Contexts/Backoffice/Client/infra/persistence/FakeClientRepository
+    class: ../../../../Contexts/Backoffice/Client/infra/persistence/PrismaClientRepository
 
   Contexts.Backoffice.Client.application.Create.ClientCreator:
     class: ../../../../Contexts/Backoffice/Client/application/Create/ClientCreator
@@ -258,7 +257,7 @@ services:
     ]
 
   Contexts.Backoffice.Survey.infra.persistence.SurveyRepository:
-    class: ../../../../Contexts/Backoffice/Survey/infra/persistence/FakeSurveyRepository
+    class: ../../../../Contexts/Backoffice/Survey/infra/persistence/PrismaSurveyRepository
 
   Contexts.Backoffice.Survey.application.Create.SurveyCreator:
     class: ../../../../Contexts/Backoffice/Survey/application/Create/SurveyCreator
@@ -332,14 +331,20 @@ services:
       "@Contexts.Backoffice.Survey.application.Results.SurveyResultsDisplayer"
     ]
 
-   Contexts.Backoffice.Task.infra.persistence.TaskRepository:
+  Contexts.Backoffice.Task.infra.persistence.TaskRepository:
     class: ../../../../Contexts/Backoffice/Task/infra/persistence/PrismaTaskRepository
-  
+
   Contexts.Backoffice.Task.application.Create.TaskCreator:
     class: ../../../../Contexts/Backoffice/Task/application/Create/TaskCreator
     arguments: [
     "@Contexts.Backoffice.Task.infra.persistence.TaskRepository",
     "@Contexts.Backoffice.User.infra.persistence.UserRepository"
+  ]
+
+  Contexts.Backoffice.Task.application.SearchAll.TaskSearcher:
+    class: ../../../../Contexts/Backoffice/Task/application/SearchAll/TaskSearcher
+    arguments: [
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
   ]
 
   Apps.Backoffice.backend.controllers.TaskCreateController:
@@ -352,4 +357,10 @@ services:
     class: ../controllers/tasks/TaskCreatePageController
     arguments: [
       "@Contexts.Backoffice.User.application.SearchAll.UserSearcher"
+    ]
+    
+  Apps.Backoffice.backend.controllers.TaskGlobalKanban:
+    class: ../controllers/tasks/TaskGlobalKanban
+    arguments: [
+      "@Contexts.Backoffice.Task.application.SearchAll.TaskSearcher"
     ]
