@@ -1,5 +1,6 @@
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
 import { Task } from "../../domain/Task";
+import { TaskId } from "../../domain/TaskId";
 import { TaskRepository } from "../../domain/TaskRepository";
 import { StatusList } from "../../domain/TaskStatus";
 
@@ -53,5 +54,57 @@ export class PrismaTaskRepository implements TaskRepository {
     }));
 
     return tasks;
+  }
+
+  async search(id: TaskId): Promise<Task | null> {
+    const taskDB = await prisma.task.findFirst({
+      where: {
+        id: id.toString()
+      },
+      include: {
+        userAssigned: {
+          select: {
+            firstName: true,
+            lastName: true,
+            id: true
+          }
+        }
+      }
+    });
+
+    if(!taskDB) {
+      return null;
+    }
+
+    const task = Task.fromPrimitives({
+      id: taskDB.id,
+      title: taskDB.title,
+      description: taskDB.description,
+      dueTo: taskDB.dueTo.toISOString(),
+      status: taskDB.status,
+      userAssigned: {
+        id: taskDB.userAssigned.id,
+        firstName: taskDB.userAssigned.firstName,
+        lastName: taskDB.userAssigned.lastName
+      }
+    });
+
+    return task;
+  }
+
+  async update(task: Task): Promise<void> {
+    const plainTask = task.toPrimitives();
+    
+    await prisma.task.update({
+      where: {
+        id: plainTask.id
+      },
+      data: {
+        description: plainTask.description,
+        dueTo: plainTask.dueTo,
+        status: plainTask.status,
+        title: plainTask.title
+      }
+    });
   }
 }

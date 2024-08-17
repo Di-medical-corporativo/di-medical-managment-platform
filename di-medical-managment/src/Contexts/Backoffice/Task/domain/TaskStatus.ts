@@ -7,4 +7,12 @@ export enum StatusList {
   PastDue = 'pastdue'
 }
 
-export class TaskStatus extends StringValueObject {}
+export class TaskStatus extends StringValueObject {
+  public isPastDue() {
+    if(this.value === StatusList.PastDue) {
+      return true;
+    }
+
+    return false;
+  }
+}

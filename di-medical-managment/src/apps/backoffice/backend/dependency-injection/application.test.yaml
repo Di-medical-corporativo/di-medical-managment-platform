@@ -347,6 +347,18 @@ services:
     "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
   ]
 
+  Contexts.Backoffice.Task.application.Find.TaskFinder:
+    class: ../../../../Contexts/Backoffice/Task/domain/TaskFinder
+    arguments: [
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
+  ]
+
+  Contexts.Backoffice.Task.application.Update.TaskUpdator:
+    class: ../../../../Contexts/Backoffice/Task/application/Update/TaskUpdator
+    arguments: [
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
+  ]
+
   Apps.Backoffice.backend.controllers.TaskCreateController:
     class: ../controllers/tasks/TaskCreateController
     arguments: [
@@ -363,4 +375,16 @@ services:
     class: ../controllers/tasks/TaskGlobalKanban
     arguments: [
       "@Contexts.Backoffice.Task.application.SearchAll.TaskSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.TaskUpdateController:
+    class: ../controllers/tasks/TaskUpdateController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.Update.TaskUpdator"
+    ]
+
+  Apps.Backoffice.backend.controllers.TaskSearchController:
+    class: ../controllers/tasks/TaskSearchController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.Find.TaskFinder"
     ]

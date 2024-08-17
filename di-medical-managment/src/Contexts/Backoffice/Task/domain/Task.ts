@@ -15,6 +15,28 @@ export class Task {
     private dueTo: TaskDueTo
   ) {}
 
+  public updateTitle(title: TaskTitle) {
+    this.title = title;
+  }
+
+  public updateDescription(description: TaskDescription) {
+    this.description = description;
+  }
+
+  public updateDueTo(dueTo: TaskDueTo) {
+    if(dueTo.toString() === this.dueTo.toString()) {
+      return;
+    }
+
+    this.dueTo = dueTo;
+  
+    const now = new Date();
+
+    if(this.status.isPastDue() && dueTo.isAfter(now)) {
+      this.status = new TaskStatus(StatusList.Progress);
+    }
+  }
+
   static create(params: {
     id: TaskId,
     title: TaskTitle,
