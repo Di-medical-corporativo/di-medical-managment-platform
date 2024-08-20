@@ -8,6 +8,7 @@ import { TaskDescription } from "../../domain/TaskDescription";
 import { TaskDueTo } from "../../domain/TaskDueTo";
 import { TaskId } from "../../domain/TaskId";
 import { TaskRepository } from "../../domain/TaskRepository";
+import { TaskScheduler } from "../../domain/TaskScheduler";
 import { TaskTitle } from "../../domain/TaskTitle";
 import { TaskUser } from "../../domain/TaskUser";
 
@@ -16,7 +17,8 @@ export class TaskCreator {
   
   constructor(
     private repository: TaskRepository,
-    private userRepository: UserRepository
+    private userRepository: UserRepository,
+    private taskScheduler: TaskScheduler
   ) {
     this.userFinder = new UserFinder(userRepository);
   }
@@ -47,5 +49,10 @@ export class TaskCreator {
     });
 
     await this.repository.save(task);
+
+    await this.taskScheduler.schedule(
+      params.id,
+      new Date(params.dueTo.toString())
+    );
   }
 }

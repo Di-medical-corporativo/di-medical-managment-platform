@@ -23,6 +23,10 @@ export class Task {
     this.description = description;
   }
 
+  public isCompleted() {
+    return this.status.isCompleted();
+  }
+
   public updateDueTo(dueTo: TaskDueTo) {
     if(dueTo.toString() === this.dueTo.toString()) {
       return;

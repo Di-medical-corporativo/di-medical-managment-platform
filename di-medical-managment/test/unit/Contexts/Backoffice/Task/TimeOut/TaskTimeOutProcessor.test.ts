@@ -1,10 +1,8 @@
-import { TaskUpdator } from "../../../../../../src/Contexts/Backoffice/Task/application/Update/TaskUpdator";
+import { TaskTimeOutProcessor } from "../../../../../../src/Contexts/Backoffice/Task/application/TimeOut/TaskTimeOutProcessor";
 import { Task } from "../../../../../../src/Contexts/Backoffice/Task/domain/Task";
 import { TaskDescription } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskDescription";
 import { TaskDueTo } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskDueTo";
-import { TaskFinder } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskFinder";
 import { TaskId } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskId";
-import { TaskNotFound } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskNotFound";
 import { StatusList } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskStatus";
 import { TaskTitle } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskTitle";
 import { TaskUser } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskUser";
@@ -13,23 +11,25 @@ import { UserId } from "../../../../../../src/Contexts/Backoffice/User/domain/Us
 import { UserLastName } from "../../../../../../src/Contexts/Backoffice/User/domain/UserLastName";
 import { TaskRepositoryMock } from "../../../../__mock__/TaskRepositoryMock";
 
-describe('TaskUpdator', () => {
+describe('TaskTimeOutProcessor', () => {
   let repository: TaskRepositoryMock;
 
-  let taskUpdator: TaskUpdator;
-  
-  beforeAll(() => {
+  let taskTimeOutProcessor: TaskTimeOutProcessor;
+
+  beforeEach(() => {
     repository = new TaskRepositoryMock();
 
-    taskUpdator = new TaskUpdator(repository);
-  });
+    taskTimeOutProcessor = new TaskTimeOutProcessor(repository);
 
-  test('with an overdue task and giving more time to do it, should update the date and status to in-progress', async () => {
+    jest.clearAllMocks();
+  });
+  
+  test('should update status to overdue only if the task is not done yet', async () => {
     const task = Task.fromPrimitives({
       description: '',
       dueTo: new Date('2024-08-17 02:50:00').toISOString(),
       id: '',
-      status: StatusList.PastDue,
+      status: StatusList.Progress,
       title: '',
       userAssigned: {
         firstName: '',
@@ -40,23 +40,33 @@ describe('TaskUpdator', () => {
 
     repository.setReturnForSearch(task);
 
-    const id = new TaskId('')
-
-    const now = new Date('2050-12-18T02:50:00Z');
-
-    const formattedDate = `${now.getFullYear()}-${String(now.getMonth()).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
-
-    await taskUpdator.run({
-      id,
-      description: new TaskDescription(''),
-      dueTo: new TaskDueTo(formattedDate),
-      title: new TaskTitle('')
+    await taskTimeOutProcessor.run({
+      id: new TaskId('')
     });
 
-    const plainTask = task.toPrimitives();
+    repository.assertTimeOutHaveBeenCalled();
+  });
 
-    expect(plainTask.dueTo).toBe(formattedDate);
+  test('should not update the status of the task if the task is completed', async () => {
+    const task = Task.fromPrimitives({
+      description: '',
+      dueTo: new Date('2024-08-17 02:50:00').toISOString(),
+      id: '',
+      status: StatusList.Completed,
+      title: '',
+      userAssigned: {
+        firstName: '',
+        id: '',
+        lastName: ''
+      }
+    });
 
-    expect(plainTask.status).toBe(StatusList.Progress);
+    repository.setReturnForSearch(task);
+  
+    await taskTimeOutProcessor.run({
+      id: new TaskId('')
+    });
+
+    repository.assertTimeOutNotCalled();
   });
 });

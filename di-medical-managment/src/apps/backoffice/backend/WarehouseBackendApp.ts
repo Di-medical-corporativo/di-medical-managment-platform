@@ -1,6 +1,7 @@
 import { glob } from "glob";
 import container from "./dependency-injection";
 import { Server } from "./server";
+import { BullTaskWorker } from "../../../Contexts/Backoffice/Task/infra/BullMQ/BullTaskWorker";
 
 export class WarehouseBackendApp {
   server?: Server;
@@ -10,6 +11,10 @@ export class WarehouseBackendApp {
 
     this.server = new Server(port);
     
+    const taskWorker: BullTaskWorker = container.get('Contexts.Backoffice.Task.infra.BullMQ.BullTaskWorker');
+
+    taskWorker.start();
+
     return this.server.listen();
   }
 

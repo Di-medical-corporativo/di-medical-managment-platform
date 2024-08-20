@@ -107,4 +107,23 @@ export class PrismaTaskRepository implements TaskRepository {
       }
     });
   }
+
+  async delete(id: TaskId): Promise<void> {
+    await prisma.task.delete({
+      where: {
+        id: id.toString()
+      }
+    });
+  }
+
+  async timeOut(id: TaskId): Promise<void> {
+    await prisma.task.update({
+      where: {
+        id: id.toString()
+      },
+      data: {
+        status: StatusList.PastDue
+      }
+    });
+  }
 }

@@ -334,6 +334,27 @@ services:
   Contexts.Backoffice.Task.infra.persistence.TaskRepository:
     class: ../../../../Contexts/Backoffice/Task/infra/persistence/PrismaTaskRepository
 
+  Contexts.Backoffice.Task.infra.BullMQ.BullConfig:
+    class: ../../../../Contexts/Backoffice/Task/infra/BullMQ/BullConfig
+
+  Contexts.Backoffice.Task.infra.BullMQ.BullTaskWorker:
+    class: ../../../../Contexts/Backoffice/Task/infra/BullMQ/BullTaskWorker
+    arguments: [
+      '@Contexts.Backoffice.Task.infra.BullMQ.BullConfig',
+      'task-queue',
+      '@Contexts.Backoffice.Task.application.TimeOut.TaskTimeOutProcessor'
+    ]
+
+  Contexts.Backoffice.Task.infra.BullMQ.TaskQueue:
+    factory:
+      class: '@Contexts.Backoffice.Task.infra.BullMQ.BullConfig'
+      method: 'createQueue'
+    arguments: ['task-queue']
+
+  Contexts.Backoffice.Task.infra.BullMQ.TaskScheduler:
+    class: ../../../../Contexts/Backoffice/Task/infra/BullMQ/BullTaskScheduler
+    arguments: ['Contexts.Backoffice.Task.infra.BullMQ.TaskQueue']
+
   Contexts.Backoffice.Task.application.Create.TaskCreator:
     class: ../../../../Contexts/Backoffice/Task/application/Create/TaskCreator
     arguments: [
@@ -359,6 +380,18 @@ services:
     "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
   ]
 
+  Contexts.Backoffice.Task.application.Delete.TaskDeleter:
+    class: ../../../../Contexts/Backoffice/Task/application/Delete/TaskDeleter
+    arguments: [
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
+  ]
+
+  Contexts.Backoffice.Task.application.TimeOut.TaskTimeOutProcessor:
+    class: ../../../../Contexts/Backoffice/Task/application/TimeOut/TaskTimeOutProcessor
+    arguments: [
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
+  ]
+
   Apps.Backoffice.backend.controllers.TaskCreateController:
     class: ../controllers/tasks/TaskCreateController
     arguments: [
@@ -370,7 +403,7 @@ services:
     arguments: [
       "@Contexts.Backoffice.User.application.SearchAll.UserSearcher"
     ]
-    
+
   Apps.Backoffice.backend.controllers.TaskGlobalKanban:
     class: ../controllers/tasks/TaskGlobalKanban
     arguments: [
@@ -388,3 +421,11 @@ services:
     arguments: [
       "@Contexts.Backoffice.Task.application.Find.TaskFinder"
     ]
+
+  Apps.Backoffice.backend.controllers.TaskDeleteController:
+    class: ../controllers/tasks/TaskDeleteController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.Delete.TaskDeleter"
+    ]
+
+  

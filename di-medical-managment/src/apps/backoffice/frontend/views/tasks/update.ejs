@@ -50,7 +50,7 @@
       </header>
 
       <section id="new-client-form">
-        <form action="/backoffice/task/<%= task.id %>?_method=PUT" method="post">
+        <form action="/backoffice/task/<%= task.id %>?_method=PUT" method="post" id="taskForm"> 
           <input type="text" hidden id="id" name="id" value="<%= task.id %>">
           
           <label for="title">Titulo:</label>
@@ -92,16 +92,22 @@
           </div>
         
           <label for="dueTo">Fecha límite:</label>
+          <% const date = new Date(task.dueTo) %>
+          <% const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`; %>
           <input
             class="input"
             type="datetime-local"
             id="dueTo"
             name="dueTo"
-            value="<%= task.dueTo %>"
+            value="<%= formattedDate %>"
             required
             />
           
-          <button type="submit" class="button primary">Actalizar tarea</button>
+          <button type="submit" class="button primary">Actualizar tarea</button>
+        </form>
+        <form action="/backoffice/task/<%= task.id %>?_method=DELETE" method="post" style="margin-top: 10px;" id="taskFormDelete">
+          <input type="text" value="<%= task.id %>" name="id" hidden>
+          <button class="button danger" type="submit">Eliminar tarea</button>
         </form>
       </section>
     </main>
@@ -118,7 +124,7 @@
     });
 
     // On form submit, copy the content of the editor to the hidden input
-    document.querySelector('form').onsubmit = function(e) {
+    document.getElementById('taskForm').onsubmit = function(e) {
       const descriptionInput = document.querySelector('input[name=description]');
       
       if(quill.getLength() == 1) {
@@ -129,6 +135,15 @@
 
       descriptionInput.value = quill.getSemanticHTML();    
     };
+
+    document.getElementById('taskFormDelete').onsubmit = function(e) {
+      const deleteTask = confirm('Estas apunto de eliminar permanentemente esta tarea ¿Estás seguro? (Los cambios no se pueden revertir).');
+
+      if(!deleteTask) {
+        e.preventDefault();
+        return;
+      };
+    }
 
     function getMinDateTime() {
       const now = new Date();

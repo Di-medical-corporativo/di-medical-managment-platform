@@ -15,4 +15,12 @@ export class TaskStatus extends StringValueObject {
 
     return false;
   }
+
+  public isCompleted() {
+    if(this.value === StatusList.Completed) {
+      return true;
+    }
+
+    return false;
+  }
 }

@@ -334,11 +334,33 @@ services:
   Contexts.Backoffice.Task.infra.persistence.TaskRepository:
     class: ../../../../Contexts/Backoffice/Task/infra/persistence/PrismaTaskRepository
 
+  Contexts.Backoffice.Task.infra.BullMQ.BullConfig:
+    class: ../../../../Contexts/Backoffice/Task/infra/BullMQ/BullConfig
+
+  Contexts.Backoffice.Task.infra.BullMQ.BullTaskWorker:
+    class: ../../../../Contexts/Backoffice/Task/infra/BullMQ/BullTaskWorker
+    arguments: [
+      '@Contexts.Backoffice.Task.infra.BullMQ.BullConfig',
+      'task-queue',
+      '@Contexts.Backoffice.Task.application.TimeOut.TaskTimeOutProcessor'
+    ]
+
+  Contexts.Backoffice.Task.infra.BullMQ.TaskQueue:
+    arguments: ['task-queue']
+    factory:
+      class: '@Contexts.Backoffice.Task.infra.BullMQ.BullConfig'
+      method: 'createQueue'
+
+  Contexts.Backoffice.Task.infra.BullMQ.TaskScheduler:
+    class: ../../../../Contexts/Backoffice/Task/infra/BullMQ/BullTaskScheduler
+    arguments: ['@Contexts.Backoffice.Task.infra.BullMQ.TaskQueue']
+
   Contexts.Backoffice.Task.application.Create.TaskCreator:
     class: ../../../../Contexts/Backoffice/Task/application/Create/TaskCreator
     arguments: [
     "@Contexts.Backoffice.Task.infra.persistence.TaskRepository",
-    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository",
+    "@Contexts.Backoffice.Task.infra.BullMQ.TaskScheduler"
   ]
 
   Contexts.Backoffice.Task.application.SearchAll.TaskSearcher:
@@ -355,6 +377,18 @@ services:
 
   Contexts.Backoffice.Task.application.Update.TaskUpdator:
     class: ../../../../Contexts/Backoffice/Task/application/Update/TaskUpdator
+    arguments: [
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
+  ]
+
+  Contexts.Backoffice.Task.application.Delete.TaskDeleter:
+    class: ../../../../Contexts/Backoffice/Task/application/Delete/TaskDeleter
+    arguments: [
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
+  ]
+
+  Contexts.Backoffice.Task.application.TimeOut.TaskTimeOutProcessor:
+    class: ../../../../Contexts/Backoffice/Task/application/TimeOut/TaskTimeOutProcessor
     arguments: [
     "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
   ]
@@ -388,3 +422,11 @@ services:
     arguments: [
       "@Contexts.Backoffice.Task.application.Find.TaskFinder"
     ]
+
+  Apps.Backoffice.backend.controllers.TaskDeleteController:
+    class: ../controllers/tasks/TaskDeleteController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.Delete.TaskDeleter"
+    ]
+
+  

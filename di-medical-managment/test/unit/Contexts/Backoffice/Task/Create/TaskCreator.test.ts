@@ -22,6 +22,7 @@ import { UserNotFound } from "../../../../../../src/Contexts/Backoffice/User/dom
 import { UserPhone } from "../../../../../../src/Contexts/Backoffice/User/domain/UserPhone";
 import { userRole } from "../../../../../../src/Contexts/Shared/domain/roles/Roles";
 import { TaskRepositoryMock } from "../../../../__mock__/TaskRepositoryMock";
+import { TaskSchedulerMock } from "../../../../__mock__/TaskSchedulerMock";
 import { UserRepositoryMock } from "../../../../__mock__/UserRepositoryMock";
 
 describe('TaskCreator', () => {
@@ -30,12 +31,16 @@ describe('TaskCreator', () => {
   let repository: TaskRepositoryMock;
 
   let userRepository: UserRepositoryMock;
+  
+  let taskScheduler: TaskSchedulerMock;
   beforeAll(() => {
     repository = new TaskRepositoryMock();
 
     userRepository = new UserRepositoryMock();
 
-    taskCreator = new TaskCreator(repository, userRepository);
+    taskScheduler = new TaskSchedulerMock();
+
+    taskCreator = new TaskCreator(repository, userRepository, taskScheduler);
   });
 
   test('should create a valid task with an existing user' , async () => {

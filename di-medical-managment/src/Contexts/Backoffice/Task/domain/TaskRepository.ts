@@ -9,4 +9,8 @@ export interface TaskRepository {
   search(id: TaskId): Promise<Task | null>
 
   update(task: Task): Promise<void>
+
+  delete(id: TaskId): Promise<void>
+
+  timeOut(id: TaskId): Promise<void>
 }
