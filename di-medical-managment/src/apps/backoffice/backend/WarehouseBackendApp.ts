@@ -1,4 +1,3 @@
-import { glob } from "glob";
 import container from "./dependency-injection";
 import { Server } from "./server";
 import { BullTaskWorker } from "../../../Contexts/Backoffice/Task/infra/BullMQ/BullTaskWorker";

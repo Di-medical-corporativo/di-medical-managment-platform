@@ -2,9 +2,7 @@ import { WarehouseBackendApp } from './WarehouseBackendApp';
 
 try {
   new WarehouseBackendApp().start().catch(handleError);
-
 } catch (e) {
-  
   handleError(e);
 }
 

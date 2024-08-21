@@ -10,16 +10,21 @@ import { UserFirstName } from "../../../../../../src/Contexts/Backoffice/User/do
 import { UserId } from "../../../../../../src/Contexts/Backoffice/User/domain/UserId";
 import { UserLastName } from "../../../../../../src/Contexts/Backoffice/User/domain/UserLastName";
 import { TaskRepositoryMock } from "../../../../__mock__/TaskRepositoryMock";
+import { TaskSchedulerMock } from "../../../../__mock__/TaskSchedulerMock";
 
 describe('TaskDeleter', () => {
   let taskRepositoryMock: TaskRepositoryMock;
 
   let taskDeleter: TaskDeleter;
+
+  let taskScheduler: TaskSchedulerMock;
   
-  beforeAll(() => {
+  beforeEach(() => {
     taskRepositoryMock = new TaskRepositoryMock();
 
-    taskDeleter = new TaskDeleter(taskRepositoryMock);
+    taskScheduler = new TaskSchedulerMock();
+
+    taskDeleter = new TaskDeleter(taskRepositoryMock, taskScheduler);
   });
 
   test('should delete an existing task', async () => {
@@ -45,6 +50,8 @@ describe('TaskDeleter', () => {
     });
 
     taskRepositoryMock.assertDeleteHaveBeenCalledWith(id);
+
+    taskScheduler.assertRemoveHaveBeenCalled();
   });
 
   test('should throw an error if the task does not exists', async () => {
@@ -53,6 +60,7 @@ describe('TaskDeleter', () => {
     await expect(taskDeleter.run({
       id: new TaskId('')
     })).rejects.toThrow(TaskNotFound);
-  });
 
+    taskScheduler.asseretRemoveNotHaveBeenCalled();
+  });
 });

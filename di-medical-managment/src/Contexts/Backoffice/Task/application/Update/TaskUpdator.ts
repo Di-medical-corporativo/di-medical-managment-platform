@@ -3,13 +3,15 @@ import { TaskDueTo } from "../../domain/TaskDueTo";
 import { TaskFinder } from "../../domain/TaskFinder";
 import { TaskId } from "../../domain/TaskId";
 import { TaskRepository } from "../../domain/TaskRepository";
+import { TaskScheduler } from "../../domain/TaskScheduler";
 import { TaskTitle } from "../../domain/TaskTitle";
 
 export class TaskUpdator {
   private taskFinder: TaskFinder;
 
   constructor(
-    private repository: TaskRepository
+    private repository: TaskRepository,
+    private taskScheduler: TaskScheduler
   ) {
     this.taskFinder = new TaskFinder(repository);
   }
@@ -29,6 +31,13 @@ export class TaskUpdator {
     task.updateTitle(params.title);
 
     task.updateDueTo(params.dueTo);
+
+    if(task.shouldBeReschedule(params.dueTo)) {
+      await this.taskScheduler.reschedule(
+        params.id,
+        new Date(params.dueTo.toString())
+      );
+    }
 
     await this.repository.update(task);
   }

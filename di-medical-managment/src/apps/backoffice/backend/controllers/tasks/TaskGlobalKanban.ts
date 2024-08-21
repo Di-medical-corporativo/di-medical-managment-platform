@@ -15,10 +15,12 @@ export class TaskGlobalKanban {
       const plainTasks = tasks.map(t => t.toPrimitives());
 
       const assignedTasks = plainTasks.filter(task => task.status === StatusList.Assigned)
-      const inProgressTasks = plainTasks.filter(task => task.status === StatusList.Progress);
-      const completedTasks = plainTasks.filter(task => task.status === StatusList.Completed);
-      const overdueTasks = plainTasks.filter(task => task.status === StatusList.PastDue);
 
+      const inProgressTasks = plainTasks.filter(task => task.status === StatusList.Progress);
+
+      const completedTasks = plainTasks.filter(task => task.status === StatusList.Completed);
+
+      const overdueTasks = plainTasks.filter(task => task.status === StatusList.PastDue);
 
       res.status(200).render('tasks/main', {
         assignedTasks,

@@ -27,7 +27,18 @@ export class Task {
     return this.status.isCompleted();
   }
 
+  public shouldBeReschedule(dueTo: TaskDueTo) {
+    const now = new Date();
+
+    if(dueTo.isAfter(now)) {
+      return true;
+    }
+
+    return false;
+  }
+
   public updateDueTo(dueTo: TaskDueTo) {
+    
     if(dueTo.toString() === this.dueTo.toString()) {
       return;
     }

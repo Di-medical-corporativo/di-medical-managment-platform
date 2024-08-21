@@ -346,20 +346,21 @@ services:
     ]
 
   Contexts.Backoffice.Task.infra.BullMQ.TaskQueue:
+    arguments: ['task-queue']
     factory:
       class: '@Contexts.Backoffice.Task.infra.BullMQ.BullConfig'
       method: 'createQueue'
-    arguments: ['task-queue']
 
   Contexts.Backoffice.Task.infra.BullMQ.TaskScheduler:
     class: ../../../../Contexts/Backoffice/Task/infra/BullMQ/BullTaskScheduler
-    arguments: ['Contexts.Backoffice.Task.infra.BullMQ.TaskQueue']
+    arguments: ['@Contexts.Backoffice.Task.infra.BullMQ.TaskQueue']
 
   Contexts.Backoffice.Task.application.Create.TaskCreator:
     class: ../../../../Contexts/Backoffice/Task/application/Create/TaskCreator
     arguments: [
     "@Contexts.Backoffice.Task.infra.persistence.TaskRepository",
-    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository",
+    "@Contexts.Backoffice.Task.infra.BullMQ.TaskScheduler"
   ]
 
   Contexts.Backoffice.Task.application.SearchAll.TaskSearcher:
@@ -377,13 +378,15 @@ services:
   Contexts.Backoffice.Task.application.Update.TaskUpdator:
     class: ../../../../Contexts/Backoffice/Task/application/Update/TaskUpdator
     arguments: [
-    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
-  ]
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository",
+    "@Contexts.Backoffice.Task.infra.BullMQ.TaskScheduler"
+    ]
 
   Contexts.Backoffice.Task.application.Delete.TaskDeleter:
     class: ../../../../Contexts/Backoffice/Task/application/Delete/TaskDeleter
     arguments: [
-    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository",
+    "@Contexts.Backoffice.Task.infra.BullMQ.TaskScheduler"
   ]
 
   Contexts.Backoffice.Task.application.TimeOut.TaskTimeOutProcessor:

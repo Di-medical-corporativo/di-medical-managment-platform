@@ -23,14 +23,14 @@ export class BullTaskWorker {
   public start() {
     this.worker.on('ready', () => {
       console.log('Worker listening')
-    })
+    });
 
     this.worker.on('completed', (job) => {
       console.log('COMPLETED');
-    })
+    });
 
     this.worker.on('failed', (job) => {
       console.log('FAILED');
-    })
+    });
   }
 }
