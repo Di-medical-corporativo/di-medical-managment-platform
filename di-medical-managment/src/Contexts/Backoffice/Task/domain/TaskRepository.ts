@@ -13,4 +13,6 @@ export interface TaskRepository {
   delete(id: TaskId): Promise<void>
 
   timeOut(id: TaskId): Promise<void>
+
+  updateStatus(task: Task): Promise<void>
 }

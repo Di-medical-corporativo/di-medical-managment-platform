@@ -7,6 +7,7 @@ import { TaskGlobalKanban } from "../controllers/tasks/TaskGlobalKanban";
 import { TaskSearchController } from "../controllers/tasks/TaskSearchController";
 import { TaskUpdateController } from "../controllers/tasks/TaskUpdateController";
 import { TaskDeleteController } from "../controllers/tasks/TaskDeleteController";
+import { TaskChangeStatusController } from "../controllers/tasks/TaskChangeStatusController";
 
 export const register = (app: Express) => {
   const createTaskController: TaskCreateController = container.get('Apps.Backoffice.backend.controllers.TaskCreateController');
@@ -21,9 +22,13 @@ export const register = (app: Express) => {
 
   const deleteTaskController: TaskDeleteController = container.get('Apps.Backoffice.backend.controllers.TaskDeleteController');
 
+  const changeStatusTaskController: TaskChangeStatusController = container.get('Apps.Backoffice.backend.controllers.TaskChangeStatusController');
+
   app.post('/task/:id', (req: Request, res: Response) => createTaskController.run(req, res));
 
   app.put('/task/:id', (req: Request, res: Response) => updateTaskController.run(req, res));
+
+  app.put('/task/:id/nextStatus', (req: Request, res: Response) => changeStatusTaskController.run(req, res));
 
   app.delete('/task/:id', (req: Request, res: Response) => deleteTaskController.run(req, res))
 

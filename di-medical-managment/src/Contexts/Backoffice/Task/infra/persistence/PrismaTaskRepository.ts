@@ -126,4 +126,17 @@ export class PrismaTaskRepository implements TaskRepository {
       }
     });
   }
+
+  async updateStatus(task: Task): Promise<void> {
+    const { status, id } = task.toPrimitives();
+  
+    await prisma.task.update({
+      where: {
+        id
+      },
+      data: {
+        status 
+      }
+    });
+  }
 }

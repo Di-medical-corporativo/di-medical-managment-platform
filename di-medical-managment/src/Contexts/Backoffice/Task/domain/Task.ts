@@ -37,6 +37,18 @@ export class Task {
     return false;
   }
 
+  public nextStatus() {
+    if(this.status.isAssigned()) {
+      this.status = new TaskStatus(StatusList.Progress); 
+      return;
+    }
+
+    if(this.status.isInProgress()) {
+      this.status = new TaskStatus(StatusList.Completed);
+      return;
+    }
+  }
+
   public updateDueTo(dueTo: TaskDueTo) {
     
     if(dueTo.toString() === this.dueTo.toString()) {
@@ -47,7 +59,7 @@ export class Task {
   
     const now = new Date();
 
-    if(this.status.isPastDue() && dueTo.isAfter(now)) {
+    if((this.status.isPastDue() || this.status.isCompleted()) && dueTo.isAfter(now)) {
       this.status = new TaskStatus(StatusList.Progress);
     }
   }

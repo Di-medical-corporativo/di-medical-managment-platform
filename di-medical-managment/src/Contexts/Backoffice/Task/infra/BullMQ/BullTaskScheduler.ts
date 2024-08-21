@@ -1,6 +1,7 @@
 import { Queue } from "bullmq";
 import { TaskId } from "../../domain/TaskId";
 import { TaskScheduler } from "../../domain/TaskScheduler";
+import e from "express";
 
 export class BullTaskScheduler implements TaskScheduler {
   constructor(
@@ -41,6 +42,11 @@ export class BullTaskScheduler implements TaskScheduler {
         ...jobOptions,
         delay
       });
+    } else {
+      await this.schedule(
+        taskId,
+        dueTo
+      );
     }
   }
 

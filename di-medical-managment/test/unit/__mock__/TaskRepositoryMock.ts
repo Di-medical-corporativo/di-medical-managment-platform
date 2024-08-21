@@ -15,6 +15,8 @@ export class TaskRepositoryMock implements TaskRepository {
 
   private timeOutMock: jest.Mock;
 
+  private updateStatusMock: jest.Mock;
+
   constructor() {
     this.saveMock = jest.fn();
   
@@ -27,6 +29,8 @@ export class TaskRepositoryMock implements TaskRepository {
     this.deleteMock = jest.fn();
 
     this.timeOutMock = jest.fn();
+
+    this.updateStatusMock = jest.fn();
   }
   
   async delete(id: TaskId) {
@@ -51,6 +55,15 @@ export class TaskRepositoryMock implements TaskRepository {
 
   async timeOut(id: TaskId): Promise<void> {
     return this.timeOutMock(id);
+  }
+
+  async updateStatus(task: Task): Promise<void> {
+    return this.updateStatusMock(task);
+     
+  }
+
+  assertUpdateStatusHaveBeenCalled() {
+    expect(this.updateStatusMock).toHaveBeenCalled();
   }
 
   setReturnForSearch(returned: Task | null) {

@@ -395,6 +395,19 @@ services:
     "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
   ]
 
+  Contexts.Backoffice.Task.application.ChangeStatus.TaskStatusChanger:
+    class: ../../../../Contexts/Backoffice/Task/application/ChangeStatus/TaskStatusChanger
+    arguments: [
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository",
+    "@Contexts.Backoffice.Task.infra.BullMQ.TaskScheduler"
+  ]
+
+  Apps.Backoffice.backend.controllers.TaskChangeStatusController:
+    class: ../controllers/tasks/TaskChangeStatusController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.ChangeStatus.TaskStatusChanger"
+    ]
+
   Apps.Backoffice.backend.controllers.TaskCreateController:
     class: ../controllers/tasks/TaskCreateController
     arguments: [

@@ -16,6 +16,22 @@ export class TaskStatus extends StringValueObject {
     return false;
   }
 
+  public isAssigned() {
+    if(this.value === StatusList.Assigned) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public isInProgress() {
+    if(this.value === StatusList.Progress) {
+      return true;
+    }
+
+    return false;
+  }
+
   public isCompleted() {
     if(this.value === StatusList.Completed) {
       return true;
