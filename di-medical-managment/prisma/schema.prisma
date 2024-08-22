@@ -52,7 +52,6 @@ model Truck {
   brand String
   isActive Boolean @default(true)
   incidents Incident[]
-  points Point[]
 }
 
 model Incident {
@@ -71,47 +70,6 @@ model Client {
   address String
   isActive Boolean
   points Point[]
-}
-
-model Point {
-  id String @id
-  sign String?
-  client Client @relation(fields: [clientId], references: [id])
-  clientId String
-  truck Truck @relation(fields: [truckId], references: [id])
-  truckId String
-  user User @relation(fields: [userId], references: [id])
-  userId String
-  invoices Invoce[]
-  itineraryId String?
-  itinerary Itinerary? @relation(fields: [itineraryId], references: [id])
-  surveyId String?
-  survey Survey? @relation(fields: [surveyId], references: [id])
-  responseId String? @unique
-  response SurveyResponse? @relation(fields: [responseId], references: [id])
-  done Boolean @default(false)
-  problem Boolean @default(false)
-  comment String?
-}
-
-model Invoce {
-  invoceId String @id
-  invoiceNumber String
-  description String?
-  point Point @relation(fields: [pointId], references: [id])
-  pointId String
-}
-
-model Itinerary {
-  id String @id
-  sucursal Sucursal @relation(fields: [sucursalId], references: [id])
-  sucursalId String
-  points Point[]
-  createdAt DateTime
-  updatedAt DateTime
-  active Boolean
-  done Boolean @default(false)
-  scheduleDate DateTime
 }
 
 model Survey {
@@ -179,7 +137,69 @@ model Task {
   status String
   dueTo DateTime
 
+  point Point?
+
+  belongsToItinerary Boolean @default(false)
+
   @@index([status])
   @@index([dueTo])
   @@index([userAssignedId])
+}
+
+
+model Point {
+  id String @id
+  
+  client Client @relation(fields: [clientId], references: [id])
+  clientId String
+
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  
+  invoices Invoce[]
+  
+  itineraryId String
+  itinerary Itinerary @relation(fields: [itineraryId], references: [id])
+  
+  surveyId String?
+  survey Survey? @relation(fields: [surveyId], references: [id])
+  
+  responseId String? @unique
+  response SurveyResponse? @relation(fields: [responseId], references: [id])
+  
+  problem Boolean @default(false)
+  
+  comment String
+  
+  observation String
+
+  certificate String
+  
+  ssa String
+  
+  type String
+  
+  status String
+
+  task Task @relation(fields: [taskId], references: [id])
+  taskId String @unique
+}
+
+model Invoce {
+  invoceId String @id
+  invoiceNumber String
+  point Point @relation(fields: [pointId], references: [id])
+  pointId String
+}
+
+model Itinerary {
+  id String @id
+  sucursal Sucursal @relation(fields: [sucursalId], references: [id])
+  sucursalId String
+  points Point[]
+  createdAt DateTime
+  updatedAt DateTime
+  active Boolean
+  done Boolean @default(false)
+  scheduleDate DateTime
 }
