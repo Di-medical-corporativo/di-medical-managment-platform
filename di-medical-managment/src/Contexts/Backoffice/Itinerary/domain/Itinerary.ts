@@ -24,7 +24,6 @@ export class Itinerary {
     sucursal: ItinerarySucursal,
     points: Point[],
     createdAt: ItineraryDate,
-    done: ItineraryDone,
     scheduleDate: ItinerarySchedule
   }) {
     return new Itinerary(
@@ -33,7 +32,7 @@ export class Itinerary {
       params.points,
       params.createdAt,
       params.createdAt,
-      params.done,
+      new ItineraryDone(false),
       params.scheduleDate,
       new ItineraryActive(false)
     );
@@ -52,35 +51,35 @@ export class Itinerary {
     scheduleDate: string;
     points: {
       id: string;
-    itineraryId: string;
-    client: {
-      id: string;
-      name: string
-    };
-    userAssigned: {
-      id: string;
-      firstName: string;
-      lastName: string;
-    };
-    invoice: {
-      id: string;
-      number: string
-    }[];
-    comment: string;
-    observation: string;
-    certificate: string;
-    ssa: string;
-    status: string;
-    task: {
-      id: string;
+      itineraryId: string;
+      client: {
+        id: string;
+        name: string
+      };
+      userAssigned: {
+        id: string;
+        firstName: string;
+        lastName: string;
+      };
+      invoice: {
+        id: string;
+        number: string
+      }[];
+      comment: string;
+      observation: string;
+      certificate: string;
+      ssa: string;
       status: string;
-    };
-    hasProblem: boolean;
-    survey: {
-      id: string;
-      title: string;
-    } | undefined
-    type: string;
+      task: {
+        id: string;
+        status: string;
+      };
+      hasProblem: boolean;
+      survey: {
+        id: string;
+        title: string;
+      } | undefined
+      type: string;
     }[];
   }) {
     

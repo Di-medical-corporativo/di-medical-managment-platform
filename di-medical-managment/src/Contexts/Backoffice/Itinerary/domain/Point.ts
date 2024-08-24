@@ -78,7 +78,6 @@ export class RoutePoint extends Point{
     ssa: PointSSA,
     status: PointStatus,
     task: PointTask,
-    hasProblem: PointProblem,
     survey: PointSurvey
   }) {
     return new RoutePoint(
@@ -93,7 +92,7 @@ export class RoutePoint extends Point{
       params.ssa,
       params.status,
       params.task,
-      params.hasProblem,
+      new PointProblem(false),
       params.survey
     );
   }
@@ -209,8 +208,7 @@ export class ParcelPoint extends Point{
     certificate: PointCertificate,
     ssa: PointSSA,
     status: PointStatus,
-    task: PointTask,
-    hasProblem: PointProblem,
+    task: PointTask
   }) {
     return new ParcelPoint(
       params.id,
@@ -224,7 +222,7 @@ export class ParcelPoint extends Point{
       params.ssa,
       params.status,
       params.task,
-      params.hasProblem,
+      new PointProblem(false),
     );
   }
 
@@ -335,7 +333,6 @@ export class CollectPoint extends Point{
     ssa: PointSSA,
     status: PointStatus,
     task: PointTask,
-    hasProblem: PointProblem,
     survey: PointSurvey
   }) {
     return new CollectPoint(
@@ -350,7 +347,7 @@ export class CollectPoint extends Point{
       params.ssa,
       params.status,
       params.task,
-      params.hasProblem,
+      new PointProblem(false),
       params.survey
     );
   }
