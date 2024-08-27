@@ -42,7 +42,10 @@ import { TaskDueTo } from "../../../Task/domain/TaskDueTo";
 import { TaskTitle } from "../../../Task/domain/TaskTitle";
 import { SurveyFinder } from "../../../Survey/domain/SurveyFinder";
 import { SurveyRepository } from "../../../Survey/domain/SurveyRepository";
-
+import { Itinerary } from "../../domain/Itinerary";
+import { ItinerarySucursal } from "../../domain/ItinerarySucursal";
+import { SucursalName } from "../../../Sucursal/domain/SucursalName";
+import { Survey } from "../../../Survey/domain/Survey";
 
 export class ItineraryCreator {
   private sucursalFinder: SucursalFinder;
@@ -85,8 +88,6 @@ export class ItineraryCreator {
       observation: PointObservation;
       certificate: PointCertificate;
       ssa: PointSSA;
-      status: PointStatus;
-      taskId: TaskId;
       type: PointType;
       surveyId?: SurveyId;
     }[],
@@ -96,17 +97,17 @@ export class ItineraryCreator {
     const itineraryId = new ItineraryId(uuid());
 
     const pointsPromises = params.points.map(async (point) => {
-      const client = await this.clientFinder.run({
+      const clientToDeliver = await this.clientFinder.run({
         id: point.clientId
       });
 
-      const user = await this.userFinder.run(point.userId.toString());
+      const userAssigedToPoint = await this.userFinder.run(point.userId.toString());
 
-      const { firstName, lastName, id: userId } = user.toPrimitives();
+      const { firstName, lastName, id: userId } = userAssigedToPoint.toPrimitives();
 
-      const { id, name } = client.toPrimitives();
+      const { id, name } = clientToDeliver.toPrimitives();
 
-      const task = {
+      const taskForPoint = {
         id: new TaskId(uuid()),
         description: new TaskDescription(''),
         dueTo: new TaskDueTo(''),
@@ -114,61 +115,78 @@ export class ItineraryCreator {
         title: new TaskTitle('')
       }
 
-      await this.taskCreator.run(task);
+      await this.taskCreator.run(taskForPoint);
 
-      if(point.type.isCollect()) {
-        return CollectPoint.create({
-          id: new PointId(uuid()),
+      const status = StatusList.Assigned;
+
+      let pointData = {
+        id: new PointId(uuid()),
           certificate: point.certificate,
           client: PointClient.create({ id: new ClientId(id), name: new ClientName(name) }),
           comment: point.comment,
-          invoice: point.invoices.map((inv: string) => Invoice.create({ id: new InvoiceId(uuid()), number: new InvoiceNumber(inv) })),
+          invoice: point.invoices.map((inv: string) => 
+            Invoice.create({ id: new InvoiceId(uuid()), number: new InvoiceNumber(inv) })
+          ),
           itineraryId,
           observation: point.observation,
           ssa: point.ssa,
-          status: point.status,
-          survey: PointSurvey.create({ id: new SurveyId(''), title: new SurveyTitle('') }),
-          task: PointTask.create({ id: task.id, status: new TaskStatus(StatusList.Assigned)}),
-          userAssigned: PointUser.create({ firstName: new UserFirstName(firstName), id: new UserId(userId), lastName: new UserLastName(lastName) })
+          status: new PointStatus(status),
+          task: PointTask.create({ id: taskForPoint.id, status: new TaskStatus(status)}),
+          userAssigned: PointUser.create({ 
+            firstName: new UserFirstName(firstName), 
+            id: new UserId(userId), 
+            lastName: new UserLastName(lastName) 
+          })
+      }
+
+      let surveyForPoint: Survey;
+
+      let survey: PointSurvey
+
+      if(point.type.isCollect() || point.type.isRoute()) {
+        surveyForPoint = await this.surveyFinder.run({ id: point.surveyId! });
+        
+        const { id: surveyId, title: surveyName } = surveyForPoint.toPrimitives();
+      
+        survey =  PointSurvey.create({ id: new SurveyId(surveyId), title: new SurveyTitle(surveyName) });
+      }
+
+      
+      if(point.type.isCollect()) {
+        return CollectPoint.create({ 
+          ...pointData, 
+          survey: survey!
         });
       } else if(point.type.isRoute()) {
-        return RoutePoint.create({
-          id: new PointId(uuid()),
-          certificate: point.certificate,
-          client: PointClient.create({ id: new ClientId(id), name: new ClientName(name) }),
-          comment: point.comment,
-          invoice: point.invoices.map((inv: string) => Invoice.create({ id: new InvoiceId(uuid()), number: new InvoiceNumber(inv) })),
-          itineraryId,
-          observation: point.observation,
-          ssa: point.ssa,
-          status: point.status,
-          survey: PointSurvey.create({ id: new SurveyId(''), title: new SurveyTitle('') }),
-          task: PointTask.create({ id: task.id, status: new TaskStatus(StatusList.Assigned)}),
-          userAssigned: PointUser.create({ firstName: new UserFirstName(firstName), id: new UserId(userId), lastName: new UserLastName(lastName) })
+        return RoutePoint.create({ 
+          ...pointData, 
+          survey: survey!
         });
       } else {
-        return ParcelPoint.create({
-          id: new PointId(uuid()),
-          certificate: point.certificate,
-          client: PointClient.create({ id: new ClientId(id), name: new ClientName(name) }),
-          comment: point.comment,
-          invoice: point.invoices.map((inv) => Invoice.create({ id: new InvoiceId(uuid()), number: new InvoiceNumber(inv) })),
-          itineraryId,
-          observation: point.observation,
-          ssa: point.ssa,
-          status: point.status,
-          task: PointTask.create({ id: task.id, status: new TaskStatus(StatusList.Assigned)}),
-          userAssigned: PointUser.create({ firstName: new UserFirstName(firstName), id: new UserId(userId), lastName: new UserLastName(lastName) })
-        });
+        return ParcelPoint.create(pointData);
       }
     });
+
+    const points: Point[] = await Promise.all(pointsPromises);
 
     const sucursal = await this.sucursalFinder.run({
       id: params.sucursal
     }); 
 
-    const { name, id } = sucursal.toPrimitives();
+    const { name: sucursalName, id: sucursalId } = sucursal.toPrimitives();
 
+    const itinerary = Itinerary.create({
+      id: itineraryId,
+      createdAt: params.createdAt,
+      points,
+      scheduleDate: params.scheduleDate,
+      sucursal: ItinerarySucursal.create({
+        id: new SucursalId(sucursalId),
+        name: new SucursalName(sucursalName)
+      })
+    });
+
+    console.log(itinerary.toPrimitives());
 
     await this.repository.save(itinerary);
   }

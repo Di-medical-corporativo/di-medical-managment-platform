@@ -113,7 +113,6 @@
   </div>
 
   <script>
-    // Initialize Quill editor
     const quill = new Quill('#editor', {
     modules: {
         toolbar: '#toolbar-container',
@@ -122,7 +121,6 @@
       theme: 'snow',
     });
 
-    // On form submit, copy the content of the editor to the hidden input
     document.querySelector('form').onsubmit = function(e) {
       const descriptionInput = document.querySelector('input[name=description]');
       
@@ -138,7 +136,7 @@
     function getMinDateTime() {
       const now = new Date();
       const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses en JS van de 0 a 11
+      const month = String(now.getMonth() + 1).padStart(2, '0');
       const day = String(now.getDate()).padStart(2, '0');
       const hours = String(now.getHours()).padStart(2, '0');
       const minutes = String(now.getMinutes()).padStart(2, '0');

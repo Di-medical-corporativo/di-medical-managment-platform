@@ -16,4 +16,8 @@ export class ItineraryRepositoryMock implements ItineraryRepository{
   assertSaveHaveBeenCalledWith(expected: Itinerary) {
     expect(this.saveMock).toHaveBeenCalledWith(expected);
   }
+
+  assertSaveHaveBeenCalled() {
+    expect(this.saveMock).toHaveBeenCalled();
+  }
 }

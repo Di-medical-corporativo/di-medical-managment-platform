@@ -59,7 +59,6 @@ export class UserRepositoryMock implements UserRepository {
     expect(this.deleteMock).toHaveBeenCalledWith(expectedId);
   }
 
-  // Métodos para configurar el retorno
   setReturnForSearch(returnValue: User | null): void {
     this.searchMock.mockReturnValue(returnValue);
   }

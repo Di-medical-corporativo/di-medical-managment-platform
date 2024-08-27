@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nueva ruta</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/itinerary">
+            <small>Ruta</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/itinerary/new">
+            <small>Nueva ruta</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="new-client-form">
+        <form action="/backoffice/itinerary/create" method="post" id="survey-form">
+          <div id="survey-title">
+            <label for="dueTo">Fecha de inicio de ruta:</label>
+            <input
+              class="input"
+              type="datetime-local"
+              id="dueTo"
+              name="dueTo" 
+              required
+              />
+
+          </div>
+
+          <p>Tipos de entrega:</p>
+
+          <div id="question-creator">
+            <button class="button" type="button" id="create-option">Entrega</button>
+            <button class="button" type="button" id="create-open">Respuesta corta</button>
+            <button class="button" type="button" id="create-open">Respuesta corta</button>
+          </div>
+
+          <div class="question-list" id="question-list">
+
+          </div>
+
+          <button type="submit" class="button primary">Crear encuesta</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="/js/survey.js"></script>
+</body>
+</html>

@@ -444,4 +444,26 @@ services:
       "@Contexts.Backoffice.Task.application.Delete.TaskDeleter"
     ]
 
-  
+  Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository:
+    class: ../../../../Contexts/Backoffice/Itinerary/infra/persistence/PrismaItineraryRepository
+
+  Contexts.Backoffice.Itinerary.application.Create.ItineraryCreator:
+    class: ../../../../Contexts/Backoffice/Itinerary/application/Create/ItineraryCreator  
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository",
+    "@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository",
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository",
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository",
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository",
+    "@Contexts.Backoffice.Task.infra.BullMQ.TaskScheduler",
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository"
+  ]
+
+  Apps.Backoffice.backend.controllers.ItineraryCreatePageController:
+    class: ../controllers/itinerary/ItineraryCreatePageController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher",
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher",
+      "@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher",
+      "@Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher"
+    ]
