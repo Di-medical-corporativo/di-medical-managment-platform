@@ -6,6 +6,12 @@ export enum PointTypes {
   Collect = 'point-collect'
 }
 
+export const pointTypes = [
+  PointTypes.Collect,
+  PointTypes.Parcel,
+  PointTypes.Route
+];
+
 export class PointType extends StringValueObject {
   isRoute() {
     if(this.value === PointTypes.Route) {

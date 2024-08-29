@@ -467,3 +467,9 @@ services:
       "@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher",
       "@Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher"
     ]
+
+  Apps.Backoffice.backend.controllers.ItineraryCreateController:
+    class: ../controllers/itinerary/ItineraryCreateController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.Create.ItineraryCreator"
+    ]

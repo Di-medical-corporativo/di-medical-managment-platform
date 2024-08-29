@@ -38,83 +38,96 @@
               />
           </div>
 
-          <p>Tipos de entrega:</p>
-
-          <div id="point-creator">
-            <button class="button" type="button" id="create-option" onclick="addPointToTable(true)">Ruta</button>
-            <button class="button" type="button" id="create-open" onclick="addPointToTable(true)">Recoleccion</button>
-            <button class="button" type="button" id="create-open" onclick="addPointToTable(false)">Paqueteria</button>
-          </div>
-
-          <div>
-            
-          </div>
-
-          <div class="point-list">
-            <table class="table" id="point-list-table">
-              <thead>
-                  <tr>
-                      <th>No.</th>
-                      <th>Cliente</th>
-                      <th>Responsable</th>
-                      <th>Facturas</th>
-                      <th>Certificado</th>
-                      <th>Ssa</th>
-                      <th>Tipo</th>
-                      <th>Encuesta</th>
-                      <th></th>
-                  </tr>
-              </thead>
-              <tbody id="point-table-body">
+          <table class="table" id="point-list-table">
+            <thead>
                 <tr>
-                  <td>
-                    1
-                  </td>
-                  <td>
-                    <select name="points[1][clientId]" class="input">
-                      <% for (let i = 0; i < clients.length; i++) {%>
-                        <option value="<%= clients[i].id %>"><%= clients[i].name %> </option>
-                      <% } %>
-                    </select>
-                  </td>
-                  <td>
-                    <select name="points[1][userId]" class="input">
-                      <% for (let i = 0; i < users.length; i++) {%>
-                        <option value="<%= users[i].id %>"><%= users[i].firstName %> </option>
-                      <% } %>
-                    </select>
-                  </td>
-                  <td>
-                    <input type="text" class="input" placeholder="Facturas separadas por comas" id="invoices">
-                  </td>
-                  <td>
-                    <select name="points[1][certificate]" class="input">
-                      <% for (let i = 0; i < certificateStates.length; i++) {%>
-                        <option value="<%= certificateStates[i] %>"><%= certificateStates[i] %> </option>
-                      <% } %>
-                    </select>
-                  </td>
-                  <td>
-                    <select name="points[1][ssa]" class="input">
-                      <% for (let i = 0; i < ssaStates.length; i++) {%>
-                        <option value="<%= ssaStates[i] %>"><%= ssaStates[i] %> </option>
-                      <% } %>
-                    </select>
-                  </td>
-                  <td>
-                    <input type="text" value="Ruta" class="input" readonly>
-                  </td>
-                  <td>
-                    <select name="points[1][ssa]" class="input">
-                      <% for (let i = 0; i < surveys.length; i++) {%>
-                        <option value="<%= surveys[i].title %>"><%= surveys[i].title %> </option>
-                      <% } %>
-                    </select>
-                  </td>
+                    <th>Cliente</th>
+                    <th>Responsable</th>
+                    <th>Facturas</th>
+                    <th>Certificado</th>
+                    <th>Ssa</th>
+                    <th>Tipo</th>
+                    <th>Encuesta</th>
+                    <th></th>
                 </tr>
-              </tbody>
+            </thead>
+            <tbody id="point-table-body">
+              <tr>
+                <td>
+                  <select class="input" id="clientId">
+                    <% for (let i = 0; i < clients.length; i++) {%>
+                      <option value="<%= clients[i].id %>"><%= clients[i].name %> </option>
+                    <% } %>
+                  </select>
+                </td>
+                <td>
+                  <select class="input" id="userId">
+                    <% for (let i = 0; i < users.length; i++) {%>
+                      <option value="<%= users[i].id %>"><%= users[i].firstName %> </option>
+                    <% } %>
+                  </select>
+                </td>
+                <td>
+                  <input type="text" class="input" placeholder="Facturas separadas por comas" id="invoices">
+                </td>
+                <td>
+                  <select class="input" id="certificate" >
+                    <% for (let i = 0; i < certificateStates.length; i++) {%>
+                      <option value="<%= certificateStates[i] %>"><%= certificateStates[i] %> </option>
+                    <% } %>
+                  </select>
+                </td>
+                <td>
+                  <select class="input" id="ssa">
+                    <% for (let i = 0; i < ssaStates.length; i++) {%>
+                      <option value="<%= ssaStates[i] %>"><%= ssaStates[i] %> </option>
+                    <% } %>
+                  </select>
+                </td>
+                <td>
+                  <select class="input" id="type">
+                      <option value="point-route"> Ruta </option>
+                      <option value="point-parcel"> Paqueteria </option>
+                      <option value="point-collect"> Recoleccion </option>
+                  </select>
+                </td>
+                <td>
+                  <select class="input" id="surveyId">
+                    <% for (let i = 0; i < surveys.length; i++) {%>
+                      <option value="<%= surveys[i].id %>"><%= surveys[i].title %> </option>
+                    <% } %>
+                  </select>
+                </td>
+                <td>
+                  <button class="button primary" type="button" onclick="addPointToTable()" type="button">Agregar</button>
+                </td>
+              </tr>
+            </tbody>
           </table>
-          </div>
+        
+        <div class="point-list">
+          <h1>Listado de puntos:</h1>
+
+          <table class="table" id="point-list-table-data">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Cliente</th>
+                    <th>Responsable</th>
+                    <th>Facturas</th>
+                    <th>Certificado</th>
+                    <th>Ssa</th>
+                    <th>Tipo</th>
+                    <th>Encuesta</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="point-table-body-list">
+            </tbody>
+          </table>
+        </div>
+
+        <button class="button primary">Crear ruta</button>
         </form>
       </section>
     </main>

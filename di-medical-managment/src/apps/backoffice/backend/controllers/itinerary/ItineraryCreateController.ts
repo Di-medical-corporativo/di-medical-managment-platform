@@ -8,7 +8,9 @@ export class ItineraryCreateController {
 
   async run(req: Request, res: Response) {
     try {
-      res.redirect('itinerary/main');
+      console.log(req.body);
+      
+      res.sendStatus(200);
     } catch (error) {
       res.status(500).render('error/error', {
           message: 'Ocurrio un error, contacta soporte'

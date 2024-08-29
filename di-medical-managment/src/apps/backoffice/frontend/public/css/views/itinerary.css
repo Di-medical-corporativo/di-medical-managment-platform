@@ -27,17 +27,25 @@
 
 .point-list {
   width: 1100px;
-  background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
-#point-list-table {
+#point-list-table, #point-list-table-data {
   width: 100%;
+  background-color: #ffffff;
+
 }
 
 #invoices {
   font-size: 10px;
   width: 170px;
+}
+
+#delete-point {
+  width: 30px;
 }
