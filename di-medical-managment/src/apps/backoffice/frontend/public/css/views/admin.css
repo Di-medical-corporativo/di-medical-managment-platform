@@ -33,6 +33,9 @@
   width: 82vw;
   height: 100%;
   overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #admin-info {

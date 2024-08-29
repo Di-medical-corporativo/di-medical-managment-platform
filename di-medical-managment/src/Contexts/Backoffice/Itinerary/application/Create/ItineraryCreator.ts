@@ -107,12 +107,13 @@ export class ItineraryCreator {
 
       const { id, name } = clientToDeliver.toPrimitives();
 
+      // TODO: Html for description
       const taskForPoint = {
         id: new TaskId(uuid()),
-        description: new TaskDescription(''),
-        dueTo: new TaskDueTo(''),
+        description: new TaskDescription('<p>Nueva tarea de punto</p>'),
+        dueTo: new TaskDueTo(params.scheduleDate.toString()),
         userId: point.userId,
-        title: new TaskTitle('')
+        title: new TaskTitle('Punto')
       }
 
       await this.taskCreator.run(taskForPoint);
@@ -185,8 +186,6 @@ export class ItineraryCreator {
         name: new SucursalName(sucursalName)
       })
     });
-
-    console.log(itinerary.toPrimitives());
 
     await this.repository.save(itinerary);
   }

@@ -25,9 +25,9 @@
         </section>
       </header>
 
-      <section id="new-client-form">
-        <form action="/backoffice/itinerary/create" method="post" id="survey-form">
-          <div id="survey-title">
+      <section id="itinerary-creator">
+        <form action="/backoffice/itinerary/create" method="post" id="itinerary-form">
+          <div id="itinerary-title">
             <label for="dueTo">Fecha de inicio de ruta:</label>
             <input
               class="input"
@@ -36,27 +36,89 @@
               name="dueTo" 
               required
               />
-
           </div>
 
           <p>Tipos de entrega:</p>
 
-          <div id="question-creator">
-            <button class="button" type="button" id="create-option">Entrega</button>
-            <button class="button" type="button" id="create-open">Respuesta corta</button>
-            <button class="button" type="button" id="create-open">Respuesta corta</button>
+          <div id="point-creator">
+            <button class="button" type="button" id="create-option" onclick="addPointToTable(true)">Ruta</button>
+            <button class="button" type="button" id="create-open" onclick="addPointToTable(true)">Recoleccion</button>
+            <button class="button" type="button" id="create-open" onclick="addPointToTable(false)">Paqueteria</button>
           </div>
 
-          <div class="question-list" id="question-list">
-
+          <div>
+            
           </div>
 
-          <button type="submit" class="button primary">Crear encuesta</button>
+          <div class="point-list">
+            <table class="table" id="point-list-table">
+              <thead>
+                  <tr>
+                      <th>No.</th>
+                      <th>Cliente</th>
+                      <th>Responsable</th>
+                      <th>Facturas</th>
+                      <th>Certificado</th>
+                      <th>Ssa</th>
+                      <th>Tipo</th>
+                      <th>Encuesta</th>
+                      <th></th>
+                  </tr>
+              </thead>
+              <tbody id="point-table-body">
+                <tr>
+                  <td>
+                    1
+                  </td>
+                  <td>
+                    <select name="points[1][clientId]" class="input">
+                      <% for (let i = 0; i < clients.length; i++) {%>
+                        <option value="<%= clients[i].id %>"><%= clients[i].name %> </option>
+                      <% } %>
+                    </select>
+                  </td>
+                  <td>
+                    <select name="points[1][userId]" class="input">
+                      <% for (let i = 0; i < users.length; i++) {%>
+                        <option value="<%= users[i].id %>"><%= users[i].firstName %> </option>
+                      <% } %>
+                    </select>
+                  </td>
+                  <td>
+                    <input type="text" class="input" placeholder="Facturas separadas por comas" id="invoices">
+                  </td>
+                  <td>
+                    <select name="points[1][certificate]" class="input">
+                      <% for (let i = 0; i < certificateStates.length; i++) {%>
+                        <option value="<%= certificateStates[i] %>"><%= certificateStates[i] %> </option>
+                      <% } %>
+                    </select>
+                  </td>
+                  <td>
+                    <select name="points[1][ssa]" class="input">
+                      <% for (let i = 0; i < ssaStates.length; i++) {%>
+                        <option value="<%= ssaStates[i] %>"><%= ssaStates[i] %> </option>
+                      <% } %>
+                    </select>
+                  </td>
+                  <td>
+                    <input type="text" value="Ruta" class="input" readonly>
+                  </td>
+                  <td>
+                    <select name="points[1][ssa]" class="input">
+                      <% for (let i = 0; i < surveys.length; i++) {%>
+                        <option value="<%= surveys[i].title %>"><%= surveys[i].title %> </option>
+                      <% } %>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+          </table>
+          </div>
         </form>
       </section>
     </main>
   </div>
-
-  <script src="/js/survey.js"></script>
+  <script src="/js/itinerary.js"></script>
 </body>
 </html>

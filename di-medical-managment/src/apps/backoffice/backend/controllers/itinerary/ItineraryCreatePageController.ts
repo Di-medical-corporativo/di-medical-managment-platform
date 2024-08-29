@@ -1,4 +1,6 @@
 import { ClientSearcher } from "../../../../../Contexts/Backoffice/Client/application/SearchAll/ClientSearcher";
+import { certificateStates } from "../../../../../Contexts/Backoffice/Itinerary/domain/PointCertificate";
+import { ssaStates } from "../../../../../Contexts/Backoffice/Itinerary/domain/PointSSA";
 import { SucursalSearcher } from "../../../../../Contexts/Backoffice/Sucursal/application/SearchAll/SucursalSearcher";
 import { SurveySearcher } from "../../../../../Contexts/Backoffice/Survey/application/SearchAll/SurveySearcher";
 import { UserSearcher } from "../../../../../Contexts/Backoffice/User/application/SearchAll/UserSearcher";
@@ -26,7 +28,9 @@ export class ItineraryCreatePageController {
         clients: clients.map(c => c.toPrimitives()),
         users: users.map(u => u.toPrimitives()),
         branches: sucursals.map(s => s.toPrimitives()),
-        surveys: surveys.map(su => su.toPrimitives())
+        surveys: surveys.map(su => su.toPrimitives()),
+        certificateStates,
+        ssaStates
       });
     } catch (error) {
       res.status(500).render('error/error', {
