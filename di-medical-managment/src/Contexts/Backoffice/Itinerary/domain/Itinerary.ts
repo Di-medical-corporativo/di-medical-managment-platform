@@ -82,7 +82,6 @@ export class Itinerary {
       type: string;
     }[];
   }) {
-    
     const points: Point[] = params.points.map(point => {
       if(point.type === PointTypes.Collect) {
         return CollectPoint.fromPrimitives({

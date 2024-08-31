@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rutas</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/itinerary">
+            <small>Rutas</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+        </section>
+
+        <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/itinerary/new'">Nueva ruta</button>
+      </header>
+
+      <section id="client-list">
+        <table class="table">
+          <thead>
+              <tr>
+                  <th>Fecha de inicio</th>
+                  <th>Sucursal</th>
+                  <th>Puntos totales</th>
+                  <th>Estatus</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+            <% for(let i = 0; i < itineraries.length; i++) { %>
+              <tr>
+                <% 
+                  let date = new Date(itineraries[i].scheduleDate);
+                  let options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+                  let formattedDate = date.toLocaleDateString('es-MX', options);
+                 %>
+                <td><%= formattedDate  %></td>
+                <td><%= itineraries[i].sucursal.name %></td>
+                <td><%= itineraries[i].totalPoints %></td>
+                <td>
+                  <% if(!itineraries[i].done && !itineraries[i].active){ %>
+                    <p>En espera de iniciar</p>
+                  <% } else if(itineraries[i].active) {%>
+                    <p>En curso</p>
+                  <% } else { %>
+                    <p>Concluido</p>
+                  <% } %>
+                </td>
+                <td style="text-align: right;" id="truck_actions">
+                  <% if(!itineraries[i].done && !itineraries[i].active){ %>
+                    <form action="/backoffice/itinerary/<%= itineraries[i].id %>/start" method="post">
+                      <input type="text" value="<%= itineraries[i].id %>" name="id" hidden>
+                      <button class="button primary" type="submit">Iniciar ruta</button>
+                    </form> 
+                  <% } else if(itineraries[i].active) {%>
+                    <button class="button">Seguimiento</button>
+                  <% } else { %>
+                    <button class="button">Reporte de ruta</button>
+                  <% } %>
+                  <button class="button primary"
+                    onclick="window.location.href='/backoffice/user/<%= itineraries[i].id %>/update'"
+                  >Actualizar</button>
+                </td>
+            </tr>
+            <% } %>
+          </tbody>
+      </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

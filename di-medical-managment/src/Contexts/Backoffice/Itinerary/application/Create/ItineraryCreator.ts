@@ -7,7 +7,7 @@ import { SucursalRepository } from "../../../Sucursal/domain/SucursalRepository"
 import { SucursalId } from "../../../Sucursal/domain/SucursalId";
 import { SucursalFinder } from "../../../Sucursal/domain/SucursalFinder";
 import { SurveyId } from "../../../Survey/domain/SurveyId";
-import { PointType, PointTypes } from "../../domain/PointType";
+import { PointType } from "../../domain/PointType";
 import { TaskId } from "../../../Task/domain/TaskId";
 import { PointStatus } from "../../domain/PointStatus";
 import { PointSSA } from "../../domain/PointSSA";

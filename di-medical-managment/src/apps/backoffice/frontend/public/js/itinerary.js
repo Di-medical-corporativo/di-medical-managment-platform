@@ -19,6 +19,10 @@ function addPointToTable() {
 
   const surveyId = document.getElementById('surveyId');
 
+  const observations = document.getElementById('observation');
+
+  const observation = observations.value || 'Sin observaciones'; 
+
   let surveyValue = surveyId.value;
 
   let surveyText = surveyId.options[surveyId.selectedIndex].text
@@ -29,7 +33,11 @@ function addPointToTable() {
     surveyText = 'Punto sin encuesta'
   }
 
-  console.log(surveyValue)
+  if(invoices.value.length === 0) {
+    alert('Debes agregar almenos una factura en el campo');
+
+    return;
+  }
 
   const template = `
   <tr>
@@ -54,11 +62,15 @@ function addPointToTable() {
                 </td>
                 <td>
                   <small>${ssa.value}</small>
-                  <input value="${ssa.value}" type="text"class="input" readonly name="points[${totalPoints}][ssa]" hidden>
+                  <input value="${ssa.value}" type="text" class="input" readonly name="points[${totalPoints}][ssa]" hidden>
                 </td>
                 <td>
                   <small>${type.options[type.selectedIndex].text}</small>
                   <input value="${type.value}" type="text" class="input" readonly name="points[${totalPoints}][type]" hidden>
+                </td>
+                <td>
+                  <small>${observation}</small>
+                  <input type="text" class="input" value="${observation}" readonly name="points[${totalPoints}][observation]" hidden>
                 </td>
                 <td>
                   <small>${surveyText}</small>
@@ -69,6 +81,9 @@ function addPointToTable() {
                 </td>
     </tr>
   `
+
+  invoices.value = "";
+  observations.value = "";
 
   table.insertAdjacentHTML('beforeend', template);
 }
@@ -107,3 +122,14 @@ function updatePointIndices() {
       }
   });
 }
+
+
+document.getElementById('itinerary-form').addEventListener('submit', (e) => {
+  if(totalPoints === 0) {
+    e.preventDefault();
+
+    alert('Debes tener al menos un punto en la ruta');
+
+    return;
+  }
+});

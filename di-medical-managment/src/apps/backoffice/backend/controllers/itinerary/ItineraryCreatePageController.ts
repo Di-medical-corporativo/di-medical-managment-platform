@@ -1,7 +1,6 @@
 import { ClientSearcher } from "../../../../../Contexts/Backoffice/Client/application/SearchAll/ClientSearcher";
 import { certificateStates } from "../../../../../Contexts/Backoffice/Itinerary/domain/PointCertificate";
 import { ssaStates } from "../../../../../Contexts/Backoffice/Itinerary/domain/PointSSA";
-import { pointTypes } from "../../../../../Contexts/Backoffice/Itinerary/domain/PointType";
 import { SucursalSearcher } from "../../../../../Contexts/Backoffice/Sucursal/application/SearchAll/SucursalSearcher";
 import { SurveySearcher } from "../../../../../Contexts/Backoffice/Survey/application/SearchAll/SurveySearcher";
 import { UserSearcher } from "../../../../../Contexts/Backoffice/User/application/SearchAll/UserSearcher";
@@ -12,7 +11,7 @@ export class ItineraryCreatePageController {
     private clientSearcher: ClientSearcher,
     private userSearcher: UserSearcher,
     private sucursalSearcher: SucursalSearcher,
-    private surveySearcher: SurveySearcher
+    private surveySearcher: SurveySearcher,
   ) {}
 
   async run(req: Request, res: Response) {

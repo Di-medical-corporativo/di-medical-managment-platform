@@ -9,9 +9,7 @@
 <body>
   <div id="admin-dash">
 
-    <%- include('../partials/_leftbar') %>
-    
-    <main id="main-admin">
+    <main id="main-admin" class="itinerary-page">
 
       <header class="section-header">
         <section class="breadcrumb">
@@ -31,11 +29,18 @@
             <label for="dueTo">Fecha de inicio de ruta:</label>
             <input
               class="input"
-              type="datetime-local"
+              type="date"
               id="dueTo"
               name="dueTo" 
               required
               />
+
+              <label for="sucursalId">Sucursal: </label>
+              <select class="input" id="sucursalId" name="sucursalId">
+                <% for (let i = 0; i < branches.length; i++) {%>
+                  <option value="<%= branches[i].id %>"><%= branches[i].name %> </option>
+                <% } %>
+              </select>
           </div>
 
           <table class="table" id="point-list-table">
@@ -47,6 +52,7 @@
                     <th>Certificado</th>
                     <th>Ssa</th>
                     <th>Tipo</th>
+                    <th>Observaciones</th>
                     <th>Encuesta</th>
                     <th></th>
                 </tr>
@@ -92,6 +98,9 @@
                   </select>
                 </td>
                 <td>
+                  <input type="text" class="input" id="observation" placeholder="Observaciones del punto">
+                </td>
+                <td>
                   <select class="input" id="surveyId">
                     <% for (let i = 0; i < surveys.length; i++) {%>
                       <option value="<%= surveys[i].id %>"><%= surveys[i].title %> </option>
@@ -118,6 +127,7 @@
                     <th>Certificado</th>
                     <th>Ssa</th>
                     <th>Tipo</th>
+                    <th>Observaciones</th>
                     <th>Encuesta</th>
                     <th></th>
                 </tr>
