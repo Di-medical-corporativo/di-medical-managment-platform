@@ -11,8 +11,6 @@ export class PrismaItineraryRepository implements ItineraryRepository {
   async save(itinerary: Itinerary): Promise<void> {
     const itineraryPlain = itinerary.toPrimitives();
 
-    console.log(itineraryPlain);
-
     await prisma.itinerary.create({
       data: {
         id: itineraryPlain.id,
@@ -58,17 +56,19 @@ export class PrismaItineraryRepository implements ItineraryRepository {
               }
             }
 
-            let pointDataSurvey = {
-              ...pointData,
-              survey: {
-                connect: {
-                  id: i.survey.id
+            if(i.type === PointTypes.Collect || i.type === PointTypes.Route)  {
+              let pointDataSurvey = {
+                ...pointData,
+                survey: {
+                  connect: {
+                    id: i.survey.id
+                  }
                 }
               }
-            }
 
-            if(i.type === PointTypes.Collect || i.type === PointTypes.Route) return pointDataSurvey
-            else return pointData;
+              return pointDataSurvey;
+
+            } else { return pointData };
           })
         }
       }
@@ -189,7 +189,7 @@ export class PrismaItineraryRepository implements ItineraryRepository {
           itineraryId: i.itineraryId,
           observation: i.observation,
           ssa: i.ssa,
-          status: i.task.status,
+          status: i.status,
           survey,
           task: {
             id: i.task.id,

@@ -13,6 +13,23 @@ export const pointTypes = [
 ];
 
 export class PointType extends StringValueObject {
+
+  getValue() {
+    if(this.value === PointTypes.Route) {
+      return 'Ruta';
+    }
+
+    if(this.value === PointTypes.Parcel) {
+      return 'Paqueteria';
+    }
+
+    if(this.value === PointTypes.Collect) {
+      return 'Recoleccion';
+    }
+
+    return '';
+  }
+  
   isRoute() {
     if(this.value === PointTypes.Route) {
       return true;

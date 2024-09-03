@@ -98,6 +98,9 @@ export class ItineraryCreator {
     const itineraryId = new ItineraryId(uuid());
 
     const pointsPromises = params.points.map(async (point) => {
+
+      const pointId = new PointId(uuid());
+
       const clientToDeliver = await this.clientFinder.run({
         id: point.clientId
       });
@@ -108,13 +111,24 @@ export class ItineraryCreator {
 
       const { id, name } = clientToDeliver.toPrimitives();
 
-      // TODO: Html for description
+      const descriptionHTMLForTaskTemplate = `
+        <p>Esta tarea pertence a la ruta del ${params.scheduleDate.format()}</p>
+        <p></p>
+        <p>Es un punto de tipo: <strong>${point.type.getValue()}</strong> </p>
+        <p></p>
+        <p>No olvides que para terminar el punto que se te fue asignado debes acceder al siguiente enlace: </p>
+        <p></p>
+        <p><a href="/backoffice/itinerary/point/${pointId}/end" rel="noopener noreferrer" target="_blank">Enlace</a></p>
+      `
+
+      const titleForTask = `Punto tipo: ${point.type.getValue()}, itinerario: ${params.scheduleDate.format()}`;
+
       const taskForPoint = {
         id: new TaskId(uuid()),
-        description: new TaskDescription('<p>Nueva tarea de punto</p>'),
+        description: new TaskDescription(descriptionHTMLForTaskTemplate),
         dueTo: new TaskDueTo(params.scheduleDate.toString()),
         userId: point.userId,
-        title: new TaskTitle('Punto'),
+        title: new TaskTitle(titleForTask),
         isPoint: new TaskIsPoint(true)
       }
 
@@ -123,7 +137,7 @@ export class ItineraryCreator {
       const status = StatusList.Assigned;
 
       let pointData = {
-        id: new PointId(uuid()),
+          id: pointId,
           certificate: point.certificate,
           client: PointClient.create({ id: new ClientId(id), name: new ClientName(name) }),
           comment: point.comment,

@@ -26,6 +26,7 @@
       </header>
 
       <section id="client-list">
+        <button class="button primary" style="margin-bottom: 20px; align-self: flex-end; margin-right: 20px; width: 150px;">Terminar ruta</button>
         <table class="table">
           <thead>
               <tr>
@@ -38,31 +39,59 @@
                 <th>Tipo</th>
                 <th>Observaciones</th>
                 <th>Comentario operador</th>
+                <th>Respuesta a encuesta</th>
                 <th></th>
               </tr>
           </thead>
           <tbody>
             <% for(let i = 0; i < itinerary.points.length; i++) { %>
-              <% const point = itinerary.points %>
+              <% const point = itinerary.points[i] %>
               <tr>
-                <td><%= point.status %></td>
+                <td>
+                  <% if(point.status === 'in-progress') {%>
+                    En progreso
+                  <% } else if(point.status === 'completed') {%>
+                    Completado
+                  <% } else if(point.status === 'pastdue') {%>
+                     Punto en retraso
+                  <% } else {%>
+                    Punto concluido con errores
+                  <% } %>
+                </td>
                 <td><%= point.client.name %></td>
-                <td><%= point.userAssigned.name %></td>
-                <td><%= point.invoice %></td>
+                <td><%= point.userAssigned.firstName %></td>
+                <td>
+                  <% point.invoice.forEach(invoice => {%>
+                    <%= invoice.number %>
+                  <% } )%>
+                </td>
                 <td><%= point.certificate %></td>
                 <td><%= point.ssa %></td>
-                <td><%= point.type %></td>
+                <td>
+                  <% if(point.type === 'point-route') {%>
+                    Ruta
+                  <% } else if(point.type === 'point-parcel') {%>
+                    Paqueteria
+                  <% } else {%>
+                     Recoleccion
+                  <% } %>
+                </td>
                 <td><%= point.observation %></td>
                 <td><%= point.comment %></td>
+                <td>
+                </td>
                 
                 <td style="text-align: right;" id="actions">
-                  <button class="button primary"
-                    onclick="window.location.href='/backoffice/client/<%= point.id %>/update'"
-                  >Actualizar</button>
-                  <form action="/backoffice/client/<%= point.id %>?_method=DELETE" method="post">
-                    <input type="text" value="<%= point.id %>" name="id" hidden>
-                    <button class="button danger" type="submit">Eliminar</button>
-                  </form> 
+
+                  <% if(point.status == 'in-progress') { %>
+                      <button class="button primary"
+                      onclick="window.location.href='/backoffice/client/<%= point.id %>/update'"
+                    >Actualizar</button>
+                    <form action="/backoffice/client/<%= point.id %>?_method=DELETE" method="post">
+                      <input type="text" value="<%= point.id %>" name="id" hidden>
+                      <button class="button danger" type="submit">Terminar punto</button>
+                    </form>
+                  <% } %>  
                 </td>
             </tr>
             <% } %>

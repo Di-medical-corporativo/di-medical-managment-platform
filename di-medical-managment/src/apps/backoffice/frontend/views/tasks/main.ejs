@@ -39,6 +39,9 @@
             %>
               <div class="task">
                 <header>
+                  <% if(task.isPoint) {%>
+                    <small class="tag">Punto de ruta</small>
+                  <% } %>
                   <p><%= task.title %></p>
                   <small>Fecha de termino: <%= formattedDate %></small>
                 </header>
@@ -68,6 +71,10 @@
             %>
               <div class="task">
                 <header>
+                  <% if(task.isPoint) {%>
+                    <small class="tag">Punto de ruta</small>
+                  <% } %>
+                  
                   <p><%= task.title %></p>
                   <small>Fecha de termino: <%= formattedDate %></small>
                 </header>
@@ -97,6 +104,9 @@
             %>
               <div class="task">
                 <header>
+                  <% if(task.isPoint) {%>
+                    <small class="tag">Punto de ruta</small>
+                  <% } %>
                   <p><%= task.title %></p>
                   <small>Fecha de termino: <%= formattedDate %></small>
                 </header>
@@ -126,6 +136,9 @@
             %>
               <div class="task">
                 <header>
+                  <% if(task.isPoint) {%>
+                    <small class="tag">Punto de ruta</small>
+                  <% } %>
                   <p><%= task.title %></p>
                   <small>Fecha de termino: <%= formattedDate %></small>
                 </header>

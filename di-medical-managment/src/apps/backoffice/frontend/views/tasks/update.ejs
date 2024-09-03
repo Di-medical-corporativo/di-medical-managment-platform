@@ -53,8 +53,10 @@
         </section>
       </header>
 
-      <section id="new-client-form">
+      <section id="new-client-form">        
         <form action="/backoffice/task/<%= task.id %>?_method=PUT" method="post" id="taskForm"> 
+          <small class="tag" style="align-self: self-start;">Punto de ruta</small>
+          
           <input type="text" hidden id="id" name="id" value="<%= task.id %>">
           
           <label for="title">Titulo:</label>

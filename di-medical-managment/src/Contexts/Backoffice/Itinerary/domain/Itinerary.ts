@@ -94,7 +94,7 @@ export class Itinerary {
           itineraryId: point.itineraryId,
           observation: point.observation,
           ssa: point.ssa,
-          status: point.ssa,
+          status: point.status,
           task: point.task,
           survey: point.survey!,
           userAssigned: point.userAssigned
@@ -110,7 +110,7 @@ export class Itinerary {
           itineraryId: point.itineraryId,
           observation: point.observation,
           ssa: point.ssa,
-          status: point.ssa,
+          status: point.status,
           task: point.task,
           userAssigned: point.userAssigned
         });
@@ -125,7 +125,7 @@ export class Itinerary {
           itineraryId: point.itineraryId,
           observation: point.observation,
           ssa: point.ssa,
-          status: point.ssa,
+          status: point.status,
           task: point.task,
           userAssigned: point.userAssigned,
           survey: point.survey!

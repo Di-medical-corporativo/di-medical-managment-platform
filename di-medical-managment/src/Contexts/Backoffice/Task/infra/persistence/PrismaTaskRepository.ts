@@ -19,7 +19,8 @@ export class PrismaTaskRepository implements TaskRepository {
           connect: {
             id: taskPlain.userAssigned.id
           }
-        }
+        },
+        belongsToItinerary: taskPlain.isPoint
       }
     });
   }

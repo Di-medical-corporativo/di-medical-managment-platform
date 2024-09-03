@@ -62,13 +62,14 @@
                       <button class="button primary" type="submit">Iniciar ruta</button>
                     </form> 
                   <% } else if(itineraries[i].active) {%>
-                    <button class="button">Seguimiento</button>
+                    <button 
+                      class="button"
+                      onclick="window.location.href='/backoffice/itinerary/<%= itineraries[i].id %>/track'"
+                      >Seguimiento</button>
                   <% } else { %>
                     <button class="button">Reporte de ruta</button>
                   <% } %>
-                  <button class="button primary"
-                    onclick="window.location.href='/backoffice/user/<%= itineraries[i].id %>/update'"
-                  >Actualizar</button>
+                  <button class="button">Imagen</button>
                 </td>
             </tr>
             <% } %>

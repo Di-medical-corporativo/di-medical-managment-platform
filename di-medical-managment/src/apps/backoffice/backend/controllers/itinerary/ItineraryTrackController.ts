@@ -16,6 +16,8 @@ export class ItineraryTrackController {
         id: new ItineraryId(id)
       });
 
+      console.log(itinerary.toPrimitives().points[0])
+
       res.status(200).render('itinerary/tracking', {
         itinerary: itinerary.toPrimitives()
       });

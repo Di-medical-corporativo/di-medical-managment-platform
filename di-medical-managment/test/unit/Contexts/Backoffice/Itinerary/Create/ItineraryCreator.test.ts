@@ -190,7 +190,7 @@ describe("ItineraryCreator", () => {
     await itineraryCreator.run({
       createdAt: new ItineraryDate(''),
       points,
-      scheduleDate: new ItinerarySchedule(''),
+      scheduleDate: new ItinerarySchedule(new Date().toISOString()),
       sucursal: new SucursalId('') 
     });
 
@@ -362,7 +362,7 @@ describe("ItineraryCreator", () => {
     await expect(itineraryCreator.run({
       createdAt: new ItineraryDate(''),
       points,
-      scheduleDate: new ItinerarySchedule(''),
+      scheduleDate: new ItinerarySchedule(new Date().toISOString()),
       sucursal: new SucursalId('') 
     })).rejects.toThrow(UserNotFound);
   });
@@ -432,7 +432,7 @@ describe("ItineraryCreator", () => {
     await expect(itineraryCreator.run({
       createdAt: new ItineraryDate(''),
       points,
-      scheduleDate: new ItinerarySchedule(''),
+      scheduleDate: new ItinerarySchedule(new Date().toISOString()),
       sucursal: new SucursalId('') 
     })).rejects.toThrow(SurveyNotFound);
 
