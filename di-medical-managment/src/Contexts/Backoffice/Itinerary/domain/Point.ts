@@ -29,6 +29,10 @@ export abstract class Point {
     protected hasProblem: PointProblem 
   ) {}
 
+  public isFinished() {
+    return this.status.isDone();
+  }
+
   abstract toPrimitives(): any;
 }
 

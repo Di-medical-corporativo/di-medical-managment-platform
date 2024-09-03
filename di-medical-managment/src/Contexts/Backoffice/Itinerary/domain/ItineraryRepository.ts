@@ -10,4 +10,7 @@ export interface ItineraryRepository {
   search(id: ItineraryId): Promise<Itinerary | null>
 
   start(id: ItineraryId): Promise<void>
+
+  end(id: ItineraryId): Promise<void>
 }
+

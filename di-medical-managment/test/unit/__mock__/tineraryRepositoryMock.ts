@@ -13,6 +13,8 @@ export class ItineraryRepositoryMock implements ItineraryRepository{
 
   private startMock: jest.Mock;
 
+  private endItineraryMock: jest.Mock;
+
   constructor() {
     this.saveMock = jest.fn()
   
@@ -21,6 +23,12 @@ export class ItineraryRepositoryMock implements ItineraryRepository{
     this.searchMock = jest.fn();
 
     this.startMock = jest.fn();
+
+    this.endItineraryMock = jest.fn();
+  }
+
+  async end(id: ItineraryId) {
+    this.endItineraryMock(id);
   }
 
   async start(id: ItineraryId): Promise<void> {
@@ -50,8 +58,12 @@ export class ItineraryRepositoryMock implements ItineraryRepository{
   assertSaveHaveBeenCalledWith(expected: Itinerary) {
     expect(this.saveMock).toHaveBeenCalledWith(expected);
   }
-
+  
   assertSaveHaveBeenCalled() {
     expect(this.saveMock).toHaveBeenCalled();
+  }
+
+  assertEndHaveBeenCalled() {
+    expect(this.endItineraryMock).toHaveBeenCalled();
   }
 }

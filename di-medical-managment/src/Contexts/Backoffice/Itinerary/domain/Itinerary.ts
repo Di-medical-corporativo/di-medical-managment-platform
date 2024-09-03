@@ -145,6 +145,12 @@ export class Itinerary {
     );
   }
 
+  public hasOnGoingPoints() {
+    const find = this.points.find(point => {
+      return !point.isFinished();
+    });
+  }
+
   toPrimitives() {
     return {
       id: this.id.toString(),
