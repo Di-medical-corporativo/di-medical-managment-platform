@@ -1,6 +1,7 @@
 import { TaskDescription } from "./TaskDescription";
 import { TaskDueTo } from "./TaskDueTo";
 import { TaskId } from "./TaskId";
+import { TaskIsPoint } from "./TaskIsPoint";
 import { StatusList, TaskStatus } from "./TaskStatus";
 import { TaskTitle } from "./TaskTitle";
 import { TaskUser } from "./TaskUser";
@@ -12,7 +13,8 @@ export class Task {
     private description: TaskDescription,
     private userAssigned: TaskUser,
     private status: TaskStatus,
-    private dueTo: TaskDueTo
+    private dueTo: TaskDueTo,
+    private isPoint: TaskIsPoint
   ) {}
 
   public updateTitle(title: TaskTitle) {
@@ -35,6 +37,10 @@ export class Task {
     }
 
     return false;
+  }
+
+  public belogsToItinerary() {
+    return this.isPoint.value;
   }
 
   public nextStatus() {
@@ -69,7 +75,8 @@ export class Task {
     title: TaskTitle,
     description: TaskDescription,
     userAssigned: TaskUser
-    dueTo: TaskDueTo
+    dueTo: TaskDueTo,
+    isPoint: TaskIsPoint
   }) {
     return new Task(
       params.id,
@@ -77,7 +84,8 @@ export class Task {
       params.description,
       params.userAssigned,
       new TaskStatus(StatusList.Assigned),
-      params.dueTo
+      params.dueTo,
+      params.isPoint
     );
   }
 
@@ -88,6 +96,7 @@ export class Task {
     userAssigned: { id: string; firstName: string; lastName: string };
     status: string;
     dueTo: string;
+    isPoint: boolean;
   }) {
     return new Task(
       new TaskId(params.id),
@@ -99,7 +108,8 @@ export class Task {
         lastName: params.userAssigned.lastName 
       }),
       new TaskStatus(params.status),
-      new TaskDueTo(params.dueTo)
+      new TaskDueTo(params.dueTo),
+      new TaskIsPoint(params.isPoint)
     );
   }
 
@@ -110,7 +120,8 @@ export class Task {
       description: this.description.toString(),
       userAssigned: this.userAssigned.toPrimitives(),
       status: this.status.toString(),
-      dueTo: this.dueTo.toString()
+      dueTo: this.dueTo.toString(),
+      isPoint: this.isPoint.value
     }
   }
 }

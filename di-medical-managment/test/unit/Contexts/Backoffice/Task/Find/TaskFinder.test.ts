@@ -3,6 +3,7 @@ import { TaskDescription } from "../../../../../../src/Contexts/Backoffice/Task/
 import { TaskDueTo } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskDueTo";
 import { TaskFinder } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskFinder";
 import { TaskId } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskId";
+import { TaskIsPoint } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskIsPoint";
 import { TaskNotFound } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskNotFound";
 import { TaskTitle } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskTitle";
 import { TaskUser } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskUser";
@@ -32,7 +33,8 @@ describe('TaskFinder', () => {
         firstName: new UserFirstName(''),
         lastName: new UserLastName('') 
       }),
-      dueTo: new TaskDueTo(new Date().toISOString())
+      dueTo: new TaskDueTo(new Date().toISOString()),
+      isPoint: new TaskIsPoint(false)
     }
       const task = Task.create(taskParams);
 

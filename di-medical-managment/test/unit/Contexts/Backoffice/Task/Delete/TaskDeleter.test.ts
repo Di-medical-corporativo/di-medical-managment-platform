@@ -3,6 +3,7 @@ import { Task } from "../../../../../../src/Contexts/Backoffice/Task/domain/Task
 import { TaskDescription } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskDescription";
 import { TaskDueTo } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskDueTo";
 import { TaskId } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskId";
+import { TaskIsPoint } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskIsPoint";
 import { TaskNotFound } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskNotFound";
 import { TaskTitle } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskTitle";
 import { TaskUser } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskUser";
@@ -39,8 +40,9 @@ describe('TaskDeleter', () => {
         firstName: new UserFirstName(''),
         lastName: new UserLastName('') 
       }),
-      dueTo: new TaskDueTo(new Date().toISOString())
-      }
+      dueTo: new TaskDueTo(new Date().toISOString()),
+      isPoint: new TaskIsPoint(false)
+    }
     const task = Task.create(taskParams);
     
     taskRepositoryMock.setReturnForSearch(task);

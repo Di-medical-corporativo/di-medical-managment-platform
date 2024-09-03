@@ -8,6 +8,7 @@ import { Task } from "../../../../../../src/Contexts/Backoffice/Task/domain/Task
 import { TaskDescription } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskDescription";
 import { TaskDueTo } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskDueTo";
 import { TaskId } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskId";
+import { TaskIsPoint } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskIsPoint";
 import { TaskTitle } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskTitle";
 import { TaskUser } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskUser";
 import { User } from "../../../../../../src/Contexts/Backoffice/User/domain/User";
@@ -53,7 +54,8 @@ describe('TaskCreator', () => {
         firstName: new UserFirstName(''),
         lastName: new UserLastName('') 
       }),
-      dueTo: new TaskDueTo(new Date().toISOString())
+      dueTo: new TaskDueTo(new Date().toISOString()),
+      isPoint: new TaskIsPoint(false)
     }
 
     const user = User.create({
@@ -98,7 +100,8 @@ describe('TaskCreator', () => {
         firstName: new UserFirstName(''),
         lastName: new UserLastName('') 
       }),
-      dueTo: new TaskDueTo(new Date().toISOString())
+      dueTo: new TaskDueTo(new Date().toISOString()),
+      isPoint: new TaskIsPoint(false)
     }
     
     userRepository.setReturnForSearch(null);

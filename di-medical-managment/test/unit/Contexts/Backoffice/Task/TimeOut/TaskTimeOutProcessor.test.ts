@@ -35,7 +35,8 @@ describe('TaskTimeOutProcessor', () => {
         firstName: '',
         id: '',
         lastName: ''
-      }
+      },
+      isPoint: false
     });
 
     repository.setReturnForSearch(task);
@@ -58,7 +59,8 @@ describe('TaskTimeOutProcessor', () => {
         firstName: '',
         id: '',
         lastName: ''
-      }
+      },
+      isPoint: false
     });
 
     repository.setReturnForSearch(task);

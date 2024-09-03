@@ -50,7 +50,8 @@ export class PrismaTaskRepository implements TaskRepository {
         firstName: t.userAssigned.firstName,
         id: t.userAssignedId,
         lastName: t.userAssigned.lastName
-      }
+      },
+      isPoint: t.belongsToItinerary
     }));
 
     return tasks;
@@ -86,7 +87,8 @@ export class PrismaTaskRepository implements TaskRepository {
         id: taskDB.userAssigned.id,
         firstName: taskDB.userAssigned.firstName,
         lastName: taskDB.userAssigned.lastName
-      }
+      },
+      isPoint: taskDB.belongsToItinerary
     });
 
     return task;

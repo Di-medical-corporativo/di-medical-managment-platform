@@ -46,6 +46,7 @@ import { Itinerary } from "../../domain/Itinerary";
 import { ItinerarySucursal } from "../../domain/ItinerarySucursal";
 import { SucursalName } from "../../../Sucursal/domain/SucursalName";
 import { Survey } from "../../../Survey/domain/Survey";
+import { TaskIsPoint } from "../../../Task/domain/TaskIsPoint";
 
 export class ItineraryCreator {
   private sucursalFinder: SucursalFinder;
@@ -113,10 +114,11 @@ export class ItineraryCreator {
         description: new TaskDescription('<p>Nueva tarea de punto</p>'),
         dueTo: new TaskDueTo(params.scheduleDate.toString()),
         userId: point.userId,
-        title: new TaskTitle('Punto')
+        title: new TaskTitle('Punto'),
+        isPoint: new TaskIsPoint(true)
       }
 
-      await this.taskCreator.run(taskForPoint);
+      await this.taskCreator.runForPoint(taskForPoint);
 
       const status = StatusList.Assigned;
 
@@ -152,7 +154,6 @@ export class ItineraryCreator {
         survey =  PointSurvey.create({ id: new SurveyId(surveyId), title: new SurveyTitle(surveyName) });
       }
 
-      
       if(point.type.isCollect()) {
         return CollectPoint.create({ 
           ...pointData, 

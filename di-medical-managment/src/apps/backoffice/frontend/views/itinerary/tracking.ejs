@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seguimiento de ruta</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/itinerary">
+            <small>Ruta</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/itinerary/<%= itinerary.id %>/tracking">
+            <small>Seguimiento</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="client-list">
+        <table class="table">
+          <thead>
+              <tr>
+                <th>Estatus</th>
+                <th>Cliente</th>
+                <th>Responsable</th>
+                <th>Facturas</th>
+                <th>Certificado</th>
+                <th>Ssa</th>
+                <th>Tipo</th>
+                <th>Observaciones</th>
+                <th>Comentario operador</th>
+                <th></th>
+              </tr>
+          </thead>
+          <tbody>
+            <% for(let i = 0; i < itinerary.points.length; i++) { %>
+              <% const point = itinerary.points %>
+              <tr>
+                <td><%= point.status %></td>
+                <td><%= point.client.name %></td>
+                <td><%= point.userAssigned.name %></td>
+                <td><%= point.invoice %></td>
+                <td><%= point.certificate %></td>
+                <td><%= point.ssa %></td>
+                <td><%= point.type %></td>
+                <td><%= point.observation %></td>
+                <td><%= point.comment %></td>
+                
+                <td style="text-align: right;" id="actions">
+                  <button class="button primary"
+                    onclick="window.location.href='/backoffice/client/<%= point.id %>/update'"
+                  >Actualizar</button>
+                  <form action="/backoffice/client/<%= point.id %>?_method=DELETE" method="post">
+                    <input type="text" value="<%= point.id %>" name="id" hidden>
+                    <button class="button danger" type="submit">Eliminar</button>
+                  </form> 
+                </td>
+            </tr>
+            <% } %>
+          </tbody>
+      </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
+
+</body>
+</html>

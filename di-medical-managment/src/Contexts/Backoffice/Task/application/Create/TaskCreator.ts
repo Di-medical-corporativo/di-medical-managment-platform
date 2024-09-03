@@ -7,6 +7,7 @@ import { Task } from "../../domain/Task";
 import { TaskDescription } from "../../domain/TaskDescription";
 import { TaskDueTo } from "../../domain/TaskDueTo";
 import { TaskId } from "../../domain/TaskId";
+import { TaskIsPoint } from "../../domain/TaskIsPoint";
 import { TaskRepository } from "../../domain/TaskRepository";
 import { TaskScheduler } from "../../domain/TaskScheduler";
 import { TaskTitle } from "../../domain/TaskTitle";
@@ -45,7 +46,43 @@ export class TaskCreator {
       dueTo: params.dueTo,
       id: params.id,
       title: params.title,
-      userAssigned: taskUser
+      userAssigned: taskUser,
+      isPoint: new TaskIsPoint(false)
+    });
+
+    await this.repository.save(task);
+
+    await this.taskScheduler.schedule(
+      params.id,
+      new Date(params.dueTo.toString())
+    );
+  }
+
+  async runForPoint(params: {
+    id: TaskId,
+    title: TaskTitle,
+    description: TaskDescription,
+    userId: UserId,
+    dueTo: TaskDueTo,
+    isPoint: TaskIsPoint
+  }) {
+    const user = await this.userFinder.run(params.userId.toString());
+    
+    const { firstName, lastName, id } = user.toPrimitives();
+
+    const taskUser = TaskUser.create({
+      firstName: new UserFirstName(firstName),
+      lastName: new UserLastName(lastName),
+      id: new UserId(id)
+    });
+
+    const task = Task.create({
+      description: params.description,
+      dueTo: params.dueTo,
+      id: params.id,
+      title: params.title,
+      userAssigned: taskUser,
+      isPoint: params.isPoint
     });
 
     await this.repository.save(task);

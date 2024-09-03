@@ -14,6 +14,8 @@ export const register = (app: Express) => {
 
   const startItineraryController: ItineraryStartController = container.get('Apps.Backoffice.backend.controllers.ItineraryStartController');
 
+  const trackingItineraryController: Trac
+
   app.get('/itinerary/new', (req: Request, res: Response) => createItineraryPage.run(req, res));
 
   app.post('/itinerary/create', (req: Request, res: Response) => createItineraryController.run(req, res));

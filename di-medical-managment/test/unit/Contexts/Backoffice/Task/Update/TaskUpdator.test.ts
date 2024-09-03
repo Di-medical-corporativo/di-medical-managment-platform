@@ -34,7 +34,8 @@ describe('TaskUpdator', () => {
         firstName: '',
         id: '',
         lastName: ''
-      }
+      },
+      isPoint: false
     });
 
     repository.setReturnForSearch(task);
@@ -70,7 +71,8 @@ describe('TaskUpdator', () => {
         firstName: '',
         id: '',
         lastName: ''
-      }
+      },
+      isPoint: false
     });
 
     repository.setReturnForSearch(task);
@@ -102,7 +104,8 @@ describe('TaskUpdator', () => {
         firstName: '',
         id: '',
         lastName: ''
-      }
+      },
+      isPoint: false
     });
 
     repository.setReturnForSearch(task);
@@ -134,7 +137,8 @@ describe('TaskUpdator', () => {
         firstName: '',
         id: '',
         lastName: ''
-      }
+      },
+      isPoint: false
     });
 
     repository.setReturnForSearch(task);
@@ -166,7 +170,8 @@ describe('TaskUpdator', () => {
         firstName: '',
         id: '',
         lastName: ''
-      }
+      },
+      isPoint: false
     });
 
     repository.setReturnForSearch(task);
