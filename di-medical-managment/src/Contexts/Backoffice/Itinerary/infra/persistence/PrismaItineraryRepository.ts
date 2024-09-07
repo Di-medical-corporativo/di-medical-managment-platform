@@ -238,4 +238,16 @@ export class PrismaItineraryRepository implements ItineraryRepository {
       }
     })
   }
+
+  async end(id: ItineraryId): Promise<void> {
+    await prisma.itinerary.update({
+      where: {
+        id: id.toString()
+      },
+      data: {
+        done: true,
+        active: false
+      }
+    });
+  }
 }

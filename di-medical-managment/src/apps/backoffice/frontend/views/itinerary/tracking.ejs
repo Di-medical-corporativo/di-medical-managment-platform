@@ -26,7 +26,10 @@
       </header>
 
       <section id="client-list">
-        <button class="button primary" style="margin-bottom: 20px; align-self: flex-end; margin-right: 20px; width: 150px;">Terminar ruta</button>
+        <form action="/backoffice/itinerary/<%= itinerary.id %>/end" method="post">
+          <input type="text" value="<%= itinerary.id %>" name="id" hidden>
+          <button class="button primary" style="margin-bottom: 20px; align-self: flex-end; width: 150px;">Terminar ruta</button>
+        </form>
         <table class="table">
           <thead>
               <tr>

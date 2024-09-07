@@ -477,6 +477,12 @@ services:
     "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
   ]
 
+  Contexts.Backoffice.Itinerary.application.Finish.ItineraryFinisher:
+    class: ../../../../Contexts/Backoffice/Itinerary/application/Finish/ItineraryFinisher
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+  ]
+
   Apps.Backoffice.backend.controllers.ItineraryCreatePageController:
     class: ../controllers/itinerary/ItineraryCreatePageController
     arguments: [
@@ -509,4 +515,10 @@ services:
     class: ../controllers/itinerary/ItineraryTrackController
     arguments: [
       "@Contexts.Backoffice.Itinerary.application.Tracking.ItineraryTracker"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryEndController:
+    class: ../controllers/itinerary/ItineraryEndController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.Finish.ItineraryFinisher"
     ]

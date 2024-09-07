@@ -1,6 +1,8 @@
 import { Itinerary } from "./Itinerary";
 import { ItineraryId } from "./ItineraryId";
 import { ItineraryPreview } from "./ItineraryPreview";
+import { Point } from "./Point";
+import { PointId } from "./PointId";
 
 export interface ItineraryRepository {
   save(itinerary: Itinerary): Promise<void>
@@ -12,5 +14,7 @@ export interface ItineraryRepository {
   start(id: ItineraryId): Promise<void>
 
   end(id: ItineraryId): Promise<void>
+
+  findPoint(id: PointId): Promise<Point | null>
 }
 

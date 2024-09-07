@@ -1,8 +1,9 @@
-import { ItineraryCreator } from "../../../src/Contexts/Backoffice/Itinerary/application/Create/ItineraryCreator";
 import { Itinerary } from "../../../src/Contexts/Backoffice/Itinerary/domain/Itinerary";
 import { ItineraryId } from "../../../src/Contexts/Backoffice/Itinerary/domain/ItineraryId";
 import { ItineraryPreview } from "../../../src/Contexts/Backoffice/Itinerary/domain/ItineraryPreview";
 import { ItineraryRepository } from "../../../src/Contexts/Backoffice/Itinerary/domain/ItineraryRepository";
+import { Point } from "../../../src/Contexts/Backoffice/Itinerary/domain/Point";
+import { PointId } from "../../../src/Contexts/Backoffice/Itinerary/domain/PointId";
 
 export class ItineraryRepositoryMock implements ItineraryRepository{
   private saveMock: jest.Mock;
@@ -15,6 +16,8 @@ export class ItineraryRepositoryMock implements ItineraryRepository{
 
   private endItineraryMock: jest.Mock;
 
+  private findPointMock: jest.Mock;
+
   constructor() {
     this.saveMock = jest.fn()
   
@@ -25,6 +28,16 @@ export class ItineraryRepositoryMock implements ItineraryRepository{
     this.startMock = jest.fn();
 
     this.endItineraryMock = jest.fn();
+
+    this.findPointMock = jest.fn();
+  }
+
+  async findPoint(id: PointId): Promise<Point | null> {
+    return this.findPointMock(id);
+  }
+
+  async setReturnForPoint(point: Point | null) {
+    this.findPointMock.mockReturnValue(point);
   }
 
   async end(id: ItineraryId) {

@@ -146,9 +146,10 @@ export class Itinerary {
   }
 
   public hasOnGoingPoints() {
-    const find = this.points.find(point => {
-      return !point.isFinished();
-    });
+    const find = this.points.find(p => !p.isFinished());
+
+    if(find === undefined) return false;
+    return true;
   }
 
   toPrimitives() {
