@@ -5,7 +5,7 @@ import { ItineraryRepository } from "../../../src/Contexts/Backoffice/Itinerary/
 import { Point } from "../../../src/Contexts/Backoffice/Itinerary/domain/Point";
 import { PointId } from "../../../src/Contexts/Backoffice/Itinerary/domain/PointId";
 
-export class ItineraryRepositoryMock implements ItineraryRepository{
+export class ItineraryRepositoryMock implements ItineraryRepository {
   private saveMock: jest.Mock;
   
   private searchAll: jest.Mock;
@@ -17,6 +17,8 @@ export class ItineraryRepositoryMock implements ItineraryRepository{
   private endItineraryMock: jest.Mock;
 
   private findPointMock: jest.Mock;
+
+  private endPointMock: jest.Mock;
 
   constructor() {
     this.saveMock = jest.fn()
@@ -30,6 +32,12 @@ export class ItineraryRepositoryMock implements ItineraryRepository{
     this.endItineraryMock = jest.fn();
 
     this.findPointMock = jest.fn();
+
+    this.endPointMock = jest.fn();
+  }
+
+  async endPoint(point: Point): Promise<void> {
+    this.endPointMock(point);
   }
 
   async findPoint(id: PointId): Promise<Point | null> {
@@ -78,5 +86,9 @@ export class ItineraryRepositoryMock implements ItineraryRepository{
 
   assertEndHaveBeenCalled() {
     expect(this.endItineraryMock).toHaveBeenCalled();
+  }
+
+  assertEndPointHaveBeenCalled() {
+    expect(this.endPointMock).toHaveBeenCalled();
   }
 }

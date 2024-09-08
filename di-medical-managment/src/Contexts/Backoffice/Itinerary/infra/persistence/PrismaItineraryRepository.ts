@@ -5,6 +5,9 @@ import { ItineraryId } from "../../domain/ItineraryId";
 import { ItineraryPreview } from "../../domain/ItineraryPreview";
 import { ItineraryRepository } from "../../domain/ItineraryRepository";
 import { ItinerarySucursal } from "../../domain/ItinerarySucursal";
+import { CollectPoint, ParcelPoint, Point, RoutePoint } from "../../domain/Point";
+import { PointId } from "../../domain/PointId";
+import { PointStatusList } from "../../domain/PointStatus";
 import { PointTypes } from "../../domain/PointType";
 
 export class PrismaItineraryRepository implements ItineraryRepository {
@@ -249,5 +252,122 @@ export class PrismaItineraryRepository implements ItineraryRepository {
         active: false
       }
     });
+  }
+
+  async findPoint(id: PointId): Promise<Point | null> {
+    const pointDB = await prisma.point.findUnique({
+      where: {
+        id: id.toString()
+      },
+      include: {
+        client: {
+         select: {
+          id: true,
+          name: true
+         }
+        },
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true
+          }
+        },
+        invoices: true,
+        task: {
+          select: {
+            id: true,
+            status: true
+          }
+        },
+        survey:  {
+          select: {
+            id: true,
+            title: true
+          }
+        }
+      }
+    });
+
+    if(pointDB === null) return null;
+
+    let point: Point;
+
+    let pointData = {
+      id: pointDB.id,
+      itineraryId: pointDB.itineraryId,
+      client: {
+        id: pointDB.client.id,
+        name: pointDB.client.name
+      },
+      userAssigned: {
+        id: pointDB.user.id,
+        firstName: pointDB.user.firstName,
+        lastName: pointDB.user.lastName
+      },
+      invoice: pointDB.invoices.map((invoice) => ({ id: invoice.invoceId, number: invoice.invoiceNumber })),
+      comment: pointDB.comment,
+      observation: pointDB.observation,
+      certificate: pointDB.certificate,
+      ssa: pointDB.ssa,
+      status: pointDB.status,
+      task: {
+        id: pointDB.task.id,
+        status: pointDB.task.status
+      },
+      hasProblem: pointDB.problem
+    }
+
+    if(pointDB.type === PointTypes.Collect) {
+      point = CollectPoint.fromPrimitives({
+        ...pointData,
+        survey: {
+          id: pointDB.survey?.id!,
+          title: pointDB.survey?.title! 
+        }
+      })
+    } else if(pointDB.type === PointTypes.Route) {
+      point =  RoutePoint.fromPrimitives({
+        ...pointData,
+        survey: {
+          id: pointDB.survey?.id!,
+          title: pointDB.survey?.title! 
+        }
+      });
+    } else {
+      point = ParcelPoint.fromPrimitives(pointData);
+    }
+
+    return point;
+  }
+
+  async endPoint(point: Point): Promise<void> {
+    const pointPlain = point.toPrimitives();
+
+    const { status, comment } = pointPlain
+
+    let statusPoint;
+
+    if(point.pointWithProblem()) {
+      statusPoint = PointStatusList.PointWithProblem;
+    } else {
+      statusPoint = StatusList.Completed;
+    }
+    
+    await prisma.point.update({
+      where: {
+        id: pointPlain.id
+      },
+      data: {
+        problem: pointPlain.hasProblem,
+        comment,
+        task: {
+          update: {
+            status: StatusList.Completed
+          }
+        },
+        status: statusPoint
+      }
+    })
   }
 }

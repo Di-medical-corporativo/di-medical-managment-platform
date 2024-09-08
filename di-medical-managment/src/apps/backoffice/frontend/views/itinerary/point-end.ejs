@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terminado punto: <%= point.id %></title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div class="end-point">
+    <form action="/backoffice/itinerary/point/<%= point.id %>/end" id="point-end-form" method="post">
+      <input type="text" value="<%= point.id %>" name="id" hidden>
+
+      <h2>Terminar punto</h2>
+      <img src="/images/logo.png" alt="logo" width="150px" height="150px">
+      <p>Estas por terminar el punto con la siguientes datos:</p>
+      <small>Cliente: <%= point.client.name %></small>
+      <small>Operador asignado: <%= point.userAssigned.firstName %></small>
+      <small>
+        Facturas: <% point.invoice.forEach(invoice => {%>
+          <%= invoice.number %>
+        <% } )%>
+      </small>
+      <small>
+        Certificado: <%= point.certificate %>
+      </small>
+      <small>
+        SSA: <%= point.ssa %>
+      </small>
+      <small>
+        Observaciones: <%= point.observation %>
+      </small>
+
+      <label for="problem">El punto fue terminado con:</label>
+      <select name="problem" id="problem" class="input" required>
+        <option value="success">Exito</option>
+        <option value="error">Ocurrio un error</option>
+      </select>
+
+      <label for="comment">Tus comentarios: </label>
+
+      <input type="text" name="comment" class="input"  placeholder="No olvides dejar tus comentarios o observaciones sobre este punto" required>
+
+      <button class="button primary">Terminar punto</button>
+    </form>
+  </div>
+</body>
+</html>

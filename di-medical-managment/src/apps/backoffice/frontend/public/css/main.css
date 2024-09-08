@@ -12,6 +12,7 @@
 @import url('views/answer.css');
 @import url('views/result-survey.css');
 @import url('views/itinerary.css');
+@import url('views/point-end.css');
 
 * {
   margin: 0;

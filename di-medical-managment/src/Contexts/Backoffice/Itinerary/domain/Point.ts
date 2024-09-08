@@ -1,3 +1,4 @@
+import { StatusList } from "../../Task/domain/TaskStatus";
 import { Invoice } from "./Invoice";
 import { ItineraryId } from "./ItineraryId";
 import { PointCertificate } from "./PointCertificate";
@@ -31,6 +32,17 @@ export abstract class Point {
 
   public isFinished() {
     return this.status.isDone();
+  }
+
+  public end(comment: PointComment, hasProblem: PointProblem) {
+    this.comment = comment;
+    this.hasProblem = hasProblem;
+
+    this.status = new PointStatus(StatusList.Completed);
+  }
+
+  public pointWithProblem () {
+    return this.hasProblem.value;
   }
 
   abstract toPrimitives(): any;
@@ -163,7 +175,8 @@ export class RoutePoint extends Point{
       status: this.status.toString(),
       survey: this.survey.toPrimitives(),
       type: this.type.toString(),
-      task: this.task.toPrimitives()
+      task: this.task.toPrimitives(),
+      hasProblem: this.hasProblem.value
     }
   }
 }
@@ -286,7 +299,8 @@ export class ParcelPoint extends Point{
       ssa: this.ssa.toString(),
       status: this.status.toString(),
       type: this.type.toString(),
-      task: this.task.toPrimitives()
+      task: this.task.toPrimitives(),
+      hasProblem: this.hasProblem.value
     }
   }
 }
@@ -419,7 +433,8 @@ export class CollectPoint extends Point{
       status: this.status.toString(),
       type: this.type.toString(),
       task: this.task.toPrimitives(),
-      survey: this.survey.toPrimitives()
+      survey: this.survey.toPrimitives(),
+      hasProblem: this.hasProblem.value
     }
   }
 }

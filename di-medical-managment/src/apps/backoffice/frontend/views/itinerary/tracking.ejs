@@ -58,7 +58,7 @@
                   <% } else if(point.status === 'pastdue') {%>
                      Punto en retraso
                   <% } else {%>
-                    Punto concluido con errores
+                    Punto completado con errores
                   <% } %>
                 </td>
                 <td><%= point.client.name %></td>
@@ -90,10 +90,9 @@
                       <button class="button primary"
                       onclick="window.location.href='/backoffice/client/<%= point.id %>/update'"
                     >Actualizar</button>
-                    <form action="/backoffice/client/<%= point.id %>?_method=DELETE" method="post">
-                      <input type="text" value="<%= point.id %>" name="id" hidden>
-                      <button class="button danger" type="submit">Terminar punto</button>
-                    </form>
+                    <button class="button danger"
+                      onclick="window.location.href='/backoffice/itinerary/point/<%= point.id %>/end'"
+                    >Terminar punto</button>
                   <% } %>  
                 </td>
             </tr>

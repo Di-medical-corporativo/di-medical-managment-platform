@@ -6,6 +6,8 @@ import { ItineraryFindAllController } from "../controllers/itinerary/ItineraryFi
 import { ItineraryStartController } from "../controllers/itinerary/ItineraryStartController";
 import { ItineraryTrackController } from "../controllers/itinerary/ItineraryTrackController";
 import { ItineraryEndController } from "../controllers/itinerary/ItineraryEndController";
+import { PointEndPageController } from "../controllers/itinerary/PointEndPageController";
+import { PointEndController } from "../controllers/itinerary/PointEndController";
 
 export const register = (app: Express) => {
   const createItineraryPage: ItineraryCreatePageController = container.get('Apps.Backoffice.backend.controllers.ItineraryCreatePageController');
@@ -20,6 +22,10 @@ export const register = (app: Express) => {
 
   const finishItineraryController: ItineraryEndController = container.get('Apps.Backoffice.backend.controllers.ItineraryEndController');
 
+  const endPointPageController: PointEndPageController = container.get('Apps.Backoffice.backend.controllers.PointEndPageController');
+
+  const endPointController: PointEndController = container.get('Apps.Backoffice.backend.controllers.PointEndController');
+
   app.get('/itinerary/new', (req: Request, res: Response) => createItineraryPage.run(req, res));
 
   app.get('/itinerary/:id/track', (req: Request, res: Response) => trackingItineraryController.run(req, res));
@@ -31,4 +37,8 @@ export const register = (app: Express) => {
   app.post('/itinerary/:id/start', (req: Request, res: Response) => startItineraryController.run(req, res));
 
   app.post('/itinerary/:id/end', (req: Request, res: Response) => finishItineraryController.run(req, res));
+
+  app.get('/itinerary/point/:id/end', (req: Request, res: Response) => endPointPageController.run(req, res));
+
+  app.post('/itinerary/point/:id/end', (req: Request, res: Response) => endPointController.run(req, res));
 }

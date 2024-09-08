@@ -483,6 +483,18 @@ services:
     "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
   ]
 
+  Contexts.Backoffice.Itinerary.application.FinishPoint.PointFinisher:
+    class: ../../../../Contexts/Backoffice/Itinerary/application/FinishPoint/PointFinisher
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+  ]
+
+  Contexts.Backoffice.Itinerary.application.FindPoint.PointFinder:
+    class: ../../../../Contexts/Backoffice/Itinerary/domain/PointFinder
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+  ]
+
   Apps.Backoffice.backend.controllers.ItineraryCreatePageController:
     class: ../controllers/itinerary/ItineraryCreatePageController
     arguments: [
@@ -492,7 +504,6 @@ services:
       "@Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher"
     ]
   
-
   Apps.Backoffice.backend.controllers.ItineraryCreateController:
     class: ../controllers/itinerary/ItineraryCreateController
     arguments: [
@@ -521,4 +532,16 @@ services:
     class: ../controllers/itinerary/ItineraryEndController
     arguments: [
       "@Contexts.Backoffice.Itinerary.application.Finish.ItineraryFinisher"
+    ]
+
+  Apps.Backoffice.backend.controllers.PointEndPageController:
+    class: ../controllers/itinerary/PointEndPageController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.FindPoint.PointFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.PointEndController:
+    class: ../controllers/itinerary/PointEndController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.FinishPoint.PointFinisher"
     ]

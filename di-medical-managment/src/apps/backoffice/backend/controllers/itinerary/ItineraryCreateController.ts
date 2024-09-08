@@ -57,8 +57,6 @@ export class ItineraryCreateController {
 
       res.redirect('/backoffice/itinerary');
     } catch (error) {
-      console.log(error);
-
       if(error instanceof SurveyClosed) {
         res.status(400).render('error/error', {
           message: 'Una de las encuestas seleccionadas no acepta mas respuestas'
