@@ -1,55 +1,49 @@
- import { ItineraryId } from "../../domain/ItineraryId";
-import { ItineraryRepository } from "../../domain/ItineraryRepository";
-import { ItineraryDate } from "../../domain/ItineraryDate";
-import { ItinerarySchedule } from "../../domain/ItinerarySchedule";
-import { CollectPoint, ParcelPoint, Point, RoutePoint } from "../../domain/Point";
-import { SucursalRepository } from "../../../Sucursal/domain/SucursalRepository";
-import { SucursalId } from "../../../Sucursal/domain/SucursalId";
-import { SucursalFinder } from "../../../Sucursal/domain/SucursalFinder";
-import { SurveyId } from "../../../Survey/domain/SurveyId";
-import { PointType } from "../../domain/PointType";
-import { TaskId } from "../../../Task/domain/TaskId";
-import { PointStatus } from "../../domain/PointStatus";
-import { PointSSA } from "../../domain/PointSSA";
-import { PointId } from "../../domain/PointId";
-import { PointCertificate } from "../../domain/PointCertificate";
-import { PointClient } from "../../domain/PointClient";
-import { ClientId } from "../../../Client/domain/ClientId";
-import { ClientName } from "../../../Client/domain/ClientName";
-import { PointComment } from "../../domain/PointComment";
-import { Invoice } from "../../domain/Invoice";
-import { InvoiceId } from "../../domain/InvoiceId";
-import { InvoiceNumber } from "../../domain/InvoiceNumber";
-import { PointObservation } from "../../domain/PointObservation";
-import { UserId } from "../../../User/domain/UserId";
-import { PointSurvey } from "../../domain/PointSurvey";
-import { SurveyTitle } from "../../../Survey/domain/SurveyTitle";
-import { PointTask } from "../../domain/PointTask";
-import { StatusList, TaskStatus } from "../../../Task/domain/TaskStatus";
-import { UserFirstName } from "../../../User/domain/UserFirstName";
-import { UserLastName } from "../../../User/domain/UserLastName";
-import { PointUser } from "../../domain/PointUser";
-import { v4 as uuid } from "uuid";
-import { ClientRepository } from "../../../Client/domain/ClientRepository";
 import { ClientFinder } from "../../../Client/domain/ClientFinder";
-import { UserFinder } from "../../../User/domain/UserFinder";
-import { UserRepository } from "../../../User/domain/UserRepository";
-import { TaskRepository } from "../../../Task/domain/TaskRepository";
+import { ClientId } from "../../../Client/domain/ClientId";
+import { ClientRepository } from "../../../Client/domain/ClientRepository";
+import { SurveyFinder } from "../../../Survey/domain/SurveyFinder";
+import { SurveyId } from "../../../Survey/domain/SurveyId";
+import { SurveyRepository } from "../../../Survey/domain/SurveyRepository";
 import { TaskCreator } from "../../../Task/application/Create/TaskCreator";
-import { TaskScheduler } from "../../../Task/domain/TaskScheduler";
 import { TaskDescription } from "../../../Task/domain/TaskDescription";
 import { TaskDueTo } from "../../../Task/domain/TaskDueTo";
-import { TaskTitle } from "../../../Task/domain/TaskTitle";
-import { SurveyFinder } from "../../../Survey/domain/SurveyFinder";
-import { SurveyRepository } from "../../../Survey/domain/SurveyRepository";
-import { Itinerary } from "../../domain/Itinerary";
-import { ItinerarySucursal } from "../../domain/ItinerarySucursal";
-import { SucursalName } from "../../../Sucursal/domain/SucursalName";
-import { Survey } from "../../../Survey/domain/Survey";
+import { TaskId } from "../../../Task/domain/TaskId";
 import { TaskIsPoint } from "../../../Task/domain/TaskIsPoint";
+import { TaskRepository } from "../../../Task/domain/TaskRepository";
+import { TaskScheduler } from "../../../Task/domain/TaskScheduler";
+import { StatusList, TaskStatus } from "../../../Task/domain/TaskStatus";
+import { TaskTitle } from "../../../Task/domain/TaskTitle";
+import { UserFinder } from "../../../User/domain/UserFinder";
+import { UserId } from "../../../User/domain/UserId";
+import { UserRepository } from "../../../User/domain/UserRepository";
+import { Invoice } from "../../domain/Invoice";
+import { InvoiceId } from "../../domain/InvoiceId";
+import { ItineraryFinder } from "../../domain/ItineraryFinder";
+import { ItineraryId } from "../../domain/ItineraryId";
+import { ItineraryRepository } from "../../domain/ItineraryRepository";
+import { ItinerarySchedule } from "../../domain/ItinerarySchedule";
+import { PointCertificate } from "../../domain/PointCertificate";
+import { PointClient } from "../../domain/PointClient";
+import { PointComment } from "../../domain/PointComment";
+import { PointId } from "../../domain/PointId";
+import { PointObservation } from "../../domain/PointObservation";
+import { PointSSA } from "../../domain/PointSSA";
+import { PointStatus } from "../../domain/PointStatus";
+import { PointTask } from "../../domain/PointTask";
+import { PointType } from "../../domain/PointType";
+import { v4 as uuid } from "uuid";
+import { PointUser } from "../../domain/PointUser";
+import { UserFirstName } from "../../../User/domain/UserFirstName";
+import { UserLastName } from "../../../User/domain/UserLastName";
+import { PointSurvey } from "../../domain/PointSurvey";
+import { Survey } from "../../../Survey/domain/Survey";
+import { ClientName } from "../../../Client/domain/ClientName";
+import { InvoiceNumber } from "../../domain/InvoiceNumber";
+import { SurveyTitle } from "../../../Survey/domain/SurveyTitle";
+import { CollectPoint, ParcelPoint, Point, RoutePoint } from "../../domain/Point";
 
-export class ItineraryCreator {
-  private sucursalFinder: SucursalFinder;
+export class PointAdder {
+  private itineraryFinder: ItineraryFinder;
 
   private clientFinder: ClientFinder;
 
@@ -61,15 +55,14 @@ export class ItineraryCreator {
 
   constructor(
     private repository: ItineraryRepository,
-    private sucursalRepository: SucursalRepository,
     private clientRepository: ClientRepository,
     private userRepository: UserRepository,
     private taskRepository: TaskRepository,
     private taskScheduler: TaskScheduler,
     private surveyRepository: SurveyRepository
   ) {
-    this.sucursalFinder = new SucursalFinder(sucursalRepository);
-  
+    this.itineraryFinder = new ItineraryFinder(repository);
+
     this.clientFinder = new ClientFinder(clientRepository);
   
     this.userFinder = new UserFinder(userRepository);
@@ -80,22 +73,22 @@ export class ItineraryCreator {
   }
 
   async run(params: {
-    sucursal: SucursalId,
-    points: {
-      clientId: ClientId;
-      userId: UserId;
-      invoices: string[],
-      comment: PointComment;
-      observation: PointObservation;
-      certificate: PointCertificate;
-      ssa: PointSSA;
-      type: PointType;
-      surveyId?: SurveyId;
-    }[],
-    createdAt: ItineraryDate,
-    scheduleDate: ItinerarySchedule    
-  }) {
-    const itineraryId = new ItineraryId(uuid());
+      itineraryId: ItineraryId, 
+      scheduleDate: ItinerarySchedule,
+      points: {
+        clientId: ClientId;
+        userId: UserId;
+        invoices: string[],
+        comment: PointComment;
+        observation: PointObservation;
+        certificate: PointCertificate;
+        ssa: PointSSA;
+        type: PointType;
+        surveyId?: SurveyId;
+      }[]
+    }
+  ) {
+    await this.ensureItineraryExists(params.itineraryId);
 
     const pointsPromises = params.points.map(async (point) => {
 
@@ -111,8 +104,10 @@ export class ItineraryCreator {
 
       const { id, name } = clientToDeliver.toPrimitives();
 
+      const formattedDate = params.scheduleDate.format();
+
       const descriptionHTMLForTaskTemplate = `
-        <p>Esta tarea pertence a la ruta del ${params.scheduleDate.format()}</p>
+        <p>Esta tarea pertence a la ruta del ${formattedDate}</p>
         <p></p>
         <p>Es un punto de tipo: <strong>${point.type.getValue()}</strong> </p>
         <p></p>
@@ -120,8 +115,8 @@ export class ItineraryCreator {
         <p></p>
         <p><a href="/backoffice/itinerary/point/${pointId}/end" rel="noopener noreferrer" target="_blank">Enlace</a></p>
       `
-
-      const titleForTask = `Punto tipo: ${point.type.getValue()}, itinerario: ${params.scheduleDate.format()}`;
+      
+      const titleForTask = `Punto tipo: ${point.type.getValue()}, itinerario: ${formattedDate}`;
 
       const taskForPoint = {
         id: new TaskId(uuid()),
@@ -144,7 +139,7 @@ export class ItineraryCreator {
           invoice: point.invoices.map((inv: string) => 
             Invoice.create({ id: new InvoiceId(uuid()), number: new InvoiceNumber(inv) })
           ),
-          itineraryId,
+          itineraryId: params.itineraryId,
           observation: point.observation,
           ssa: point.ssa,
           status: new PointStatus(status),
@@ -165,7 +160,10 @@ export class ItineraryCreator {
         
         const { id: surveyId, title: surveyName } = surveyForPoint.toPrimitives();
       
-        survey =  PointSurvey.create({ id: new SurveyId(surveyId), title: new SurveyTitle(surveyName) });
+        survey =  PointSurvey.create({ 
+          id: new SurveyId(surveyId), 
+          title: new SurveyTitle(surveyName) 
+        });
       }
 
       if(point.type.isCollect()) {
@@ -185,23 +183,15 @@ export class ItineraryCreator {
 
     const points: Point[] = await Promise.all(pointsPromises);
 
-    const sucursal = await this.sucursalFinder.run({
-      id: params.sucursal
-    }); 
+    await this.repository.addPointsToItinerary(
+      params.itineraryId,
+      points
+    );
+  }
 
-    const { name: sucursalName, id: sucursalId } = sucursal.toPrimitives();
-
-    const itinerary = Itinerary.create({
-      id: itineraryId,
-      createdAt: params.createdAt,
-      points,
-      scheduleDate: params.scheduleDate,
-      sucursal: ItinerarySucursal.create({
-        id: new SucursalId(sucursalId),
-        name: new SucursalName(sucursalName)
-      })
+  private async ensureItineraryExists(id: ItineraryId) {
+    await this.itineraryFinder.run({
+      id
     });
-
-    await this.repository.save(itinerary);
   }
 }
