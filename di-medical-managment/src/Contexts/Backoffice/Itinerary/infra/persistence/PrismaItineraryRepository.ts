@@ -388,20 +388,40 @@ export class PrismaItineraryRepository implements ItineraryRepository {
         userId: i.userAssigned.id,
         invoices: {
           create: i.invoice.map((invoice: any) => ({
-            invoiceId: invoice.id,
+            invoceId: invoice.id,
             invoiceNumber: invoice.number
           }))
         },
         itineraryId: id.toString(),
-        surveyId: i.survey.id || undefined
-      };
+        ...(i.survey?.id && { surveyId: i.survey.id })
+      }
 
       return prisma.point.create({
         data: pointData
       });
     });
 
+    const updateStatusForEachPointPromises = points.map(p => {
+      const point = p.toPrimitives();
+
+      return prisma.point.update({
+        where: {
+          id: point.id
+        },
+        data: {
+          status: StatusList.Progress,
+          task: {
+            update: {
+              status: StatusList.Progress
+            }
+          }
+        }
+      });
+    });
+
     await Promise.all(pointPromises);
+
+    await Promise.all(updateStatusForEachPointPromises);
   }  
   
 }

@@ -8,6 +8,8 @@ import { ItineraryTrackController } from "../controllers/itinerary/ItineraryTrac
 import { ItineraryEndController } from "../controllers/itinerary/ItineraryEndController";
 import { PointEndPageController } from "../controllers/itinerary/PointEndPageController";
 import { PointEndController } from "../controllers/itinerary/PointEndController";
+import { ItineraryAddPointPageController } from "../controllers/itinerary/ItineraryAddPointPageController";
+import { ItineraryAddPointsController } from "../controllers/itinerary/ItineraryAddPointsController";
 
 export const register = (app: Express) => {
   const createItineraryPage: ItineraryCreatePageController = container.get('Apps.Backoffice.backend.controllers.ItineraryCreatePageController');
@@ -26,6 +28,10 @@ export const register = (app: Express) => {
 
   const endPointController: PointEndController = container.get('Apps.Backoffice.backend.controllers.PointEndController');
 
+  const addPointPageController: ItineraryAddPointPageController = container.get('Apps.Backoffice.backend.controllers.ItineraryAddPointPageController');
+
+  const addPointController: ItineraryAddPointsController = container.get('Apps.Backoffice.backend.controllers.ItineraryAddPointsController');
+
   app.get('/itinerary/new', (req: Request, res: Response) => createItineraryPage.run(req, res));
 
   app.get('/itinerary/:id/track', (req: Request, res: Response) => trackingItineraryController.run(req, res));
@@ -36,9 +42,13 @@ export const register = (app: Express) => {
 
   app.post('/itinerary/:id/start', (req: Request, res: Response) => startItineraryController.run(req, res));
 
+  app.get('/itinerary/:id/add', (req: Request, res: Response) =>addPointPageController.run(req, res));
+
   app.post('/itinerary/:id/end', (req: Request, res: Response) => finishItineraryController.run(req, res));
 
   app.get('/itinerary/point/:id/end', (req: Request, res: Response) => endPointPageController.run(req, res));
 
   app.post('/itinerary/point/:id/end', (req: Request, res: Response) => endPointController.run(req, res));
+
+  app.post('/itinerary/add', (req: Request, res: Response) => addPointController.run(req, res));
 }

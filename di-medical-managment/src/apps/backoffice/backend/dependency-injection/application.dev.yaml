@@ -471,6 +471,12 @@ services:
     "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
   ]
 
+  Contexts.Backoffice.Itinerary.application.Find.ItineraryFinder:
+    class: ../../../../Contexts/Backoffice/Itinerary/domain/ItineraryFinder
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+  ]
+
   Contexts.Backoffice.Itinerary.application.Tracking.ItineraryTracker:
     class: ../../../../Contexts/Backoffice/Itinerary/application/Tracking/ItineraryTracker
     arguments: [
@@ -496,7 +502,7 @@ services:
   ]
 
   Contexts.Backoffice.Itinerary.application.AddPoint.PointAdder:
-    class: ../../../../Contexts/Backoffice/Itinerary/AddPoint/PointAdder
+    class: ../../../../Contexts/Backoffice/Itinerary/application/AddPoint/PointAdder
     arguments: [
     "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository",
     "@Contexts.Backoffice.Client.infra.persistence.ClientRepository",
@@ -556,3 +562,20 @@ services:
     arguments: [
       "@Contexts.Backoffice.Itinerary.application.FinishPoint.PointFinisher"
     ]
+
+  Apps.Backoffice.backend.controllers.ItineraryAddPointPageController:
+    class: ../controllers/itinerary/ItineraryAddPointPageController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher",
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher",
+      "@Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher",
+      "@Contexts.Backoffice.Itinerary.application.Find.ItineraryFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryAddPointsController:
+    class: ../controllers/itinerary/ItineraryAddPointsController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.AddPoint.PointAdder"
+    ]
+
+  

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nueva ruta</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <main id="main-admin" class="itinerary-page">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/itinerary">
+            <small>Ruta</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/itinerary/<%= itinerary.id %>/track">
+            <small><%= itinerary.id %></small>
+          </a>
+          <span>/</span>
+          <a href="/backoffice/itinerary/<%= itinerary.id %>/add">
+          <small>Agregar puntos a ruta</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="itinerary-creator">
+        <form action="/backoffice/itinerary/add" method="post" id="itinerary-form">
+          <div id="itinerary-title">
+            <% 
+              let date = new Date(itinerary.scheduleDate);
+              let options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+              let formattedDate = date.toLocaleDateString('es-MX', options);
+            %>
+            
+            <p>Fecha de inicio: <%= formattedDate %></p>
+
+            <p>Sucursal: <%= itinerary.sucursal.name %></p>
+          </div>
+
+          <input type="text" type="text" value="<%= itinerary.id %>" name="id" hidden>
+
+          <input type="text" type="text" value="<%= itinerary.scheduleDate %>" name="scheduleDate" hidden>
+
+          <table class="table" id="point-list-table">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Responsable</th>
+                    <th>Facturas</th>
+                    <th>Certificado</th>
+                    <th>Ssa</th>
+                    <th>Tipo</th>
+                    <th>Observaciones</th>
+                    <th>Encuesta</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="point-table-body">
+              <tr>
+                <td>
+                  <select class="input" id="clientId">
+                    <% for (let i = 0; i < clients.length; i++) {%>
+                      <option value="<%= clients[i].id %>"><%= clients[i].name %> </option>
+                    <% } %>
+                  </select>
+                </td>
+                <td>
+                  <select class="input" id="userId">
+                    <% for (let i = 0; i < users.length; i++) {%>
+                      <option value="<%= users[i].id %>"><%= users[i].firstName %> </option>
+                    <% } %>
+                  </select>
+                </td>
+                <td>
+                  <input type="text" class="input" placeholder="Facturas separadas por comas" id="invoices">
+                </td>
+                <td>
+                  <select class="input" id="certificate" >
+                    <% for (let i = 0; i < certificateStates.length; i++) {%>
+                      <option value="<%= certificateStates[i] %>"><%= certificateStates[i] %> </option>
+                    <% } %>
+                  </select>
+                </td>
+                <td>
+                  <select class="input" id="ssa">
+                    <% for (let i = 0; i < ssaStates.length; i++) {%>
+                      <option value="<%= ssaStates[i] %>"><%= ssaStates[i] %> </option>
+                    <% } %>
+                  </select>
+                </td>
+                <td>
+                  <select class="input" id="type">
+                      <option value="point-route"> Ruta </option>
+                      <option value="point-parcel"> Paqueteria </option>
+                      <option value="point-collect"> Recoleccion </option>
+                  </select>
+                </td>
+                <td>
+                  <input type="text" class="input" id="observation" placeholder="Observaciones del punto">
+                </td>
+                <td>
+                  <select class="input" id="surveyId">
+                    <% for (let i = 0; i < surveys.length; i++) {%>
+                      <option value="<%= surveys[i].id %>"><%= surveys[i].title %> </option>
+                    <% } %>
+                  </select>
+                </td>
+                <td>
+                  <button class="button primary" type="button" onclick="addPointToTable()" type="button">Agregar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        
+        <div class="point-list">
+          <h1>Listado de puntos:</h1>
+
+          <table class="table" id="point-list-table-data">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Cliente</th>
+                    <th>Responsable</th>
+                    <th>Facturas</th>
+                    <th>Certificado</th>
+                    <th>Ssa</th>
+                    <th>Tipo</th>
+                    <th>Observaciones</th>
+                    <th>Encuesta</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="point-table-body-list">
+            </tbody>
+          </table>
+        </div>
+
+        <button class="button primary">Agregar puntos</button>
+        </form>
+      </section>
+    </main>
+  </div>
+  <script src="/js/itinerary.js"></script>
+</body>
+</html>

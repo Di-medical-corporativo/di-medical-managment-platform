@@ -26,10 +26,17 @@
       </header>
 
       <section id="client-list">
+        <button class="button warning" style="width: 150px; margin-bottom: 20px; align-self: flex-end; margin-right: 20px;"
+          onclick="window.location.href='/backoffice/itinerary/<%= itinerary.id %>/add'"
+          >Agregar puntos</button>
         <form action="/backoffice/itinerary/<%= itinerary.id %>/end" method="post">
           <input type="text" value="<%= itinerary.id %>" name="id" hidden>
           <button class="button primary" style="margin-bottom: 20px; align-self: flex-end; width: 150px;">Terminar ruta</button>
+
         </form>
+
+        <p><%= itinerary.points.length %></p>
+
         <table class="table">
           <thead>
               <tr>
@@ -57,8 +64,10 @@
                     Completado
                   <% } else if(point.status === 'pastdue') {%>
                      Punto en retraso
-                  <% } else {%>
-                    Punto completado con errores
+                  <% } else if(point.status === 'assigned') {%>
+                    Asignado
+                  <% } else { %>
+                    Punto terminado con errores
                   <% } %>
                 </td>
                 <td><%= point.client.name %></td>
@@ -93,7 +102,11 @@
                     <button class="button danger"
                       onclick="window.location.href='/backoffice/itinerary/point/<%= point.id %>/end'"
                     >Terminar punto</button>
-                  <% } %>  
+                  <% } else if(point.status == 'assigned') { %>
+                    <button class="button primary"
+                      onclick="window.location.href='/backoffice/client/<%= point.id %>/update'"
+                    >Actualizar</button>
+                  <% } %>
                 </td>
             </tr>
             <% } %>
