@@ -45,6 +45,30 @@ export abstract class Point {
     return this.hasProblem.value;
   }
 
+  public updateClient(client: PointClient) {
+    this.client = client;
+  }
+
+  public updateUserAssigned(user: PointUser) {
+    this.userAssigned = user;
+  }
+
+  public updateInvoices(invoices: Invoice[]) {
+    this.invoce = invoices;
+  }
+
+  public updateObservation(observation: PointObservation) {
+    this.observation = observation;
+  }
+
+  public updateCertificate(certificate: PointCertificate) {
+    this.certificate = certificate;
+  }
+
+  public updateSSA(ssa: PointSSA) {
+    this.ssa = ssa;
+  }
+  
   abstract toPrimitives(): any;
 }
 

@@ -153,7 +153,7 @@ describe("ItineraryCreator", () => {
       phone: new UserPhone(''),
       role: new Role(''),
       sucursal
-    });
+    }); 
 
     userRepository.setReturnForSearch(user);
 

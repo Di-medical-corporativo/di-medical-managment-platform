@@ -22,6 +22,8 @@ export class ItineraryRepositoryMock implements ItineraryRepository {
 
   private addPointsToItineraryMock: jest.Mock;
 
+  private updatePointMock: jest.Mock;
+
   constructor() {
     this.saveMock = jest.fn()
   
@@ -38,6 +40,8 @@ export class ItineraryRepositoryMock implements ItineraryRepository {
     this.endPointMock = jest.fn();
   
     this.addPointsToItineraryMock = jest.fn();
+  
+    this.updatePointMock = jest.fn();
   }
 
   async addPointsToItinerary(itineraryId: ItineraryId, points: Point[]): Promise<void> {
@@ -72,6 +76,10 @@ export class ItineraryRepositoryMock implements ItineraryRepository {
     return this.searchMock(id);
   }
 
+  async updatePoint(point: Point): Promise<void> {
+    return this.updatePointMock(point);
+  }
+
   setReturnForSearch(itinerary: Itinerary | null) {
     this.searchMock.mockReturnValue(itinerary);
   }
@@ -102,5 +110,9 @@ export class ItineraryRepositoryMock implements ItineraryRepository {
 
   assertEndPointHaveBeenCalled() {
     expect(this.endPointMock).toHaveBeenCalled();
+  }
+
+  assertUpdatePointHaveBeenCalledWith(point: Point) {
+    expect(this.updatePointMock).toHaveBeenCalledWith(point);
   }
 }

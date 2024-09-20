@@ -20,5 +20,7 @@ export interface ItineraryRepository {
   endPoint(id: Point): Promise<void>
 
   addPointsToItinerary(id: ItineraryId, points: Point[]): Promise<void>
+
+  updatePoint(point: Point): Promise<void>
 }
 
