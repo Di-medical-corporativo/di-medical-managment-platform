@@ -1,4 +1,4 @@
- import { ItineraryId } from "../../domain/ItineraryId";
+import { ItineraryId } from "../../domain/ItineraryId";
 import { ItineraryRepository } from "../../domain/ItineraryRepository";
 import { ItineraryDate } from "../../domain/ItineraryDate";
 import { ItinerarySchedule } from "../../domain/ItinerarySchedule";

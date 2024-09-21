@@ -512,6 +512,28 @@ services:
     "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository"
   ]
 
+  Contexts.Backoffice.Itinerary.application.UpdatePoint.PointUpdator:
+    class: ../../../../Contexts/Backoffice/Itinerary/application/UpdatePoint/PointUpdator
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository",
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository",
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
+  ]
+
+  Apps.Backoffice.backend.controllers.PointUpdateControllerPage:
+    class: ../controllers/itinerary/PointUpdateControllerPage
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.FindPoint.PointFinder",
+      "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher",
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher",
+    ]
+
+  Apps.Backoffice.backend.controllers.PointUpdateController:
+    class: ../controllers/itinerary/UpdatePointController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.UpdatePoint.PointUpdator",
+    ]
+
   Apps.Backoffice.backend.controllers.ItineraryCreatePageController:
     class: ../controllers/itinerary/ItineraryCreatePageController
     arguments: [

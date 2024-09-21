@@ -97,7 +97,7 @@
 
                   <% if(point.status == 'in-progress') { %>
                       <button class="button primary"
-                      onclick="window.location.href='/backoffice/client/<%= point.id %>/update'"
+                      onclick="window.location.href='/backoffice/point/<%= point.id %>/update'"
                     >Actualizar</button>
                     <button class="button danger"
                       onclick="window.location.href='/backoffice/itinerary/point/<%= point.id %>/end'"

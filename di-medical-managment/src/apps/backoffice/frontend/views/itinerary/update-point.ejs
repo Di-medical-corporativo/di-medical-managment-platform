@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actualizar punto</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/itinerary">
+            <small>Itinerarios</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/itinerary/<%= point.itineraryId %>/track">
+            <small><%= point.itineraryId %></small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/point/<%= point.id %>/update">
+            <small>Actualizar punto</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="new-client-form">
+        <form action="/backoffice/point/<%= point.id %>?_method=PUT" method="post">
+          <input type="text" hidden value="<%= point.id %>" name="id">
+
+          <input type="text" hidden value="<%= point.itineraryId %>" name="itineraryId">
+          
+          <label for="userAssigned">Responsable: </label>
+          <select name="userAssigned" class="input" required>
+            <% for (let i = 0; i < users.length; i++) { %>
+              <% if(users[i].id == point.userAssigned.id) { %>
+                <option value="<%= users[i].id %>" selected><%= users[i].firstName %> </option>
+              <% } else { %>
+                <option value="<%= users[i].id %>"><%= users[i].firstName%> </option>
+              <% } %>
+            <% } %> 
+          </select>
+
+          <label for="clientId">Cliente: </label>
+          <select name="clientId" class="input" required>
+            <% for (let j = 0; j < clients.length; j++) {%>
+              <% if(clients[j].id == point.client.id) { %>
+                <option value="<%= clients[j].id %>" selected><%= clients[j].name %> </option>
+              <% } else { %>
+                <option value="<%= clients[j].id %>"><%= clients[j].name %> </option>
+              <% } %>
+            <% } %>
+          </select>
+
+          <% const invoices = point.invoice.reduce((acc, invoice, idx) => {
+            if(idx == point.invoice.length - 1) return acc + invoice.number; 
+            return acc + invoice.number + ',';
+        }, ''); %>
+          
+          <label for="invoices">Facturas: </label>
+          <input type="text" name="invoices" value="<%= invoices %>" class="input" required>
+          
+          <label for="certificate">Certificados: </label>
+          <select name="certificate" class="input">
+            <% for (let j = 0; j < certificateStates.length; j++) {%>
+              <option value="<%= certificateStates[j] %>"><%= certificateStates[j] %> </option>
+            <% } %>
+          </select>
+
+          <label for="ssa">SSA: </label>
+          <select name="ssa" class="input">
+            <% for (let j = 0; j < ssaStates.length; j++) {%>
+              <option value="<%= ssaStates[j] %>"><%= ssaStates[j] %> </option>
+            <% } %>
+          </select>
+
+          <label for="observation">Observaciones:</label>
+          <input type="text" class="input" name="observation" value="<%= point.observation %>" required>
+
+          <button type="submit" class="button primary">Actualizar punto</button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

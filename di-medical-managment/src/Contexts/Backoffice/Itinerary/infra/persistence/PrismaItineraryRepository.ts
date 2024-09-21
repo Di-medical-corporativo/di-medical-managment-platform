@@ -4,7 +4,6 @@ import { Itinerary } from "../../domain/Itinerary";
 import { ItineraryId } from "../../domain/ItineraryId";
 import { ItineraryPreview } from "../../domain/ItineraryPreview";
 import { ItineraryRepository } from "../../domain/ItineraryRepository";
-import { ItinerarySucursal } from "../../domain/ItinerarySucursal";
 import { CollectPoint, ParcelPoint, Point, RoutePoint } from "../../domain/Point";
 import { PointId } from "../../domain/PointId";
 import { PointStatusList } from "../../domain/PointStatus";
@@ -80,6 +79,9 @@ export class PrismaItineraryRepository implements ItineraryRepository {
 
   async findAll(): Promise<ItineraryPreview[]> {
     const itineraryDB = await prisma.itinerary.findMany({
+      orderBy: {
+        scheduleDate: "desc"
+      },
       include: {
         _count: {
           select: {
@@ -422,6 +424,49 @@ export class PrismaItineraryRepository implements ItineraryRepository {
     await Promise.all(pointPromises);
 
     await Promise.all(updateStatusForEachPointPromises);
-  }  
+  }
+
+  async updatePoint(point: Point): Promise<void> {
+    const plainPoint = point.toPrimitives();
+    
+    await prisma.point.update({
+      where: {
+        id: plainPoint.id
+      },
+      data: {
+        client: {
+          connect: {
+            id: plainPoint.client.id
+          }
+        },
+        user: {
+          connect: {
+            id: plainPoint.userAssigned.id
+          }
+        },
+        task: {
+          update: {
+            userAssigned: {
+              connect: {
+                id: plainPoint.userAssigned.id
+              }
+            }
+          }
+        },
+        observation: plainPoint.observation,
+        certificate: plainPoint.certificate,
+        ssa: plainPoint.ssa,
+        invoices: {
+          deleteMany: {
+            pointId: plainPoint.id
+          },
+          create: plainPoint.invoice.map((invoice: any) => ({
+            invoceId: invoice.id,
+            invoiceNumber: invoice.number
+          }))
+        }
+      }
+    });
+  }
   
 }
