@@ -3,6 +3,7 @@ import { StatusList } from "../../../Task/domain/TaskStatus";
 import { Itinerary } from "../../domain/Itinerary";
 import { ItineraryId } from "../../domain/ItineraryId";
 import { ItineraryPreview } from "../../domain/ItineraryPreview";
+import { ItineraryReport } from "../../domain/ItineraryReport";
 import { ItineraryRepository } from "../../domain/ItineraryRepository";
 import { CollectPoint, ParcelPoint, Point, RoutePoint } from "../../domain/Point";
 import { PointId } from "../../domain/PointId";
@@ -468,5 +469,4 @@ export class PrismaItineraryRepository implements ItineraryRepository {
       }
     });
   }
-  
 }

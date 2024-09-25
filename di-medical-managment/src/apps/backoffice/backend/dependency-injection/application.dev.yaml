@@ -520,6 +520,12 @@ services:
     "@Contexts.Backoffice.User.infra.persistence.UserRepository"
   ]
 
+  Contexts.Backoffice.Itinerary.application.Report.ItineraryReporter:
+    class: ../../../../Contexts/Backoffice/Itinerary/application/Report/ItineraryReporter
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+  ]
+
   Apps.Backoffice.backend.controllers.PointUpdateControllerPage:
     class: ../controllers/itinerary/PointUpdateControllerPage
     arguments: [

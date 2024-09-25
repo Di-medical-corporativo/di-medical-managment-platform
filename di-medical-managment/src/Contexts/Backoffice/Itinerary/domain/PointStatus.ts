@@ -13,4 +13,12 @@ export class PointStatus extends StringValueObject {
 
     return false;
   }
+
+  public hasProblem() {
+    if(this.value === PointStatusList.PointWithProblem) {
+      return true;
+    }
+
+    return false;
+  }
 }

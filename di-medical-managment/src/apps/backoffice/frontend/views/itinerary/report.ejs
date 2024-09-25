@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seguimiento de ruta</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+    <main id="main-admin">
+      <section id="client-list">
+        <button class="button warning" style="width: 150px; margin-bottom: 20px; align-self: flex-end; margin-right: 20px;"
+          onclick="window.location.href='/backoffice/itinerary/<%= itinerary.id %>/add'"
+          >Agregar puntos</button>
+        <form action="/backoffice/itinerary/<%= itinerary.id %>/end" method="post">
+          <input type="text" value="<%= itinerary.id %>" name="id" hidden>
+          <button class="button primary" style="margin-bottom: 20px; align-self: flex-end; width: 150px;">Terminar ruta</button>
+
+        </form>
+
+        <p><%= itinerary.points.length %> puntos</p>
+
+        <table class="table">
+          <thead>
+              <tr>
+                <th>Estatus</th>
+                <th>Cliente</th>
+                <th>Responsable</th>
+                <th>Facturas</th>
+                <th>Certificado</th>
+                <th>Ssa</th>
+                <th>Tipo</th>
+                <th>Observaciones</th>
+                <th>Comentario operador</th>
+                <th>Respuesta a encuesta</th>
+                <th></th>
+              </tr>
+          </thead>
+          <tbody>
+            <% for(let i = 0; i < itinerary.points.length; i++) { %>
+              <% const point = itinerary.points[i] %>
+              <tr>
+                <td>
+                  <% if(point.status === 'in-progress') {%>
+                    En progreso
+                  <% } else if(point.status === 'completed') {%>
+                    Completado
+                  <% } else if(point.status === 'pastdue') {%>
+                     Punto en retraso
+                  <% } else if(point.status === 'assigned') {%>
+                    Asignado
+                  <% } else { %>
+                    Punto terminado con errores
+                  <% } %>
+                </td>
+                <td><%= point.client.name %></td>
+                <td><%= point.userAssigned.firstName %></td>
+                <td>
+                  <% point.invoice.forEach(invoice => {%>
+                    <%= invoice.number %>
+                  <% } )%>
+                </td>
+                <td><%= point.certificate %></td>
+                <td><%= point.ssa %></td>
+                <td>
+                  <% if(point.type === 'point-route') {%>
+                    Ruta
+                  <% } else if(point.type === 'point-parcel') {%>
+                    Paqueteria
+                  <% } else {%>
+                     Recoleccion
+                  <% } %>
+                </td>
+                <td><%= point.observation %></td>
+                <td><%= point.comment %></td>
+                <td>
+                </td>
+                
+                <td style="text-align: right;" id="actions">
+
+                  <% if(point.status == 'in-progress') { %>
+                      <button class="button primary"
+                      onclick="window.location.href='/backoffice/point/<%= point.id %>/update'"
+                    >Actualizar</button>
+                    <button class="button danger"
+                      onclick="window.location.href='/backoffice/itinerary/point/<%= point.id %>/end'"
+                    >Terminar punto</button>
+                  <% } else if(point.status == 'assigned') { %>
+                    <button class="button primary"
+                      onclick="window.location.href='/backoffice/client/<%= point.id %>/update'"
+                    >Actualizar</button>
+                  <% } %>
+                </td>
+            </tr>
+            <% } %>
+          </tbody>
+      </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
+
+</body>
+</html>

@@ -42,6 +42,7 @@ export class ItineraryRepositoryMock implements ItineraryRepository {
     this.addPointsToItineraryMock = jest.fn();
   
     this.updatePointMock = jest.fn();
+
   }
 
   async addPointsToItinerary(itineraryId: ItineraryId, points: Point[]): Promise<void> {
@@ -115,4 +116,5 @@ export class ItineraryRepositoryMock implements ItineraryRepository {
   assertUpdatePointHaveBeenCalledWith(point: Point) {
     expect(this.updatePointMock).toHaveBeenCalledWith(point);
   }
+
 }

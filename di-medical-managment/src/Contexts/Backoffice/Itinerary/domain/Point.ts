@@ -34,6 +34,10 @@ export abstract class Point {
     return this.status.isDone();
   }
 
+  public finishedWithProblems() {
+    return this.status.hasProblem();
+  } 
+
   public end(comment: PointComment, hasProblem: PointProblem) {
     this.comment = comment;
     this.hasProblem = hasProblem;

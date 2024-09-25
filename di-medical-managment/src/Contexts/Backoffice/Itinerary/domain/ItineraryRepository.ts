@@ -1,6 +1,7 @@
 import { Itinerary } from "./Itinerary";
 import { ItineraryId } from "./ItineraryId";
 import { ItineraryPreview } from "./ItineraryPreview";
+import { ItineraryReport } from "./ItineraryReport";
 import { Point } from "./Point";
 import { PointId } from "./PointId";
 

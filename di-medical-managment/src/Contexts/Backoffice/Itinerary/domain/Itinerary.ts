@@ -2,10 +2,11 @@ import { ItineraryActive } from "./ItineraryActive";
 import { ItineraryDate } from "./ItineraryDate";
 import { ItineraryDone } from "./ItineraryDone";
 import { ItineraryId } from "./ItineraryId";
+import { ItineraryReport } from "./ItineraryReport";
 import { ItinerarySchedule } from "./ItinerarySchedule";
 import { ItinerarySucursal } from "./ItinerarySucursal";
 import { CollectPoint, ParcelPoint, Point, RoutePoint } from "./Point";
-import { PointTypes } from "./PointType";
+import { pointTypes, PointTypes } from "./PointType";
 
 export class Itinerary {
   constructor(
@@ -144,12 +145,32 @@ export class Itinerary {
       new ItineraryActive(params.active)
     );
   }
-
+ 
   public hasOnGoingPoints() {
     const find = this.points.find(p => !p.isFinished());
 
     if(find === undefined) return false;
     return true;
+  }
+
+  public buildReport(): ItineraryReport {
+    const succededPoints = this.points.filter((point) => {
+      if(point.pointWithProblem()) return point;
+    });
+
+    const failedPoints = this.points.filter((point) => {
+      if(!point.finishedWithProblems()) return point;
+    });
+
+    const  report = ItineraryReport.create({
+      id: this.id,
+      failedPoints: failedPoints,
+      succededPoints: succededPoints,
+      scheduleDate: this.scheduleDate,
+      sucursal: this.sucursal
+    });
+
+    return report; 
   }
 
   toPrimitives() {
