@@ -49,6 +49,12 @@ export class Server {
     
     registerRoutes(router);
 
+    router.use((req: Request, res: Response, next: Function) => {
+      res.locals.currentPath = req.path;
+      
+      next();
+    });
+
     router.use((err: Error, req: Request, res: Response, next: Function) => {
       this.logger.error(err);
       

@@ -27,9 +27,9 @@ export class ItineraryReportPageController {
       });
      } 
 
-    res.status(500).render('error/error', {
-      message: 'Ocurrio un error, contacta soporte'
-    });
+      res.status(500).render('error/error', {
+        message: 'Ocurrio un error, contacta soporte'
+      });
     }
   }
 }

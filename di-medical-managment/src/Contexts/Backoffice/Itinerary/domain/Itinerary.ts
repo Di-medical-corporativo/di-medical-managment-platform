@@ -155,14 +155,14 @@ export class Itinerary {
 
   public buildReport(): ItineraryReport {
     const succededPoints = this.points.filter((point) => {
-      if(point.pointWithProblem()) return point;
+      return !point.finishedWithProblems();
     });
 
     const failedPoints = this.points.filter((point) => {
-      if(!point.finishedWithProblems()) return point;
+      return point.finishedWithProblems();
     });
 
-    const  report = ItineraryReport.create({
+    const report = ItineraryReport.create({
       id: this.id,
       failedPoints: failedPoints,
       succededPoints: succededPoints,

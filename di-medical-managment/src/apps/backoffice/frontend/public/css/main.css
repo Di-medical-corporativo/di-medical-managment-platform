@@ -13,6 +13,7 @@
 @import url('views/result-survey.css');
 @import url('views/itinerary.css');
 @import url('views/point-end.css');
+@import url('views/report.css');
 
 * {
   margin: 0;

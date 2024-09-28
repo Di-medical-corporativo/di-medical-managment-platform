@@ -23,8 +23,8 @@ export class ItineraryReport {
       params.id,
       params.sucursal,
       params.scheduleDate,
-      params.succededPoints,
-      params.failedPoints
+      params.failedPoints,
+      params.succededPoints
     );
   }
   

@@ -606,4 +606,10 @@ services:
       "@Contexts.Backoffice.Itinerary.application.AddPoint.PointAdder"
     ]
 
+  Apps.Backoffice.backend.controllers.ItineraryReportPageController:
+    class: ../controllers/itinerary/ItineraryReportPageController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.Report.ItineraryReporter"
+    ]
+
   

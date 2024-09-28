@@ -7,24 +7,38 @@
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-  <div id="admin-dash">
-    <main id="main-admin">
-      <section id="client-list">
-        <button class="button warning" style="width: 150px; margin-bottom: 20px; align-self: flex-end; margin-right: 20px;"
-          onclick="window.location.href='/backoffice/itinerary/<%= itinerary.id %>/add'"
-          >Agregar puntos</button>
-        <form action="/backoffice/itinerary/<%= itinerary.id %>/end" method="post">
-          <input type="text" value="<%= itinerary.id %>" name="id" hidden>
-          <button class="button primary" style="margin-bottom: 20px; align-self: flex-end; width: 150px;">Terminar ruta</button>
+  <div id="report">
+    <main id="report-main">
+      <section id="report-results">
+        <div class="report-result-detail">
+          <% 
+              let date = new Date(report.scheduleDate);
+              let options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+              let formattedDate = date.toLocaleDateString('es-MX', options);
+            %>
+            
+            <small> Fecha de inicio: <%= formattedDate %> </small>
 
-        </form>
-
-        <p><%= itinerary.points.length %> puntos</p>
-
+            <small> Sucursal: <%= report.sucursal.name %></small>
+        </div>
+        <div class="report-result-detail">
+          <small>Puntos totales:</small>
+          <p style="font-size: 20px;"><%= report.totalPoints %></p>
+        </div>
+        <div class="report-result-detail">
+          <small>Puntos exitosos:</small>
+          <p style="font-size: 20px;"><%= report.totalSuccededPoints %></p>
+        </div>
+        <div class="report-result-detail">
+          <small>Puntos fallidos:</small>
+          <p style="font-size: 20px;"><%= report.totalFailedPoints %></p>
+        </div>
+      </section>
+      <section id="report-tables">
+        <h2>Puntos completados con errores: </h2>
         <table class="table">
           <thead>
               <tr>
-                <th>Estatus</th>
                 <th>Cliente</th>
                 <th>Responsable</th>
                 <th>Facturas</th>
@@ -38,22 +52,9 @@
               </tr>
           </thead>
           <tbody>
-            <% for(let i = 0; i < itinerary.points.length; i++) { %>
-              <% const point = itinerary.points[i] %>
+            <% for(let i = 0; i < report.failedPoints.length; i++) { %>
+              <% const point = report.failedPoints[i] %>
               <tr>
-                <td>
-                  <% if(point.status === 'in-progress') {%>
-                    En progreso
-                  <% } else if(point.status === 'completed') {%>
-                    Completado
-                  <% } else if(point.status === 'pastdue') {%>
-                     Punto en retraso
-                  <% } else if(point.status === 'assigned') {%>
-                    Asignado
-                  <% } else { %>
-                    Punto terminado con errores
-                  <% } %>
-                </td>
                 <td><%= point.client.name %></td>
                 <td><%= point.userAssigned.firstName %></td>
                 <td>
@@ -76,31 +77,59 @@
                 <td><%= point.comment %></td>
                 <td>
                 </td>
-                
-                <td style="text-align: right;" id="actions">
-
-                  <% if(point.status == 'in-progress') { %>
-                      <button class="button primary"
-                      onclick="window.location.href='/backoffice/point/<%= point.id %>/update'"
-                    >Actualizar</button>
-                    <button class="button danger"
-                      onclick="window.location.href='/backoffice/itinerary/point/<%= point.id %>/end'"
-                    >Terminar punto</button>
-                  <% } else if(point.status == 'assigned') { %>
-                    <button class="button primary"
-                      onclick="window.location.href='/backoffice/client/<%= point.id %>/update'"
-                    >Actualizar</button>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+        
+        <h2>Puntos completados con exito: </h2>
+        <table class="table">
+          <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Responsable</th>
+                <th>Facturas</th>
+                <th>Certificado</th>
+                <th>Ssa</th>
+                <th>Tipo</th>
+                <th>Observaciones</th>
+                <th>Comentario operador</th>
+                <th>Respuesta a encuesta</th>
+                <th></th>
+              </tr>
+          </thead>
+          <tbody>
+            <% for(let i = 0; i < report.succededPoints.length; i++) { %>
+              <% const pointS = report.succededPoints[i] %>
+              <tr>
+                <td><%= pointS.client.name %></td>
+                <td><%= pointS.userAssigned.firstName %></td>
+                <td>
+                  <% pointS.invoice.forEach(invoice => {%>
+                    <%= invoice.number %>
+                  <% } )%>
+                </td>
+                <td><%= pointS.certificate %></td>
+                <td><%= pointS.ssa %></td>
+                <td>
+                  <% if(pointS.type === 'point-route') {%>
+                    Ruta
+                  <% } else if(pointS.type === 'point-parcel') {%>
+                    Paqueteria
+                  <% } else {%>
+                     Recoleccion
                   <% } %>
+                </td>
+                <td><%= pointS.observation %></td>
+                <td><%= pointS.comment %></td>
+                <td>
                 </td>
             </tr>
             <% } %>
           </tbody>
-      </table>
+        </table>
       </section>
     </main>
   </div>
-</body>
-</html>
-
 </body>
 </html>

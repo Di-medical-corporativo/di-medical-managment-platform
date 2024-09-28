@@ -67,7 +67,9 @@
                       onclick="window.location.href='/backoffice/itinerary/<%= itineraries[i].id %>/track'"
                       >Seguimiento</button>
                   <% } else { %>
-                    <button class="button">Reporte de ruta</button>
+                    <button class="button"
+                    onclick="window.location.href='/backoffice/itinerary/<%= itineraries[i].id %>/report'"
+                    >Reporte de ruta</button>
                   <% } %>
                   <button class="button">Imagen</button>
                 </td>
