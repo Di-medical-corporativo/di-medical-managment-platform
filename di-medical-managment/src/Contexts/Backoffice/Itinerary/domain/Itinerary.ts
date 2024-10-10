@@ -6,7 +6,7 @@ import { ItineraryReport } from "./ItineraryReport";
 import { ItinerarySchedule } from "./ItinerarySchedule";
 import { ItinerarySucursal } from "./ItinerarySucursal";
 import { CollectPoint, ParcelPoint, Point, RoutePoint } from "./Point";
-import { pointTypes, PointTypes } from "./PointType";
+import { PointTypes } from "./PointType";
 
 export class Itinerary {
   constructor(

@@ -444,8 +444,8 @@ services:
       "@Contexts.Backoffice.Task.application.Delete.TaskDeleter"
     ]
 
-  Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository:
-    class: ../../../../Contexts/Backoffice/Itinerary/infra/persistence/PrismaItineraryRepository
+  Contexts.Backoffice.Itinerary.infra.imageGenerator.ImageGenerator:
+    class: ../../../../Contexts/Backoffice/Itinerary/infra/ImageGenerator/PuppeterImageGenerator
 
   Contexts.Backoffice.Itinerary.application.Create.ItineraryCreator:
     class: ../../../../Contexts/Backoffice/Itinerary/application/Create/ItineraryCreator  
@@ -458,6 +458,9 @@ services:
     "@Contexts.Backoffice.Task.infra.BullMQ.TaskScheduler",
     "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository"
   ]
+
+  Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository:
+    class: ../../../../Contexts/Backoffice/Itinerary/infra/persistence/PrismaItineraryRepository
 
   Contexts.Backoffice.Itinerary.application.SearchAll.ItinerarySearchAll:
     class: ../../../../Contexts/Backoffice/Itinerary/application/SearchAll/ItinerarySearcher
@@ -524,6 +527,13 @@ services:
     class: ../../../../Contexts/Backoffice/Itinerary/application/Report/ItineraryReporter
     arguments: [
     "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+  ]
+
+  Contexts.Backoffice.Itinerary.application.ItineraryImage.ItineraryImageGenerator:
+    class: ../../../../Contexts/Backoffice/Itinerary/application/ItineraryImage/ItineraryImageGenerator
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository",
+    "@Contexts.Backoffice.Itinerary.infra.imageGenerator.ImageGenerator"
   ]
 
   Apps.Backoffice.backend.controllers.PointUpdateControllerPage:
@@ -610,6 +620,12 @@ services:
     class: ../controllers/itinerary/ItineraryReportPageController
     arguments: [
       "@Contexts.Backoffice.Itinerary.application.Report.ItineraryReporter"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryImageGeneratorController:
+    class: ../controllers/itinerary/ItineraryImageGeneratorController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.ItineraryImage.ItineraryImageGenerator"
     ]
 
   

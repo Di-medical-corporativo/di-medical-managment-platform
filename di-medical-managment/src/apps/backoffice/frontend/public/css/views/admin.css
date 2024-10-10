@@ -8,6 +8,7 @@
 
 #aside-admin {
   background-color: #FFFF;
+  border-left: 1px solid red;
   width: 18vw;
   height: 100%;
   display: flex;

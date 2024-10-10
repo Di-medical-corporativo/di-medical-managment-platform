@@ -13,6 +13,7 @@ import { ItineraryAddPointsController } from "../controllers/itinerary/Itinerary
 import { PointUpdateControllerPage } from "../controllers/itinerary/PointUpdateControllerPage";
 import { UpdatePointController } from "../controllers/itinerary/UpdatePointController";
 import { ItineraryReportPageController } from "../controllers/itinerary/ItineraryReportPageController";
+import { ItineraryImageGeneratorController } from "../controllers/itinerary/ItineraryImageGeneratorController";
 
 export const register = (app: Express) => {
   const createItineraryPage: ItineraryCreatePageController = container.get('Apps.Backoffice.backend.controllers.ItineraryCreatePageController');
@@ -41,6 +42,8 @@ export const register = (app: Express) => {
 
   const reportPointPageController: ItineraryReportPageController = container.get('Apps.Backoffice.backend.controllers.ItineraryReportPageController');
 
+  const imageItineraryGeneratorController: ItineraryImageGeneratorController = container.get('Apps.Backoffice.backend.controllers.ItineraryImageGeneratorController');
+
   app.get('/itinerary/new', (req: Request, res: Response) => createItineraryPage.run(req, res));
 
   app.get('/itinerary/:id/track', (req: Request, res: Response) => trackingItineraryController.run(req, res));
@@ -66,4 +69,6 @@ export const register = (app: Express) => {
   app.put('/point/:id', (req: Request, res: Response) => updatePointController.run(req, res));
 
   app.get('/itinerary/:id/report', (req: Request, res: Response) => reportPointPageController.run(req, res));
+
+  app.get('/itinerary/:id/image', (req: Request, res: Response) => imageItineraryGeneratorController.run(req, res));
 }
