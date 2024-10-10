@@ -18,7 +18,6 @@ export class ItineraryImageGenerator {
   async run(params: {
     id: ItineraryId
   }) {
-    console.log(this.imageGenerator)
     const itinerary = await this.itineraryFinder.run({
       id: params.id
     });
