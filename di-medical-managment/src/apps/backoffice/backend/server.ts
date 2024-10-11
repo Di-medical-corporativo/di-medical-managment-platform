@@ -6,6 +6,15 @@ import { registerRoutes } from './routes';
 import cors from 'cors';
 import path from "path";
 import methodOverride from 'method-override';
+import session from 'express-session';
+import passport from 'passport';
+import { Strategy } from 'passport-local';
+import { AuthenticateUser } from '../../../Contexts/Shared/application/Auth/AuthenticateUser';
+import { PrismaUserRepository } from '../../../Contexts/Backoffice/User/infra/persistence/PrismaUserRepository';
+import { UserEmail } from '../../../Contexts/Backoffice/User/domain/UserEmail';
+import { AuthenticatedUserFinder } from '../../../Contexts/Shared/domain/AuthenticatedUserFinder';
+import { ensureAuthenticated } from './middlewares/ensureAuthenticated';
+
 
 export class Server {
   private express: express.Express;
@@ -41,11 +50,69 @@ export class Server {
 
     this.express.use(helmet.frameguard({ action: 'deny' }));
     
+    this.express.use(session(
+      {
+        secret: 'MY-SECRET',
+        resave: false,
+        saveUninitialized: false
+      }
+    ));
+
+    this.express.use(passport.initialize());
+
+    this.express.use(passport.session());
+
+    const repository = new PrismaUserRepository();
+
+    const authenticateUser = new AuthenticateUser(repository);
+
+    const authenticatedUserFinder = new AuthenticatedUserFinder(repository);
+   
+    passport.use(new Strategy(async (email: string, password: string, done) => {
+      try {
+        const user = await authenticateUser.run({
+          email: new UserEmail(email),
+          password
+        });
+        
+        done(null, user.toPrimitives());
+      } catch (error) {
+        done(error);
+      }
+    }));
+
+    passport.serializeUser((user: any, done) => {
+      const { email } = user;
+      
+      done(null, email);
+    });
+
+    passport.deserializeUser(async (email: string, done) => {
+      try {
+        const user = await authenticatedUserFinder.run({
+          email: new UserEmail(email)
+        });
+        
+        done(null, user);
+      } catch (error) {
+        done(error);
+      }
+    });
+
     const router = Router();
     
     this.express.use(cors());
     
-    this.express.use('/backoffice', router);
+    this.express.use('/backoffice', ensureAuthenticated, router);
+
+    this.express.get('/login', (req: Request, res: Response) => {
+      res.status(200).render('login/login')
+    });
+
+    this.express.post('/login', passport.authenticate('local', {
+      successRedirect: '/backoffice',
+      failureRedirect: '/login'
+    }))
     
     registerRoutes(router);
 
@@ -67,7 +134,7 @@ export class Server {
       this.httpServer = this.express.listen(this.port, () => {
       
         this.logger.info(
-          `  Backoffice Backend App is running at http://localhost:${this.port} in ${this.express.get('env')} mode`
+          `Backoffice Backend App is running at http://localhost:${this.port} in ${this.express.get('env')} mode`
         );
       
         this.logger.info('  Press CTRL-C to stop\n');

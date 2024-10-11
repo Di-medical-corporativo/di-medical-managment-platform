@@ -1,7 +1,10 @@
 import { User } from "../../../src/Contexts/Backoffice/User/domain/User";
+import { UserEmail } from "../../../src/Contexts/Backoffice/User/domain/UserEmail";
 import { UserId } from "../../../src/Contexts/Backoffice/User/domain/UserId";
 import { UserPassword } from "../../../src/Contexts/Backoffice/User/domain/UserPassword";
 import { UserRepository } from "../../../src/Contexts/Backoffice/User/domain/UserRepository";
+import { AuthenticateUser } from "../../../src/Contexts/Shared/application/Auth/AuthenticateUser";
+import { UserAuthenticated } from "../../../src/Contexts/Shared/domain/UserAuthenticated";
 
 export class UserRepositoryMock implements UserRepository {
   private saveMock: jest.Mock;
@@ -9,6 +12,7 @@ export class UserRepositoryMock implements UserRepository {
   private updateMock: jest.Mock;
   private findAllMock: jest.Mock;
   private deleteMock: jest.Mock;
+  private findByEmailMock: jest.Mock;
 
   constructor() {
     this.saveMock = jest.fn();
@@ -16,6 +20,7 @@ export class UserRepositoryMock implements UserRepository {
     this.updateMock = jest.fn();
     this.findAllMock = jest.fn();
     this.deleteMock = jest.fn();
+    this.findByEmailMock = jest.fn();
   }
 
   async delete(id: UserId): Promise<void> {
@@ -36,6 +41,10 @@ export class UserRepositoryMock implements UserRepository {
 
   async update(user: User, password: UserPassword): Promise<void> {
     this.updateMock(user, password);
+  }
+
+  async findByEmail(email: UserEmail): Promise<UserAuthenticated | null> {
+    return this.findByEmailMock(email);
   }
 
   // Métodos de aserción
@@ -65,6 +74,14 @@ export class UserRepositoryMock implements UserRepository {
 
   setReturnForFindAll(returnValue: User[]): void {
     this.findAllMock.mockReturnValue(returnValue);
+  }
+
+  assertFindByEmailHaveBeenCalled() {
+    expect(this.findByEmailMock).toHaveBeenCalled();
+  }
+
+  setReturnForFindByEmail(returnValue: UserAuthenticated | null) {
+    this.findByEmailMock.mockReturnValue(returnValue);
   }
 
   setReturnForSave(): void {

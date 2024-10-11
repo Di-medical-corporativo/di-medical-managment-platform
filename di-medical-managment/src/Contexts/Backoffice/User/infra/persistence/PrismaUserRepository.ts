@@ -1,5 +1,7 @@
+import { UserAuthenticated } from "../../../../Shared/domain/UserAuthenticated";
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
 import { User } from "../../domain/User";
+import { UserEmail } from "../../domain/UserEmail";
 import { UserId } from "../../domain/UserId";
 import { UserPassword } from "../../domain/UserPassword";
 import { UserRepository } from "../../domain/UserRepository";
@@ -150,5 +152,31 @@ export class PrismaUserRepository implements UserRepository {
         }
       }
     });
+  }
+
+  async findByEmail(email: UserEmail): Promise<UserAuthenticated | null> {
+    const user = await prisma.user.findFirst({
+      where: {
+        email: email.toString()
+      },
+      include: {
+        login: true
+      }
+    });
+    
+    if(!user) return null;
+
+    const userAuthenticated = UserAuthenticated.fromPrimitives({
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      id: user.id,
+      password: {
+        hash: user.login?.passwordHash!,
+        salt: user.login?.passwordSalt!
+      }
+    });
+
+    return userAuthenticated;
   }
 }
