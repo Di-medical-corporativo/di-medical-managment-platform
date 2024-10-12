@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-    <h1>Login</h1>
-    <form action="/login" method="POST">
+    <img src="/images/logo.png" alt="logo" width="150px" height="150px" style="margin-top: -20px;">
+    <form action="/login" method="POST" id="login-form">
         <div>
             <label for="username">Email:</label>
-            <input type="text" id="username" name="username" required>
+            <input type="email" id="username" name="username" required class="input">
         </div>
         <div>
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" required class="input">
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" class="button primary">Login</button>
     </form>
 </body>
 </html>

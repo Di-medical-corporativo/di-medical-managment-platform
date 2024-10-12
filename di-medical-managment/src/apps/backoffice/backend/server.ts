@@ -14,6 +14,8 @@ import { PrismaUserRepository } from '../../../Contexts/Backoffice/User/infra/pe
 import { UserEmail } from '../../../Contexts/Backoffice/User/domain/UserEmail';
 import { AuthenticatedUserFinder } from '../../../Contexts/Shared/domain/AuthenticatedUserFinder';
 import { ensureAuthenticated } from './middlewares/ensureAuthenticated';
+import { UserNotFound } from '../../../Contexts/Backoffice/User/domain/UserNotFound';
+import { InvalidCredentials } from '../../../Contexts/Shared/domain/InvalidCredentials';
 
 
 export class Server {
@@ -74,10 +76,21 @@ export class Server {
           email: new UserEmail(email),
           password
         });
-        
-        done(null, user.toPrimitives());
+
+        const { password: passwordInfo, ...userInfo } = user.toPrimitives();
+
+
+        done(null, userInfo);
       } catch (error) {
-        done(error);
+        if(error instanceof UserNotFound) {
+          return done(null, false, { message: 'No se encontró el usuario' });
+        }
+    
+        if(error instanceof InvalidCredentials) {
+          return done(null, false, { message: 'Credenciales incorrectas, intenta de nuevo' });
+        }
+    
+        return done(null, false, { message: 'Ocurrió un error, intenta de nuevo' });
       }
     }));
 
@@ -92,8 +105,10 @@ export class Server {
         const user = await authenticatedUserFinder.run({
           email: new UserEmail(email)
         });
+
+        const { password: passwordInfo, ...userInfo } = user.toPrimitives();
         
-        done(null, user);
+        done(null, userInfo);
       } catch (error) {
         done(error);
       }
@@ -112,7 +127,17 @@ export class Server {
     this.express.post('/login', passport.authenticate('local', {
       successRedirect: '/backoffice',
       failureRedirect: '/login'
-    }))
+    }));
+
+    this.express.post('/logout', (req: Request, res: Response, next) => {
+      req.logout(err => {
+        if(err) {
+          next(err);
+        }
+
+        res.redirect('/login');
+      });
+    });
     
     registerRoutes(router);
 

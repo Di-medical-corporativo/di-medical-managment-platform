@@ -1,6 +1,7 @@
 import { Task } from "../../../src/Contexts/Backoffice/Task/domain/Task";
 import { TaskId } from "../../../src/Contexts/Backoffice/Task/domain/TaskId";
 import { TaskRepository } from "../../../src/Contexts/Backoffice/Task/domain/TaskRepository";
+import { UserId } from "../../../src/Contexts/Backoffice/User/domain/UserId";
 
 export class TaskRepositoryMock implements TaskRepository {
   private saveMock: jest.Mock;
@@ -17,6 +18,8 @@ export class TaskRepositoryMock implements TaskRepository {
 
   private updateStatusMock: jest.Mock;
 
+  private kanbanMock: jest.Mock;
+
   constructor() {
     this.saveMock = jest.fn();
   
@@ -31,6 +34,8 @@ export class TaskRepositoryMock implements TaskRepository {
     this.timeOutMock = jest.fn();
 
     this.updateStatusMock = jest.fn();
+
+    this.kanbanMock = jest.fn();
   }
   
   async delete(id: TaskId) {
@@ -60,6 +65,18 @@ export class TaskRepositoryMock implements TaskRepository {
   async updateStatus(task: Task): Promise<void> {
     return this.updateStatusMock(task);
      
+  }
+
+  async kanban(id: UserId): Promise<Task[]> {
+    return this.kanbanMock(id) as Task[];
+  }
+
+  setReturnValueForKanban() {
+    this.kanbanMock.mockReturnValue([]);  
+  }
+
+  assertKanbanHaveBeenCalled() {
+    expect(this.kanbanMock).toHaveBeenCalled();
   }
 
   assertUpdateStatusHaveBeenCalled() {

@@ -1,3 +1,4 @@
+import { UserId } from "../../User/domain/UserId";
 import { Task } from "./Task";
 import { TaskId } from "./TaskId";
 
@@ -15,4 +16,6 @@ export interface TaskRepository {
   timeOut(id: TaskId): Promise<void>
 
   updateStatus(task: Task): Promise<void>
+
+  kanban(id: UserId): Promise<Task[]>
 }

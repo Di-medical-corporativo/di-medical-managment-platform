@@ -29,6 +29,18 @@ export class Task {
     return this.status.isCompleted();
   }
 
+  public isAssigned() {
+    return this.status.isAssigned();
+  }
+
+  public isInProgress() {
+    return this.status.isInProgress();
+  }
+
+  public isOverDue() {
+    return this.status.isPastDue();
+  }
+
   public shouldBeReschedule(dueTo: TaskDueTo) {
     const now = new Date();
 

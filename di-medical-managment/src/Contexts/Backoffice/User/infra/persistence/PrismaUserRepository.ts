@@ -174,7 +174,8 @@ export class PrismaUserRepository implements UserRepository {
       password: {
         hash: user.login?.passwordHash!,
         salt: user.login?.passwordSalt!
-      }
+      },
+      job: user.job
     });
 
     return userAuthenticated;

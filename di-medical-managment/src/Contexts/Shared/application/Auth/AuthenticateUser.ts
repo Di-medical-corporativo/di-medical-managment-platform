@@ -25,8 +25,6 @@ export class AuthenticateUser {
       throw new InvalidCredentials();
     }
 
-    console.log(user);
-
     return user;
   }
 }

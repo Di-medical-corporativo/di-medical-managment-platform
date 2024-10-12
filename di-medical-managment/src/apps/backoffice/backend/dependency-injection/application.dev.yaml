@@ -628,4 +628,6 @@ services:
       "@Contexts.Backoffice.Itinerary.application.ItineraryImage.ItineraryImageGenerator"
     ]
 
+  Apps.Backoffice.backend.controllers.DashBoardInitController:
+    class: ../controllers/DashboardInitController
   
