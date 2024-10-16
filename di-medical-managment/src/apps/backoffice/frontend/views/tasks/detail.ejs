@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de tarea</title>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+
+  <style>
+
+    .editor-task {
+      background-color: #ffffff;
+    }
+ 
+    #toolbar-container {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .ql-formats {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .ql-container {
+      height: 140px;
+    }
+
+  </style>
+
+  
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/">
+            <small>Dashboard</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/task/<%= task.id %>/detail">
+            <small>Detalle de tarea</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="new-client-form">        
+        <form action="/backoffice/task/<%= task.id %>/nextStatus?_method=PUT" method="post" id="taskForm"> 
+          <div class="tags" style="display: flex; gap: 5px;">
+            <small class="tag" style="align-self: self-start;">Punto de ruta</small>
+            <% if (task.status === 'completed') { %>
+              <small class="tag done" style="align-self: self-start;">Completado</small>
+            <% } %>
+
+            <% if (task.status === 'pastdue') { %>
+              <small class="tag overdue" style="align-self: self-start;">Sin completar</small>
+            <% } %>
+
+            <% if (task.status === 'in-progress') { %>
+              <small class="tag prog" style="align-self: self-start;">En progeso</small>
+            <% } %>
+
+            <% if (task.status === 'assigned') { %>
+              <small class="tag assigned" style="align-self: self-start;">Asignado</small>
+            <% } %>
+          </div>
+          
+          <input type="text" hidden id="id" name="id" value="<%= task.id %>">
+          
+          <label for="title">Titulo:</label>
+          <input type="text" id="title"  value="<%= task.title %>" class="input" placeholder="Titulo de la tarea" disabled> 
+          
+          <label for="description">Instruciones:</label>
+          <div class="editor-task">
+            <div id="editor" style="height: 200px;">
+              <%- task.description %>
+            </div>
+          </div>
+        
+          <label for="dueTo">Fecha límite:</label>
+          <% const date = new Date(task.dueTo) %>
+          <% const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`; %>
+          <input
+            class="input"
+            type="datetime-local"
+            id="dueTo"
+            min="<%= formattedDate %>"
+            value="<%= formattedDate %>"
+            required
+            disabled
+            />
+
+            <% if (task.status === 'assigned' || task.status === 'in-progress') { %>
+              <button type="submit" class="button primary">
+                <% if(task.status == 'assigned') { %>
+                  Iniciar tarea
+                <% } else { %>
+                  Terminar tarea
+                <% } %>
+              </button>
+            <% } %>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Initialize Quill editor
+    const quill = new Quill('#editor', {
+      readOnly: true, 
+      modules: {
+          toolbar: null,
+        },
+      placeholder: 'Instruciones de la tarea...',
+      theme: 'snow',
+    });
+
+  </script>
+</body>
+</html>

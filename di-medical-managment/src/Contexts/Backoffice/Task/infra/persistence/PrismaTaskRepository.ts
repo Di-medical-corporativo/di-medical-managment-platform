@@ -1,4 +1,5 @@
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
+import { UserId } from "../../../User/domain/UserId";
 import { Task } from "../../domain/Task";
 import { TaskId } from "../../domain/TaskId";
 import { TaskRepository } from "../../domain/TaskRepository";
@@ -141,5 +142,41 @@ export class PrismaTaskRepository implements TaskRepository {
         status 
       }
     });
+  }
+
+  async kanban(id: UserId): Promise<Task[]> {
+    const tasksDB = await prisma.task.findMany({
+      where: {
+        userAssignedId: id.toString()
+      },
+      include: {
+        userAssigned: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true
+          }
+        }
+      },
+      orderBy: {
+        dueTo: 'asc'
+      }
+    });
+
+    const tasks = tasksDB.map(t => Task.fromPrimitives({
+      description: t.description,
+      dueTo: t.dueTo.toISOString(),
+      id: t.id,
+      status: t.status,
+      title: t.title,
+      userAssigned: {
+        firstName: t.userAssigned.firstName,
+        id: t.userAssignedId,
+        lastName: t.userAssigned.lastName
+      },
+      isPoint: t.belongsToItinerary
+    }));
+
+    return tasks;
   }
 }

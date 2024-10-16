@@ -402,6 +402,12 @@ services:
     "@Contexts.Backoffice.Task.infra.BullMQ.TaskScheduler"
   ]
 
+  Contexts.Backoffice.Task.application.UserKanban.UserKanbanGenerator:
+    class: ../../../../Contexts/Backoffice/Task/application/UserKanban/UserKanbanGenerator
+    arguments: [
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
+  ]
+
   Apps.Backoffice.backend.controllers.TaskChangeStatusController:
     class: ../controllers/tasks/TaskChangeStatusController
     arguments: [
@@ -442,6 +448,12 @@ services:
     class: ../controllers/tasks/TaskDeleteController
     arguments: [
       "@Contexts.Backoffice.Task.application.Delete.TaskDeleter"
+    ]
+
+  Apps.Backoffice.backend.controllers.TaskDetailPageController:
+    class: ../controllers/tasks/TaskDetailPageController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.Find.TaskFinder"
     ]
 
   Contexts.Backoffice.Itinerary.infra.imageGenerator.ImageGenerator:
@@ -630,4 +642,7 @@ services:
 
   Apps.Backoffice.backend.controllers.DashBoardInitController:
     class: ../controllers/DashboardInitController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.UserKanban.UserKanbanGenerator"
+    ]
   

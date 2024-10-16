@@ -1,5 +1,5 @@
-import bodyParser from 'body-parser';
 import express, { Request, Response, Router } from 'express';
+import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import * as http from 'http';
 import { registerRoutes } from './routes';
@@ -16,7 +16,6 @@ import { AuthenticatedUserFinder } from '../../../Contexts/Shared/domain/Authent
 import { ensureAuthenticated } from './middlewares/ensureAuthenticated';
 import { UserNotFound } from '../../../Contexts/Backoffice/User/domain/UserNotFound';
 import { InvalidCredentials } from '../../../Contexts/Shared/domain/InvalidCredentials';
-
 
 export class Server {
   private express: express.Express;
@@ -78,7 +77,6 @@ export class Server {
         });
 
         const { password: passwordInfo, ...userInfo } = user.toPrimitives();
-
 
         done(null, userInfo);
       } catch (error) {
@@ -162,7 +160,7 @@ export class Server {
           `Backoffice Backend App is running at http://localhost:${this.port} in ${this.express.get('env')} mode`
         );
       
-        this.logger.info('  Press CTRL-C to stop\n');
+        this.logger.info('Press CTRL-C to stop\n');
       
         resolve();
       });

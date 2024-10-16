@@ -12,8 +12,6 @@ export class UserKanbanGenerator {
   }) {
     const tasks: Task[] = await this.taskRepository.kanban(params.id);
 
-    console.log(tasks);
-
     const assignedTasks = tasks.filter(task => task.isAssigned())
 
     const inProgressTasks = tasks.filter(task => task.isInProgress());

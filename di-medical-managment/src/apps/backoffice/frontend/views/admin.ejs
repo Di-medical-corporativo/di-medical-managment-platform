@@ -33,17 +33,29 @@
           </div>
 
           <div class="tasks">
-            <% for(let i = 0; i < 10; i++) { %>
+            <% assignedTasks.forEach(task => { 
+              const formattedDate = new Date(task.dueTo).toLocaleString('es-MX', {
+                day: '2-digit', month: '2-digit', year: 'numeric', 
+                hour: '2-digit', minute: '2-digit'
+              });
+            %>
               <div class="task">
                 <header>
-                  <p>Nombre de la tarea</p>
-                  <small>Fecha de termino: 7/18/2024</small>
+                  <% if(task.isPoint) {%>
+                    <small class="tag">Punto de ruta</small>
+                  <% } %>
+                  <p><%= task.title %></p>
+                  <small>Fecha de termino: <%= formattedDate %></small>
                 </header>
                 <footer>
-                  <button class="button primary">Iniciar tarea</button>
+                  <small>
+                    <%= task.userAssigned.firstName %>
+                    <%= task.userAssigned.lastName %>
+                  </small>
+                  <button class="button primary" onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Comenzar tarea</button>
                 </footer>
               </div>
-            <% } %>
+            <% }) %>
           </div>
         </div>
 
@@ -53,17 +65,30 @@
           </div>
 
           <div class="tasks">
-            <% for(let i = 0; i < 5; i++) { %>
+            <% inProgressTasks.forEach(task => { 
+              const formattedDate = new Date(task.dueTo).toLocaleString('es-MX', {
+                day: '2-digit', month: '2-digit', year: 'numeric', 
+                hour: '2-digit', minute: '2-digit'
+              });
+            %>
               <div class="task">
                 <header>
-                  <p>Nombre de la tarea</p>
-                  <small>Fecha de termino: 7/18/2024</small>
+                  <% if(task.isPoint) {%>
+                    <small class="tag">Punto de ruta</small>
+                  <% } %>
+                  
+                  <p><%= task.title %></p>
+                  <small>Fecha de termino: <%= formattedDate %></small>
                 </header>
                 <footer>
-                  <button class="button primary">Continuar tarea</button>
+                  <small>
+                    <%= task.userAssigned.firstName %>
+                    <%= task.userAssigned.lastName %>
+                  </small>
+                  <button class="button primary" onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Continuar tarea</button>
                 </footer>
               </div>
-            <% } %>
+            <% }) %>
           </div>
         </div>
 
@@ -73,14 +98,29 @@
           </div>
 
           <div class="tasks">
-            <% for(let i = 0; i < 3; i++) { %>
+            <% completedTasks.forEach(task => { 
+              const formattedDate = new Date(task.dueTo).toLocaleString('es-MX', {
+                day: '2-digit', month: '2-digit', year: 'numeric', 
+                hour: '2-digit', minute: '2-digit'
+              });
+            %>
               <div class="task">
                 <header>
-                  <p>Nombre de la tarea</p>
-                  <small>Fecha de termino: 7/18/2024</small>
+                  <% if(task.isPoint) {%>
+                    <small class="tag">Punto de ruta</small>
+                  <% } %>
+                  <p><%= task.title %></p>
+                  <small>Fecha de termino: <%= formattedDate %></small>
                 </header>
+                <footer>
+                  <small>
+                    <%= task.userAssigned.firstName %>
+                    <%= task.userAssigned.lastName %>
+                  </small>
+                  <button class="button primary" onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Detalles</button>
+                </footer>
               </div>
-            <% } %>
+            <% }) %>
           </div>
         </div>
 
@@ -90,17 +130,29 @@
           </div>
 
           <div class="tasks">
-            <% for(let i = 0; i < 1; i++) { %>
+            <% overdueTasks.forEach(task => { 
+              const formattedDate = new Date(task.dueTo).toLocaleString('es-MX', {
+                day: '2-digit', month: '2-digit', year: 'numeric', 
+                hour: '2-digit', minute: '2-digit'
+              });
+            %>
               <div class="task">
                 <header>
-                  <p>Nombre de la tarea</p>
-                  <small>Fecha de termino: 7/18/2024</small>
+                  <% if(task.isPoint) {%>
+                    <small class="tag">Punto de ruta</small>
+                  <% } %>
+                  <p><%= task.title %></p>
+                  <small>Fecha de termino: <%= formattedDate %></small>
                 </header>
                 <footer>
-                  <button class="button primary">Continuar tarea</button>
+                  <small>
+                    <%= task.userAssigned.firstName %>
+                    <%= task.userAssigned.lastName %>
+                  </small>
+                  <button class="button primary" onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Detalles</button>
                 </footer>
               </div>
-            <% } %>
+            <% }) %>
           </div>
         </div>
       </section>

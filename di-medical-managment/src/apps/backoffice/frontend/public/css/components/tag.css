@@ -9,3 +9,19 @@
   color: #ffffff;
   font-size: 10px;
 }
+
+.tag.done {
+  background-color: var(--color-success);
+}
+
+.tag.overdue {
+  background-color: var(--color-danger);
+}
+
+.tag.prog {
+  background-color: var(--color-warning);
+}
+
+.tag.assigned {
+  background-color: var(--color-primary);
+}
