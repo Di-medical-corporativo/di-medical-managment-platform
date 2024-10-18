@@ -26,7 +26,11 @@ export class PrismaTaskRepository implements TaskRepository {
     });
   }
 
-  async findAll(): Promise<Task[]> {
+  async findAll(month: number, year: number): Promise<Task[]> {
+    const startOfMonth: Date = new Date(year, month - 1, 1);
+    
+    const endOfMonth: Date = new Date(year, month, 1);
+
     const tasksDB = await prisma.task.findMany({
       include: {
         userAssigned: {
@@ -35,7 +39,31 @@ export class PrismaTaskRepository implements TaskRepository {
             firstName: true,
             lastName: true
           }
-        }
+        },
+      },
+      where: {
+        OR: [
+          // Mostrar todas las tareas asignadas y en progreso sin importar la fecha
+          {
+            status: { in: [StatusList.Assigned, StatusList.Progress] }
+          },
+          // Mostrar tareas completadas solo si están dentro del rango de fechas
+          {
+            status: StatusList.Completed,
+            dueTo: {
+              gte: startOfMonth,
+              lt: endOfMonth
+            }
+          },
+          // Mostrar tareas vencidas dentro del rango de fechas
+          {
+            status: StatusList.PastDue,
+            dueTo: {
+              gte: startOfMonth,
+              lt: endOfMonth
+            }
+          }
+        ]
       },
       orderBy: {
         dueTo: 'asc'

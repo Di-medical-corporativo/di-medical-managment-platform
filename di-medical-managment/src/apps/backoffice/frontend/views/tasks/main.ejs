@@ -24,6 +24,13 @@
         <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/task/new'">Asignar tarea</button>
       </header>
 
+      <section id="tasks-filter">
+        <form action="/backoffice/task" method="get">
+          <input type="month" name="filter" class="input" required>
+          <button type="submit" class="button primary">Filtro</button>
+        </form>
+      </section>
+
       <section id="admin-tasks">
         <div class="task-list">
           <div class="task-title">

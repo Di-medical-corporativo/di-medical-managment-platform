@@ -5,7 +5,7 @@ import { TaskId } from "./TaskId";
 export interface TaskRepository {
   save(task: Task): Promise<void>
 
-  findAll(): Promise<Task[]>
+  findAll(month: number, year: number): Promise<Task[]>
 
   search(id: TaskId): Promise<Task | null>
 

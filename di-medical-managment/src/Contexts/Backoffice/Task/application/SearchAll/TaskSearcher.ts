@@ -1,3 +1,4 @@
+import { NumericLiteral } from "typescript";
 import { TaskRepository } from "../../domain/TaskRepository";
 
 export class TaskSearcher {
@@ -5,8 +6,14 @@ export class TaskSearcher {
     private repository: TaskRepository
   ) {}
 
-  async run() {
-    const tasks = await this.repository.findAll();
+  async run(params: {
+    month: number,
+    year: number
+  }) {
+    const tasks = await this.repository.findAll(
+      params.month,
+      params.year
+    );
 
     return tasks;
   }

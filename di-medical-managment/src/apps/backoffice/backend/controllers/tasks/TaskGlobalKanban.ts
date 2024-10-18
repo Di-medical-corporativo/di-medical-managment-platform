@@ -1,7 +1,6 @@
 import { TaskSearcher } from "../../../../../Contexts/Backoffice/Task/application/SearchAll/TaskSearcher";
 import { Request, Response } from "express";
 import { StatusList } from "../../../../../Contexts/Backoffice/Task/domain/TaskStatus";
-import { Status } from "@cucumber/cucumber";
 
 export class TaskGlobalKanban {
   constructor(
@@ -10,7 +9,28 @@ export class TaskGlobalKanban {
 
   async run(req: Request, res: Response) {
     try {
-      const tasks = await this.taskSearcher.run();
+      const { filter } = req.query as { filter?: string } as { filter?: string };; 
+
+      let dateToFilter = new Date();
+
+      let monthToFilter: number = dateToFilter.getMonth() + 1;
+
+      let yearToFilter: number = dateToFilter.getFullYear();      
+
+      if(filter) {
+        const [year, monthNumber] = filter.split('-');
+        
+        console.log(filter);
+
+        yearToFilter = parseInt(year, 10);
+
+        monthToFilter = parseInt(monthNumber, 10);
+      }
+
+      const tasks = await this.taskSearcher.run({
+        month: monthToFilter,
+        year: yearToFilter
+      });
 
       const plainTasks = tasks.map(t => t.toPrimitives());
 
