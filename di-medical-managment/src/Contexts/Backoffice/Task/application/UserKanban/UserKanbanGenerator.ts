@@ -8,9 +8,15 @@ export class UserKanbanGenerator {
   ) {}
 
   async run(params: {
-    id: UserId
+    id: UserId,
+    month: number,
+    year: number
   }) {
-    const tasks: Task[] = await this.taskRepository.kanban(params.id);
+    const tasks: Task[] = await this.taskRepository.kanban(
+      params.id,
+      params.month,
+      params.year
+    );
 
     const assignedTasks = tasks.filter(task => task.isAssigned())
 

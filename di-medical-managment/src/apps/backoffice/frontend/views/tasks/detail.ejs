@@ -56,7 +56,11 @@
       <section id="new-client-form">        
         <form action="/backoffice/task/<%= task.id %>/nextStatus?_method=PUT" method="post" id="taskForm"> 
           <div class="tags" style="display: flex; gap: 5px;">
-            <small class="tag" style="align-self: self-start;">Punto de ruta</small>
+            
+            <% if (task.isPoint) { %>
+              <small class="tag" style="align-self: self-start;">Punto de ruta</small>
+            <% } %>
+            
             <% if (task.status === 'completed') { %>
               <small class="tag done" style="align-self: self-start;">Completado</small>
             <% } %>

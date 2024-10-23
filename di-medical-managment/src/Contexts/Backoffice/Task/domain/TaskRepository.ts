@@ -17,5 +17,5 @@ export interface TaskRepository {
 
   updateStatus(task: Task): Promise<void>
 
-  kanban(id: UserId): Promise<Task[]>
+  kanban(id: UserId, month: number, year: number): Promise<Task[]>
 }

@@ -67,8 +67,8 @@ export class TaskRepositoryMock implements TaskRepository {
      
   }
 
-  async kanban(id: UserId): Promise<Task[]> {
-    return this.kanbanMock(id) as Task[];
+  async kanban(id: UserId, month: number, year: number): Promise<Task[]> {
+    return this.kanbanMock(id, month, year) as Task[];
   }
 
   setReturnValueForKanban() {

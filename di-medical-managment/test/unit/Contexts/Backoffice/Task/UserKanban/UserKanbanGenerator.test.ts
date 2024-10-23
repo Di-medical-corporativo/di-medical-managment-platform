@@ -14,10 +14,14 @@ describe('UserKanbanGenerator', () => {
   });
 
   test('should get the kanban of an specific user', async () => {
+    const date = new Date();
+    
     repository.setReturnValueForKanban();
     
     await userKanbanGenerator.run({
-      id: new UserId('')
+      id: new UserId(''),
+      month: date.getMonth(),
+      year: date.getFullYear()
     });
 
     repository.assertKanbanHaveBeenCalled();

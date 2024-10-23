@@ -20,8 +20,6 @@ export class TaskGlobalKanban {
       if(filter) {
         const [year, monthNumber] = filter.split('-');
         
-        console.log(filter);
-
         yearToFilter = parseInt(year, 10);
 
         monthToFilter = parseInt(monthNumber, 10);

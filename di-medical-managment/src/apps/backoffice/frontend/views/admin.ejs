@@ -25,6 +25,13 @@
           <button id="logout" class="button primary">Cerrar sesión</button>
         </form> 
       </header>
+
+      <section id="tasks-filter" style="margin-top: 20px;">
+        <form action="/backoffice/" method="get">
+          <input type="month" name="filter" class="input" required>
+          <button type="submit" class="button primary">Filtro</button>
+        </form>
+      </section>
     
       <section id="admin-tasks">
         <div class="task-list">

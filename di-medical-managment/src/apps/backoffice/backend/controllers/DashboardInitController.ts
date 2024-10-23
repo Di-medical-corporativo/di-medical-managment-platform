@@ -22,13 +22,31 @@ export default class DashBoardInitController {
 
       if(!user) throw new InvalidCredentials();
 
+      const { filter } = req.query as { filter?: string } as { filter?: string };; 
+
+      let dateToFilter = new Date();
+
+      let monthToFilter: number = dateToFilter.getMonth() + 1;
+
+      let yearToFilter: number = dateToFilter.getFullYear();  
+
+      if(filter) {
+        const [year, monthNumber] = filter.split('-');
+        
+        yearToFilter = parseInt(year, 10);
+
+        monthToFilter = parseInt(monthNumber, 10);
+      }
+
       const { 
         assignedTasks, 
         completedTasks, 
         inProgressTasks, 
         overdueTasks 
       } = await this.userKanbanGenerator.run({
-        id: new UserId(user.id)
+        id: new UserId(user.id),
+        month: monthToFilter,
+        year: yearToFilter
       });
 
       res.status(200).render('admin', {
