@@ -7,7 +7,7 @@ import { PointId } from "./PointId";
 export interface ItineraryRepository {
   save(itinerary: Itinerary): Promise<void>
   
-  findAll(): Promise<ItineraryPreview[]>
+  findAll(month: number, year: number): Promise<ItineraryPreview[]>
 
   search(id: ItineraryId): Promise<Itinerary | null>
 

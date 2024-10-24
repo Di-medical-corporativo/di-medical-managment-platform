@@ -78,7 +78,11 @@ export class PrismaItineraryRepository implements ItineraryRepository {
     });
   }
 
-  async findAll(): Promise<ItineraryPreview[]> {
+  async findAll(month: number, year: number): Promise<ItineraryPreview[]> {
+    const startOfMonth: Date = new Date(year, month - 1, 1);
+    
+    const endOfMonth: Date = new Date(year, month, 1);
+    
     const itineraryDB = await prisma.itinerary.findMany({
       orderBy: {
         scheduleDate: "desc"
@@ -94,6 +98,12 @@ export class PrismaItineraryRepository implements ItineraryRepository {
             id: true,
             name: true
           }
+        }
+      },
+      where: {
+        createdAt: {
+          gt: startOfMonth,
+          lt: endOfMonth
         }
       } 
     });

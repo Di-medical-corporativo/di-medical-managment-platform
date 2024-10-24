@@ -24,7 +24,14 @@
         <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/itinerary/new'">Nueva ruta</button>
       </header>
 
-      <section id="client-list">
+      <section id="tasks-filter">
+        <form action="/backoffice/itinerary" method="get">
+          <input type="month" name="filter" class="input" required>
+          <button type="submit" class="button primary">Filtro</button>
+        </form>
+      </section>
+
+      <section id="client-list" style="margin-top: 20px;">
         <table class="table">
           <thead>
               <tr>

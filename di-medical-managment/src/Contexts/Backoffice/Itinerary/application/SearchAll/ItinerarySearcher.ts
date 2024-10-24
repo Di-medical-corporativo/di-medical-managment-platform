@@ -6,8 +6,14 @@ export class ItinerarySearcher {
     private repository: ItineraryRepository
   ) {}
 
-  async run() {
-    const itineraries: ItineraryPreview[] = await this.repository.findAll();  
+  async run(params: {
+    month: number,
+    year: number
+  }) {
+    const itineraries: ItineraryPreview[] = await this.repository.findAll(
+      params.month,
+      params.year
+    ); 
   
     return itineraries;
   }

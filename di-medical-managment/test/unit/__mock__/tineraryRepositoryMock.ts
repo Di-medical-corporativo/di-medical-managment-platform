@@ -69,7 +69,7 @@ export class ItineraryRepositoryMock implements ItineraryRepository {
     this.startMock(id);
   }
 
-  async findAll(): Promise<ItineraryPreview[]> {
+  async findAll(month: number, year: number): Promise<ItineraryPreview[]> {
     return this.searchAll();
   }
 

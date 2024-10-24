@@ -1,4 +1,3 @@
-import { NumericLiteral } from "typescript";
 import { TaskRepository } from "../../domain/TaskRepository";
 
 export class TaskSearcher {

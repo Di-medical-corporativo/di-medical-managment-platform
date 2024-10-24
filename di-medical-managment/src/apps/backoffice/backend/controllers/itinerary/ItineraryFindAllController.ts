@@ -9,7 +9,26 @@ export class ItineraryFindAllController {
 
   async run(req: Request, res: Response) {
     try {
-      const itineraries = await this.itinerarySearcher.run();
+      const { filter } = req.query as { filter?: string } as { filter?: string };; 
+
+      let dateToFilter = new Date();
+
+      let monthToFilter: number = dateToFilter.getMonth() + 1;
+
+      let yearToFilter: number = dateToFilter.getFullYear();
+
+      if(filter) {
+        const [year, monthNumber] = filter.split('-');
+        
+        yearToFilter = parseInt(year, 10);
+
+        monthToFilter = parseInt(monthNumber, 10);
+      }
+
+      const itineraries = await this.itinerarySearcher.run({
+        month: monthToFilter,
+        year: yearToFilter
+      });
 
       res.status(200).render('itinerary/main', {
         itineraries: itineraries.map(i => i.toPrimitives())

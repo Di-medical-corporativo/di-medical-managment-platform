@@ -66,7 +66,7 @@ export class PrismaTaskRepository implements TaskRepository {
         ]
       },
       orderBy: {
-        dueTo: 'asc'
+        dueTo: 'desc'
       }
     });
 
@@ -213,7 +213,7 @@ export class PrismaTaskRepository implements TaskRepository {
         ]
       },
       orderBy: {
-        dueTo: 'asc'
+        dueTo: 'desc'
       }
     });
 
