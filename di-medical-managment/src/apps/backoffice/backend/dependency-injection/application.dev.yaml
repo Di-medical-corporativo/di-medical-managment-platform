@@ -646,3 +646,29 @@ services:
       "@Contexts.Backoffice.Task.application.UserKanban.UserKanbanGenerator"
     ]
   
+  Contexts.Backoffice.Permit.infra.persistence.PermitRepository:
+    class: ../../../../Contexts/Backoffice/Permit/infra/persistence/PrismaPermitRepository
+
+  Contexts.Backoffice.Permit.application.Create.PermitCreator:
+    class: ../../../../Contexts/Backoffice/Permit/application/Create/PermitCreator
+    arguments: [
+    "@Contexts.Backoffice.Permit.infra.persistence.PermitRepository"
+  ]
+
+  Contexts.Backoffice.Permit.application.UserPermits.UserPermitsFinder:
+    class: ../../../../Contexts/Backoffice/Permit/application/UserPermits/UserPermitsFinder
+    arguments: [
+    "@Contexts.Backoffice.Permit.infra.persistence.PermitRepository"
+  ]
+
+  Apps.Backoffice.backend.controllers.PermitCreateController:
+    class: ../controllers/permit/PermitCreateController
+    arguments: [
+      "@Contexts.Backoffice.Permit.application.Create.PermitCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.PermitByUserPageController:
+    class: ../controllers/permit/PermitByUserPageController
+    arguments: [
+      "@Contexts.Backoffice.Permit.application.UserPermits.UserPermitsFinder"
+    ]

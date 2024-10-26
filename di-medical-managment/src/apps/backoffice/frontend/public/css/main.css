@@ -15,6 +15,7 @@
 @import url('views/point-end.css');
 @import url('views/report.css');
 @import url('views/login.css');
+@import url('views/permit.css');
 
 * {
   margin: 0;

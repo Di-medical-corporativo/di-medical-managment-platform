@@ -26,6 +26,11 @@
         </form> 
       </header>
 
+      <section id="admin-actions" style="margin-top: 20px;">
+        <button class="button" onclick="window.location.href='/backoffice/permit/new'">Pedir permiso</button>
+        <button class="button" onclick="window.location.href='/backoffice/permit/<%= user.id %>/'">Mis permisos</button>
+      </section>
+
       <section id="tasks-filter" style="margin-top: 20px;">
         <form action="/backoffice/" method="get">
           <input type="month" name="filter" class="input" required>
@@ -163,7 +168,6 @@
           </div>
         </div>
       </section>
-
     </main>
   </div>
 </body>

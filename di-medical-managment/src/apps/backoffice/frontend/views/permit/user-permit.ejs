@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sucursales</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <style>
+  </style>
+</head>
+<body>
+  <div id="admin-dash">
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/permits/id">
+            <small>Permisos</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/permits/id">
+            <small>Mis permisos</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="client-list">
+        <% if (pendingPermits.length > 0) { %>
+          <h2>Permisos Pendientes</h2>
+          <div class="card-container">
+            <% pendingPermits.forEach(permit => { %>
+              <div class="permit-card">
+                <h3>
+                  <% if (permit.type === 'vacation-permit') { %>
+                    Permiso de Vacaciones
+                  <% } else if (permit.type === 'sick-permit') { %>
+                    Permiso por Enfermedad
+                  <% } else if (permit.type === 'personal-permit') { %>
+                    Permiso Personal
+                  <% } else { %>
+                    Tipo de Permiso Desconocido
+                  <% } %>
+                </h3>
+                <small>Razón: <%= permit.reason %></small>
+                <small>Fecha: <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
+                <small>Estado: Pendiente</small>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+
+        <% if (approvedPermits.length > 0) { %>
+          <h2>Permisos Aprobados</h2>
+          <div class="card-container">
+            <% approvedPermits.forEach(permit => { %>
+              <div class="permit-card">
+                <h3>
+                  <% if (permit.type === 'vacation-permit') { %>
+                    Permiso de Vacaciones
+                  <% } else if (permit.type === 'sick-permit') { %>
+                    Permiso por Enfermedad
+                  <% } else if (permit.type === 'personal-permit') { %>
+                    Permiso Personal
+                  <% } else { %>
+                    Tipo de Permiso Desconocido
+                  <% } %>
+                </h3>
+                <small>Razón: <%= permit.reason %></small>
+                <small>Fecha: <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
+                <small>Estado: Aprobado</small>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+
+        <% if (rejectedPermits.length > 0) { %>
+          <h2>Permisos Rechazados</h2>
+          <div class="card-container">
+            <% rejectedPermits.forEach(permit => { %>
+              <div class="permit-card">
+                <h3>
+                  <% if (permit.type === 'vacation-permit') { %>
+                    Permiso de Vacaciones
+                  <% } else if (permit.type === 'sick-permit') { %>
+                    Permiso por Enfermedad
+                  <% } else if (permit.type === 'personal-permit') { %>
+                    Permiso Personal
+                  <% } else { %>
+                    Tipo de Permiso Desconocido
+                  <% } %>
+                </h3>
+                <small>Razón: <%= permit.reason %></small>
+                <small>Fecha: <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
+                <small>Estado: Rechazado</small>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

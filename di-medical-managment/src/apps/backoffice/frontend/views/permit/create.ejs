@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuario</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/">
+            <small>Permisos</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/permit/new">
+            <small>Pedir permiso</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="new-client-form">
+        <form action="/backoffice/permit/new" method="post">
+          <label for="type">Tipo:</label>
+          <select name="type" class="input">
+              <option value="vacation-permit">Vacaciones</option>
+              <option value="sick-permit">Enfermedad</option>
+              <option value="personal-permit">Personal</option>
+          </select>
+          <label for="reason">Razon:</label>
+          <input type="text" name="reason" id="address" class="input" required>
+          <button type="submit" class="button primary">Pedir permiso</button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -24,6 +24,19 @@ model User {
   sucursal Sucursal @relation(fields: [sucursalId], references: [id])
   points Point[]
   tasks Task[]
+  permit Permit[]
+}
+
+model Permit {
+  id String @id
+  type String
+  reason String
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  createdAt DateTime @default(now())
+  decitionTakenAt DateTime? @default(now())
+  status String
+  adminComment String?
 }
 
 model Login {
