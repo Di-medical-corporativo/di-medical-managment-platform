@@ -7,12 +7,18 @@ export class PermitRepositoryMock implements PermitRepository {
 
   private findByUserMock: jest.Mock;
 
+  private findAllMock: jest.Mock;
+
   constructor() {
     this.saveMock = jest.fn();
 
     this.findByUserMock = jest.fn().mockReturnValue([]);
   }
   
+  async findAll(month: number, year: number): Promise<Permit[]> {
+    return this.findAllMock(month, year);
+  }
+
   async save(permit: Permit): Promise<void> {
     return this.saveMock(permit);
   }

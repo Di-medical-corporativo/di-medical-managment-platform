@@ -661,6 +661,12 @@ services:
     "@Contexts.Backoffice.Permit.infra.persistence.PermitRepository"
   ]
 
+  Contexts.Backoffice.Permit.application.SearchAll.PermitSearcher:
+    class: ../../../../Contexts/Backoffice/Permit/application/SearchAll/PermitSearcher
+    arguments: [
+    "@Contexts.Backoffice.Permit.infra.persistence.PermitRepository"
+  ]
+
   Apps.Backoffice.backend.controllers.PermitCreateController:
     class: ../controllers/permit/PermitCreateController
     arguments: [
@@ -671,4 +677,10 @@ services:
     class: ../controllers/permit/PermitByUserPageController
     arguments: [
       "@Contexts.Backoffice.Permit.application.UserPermits.UserPermitsFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.PermitFindAllController:
+    class: ../controllers/permit/PermitFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Permit.application.SearchAll.PermitSearcher"
     ]

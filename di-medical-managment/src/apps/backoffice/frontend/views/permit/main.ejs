@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mis permisos</title>
   <link rel="stylesheet" href="/css/main.css">
-  <style>
-  </style>
 </head>
 <body>
   <div id="admin-dash">
@@ -15,18 +13,15 @@
     <main id="main-admin">
       <header class="section-header">
         <section class="breadcrumb">
-          <a href="/backoffice/permit/mine">
+          <a href="/backoffice/permit/">
             <small>Permisos</small>
           </a>
           <span class="breadcrumb-slash">/</span>
-          <a href="/backoffice/permit/mine">
-            <small>Mis permisos</small>
-          </a>
         </section>
       </header>
 
       <section id="tasks-filter" style="margin-top: 20px;">
-        <form action="/backoffice/permit/mine" method="get">
+        <form action="/backoffice/permit/" method="get">
           <input type="month" name="filter" class="input" required>
           <button type="submit" class="button primary">Filtro</button>
         </form>
@@ -49,9 +44,21 @@
                     Tipo de Permiso Desconocido
                   <% } %>
                 </h3>
+                <small><strong>Empleado:</strong> <%= permit.user.firstName %> <%= permit.user.lastName %></small>
                 <small>Razón: <%= permit.reason %></small>
                 <small>Pedido el: <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
                 <small>Estado: Pendiente</small>
+                
+                <!-- Form for Accept/Reject Buttons -->
+                <form action="/backoffice/permit/decide" method="post" style="margin-top: 10px;">
+                  <input type="hidden" name="permitId" value="<%= permit.id %>">
+                  
+                  <!-- Accept Button -->
+                  <button type="submit" name="action" value="accept" class="button primary">Aceptar</button>
+                  
+                  <!-- Reject Button -->
+                  <button type="submit" name="action" value="reject" class="button danger">Rechazar</button>
+                </form>
               </div>
             <% }) %>
           </div>
@@ -73,6 +80,7 @@
                     Tipo de Permiso Desconocido
                   <% } %>
                 </h3>
+                <small><strong>Empleado:</strong> <%= permit.user.firstName %> <%= permit.user.lastName %></small>
                 <small>Razón: <%= permit.reason %></small>
                 <small>Pedido el: <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
                 <small>Aprobado el: <%= new Date(permit.decitionTakenAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %> </small>
@@ -98,6 +106,7 @@
                     Tipo de Permiso Desconocido
                   <% } %>
                 </h3>
+                <small><strong>Empleado:</strong> <%= permit.user.firstName %> <%= permit.user.lastName %></small>
                 <small>Razón: <%= permit.reason %></small>
                 <small>Fecha: <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
                 <small>Estado: Rechazado</small>
