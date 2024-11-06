@@ -667,10 +667,46 @@ services:
     "@Contexts.Backoffice.Permit.infra.persistence.PermitRepository"
   ]
 
+  Contexts.Backoffice.Permit.application.Accept.PermitAcceptor:
+    class: ../../../../Contexts/Backoffice/Permit/application/Acept/PermitAcceptor
+    arguments: [
+    "@Contexts.Backoffice.Permit.infra.persistence.PermitRepository"
+  ]
+
+  Contexts.Backoffice.Permit.application.Find.PermitFinder:
+    class: ../../../../Contexts/Backoffice/Permit/domain/PermitFinder
+    arguments: [
+    "@Contexts.Backoffice.Permit.infra.persistence.PermitRepository"
+  ]
+
   Apps.Backoffice.backend.controllers.PermitCreateController:
     class: ../controllers/permit/PermitCreateController
     arguments: [
       "@Contexts.Backoffice.Permit.application.Create.PermitCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.PermitAcceptPageController:
+    class: ../controllers/permit/PermitAcceptPageController
+    arguments: [
+      "@Contexts.Backoffice.Permit.application.Find.PermitFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.PermitRejectPageController:
+    class: ../controllers/permit/PermitRejectPageController
+    arguments: [
+      "@Contexts.Backoffice.Permit.application.Find.PermitFinder"
+    ]
+  
+  Apps.Backoffice.backend.controllers.PermitAcceptController:
+    class: ../controllers/permit/PermitAcceptController
+    arguments: [
+      "@Contexts.Backoffice.Permit.application.Accept.PermitAcceptor"
+    ]
+  
+  Apps.Backoffice.backend.controllers.PermitRejectController:
+    class: ../controllers/permit/PermitRejectController
+    arguments: [
+      "@Contexts.Backoffice.Permit.application.Accept.PermitAcceptor"
     ]
 
   Apps.Backoffice.backend.controllers.PermitByUserPageController:

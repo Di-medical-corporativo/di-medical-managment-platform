@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalles del Permiso</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/permit">
+            <small>Permisos</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <span><small>Detalles del Permiso</small></span>
+        </section>
+      </header>
+
+      <section id="permit-details" >
+        <h2>Detalle del Permiso</h2>
+        <div class="permit-info" >
+          <p><strong>Tipo:</strong>  <% if (permit.type === 'vacation-permit') { %>
+            Vacaciones
+          <% } else if (permit.type === 'sick-permit') { %>
+            Enfermedad
+          <% } else if (permit.type === 'personal-permit') { %>
+            Personal
+          <% } %></p>
+          <p><strong>Razón:</strong> <%= permit.reason %></p>
+          <p><strong>Usuario:</strong> <%= permit.user.firstName %> <%= permit.user.lastName %></p>
+          <% 
+            const date = new Date(permit.createdAt);
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+          %>
+          <p><strong>Fecha de Creación:</strong> <%= `${day}/${month}/${year}` %></p>
+          <p><strong>Estado:</strong> <% if (permit.status === 'pending-permit') { %>
+            Pendiente
+          <% } else if (permit.status === 'approved-permit') { %>
+            Aprobado
+          <% } else if (permit.status === 'rejected-permit') { %>
+            Rechazado
+          <% } %></p>
+        </div>
+
+        <form action="/backoffice/permit/<%= permit.id %>/reject" method="post" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+          <input type="hidden" name="_method" value="PUT">
+          <label for="adminComment">Comentario del Administrador:</label>
+          <input name="comment" id="adminComment" class="input" placeholder="Escribe un comentario..." required />
+          
+          <button type="submit" class="button danger">Rechazar</button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,6 +1,8 @@
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
 import { UserId } from "../../../User/domain/UserId";
 import { Permit, PermitWithDecision, PermitWithNoDecision } from "../../domain/Permit";
+import { PermitAdminComment } from "../../domain/PermitComment";
+import { PermitId } from "../../domain/PermitId";
 import { PermitRepository } from "../../domain/PermitRepository";
 import { PermitStatusList } from "../../domain/PermitStatus";
 import { PermitType } from "../../domain/PermitType";
@@ -153,5 +155,68 @@ export class PrismaPermitRepository implements PermitRepository {
     });
 
     return permits;
+  }
+
+  async action(id: PermitId, comment: PermitAdminComment, action: PermitStatusList): Promise<void> {
+    await prisma.permit.update({
+      where: {
+        id: id.toString()
+      },
+      data: {
+        status: action,
+        decitionTakenAt: new Date().toISOString(),
+        adminComment: comment.value
+      }
+    })
+  }
+
+  async find(id: PermitId): Promise<Permit | null> {
+    const permitDB = await prisma.permit.findFirst({
+      where: {
+        id: id.toString()
+      },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            id: true
+          }
+        }
+      }
+    });
+
+    if(!permitDB) return null;
+  
+    if(permitDB.status == PermitStatusList.Pending) {
+      return PermitWithNoDecision.fromPrimitives({
+        createdAt: permitDB.createdAt.toISOString(),
+        id: permitDB.id,
+        reason: permitDB.reason,
+        status: permitDB.status,
+        type: permitDB.type as PermitType,
+        user: {
+          firstName: permitDB.user.firstName,
+          lastName: permitDB.user.lastName,
+          id: permitDB.user.id
+        }
+      });
+    }
+
+
+    return PermitWithDecision.fromPrimitives({
+      createdAt: permitDB.createdAt.toISOString(),
+      id: permitDB.id,
+      reason: permitDB.reason,
+      status: permitDB.status,
+      type: permitDB.type as PermitType,
+      user: {
+        firstName: permitDB.user.firstName,
+        lastName: permitDB.user.lastName,
+        id: permitDB.user.id
+      },
+      adminCommment: permitDB.adminComment!,
+      decitionTakenAt: permitDB.decitionTakenAt?.toISOString()!
+    })
   }
 }

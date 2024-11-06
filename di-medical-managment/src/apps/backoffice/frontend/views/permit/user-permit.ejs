@@ -15,8 +15,8 @@
     <main id="main-admin">
       <header class="section-header">
         <section class="breadcrumb">
-          <a href="/backoffice/permit/mine">
-            <small>Permisos</small>
+          <a href="/backoffice/">
+            <small>Perfil</small>
           </a>
           <span class="breadcrumb-slash">/</span>
           <a href="/backoffice/permit/mine">
@@ -77,6 +77,7 @@
                 <small>Pedido el: <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
                 <small>Aprobado el: <%= new Date(permit.decitionTakenAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %> </small>
                 <small>Estado: Aprobado</small>
+                <small>Comentarios: <%= permit.adminComment %> </small>
               </div>
             <% }) %>
           </div>
@@ -100,8 +101,8 @@
                 </h3>
                 <small>Razón: <%= permit.reason %></small>
                 <small>Fecha: <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
-                <small>Estado: Rechazado</small>
                 <small>Rechazado el: <%= new Date(permit.decitionTakenAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %> </small>
+                <small>Estado: Rechazado</small>
                 <small>Comentarios: <%= permit.adminComment %> </small>
               </div>
             <% }) %>

@@ -42,3 +42,31 @@ h2 {
   color: #333;
   margin-bottom: 10px;
 }
+
+#permit-details {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 600px;
+  font-family: Arial, sans-serif;
+}
+
+#permit-details h2 {
+  font-size: 1.5em;
+  color: #333;
+  border-bottom: 2px solid #f8a900;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+.permit-info p {
+  font-size: 1em;
+  color: #555;
+  margin: 0;
+  padding: 5px 0;
+}
+
+.permit-info p strong {
+  color: #333;
+}
