@@ -116,7 +116,9 @@ export class Server {
     
     this.express.use(cors());
     
-    this.express.use('/backoffice', ensureAuthenticated, router);
+    this.express.use('/backoffice', router);
+
+    this.express.get('/', (req: Request, res: Response) => res.redirect('/backoffice'));
 
     this.express.get('/login', (req: Request, res: Response) => {
       res.status(200).render('login/login')

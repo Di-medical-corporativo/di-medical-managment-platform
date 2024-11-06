@@ -16,4 +16,6 @@ export interface SurveyRepository {
   close(id: SurveyId): Promise<void>
 
   results(id: SurveyId): Promise<SurveyResult | null>
+
+  open(id: SurveyId): Promise<void>
 }

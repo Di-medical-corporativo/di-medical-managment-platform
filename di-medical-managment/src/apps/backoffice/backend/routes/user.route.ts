@@ -7,6 +7,9 @@ import { UserCreatePageController } from "../controllers/users/UserCreatePageCon
 import { UserUpdateController } from "../controllers/users/UserUpdateController";
 import { UserSearchController } from "../controllers/users/UserSearchController";
 import { UserDeleteController } from "../controllers/users/UserDeleteController";
+import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
+import { authorizeRoles } from "../middlewares/authorizeRoles";
+import { surperAdminRole } from "../../../../Contexts/Shared/domain/roles/Roles";
 
 
 export const register = (app: Express) => {
@@ -21,6 +24,8 @@ export const register = (app: Express) => {
   const searchUserContoller: UserSearchController = container.get('Apps.Backoffice.backend.controllers.UserSearchController');
 
   const deleteUserController: UserDeleteController = container.get('Apps.Backoffice.backend.controllers.UserDeleteController');
+
+  app.use('/user', ensureAuthenticated, authorizeRoles(surperAdminRole));
 
   app.post('/user/:id', (req: Request, res: Response) => createUserController.run(req, res));
 

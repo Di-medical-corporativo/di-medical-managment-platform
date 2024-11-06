@@ -12,6 +12,7 @@ export class SurveyRepositoryMock implements SurveyRepository {
   private findAllMock: jest.Mock;
   private closeMock: jest.Mock;
   private resultsMock: jest.Mock;
+  private openMock: jest.Mock;
 
   constructor() {
     this.saveMock = jest.fn();
@@ -20,6 +21,11 @@ export class SurveyRepositoryMock implements SurveyRepository {
     this.findAllMock = jest.fn();
     this.closeMock = jest.fn();
     this.resultsMock =jest.fn();
+    this.openMock = jest.fn();
+  }
+
+  async open(id: SurveyId): Promise<void> {
+    this.openMock(id);
   }
   
   async results(id: SurveyId): Promise<SurveyResult> {

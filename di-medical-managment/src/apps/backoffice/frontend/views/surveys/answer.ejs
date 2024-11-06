@@ -7,11 +7,11 @@
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-  <div id="answer">
+  <div id="answer" style="margin-bottom: 10px;">
     <form id="survey-content" action="/backoffice/survey/<%= id %>/answer" method="post">
       <input type="text" hidden value="<%= id %>" name="id" id="answerId">
       <input type="text" hidden value="<%= survey.id %>" name="surveyId" id="surveyId">
-      <div id="survey-desc" >
+      <div id="survey-desc">
         <img src="/images/logo.png" alt="Logo dimedical corporativo" id="logo-survey">
         <h2><%= survey.title %></h2>
         <small><%= survey.description %></small>
@@ -35,11 +35,8 @@
           <% }%>
         </div/>
       <% } %>
-      <button class="button primary">Enviar respuesta</button>
+      <button class="button primary" id="send-answer">Enviar respuesta</button>
     </form>
   </div>
-</body>
-</html>
-
 </body>
 </html>

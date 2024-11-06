@@ -1,3 +1,4 @@
+
 services:
   Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository:
     class: ../../../../Contexts/Backoffice/Sucursal/infra/persistence/PrismaSucursalRepository
@@ -289,6 +290,12 @@ services:
     "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
   ]
 
+  Contexts.Backoffice.Survey.application.Open.SurveyOpener:
+    class: ../../../../Contexts/Backoffice/Survey/application/Open/SurveyOpener
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+  ]
+
   Contexts.Backoffice.Survey.application.Results.SurveyResultsDisplayer:
     class: ../../../../Contexts/Backoffice/Survey/application/Results/SurveyResultsDisplayer
     arguments: [
@@ -323,6 +330,12 @@ services:
     class: ../controllers/survey/SurveyCloseController
     arguments: [
       "@Contexts.Backoffice.Survey.application.Close.SurveyTerminator"
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveyOpenController:
+    class: ../controllers/survey/SurveyOpenController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.Open.SurveyOpener"
     ]
 
   Apps.Backoffice.backend.controllers.SurveyResultsController:

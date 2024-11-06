@@ -53,6 +53,11 @@
                       <input type="text" value="<%= surveys[i].id %>" name="id" hidden>
                       <button class="button danger" type="submit">Cerrar encuesta</button>
                     </form> 
+                  <% } else { %>
+                    <form action="/backoffice/survey/<%= surveys[i].id %>/open" method="post">
+                      <input type="text" value="<%= surveys[i].id %>" name="id" hidden>
+                      <button class="button" type="submit">Abrir encuesta</button>
+                    </form> 
                   <% } %>
                 </td>
             </tr>

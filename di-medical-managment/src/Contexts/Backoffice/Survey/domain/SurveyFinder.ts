@@ -17,10 +17,6 @@ export class SurveyFinder {
       throw new SurveyNotFound(); 
     }
 
-    if(!survey.isAcceptingAnswers()) {
-      throw new SurveyClosed();
-    }
-
     return survey;
   }
 }

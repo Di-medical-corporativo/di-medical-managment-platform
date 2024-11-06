@@ -14,6 +14,9 @@ import { PointUpdateControllerPage } from "../controllers/itinerary/PointUpdateC
 import { UpdatePointController } from "../controllers/itinerary/UpdatePointController";
 import { ItineraryReportPageController } from "../controllers/itinerary/ItineraryReportPageController";
 import { ItineraryImageGeneratorController } from "../controllers/itinerary/ItineraryImageGeneratorController";
+import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
+import { authorizeRoles } from "../middlewares/authorizeRoles";
+import { adminRole, surperAdminRole } from "../../../../Contexts/Shared/domain/roles/Roles";
 
 export const register = (app: Express) => {
   const createItineraryPage: ItineraryCreatePageController = container.get('Apps.Backoffice.backend.controllers.ItineraryCreatePageController');
@@ -43,6 +46,8 @@ export const register = (app: Express) => {
   const reportPointPageController: ItineraryReportPageController = container.get('Apps.Backoffice.backend.controllers.ItineraryReportPageController');
 
   const imageItineraryGeneratorController: ItineraryImageGeneratorController = container.get('Apps.Backoffice.backend.controllers.ItineraryImageGeneratorController');
+
+  app.use('/itinerary', ensureAuthenticated, authorizeRoles(adminRole, surperAdminRole));
 
   app.get('/itinerary/new', (req: Request, res: Response) => createItineraryPage.run(req, res));
 

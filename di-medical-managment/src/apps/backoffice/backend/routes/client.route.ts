@@ -6,6 +6,9 @@ import { v4 as uuid } from "uuid";
 import { ClientFindAllController } from "../controllers/client/ClientFindAllController";
 import { ClientSearchController } from "../controllers/client/ClientSearchController";
 import { ClientDeleteController } from "../controllers/client/ClientDeleteController";
+import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
+import { authorizeRoles } from "../middlewares/authorizeRoles";
+import { adminRole, surperAdminRole, userRole } from "../../../../Contexts/Shared/domain/roles/Roles";
 
 export const register = (app: Express) => {
   const createClientController: ClientCreateController = container.get('Apps.Backoffice.backend.controllers.ClientCreateController');
@@ -17,6 +20,11 @@ export const register = (app: Express) => {
   const searchClientController: ClientSearchController = container.get('Apps.Backoffice.backend.controllers.ClientSearchController');
 
   const deleteClientController: ClientDeleteController = container.get('Apps.Backoffice.backend.controllers.ClientDeleteController');
+
+  app.use('/client', ensureAuthenticated, authorizeRoles(
+    adminRole,
+    surperAdminRole
+  ));
 
   app.post('/client/:id', (req: Request, res: Response) => createClientController.run(req, res));
   

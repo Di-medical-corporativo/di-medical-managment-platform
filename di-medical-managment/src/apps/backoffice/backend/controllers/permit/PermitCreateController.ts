@@ -16,6 +16,7 @@ export interface User {
   firstName: string;
   lastName: string;
   job: string;
+  role: string;
 }
 
 export class PermitCreateController {

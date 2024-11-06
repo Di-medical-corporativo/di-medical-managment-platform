@@ -9,6 +9,9 @@ import { TruckSearchController } from "../controllers/truck/TruckSearchControlle
 import { v4 as uuid } from "uuid";
 import { IncidentFindAllController } from "../controllers/truck/IncidentFindAllController";
 import { IncidentRemoveController } from "../controllers/truck/IncidentRemoveController";
+import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
+import { authorizeRoles } from "../middlewares/authorizeRoles";
+import { adminRole, surperAdminRole } from "../../../../Contexts/Shared/domain/roles/Roles";
 
 export const register = (app: Express) => {
   const createTruckController: TruckCreateController = container.get('Apps.Backoffice.backend.controllers.TruckCreateController');
@@ -24,6 +27,8 @@ export const register = (app: Express) => {
   const findAllIncidentController: IncidentFindAllController = container.get('Apps.Backoffice.backend.controllers.IncidentFindAllController');
 
   const removeIncidentController: IncidentRemoveController = container.get('Apps.Backoffice.backend.controllers.IncidentRemoveController');
+
+  app.use('/truck', ensureAuthenticated, authorizeRoles(adminRole, surperAdminRole));
 
   app.post('/truck/:id', (req: Request, res: Response) => createTruckController.run(req, res));
 

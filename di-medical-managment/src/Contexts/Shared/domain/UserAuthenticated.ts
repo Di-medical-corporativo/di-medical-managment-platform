@@ -1,6 +1,7 @@
 import { UserEmail } from "../../Backoffice/User/domain/UserEmail";
 import { UserFirstName } from "../../Backoffice/User/domain/UserFirstName";
 import { UserId } from "../../Backoffice/User/domain/UserId";
+import { Role } from "../../Backoffice/User/domain/UserIsAdmin";
 import { UserJob } from "../../Backoffice/User/domain/UserJob";
 import { UserLastName } from "../../Backoffice/User/domain/UserLastName";
 import { UserPassword } from "../../Backoffice/User/domain/UserPassword";
@@ -13,7 +14,8 @@ export class UserAuthenticated {
     private firstName: UserFirstName,
     private lastName: UserLastName,
     private password: UserPassword,
-    private job: UserJob
+    private job: UserJob,
+    private role: Role
   ) {}
 
   public isPasswordCorrect(passwordToCompare: string) {
@@ -33,7 +35,8 @@ export class UserAuthenticated {
     firstName: UserFirstName,
     lastName: UserLastName,
     password: UserPassword,
-    job: UserJob
+    job: UserJob,
+    role: Role
   }) {
     return new UserAuthenticated(
       params.id,
@@ -41,7 +44,8 @@ export class UserAuthenticated {
       params.firstName,
       params.lastName,
       params.password,
-      params.job
+      params.job,
+      params.role
     );
   }
 
@@ -55,6 +59,7 @@ export class UserAuthenticated {
       salt: string
     };
     job: string;
+    role: string;
   }) {
     return new UserAuthenticated(
       new UserId(params.id),
@@ -65,7 +70,8 @@ export class UserAuthenticated {
         params.password.hash,
         params.password.salt
       ),
-      new UserJob(params.job)
+      new UserJob(params.job),
+      new Role(params.role)
     );
   }
 
@@ -76,7 +82,8 @@ export class UserAuthenticated {
       firstName: this.firstName.toString(),
       lastName: this.lastName.toString(),
       password: this.password.toPrimitives(),
-      job: this.job.toString()
+      job: this.job.toString(),
+      role: this.role.toString()
     }
   }
 }
