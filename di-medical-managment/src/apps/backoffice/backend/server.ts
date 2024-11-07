@@ -156,7 +156,7 @@ export class Server {
 
   async listen(): Promise<void> {
     return new Promise(resolve => {
-      this.httpServer = this.express.listen(this.port, () => {
+      this.httpServer = this.express.listen(Number(this.port), '0.0.0.0', () => {
       
         this.logger.info(
           `Backoffice Backend App is running at http://localhost:${this.port} in ${this.express.get('env')} mode`
