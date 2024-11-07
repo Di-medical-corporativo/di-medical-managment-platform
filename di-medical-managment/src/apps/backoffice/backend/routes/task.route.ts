@@ -11,7 +11,7 @@ import { TaskChangeStatusController } from "../controllers/tasks/TaskChangeStatu
 import { TaskDetailPageController } from "../controllers/tasks/TaskDetailPageController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { authorizeRoles } from "../middlewares/authorizeRoles";
-import { surperAdminRole } from "../../../../Contexts/Shared/domain/roles/Roles";
+import { adminRole, surperAdminRole } from "../../../../Contexts/Shared/domain/roles/Roles";
 
 export const register = (app: Express) => {
   const createTaskController: TaskCreateController = container.get('Apps.Backoffice.backend.controllers.TaskCreateController');
@@ -30,7 +30,7 @@ export const register = (app: Express) => {
 
   const detailTaskController: TaskDetailPageController = container.get('Apps.Backoffice.backend.controllers.TaskDetailPageController');
 
-  app.use('/task', ensureAuthenticated, authorizeRoles(surperAdminRole));
+  app.use('/task', ensureAuthenticated, authorizeRoles(surperAdminRole, adminRole));
 
   app.post('/task/:id', (req: Request, res: Response) => createTaskController.run(req, res));
 
