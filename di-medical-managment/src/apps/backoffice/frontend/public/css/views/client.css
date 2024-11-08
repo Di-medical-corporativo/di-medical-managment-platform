@@ -38,6 +38,13 @@
   width: 500px;
 }
 
+@media (max-width: 600px) {
+  #new-client-form form {
+    width: 100%;
+  }
+}
+
+
 #new-client-form form button{
   width: 100%;
 }
