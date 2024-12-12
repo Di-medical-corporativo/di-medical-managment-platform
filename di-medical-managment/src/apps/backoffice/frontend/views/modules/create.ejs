@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nuevo modulo</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/modules">
+            <small>Modulos</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/modules/new">
+            <small>Nuevo modulo</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="new-client-form">
+        <form action="/backoffice/modules/<%= id %>" method="post">
+          <input type="text" hidden id="id" name="id" value="<%= id %>">
+          
+          <label for="name">Nombre:</label>
+          <input type="text" name="name" id="name" class="input" required>
+
+          <button type="submit" class="button primary">Nuevo modulo</button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

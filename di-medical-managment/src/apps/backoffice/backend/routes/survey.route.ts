@@ -26,23 +26,22 @@ export const register = (app: Express) => {
   const openSurveyController: SurveyOpenController = container.get('Apps.Backoffice.backend.controllers.SurveyOpenController');
 
   const resultsSurveyController: SurveyResultsController = container.get('Apps.Backoffice.backend.controllers.SurveyResultsController');
-  
 
-  app.post('/survey/:id', ensureAuthenticated, authorizeRoles(surperAdminRole), (req: Request, res: Response) => createSurveyController.run(req, res));
+  app.post('/survey/:id', (req: Request, res: Response) => createSurveyController.run(req, res));
 
   app.post('/survey/:id/answer', (req: Request, res: Response) => answerSurveyController.run(req, res));
 
-  app.post('/survey/:id/close', ensureAuthenticated, authorizeRoles(surperAdminRole),(req: Request, res: Response) => closeSurveyController.run(req, res));
+  app.post('/survey/:id/close', (req: Request, res: Response) => closeSurveyController.run(req, res));
 
-  app.post('/survey/:id/open', ensureAuthenticated, authorizeRoles(surperAdminRole),(req: Request, res: Response) => openSurveyController.run(req, res));
+  app.post('/survey/:id/open' ,(req: Request, res: Response) => openSurveyController.run(req, res));
 
   app.get('/survey/:id/answer', (req: Request, res: Response) => searchSurveyController.run(req, res));
 
-  app.get('/survey/:id/results', ensureAuthenticated, authorizeRoles(surperAdminRole), (req: Request, res: Response) => resultsSurveyController.run(req, res));
+  app.get('/survey/:id/results', (req: Request, res: Response) => resultsSurveyController.run(req, res));
 
-  app.get('/survey/', ensureAuthenticated, authorizeRoles(surperAdminRole), (req: Request, res: Response) => findAllSurveyController.run(req, res));
+  app.get('/survey/', (req: Request, res: Response) => findAllSurveyController.run(req, res));
 
-  app.get('/survey/new', ensureAuthenticated, authorizeRoles(surperAdminRole),  (req: Request, res: Response) => {
+  app.get('/survey/new', (req: Request, res: Response) => {
     const id = uuid();
 
     res.status(200).render('surveys/create', {

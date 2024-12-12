@@ -1,6 +1,7 @@
 import { UserEmail } from "../../../../../src/Contexts/Backoffice/User/domain/UserEmail";
 import { UserFirstName } from "../../../../../src/Contexts/Backoffice/User/domain/UserFirstName";
 import { UserId } from "../../../../../src/Contexts/Backoffice/User/domain/UserId";
+import { Role } from "../../../../../src/Contexts/Backoffice/User/domain/UserIsAdmin";
 import { UserJob } from "../../../../../src/Contexts/Backoffice/User/domain/UserJob";
 import { UserLastName } from "../../../../../src/Contexts/Backoffice/User/domain/UserLastName";
 import { UserPassword } from "../../../../../src/Contexts/Backoffice/User/domain/UserPassword";
@@ -29,7 +30,8 @@ describe('AuthenticateUser', () => {
       firstName: new UserFirstName(''),
       lastName: new UserLastName(''),
       password,
-      job: new UserJob('')
+      job: new UserJob(''),
+      role: new Role('')
     };
 
     const user = UserAuthenticated.create(data);

@@ -12,7 +12,7 @@ import { adminRole, surperAdminRole, userRole } from "../../../../Contexts/Share
 
 export const register = (app: Express) => {
   const createClientController: ClientCreateController = container.get('Apps.Backoffice.backend.controllers.ClientCreateController');
-  
+
   const updateClientController: ClientUpdateController = container.get('Apps.Backoffice.backend.controllers.ClientUpdateController');
 
   const findAllClientController: ClientFindAllController = container.get('Apps.Backoffice.backend.controllers.ClientFindAllController');
@@ -20,11 +20,6 @@ export const register = (app: Express) => {
   const searchClientController: ClientSearchController = container.get('Apps.Backoffice.backend.controllers.ClientSearchController');
 
   const deleteClientController: ClientDeleteController = container.get('Apps.Backoffice.backend.controllers.ClientDeleteController');
-
-  app.use('/client', ensureAuthenticated, authorizeRoles(
-    adminRole,
-    surperAdminRole
-  ));
 
   app.post('/client/:id', (req: Request, res: Response) => createClientController.run(req, res));
   

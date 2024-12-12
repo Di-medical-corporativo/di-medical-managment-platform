@@ -1,4 +1,3 @@
-import nodeHtmlToImage from "node-html-to-image";
 import { ImageGenerator } from "../../domain/ImageGenerator";
 import { ItineraryFinder } from "../../domain/ItineraryFinder";
 import { ItineraryId } from "../../domain/ItineraryId";

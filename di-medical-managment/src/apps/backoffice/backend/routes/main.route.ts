@@ -9,5 +9,5 @@ import { adminRole, surperAdminRole, userRole } from "../../../../Contexts/Share
 export const register = (app: Express) => {
   const dashBoardInitController: DashBoardInitController = container.get('Apps.Backoffice.backend.controllers.DashBoardInitController');
 
-  app.get('/', ensureAuthenticated, authorizeRoles(userRole, adminRole, surperAdminRole) ,(req: Request, res: Response) => dashBoardInitController.run(req, res));
+  app.get('/', (req: Request, res: Response) => dashBoardInitController.run(req, res));
 }

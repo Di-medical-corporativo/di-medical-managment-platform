@@ -25,7 +25,25 @@ model User {
   points Point[]
   tasks Task[]
   permit Permit[]
+  modules PlatformPermission[]
 }
+
+model Module {
+  id     String  @id @default(uuid())
+  name   String @unique
+  permit PlatformPermission[]
+}
+
+model PlatformPermission {
+  id       String  @id @default(uuid()) // Identificador único para el permiso
+  userId   String
+  moduleId String
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module   Module  @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, moduleId]) // Un usuario no puede tener el mismo permiso duplicado
+}
+
 
 model Permit {
   id String @id

@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import { Express } from "express";
 import { Request, Response } from "express";
 import container from "../dependency-injection";
@@ -6,7 +7,6 @@ import { TruckUpdateController } from "../controllers/truck/TruckUpdateControlle
 import { IncidentCreateController } from "../controllers/truck/IncidentCreateController";
 import { TruckFindAllController } from "../controllers/truck/TruckFindAllController";
 import { TruckSearchController } from "../controllers/truck/TruckSearchController";
-import { v4 as uuid } from "uuid";
 import { IncidentFindAllController } from "../controllers/truck/IncidentFindAllController";
 import { IncidentRemoveController } from "../controllers/truck/IncidentRemoveController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
@@ -27,8 +27,6 @@ export const register = (app: Express) => {
   const findAllIncidentController: IncidentFindAllController = container.get('Apps.Backoffice.backend.controllers.IncidentFindAllController');
 
   const removeIncidentController: IncidentRemoveController = container.get('Apps.Backoffice.backend.controllers.IncidentRemoveController');
-
-  app.use('/truck', ensureAuthenticated, authorizeRoles(adminRole, surperAdminRole));
 
   app.post('/truck/:id', (req: Request, res: Response) => createTruckController.run(req, res));
 

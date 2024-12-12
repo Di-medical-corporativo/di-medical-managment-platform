@@ -47,8 +47,6 @@ export const register = (app: Express) => {
 
   const imageItineraryGeneratorController: ItineraryImageGeneratorController = container.get('Apps.Backoffice.backend.controllers.ItineraryImageGeneratorController');
 
-  app.use('/itinerary', ensureAuthenticated, authorizeRoles(adminRole, surperAdminRole));
-
   app.get('/itinerary/new', (req: Request, res: Response) => createItineraryPage.run(req, res));
 
   app.get('/itinerary/:id/track', (req: Request, res: Response) => trackingItineraryController.run(req, res));

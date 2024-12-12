@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rutas</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+
+      <main id="main-admin">
+
+        <header class="section-header">
+          <section class="breadcrumb">
+            <a href="/backoffice/itinerary">
+              <small>Modulos</small>
+            </a>
+            <span class="breadcrumb-slash">/</span>
+          </section>
+
+          <button id="new-client" class="button primary"
+            onclick="window.location.href='/backoffice/modules/new'">Nuevo modulo</button>
+        </header>
+
+        <section id="client-list" style="margin-top: 20px;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(let i=0; i < modules.length; i++) { %>
+                <tr>
+                  <td>
+                    <%= modules[i].id %>
+                  </td>
+                  <td>
+                    <%= modules[i].name %>
+                  </td>
+                </tr>
+                <% } %>
+            </tbody>
+          </table>
+        </section>
+      </main>
+  </div>
+</body>
+</html>

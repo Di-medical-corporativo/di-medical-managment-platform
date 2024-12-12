@@ -733,3 +733,30 @@ services:
     arguments: [
       "@Contexts.Backoffice.Permit.application.SearchAll.PermitSearcher"
     ]
+
+  Contexts.Shared.infra.persistence.ModuleRepository:
+    class: ../../../../Contexts/Shared/infra/persistence/PrismaModuleRepository
+
+  Contexts.Shared.application.ModuleCreator:
+    class: ../../../../Contexts/Shared/application/ModuleCreator
+    arguments: [
+    "@Contexts.Shared.infra.persistence.ModuleRepository"
+  ]
+
+  Contexts.Shared.application.ModuleSearcher:
+    class: ../../../../Contexts/Shared/application/ModuleSearcher
+    arguments: [
+    "@Contexts.Shared.infra.persistence.ModuleRepository"
+  ]
+
+  Apps.Backoffice.backend.controllers.ModuleFindAllController:
+    class: ../controllers/modules/ModuleFindAllController
+    arguments: [
+      "@Contexts.Shared.application.ModuleSearcher"
+    ]
+  
+  Apps.Backoffice.backend.controllers.ModuleCreateController:
+    class: ../controllers/modules/ModuleCreateController
+    arguments: [
+      "@Contexts.Shared.application.ModuleCreator"
+    ]

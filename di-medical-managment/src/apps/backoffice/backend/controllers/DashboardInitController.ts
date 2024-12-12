@@ -19,10 +19,6 @@ export default class DashBoardInitController {
 
   async run(req: Request, res: Response) {
     try {
-      const user = req.user as (User | undefined);
-
-      if(!user) throw new InvalidCredentials();
-
       const { filter } = req.query as { filter?: string } as { filter?: string };; 
 
       let dateToFilter = new Date();
@@ -39,23 +35,22 @@ export default class DashBoardInitController {
         monthToFilter = parseInt(monthNumber, 10);
       }
 
-      const { 
-        assignedTasks, 
-        completedTasks, 
-        inProgressTasks, 
-        overdueTasks 
-      } = await this.userKanbanGenerator.run({
-        id: new UserId(user.id),
-        month: monthToFilter,
-        year: yearToFilter
-      });
+      // const { 
+      //   assignedTasks, 
+      //   completedTasks, 
+      //   inProgressTasks, 
+      //   overdueTasks 
+      // } = await this.userKanbanGenerator.run({
+      //   id: new UserId(user.id),
+      //   month: monthToFilter,
+      //   year: yearToFilter
+      // });
 
       res.status(200).render('admin', {
-        user,
-        assignedTasks: assignedTasks.map(a => a.toPrimitives()),
-        completedTasks: completedTasks.map(c => c.toPrimitives()),
-        inProgressTasks: inProgressTasks.map(i => i.toPrimitives()),
-        overdueTasks: overdueTasks.map(o => o.toPrimitives())
+        assignedTasks: [],
+        completedTasks: [],
+        inProgressTasks: [],
+        overdueTasks: []
       });
     } catch (error) {
       res.status(500).render('error/error', {

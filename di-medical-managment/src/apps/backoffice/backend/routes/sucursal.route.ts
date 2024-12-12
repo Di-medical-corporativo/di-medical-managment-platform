@@ -19,8 +19,6 @@ export const register = (app: Express) => {
 
   const searchSucursalController: SucursalSearchController = container.get('Apps.Backoffice.backend.controllers.SucursalSearchController');
 
-  app.use('/sucursal', ensureAuthenticated, authorizeRoles(adminRole, surperAdminRole));
-
   app.post('/sucursal/:id', (req: Request, res: Response) => createSucursalController.run(req, res));
   
   app.get('/sucursal/:id/update', (req: Request, res: Response) => searchSucursalController.run(req, res));

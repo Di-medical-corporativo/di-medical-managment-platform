@@ -30,8 +30,6 @@ export const register = (app: Express) => {
 
   const detailTaskController: TaskDetailPageController = container.get('Apps.Backoffice.backend.controllers.TaskDetailPageController');
 
-  app.use('/task', ensureAuthenticated, authorizeRoles(surperAdminRole, adminRole));
-
   app.post('/task/:id', (req: Request, res: Response) => createTaskController.run(req, res));
 
   app.put('/task/:id', (req: Request, res: Response) => updateTaskController.run(req, res));
