@@ -1,5 +1,33 @@
 
 services:
+  Contexts.Shared.infra.persistence.ModuleRepository:
+    class: ../../../../Contexts/Shared/infra/persistence/PrismaModuleRepository
+
+  Contexts.Shared.application.ModuleCreator:
+    class: ../../../../Contexts/Shared/application/ModuleCreator
+    arguments: [
+    "@Contexts.Shared.infra.persistence.ModuleRepository"
+  ]
+
+  Contexts.Shared.application.ModuleSearcher:
+    class: ../../../../Contexts/Shared/application/ModuleSearcher
+    arguments: [
+    "@Contexts.Shared.infra.persistence.ModuleRepository"
+  ]
+
+  Apps.Backoffice.backend.controllers.ModuleFindAllController:
+    class: ../controllers/modules/ModuleFindAllController
+    arguments: [
+      "@Contexts.Shared.application.ModuleSearcher"
+    ]
+  
+  Apps.Backoffice.backend.controllers.ModuleCreateController:
+    class: ../controllers/modules/ModuleCreateController
+    arguments: [
+      "@Contexts.Shared.application.ModuleCreator"
+    ]
+
+
   Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository:
     class: ../../../../Contexts/Backoffice/Sucursal/infra/persistence/PrismaSucursalRepository
   
@@ -42,7 +70,8 @@ services:
     class: ../../../../Contexts/Backoffice/User/application/Create/UserCreator
     arguments: [
     "@Contexts.Backoffice.User.infra.persistence.UserRepository",
-    "@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository"
+    "@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository",
+    "@Contexts.Shared.infra.persistence.ModuleRepository"
     ]
 
   Contexts.Backoffice.User.application.Find.UserFinder:
@@ -55,7 +84,8 @@ services:
     class: ../../../../Contexts/Backoffice/User/application/Update/UserUpdator
     arguments: [
     "@Contexts.Backoffice.User.infra.persistence.UserRepository",
-    "@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository"
+    "@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository",
+    "@Contexts.Shared.infra.persistence.ModuleRepository"
     ]
 
   Contexts.Backoffice.User.application.SearchAll.UserSearcher:
@@ -85,7 +115,8 @@ services:
   Apps.Backoffice.backend.controllers.UserCreatePageController:
     class: ../controllers/users/UserCreatePageController
     arguments: [
-      "@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher"
+      "@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher",
+      "@Contexts.Shared.application.ModuleSearcher"
     ]
 
   Apps.Backoffice.backend.controllers.UserSearchAllController:
@@ -98,7 +129,8 @@ services:
     class: ../controllers/users/UserSearchController
     arguments: [
       "@Contexts.Backoffice.User.application.Find.UserFinder",
-      "@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher"
+      "@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher",
+      "@Contexts.Shared.application.ModuleSearcher"
     ]
 
   Apps.Backoffice.backend.controllers.UserDeleteController:
@@ -732,31 +764,4 @@ services:
     class: ../controllers/permit/PermitFindAllController
     arguments: [
       "@Contexts.Backoffice.Permit.application.SearchAll.PermitSearcher"
-    ]
-
-  Contexts.Shared.infra.persistence.ModuleRepository:
-    class: ../../../../Contexts/Shared/infra/persistence/PrismaModuleRepository
-
-  Contexts.Shared.application.ModuleCreator:
-    class: ../../../../Contexts/Shared/application/ModuleCreator
-    arguments: [
-    "@Contexts.Shared.infra.persistence.ModuleRepository"
-  ]
-
-  Contexts.Shared.application.ModuleSearcher:
-    class: ../../../../Contexts/Shared/application/ModuleSearcher
-    arguments: [
-    "@Contexts.Shared.infra.persistence.ModuleRepository"
-  ]
-
-  Apps.Backoffice.backend.controllers.ModuleFindAllController:
-    class: ../controllers/modules/ModuleFindAllController
-    arguments: [
-      "@Contexts.Shared.application.ModuleSearcher"
-    ]
-  
-  Apps.Backoffice.backend.controllers.ModuleCreateController:
-    class: ../controllers/modules/ModuleCreateController
-    arguments: [
-      "@Contexts.Shared.application.ModuleCreator"
     ]

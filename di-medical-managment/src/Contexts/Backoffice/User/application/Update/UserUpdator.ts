@@ -1,3 +1,6 @@
+import { ModuleFinder } from "../../../../Shared/domain/ModuleFinder";
+import { ModuleId } from "../../../../Shared/domain/ModuleId";
+import { ModuleRepository } from "../../../../Shared/domain/ModuleRepository";
 import { SucursalFinder } from "../../../Sucursal/domain/SucursalFinder";
 import { SucursalId } from "../../../Sucursal/domain/SucursalId";
 import { SucursalRepository } from "../../../Sucursal/domain/SucursalRepository";
@@ -21,15 +24,20 @@ export class UserUpdator {
   
   private userFinder: UserFinder;
 
+  private moduleFinder: ModuleFinder;
+
   constructor(
     private userRepository: UserRepository,
-    private sucursalRepository: SucursalRepository
+    private sucursalRepository: SucursalRepository,
+    private moduleRepository: ModuleRepository
   ) {
     this.passwordEncryptor = new UserPasswordEncryptor();
     
     this.sucursalFinder = new SucursalFinder(this.sucursalRepository);
     
     this.userFinder = new UserFinder(this.userRepository);
+
+    this.moduleFinder = new ModuleFinder(this.moduleRepository);
   }
   
   async run(params: {
@@ -39,13 +47,21 @@ export class UserUpdator {
     job: UserJob,
     phone: UserPhone,
     email: UserEmail,
-    role: Role,
+    modulesIds: ModuleId[],
     sucursalId: SucursalId,
     createdAt: UserDate,
     password: string
   }) {
     
     const user = await this.userFinder.run(params.id.toString());
+
+    const modulesPromises = params.modulesIds.map(async m => {
+      return await this.moduleFinder.run({
+        id: m
+      })
+    });
+    
+    const modules = await Promise.all(modulesPromises);
 
     const sucursal = await this.sucursalFinder.run({
       id: params.sucursalId
@@ -60,11 +76,11 @@ export class UserUpdator {
     user.updateName(params.firstName, params.lastName);
     
     user.updatePhone(params.phone);
-    
-    user.updateRole(params.role);
-    
+        
     user.updateSucursal(sucursal);
     
+    user.updateModules(modules);
+
     await this.userRepository.update(user, password);
   }
 }

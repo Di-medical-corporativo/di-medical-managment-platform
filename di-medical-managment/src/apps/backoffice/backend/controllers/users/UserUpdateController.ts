@@ -11,6 +11,7 @@ import { SucursalId } from "../../../../../Contexts/Backoffice/Sucursal/domain/S
 import { UserDate } from "../../../../../Contexts/Backoffice/User/domain/UserDate";
 import { SucursalNotFound } from "../../../../../Contexts/Backoffice/Sucursal/domain/SucursalNotFound";
 import { UserNotFound } from "../../../../../Contexts/Backoffice/User/domain/UserNotFound";
+import { ModuleId } from "../../../../../Contexts/Shared/domain/ModuleId";
 
 export class UserUpdateController {
   constructor(
@@ -18,7 +19,7 @@ export class UserUpdateController {
   ) {}
 
   async run(req: Request, res: Response) {
-    const { id, firstName, lastName, job, phone, email, role, sucursalId, password } = req.body;
+    const { id, firstName, lastName, job, phone, email, modules = [], sucursalId, password } = req.body;
 
     try {
       await this.userUpdator.run({
@@ -28,7 +29,7 @@ export class UserUpdateController {
         job: new UserJob(job),
         phone: new UserPhone(phone),
         email: new UserEmail(email),
-        role: new Role(role),
+        modulesIds: modules.map((m: string) => new ModuleId(m)),
         sucursalId: new SucursalId(sucursalId),
         createdAt: new UserDate(new Date().toISOString()),
         password
@@ -36,6 +37,8 @@ export class UserUpdateController {
 
       res.redirect('/backoffice/user')
     } catch (error) {
+      console.log(error);
+
       if(error instanceof SucursalNotFound) {
         res.status(404).render('error/error', {
           message: 'No se encontro la sucursal seleccionada'

@@ -58,19 +58,20 @@
               <% } %>
             <% } %>
           </select>
-
-          <label for="role">Rol: </label>
-          <select name="role" class="input">
-            <% for (let j = 0; j < roles.length; j++) {%>
-              <% if(roles[j] == user.role) { %>
-                <option value="<%= roles[j] %>" selected><%= roles[j] %> </option>
-              <% } else { %>
-                <option value="<%= roles[j] %>"><%= roles[j] %> </option>
-              <% } %>
+          
+          <fieldset>
+            <legend>Permisos:</legend>
+            <% for (let k = 0; k < modules.length; k++) { %>
+              <input type="checkbox" name="modules[]" value="<%= modules[k].id %>"
+                <%= user.modules.some(userModule => userModule.id === modules[k].id) ? 'checked' : '' %>
+                <%= modules[k].name === 'perfil_modulo' ? 'required' : '' %>
+              >
+              <%= modules[k].name %>
+              <br>
             <% } %>
-          </select>
-      
-          <button type="submit" class="button primary">Nueva usuario</button>
+          </fieldset>
+          
+          <button type="submit" class="button primary">Actualizar usuario</button>
         </form>
       </section>
     </main>

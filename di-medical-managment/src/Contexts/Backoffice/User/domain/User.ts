@@ -1,3 +1,4 @@
+import { Module } from "../../../Shared/domain/Module";
 import { Sucursal } from "../../Sucursal/domain/Sucursal";
 import { UserDate } from "./UserDate";
 import { UserEmail } from "./UserEmail";
@@ -16,7 +17,7 @@ export class User {
     private job: UserJob,
     private phone: UserPhone,
     private email: UserEmail,
-    private role: Role,
+    private modules: Module[],
     private sucursal: Sucursal,
     private createdAt: UserDate
   ) {}
@@ -38,8 +39,8 @@ export class User {
     this.email = email;
   }
 
-  public updateRole(role: Role) {
-    this.role = role;
+  public updateModules(modules: Module[]) {
+    this.modules = modules;
   }
 
   public updateSucursal(sucursal: Sucursal) {
@@ -53,7 +54,7 @@ export class User {
     job: UserJob,
     phone: UserPhone,
     email: UserEmail,
-    role: Role,
+    modules: Module[],
     sucursal: Sucursal
     createdAt: UserDate
   }) {
@@ -64,7 +65,7 @@ export class User {
       data.job,
       data.phone,
       data.email,
-      data.role,
+      data.modules,
       data.sucursal,
       data.createdAt
     );
@@ -77,7 +78,7 @@ export class User {
     job: string;
     phone: string;
     email: string;
-    role: string;
+    modules: { id: string; name: string }[];
     sucursal: {
       sucursalId: string;
       sucursalName: string;
@@ -93,7 +94,7 @@ export class User {
       new UserJob(data.job),
       new UserPhone(data.phone),
       new UserEmail(data.email),
-      new Role(data.role),
+      data.modules.map(m => Module.fromPrimitives(m)),
       Sucursal.fromPrimitives({
         id: data.sucursal.sucursalId,
         name: data.sucursal.sucursalName,
@@ -112,7 +113,7 @@ export class User {
       job: this.job.toString(),
       phone: this.phone.toString(),
       email: this.email.toString(),
-      role: this.role.toString(),
+      modules: this.modules.map(m => m.toPrimitives()),
       sucursal: this.sucursal.toPrimitives(),
       createdAt: this.createdAt.toString()
     }

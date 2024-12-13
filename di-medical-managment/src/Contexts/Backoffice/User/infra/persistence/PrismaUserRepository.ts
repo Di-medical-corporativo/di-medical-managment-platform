@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import { UserAuthenticated } from "../../../../Shared/domain/UserAuthenticated";
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
 import { User } from "../../domain/User";
@@ -14,7 +15,14 @@ export class PrismaUserRepository implements UserRepository {
     await prisma.user.create({
       data: {
         id: userPlain.id,
-        role: userPlain.role,
+        role: "role",
+        modules: {
+          create: userPlain.modules.map((module) => ({
+            module: {
+              connect: { id: module.id }
+            }
+          }))
+        },
         createdAt: userPlain.createdAt,
         firstName: userPlain.firstName,
         lastName: userPlain.lastName,
@@ -53,7 +61,12 @@ export class PrismaUserRepository implements UserRepository {
         isActive: true
       },
       include: {
-        sucursal: true
+        sucursal: true,
+        modules: {
+          include: {
+            module: true
+          }
+        }
       }
     });
 
@@ -66,7 +79,7 @@ export class PrismaUserRepository implements UserRepository {
       createdAt: userDB.createdAt.toISOString(),
       email:userDB.email,
       firstName: userDB.firstName,
-      role: userDB.role,
+      modules: userDB.modules.map(m => ({ id: m.moduleId, name: m.module.name })),
       job: userDB.job,
       lastName: userDB.lastName,
       phone: userDB.phone,
@@ -84,7 +97,12 @@ export class PrismaUserRepository implements UserRepository {
   async findAll(): Promise<User[]> {
     const usersDB = await prisma.user.findMany({
       include: {
-        sucursal: true
+        sucursal: true,
+        modules: {
+          include: {
+            module: true
+          }
+        }
       },
       where: {
         isActive: true
@@ -99,7 +117,7 @@ export class PrismaUserRepository implements UserRepository {
       id: u.id,
       job: u.job,
       phone: u.phone,
-      role: u.role,
+      modules: [],
       sucursal: {
         sucursalAddress: u.sucursal.address,
         sucursalId: u.sucursal.id,
@@ -124,7 +142,6 @@ export class PrismaUserRepository implements UserRepository {
         lastName: userPlain.lastName,
         job: userPlain.job,
         phone: userPlain.phone,
-        role: userPlain.role,
         sucursal: {
           connect: {
             id: userPlain.sucursal.id
@@ -138,6 +155,40 @@ export class PrismaUserRepository implements UserRepository {
         }
       }
     });
+
+    const updatedModules = userPlain.modules.map(m => m.id);
+
+    const currentModulesUserHasAccess = await prisma.platformPermission.findMany({
+      where: {
+        user: {
+          id: userPlain.id
+        }
+      },
+      select: {
+        moduleId: true
+      }
+    });
+
+    const currentModuleIds = currentModulesUserHasAccess.map((m) => m.moduleId);
+
+    const modulesToAdd = updatedModules.filter((moduleId) => !currentModuleIds.includes(moduleId))
+
+    const modulesToDelete = currentModulesUserHasAccess.filter((m) => !updatedModules.includes(m.moduleId)).map(m => m.moduleId);
+
+    if(modulesToAdd.length > 0) {
+      await prisma.platformPermission.createMany({
+        data: modulesToAdd.map(m => ({ moduleId: m, userId: userPlain.id }))
+      });
+    }
+
+    if(modulesToDelete.length > 0) {
+      await prisma.platformPermission.deleteMany({
+        where: {
+          userId: userPlain.id,
+          moduleId: { in: modulesToDelete }
+        }
+      })
+    }
   }
 
   async delete(id: UserId): Promise<void> {

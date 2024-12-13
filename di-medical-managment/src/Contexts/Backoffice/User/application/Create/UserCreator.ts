@@ -1,3 +1,7 @@
+import { Module } from "../../../../Shared/domain/Module";
+import { ModuleFinder } from "../../../../Shared/domain/ModuleFinder";
+import { ModuleId } from "../../../../Shared/domain/ModuleId";
+import { ModuleRepository } from "../../../../Shared/domain/ModuleRepository";
 import { SucursalFinder } from "../../../Sucursal/domain/SucursalFinder";
 import { SucursalId } from "../../../Sucursal/domain/SucursalId";
 import { SucursalRepository } from "../../../Sucursal/domain/SucursalRepository";
@@ -8,7 +12,6 @@ import { UserEmail } from "../../domain/UserEmail";
 import { UserFinder } from "../../domain/UserFinder";
 import { UserFirstName } from "../../domain/UserFirstName";
 import { UserId } from "../../domain/UserId";
-import { Role } from "../../domain/UserIsAdmin";
 import { UserJob } from "../../domain/UserJob";
 import { UserLastName } from "../../domain/UserLastName";
 import { UserPassword } from "../../domain/UserPassword";
@@ -23,15 +26,20 @@ export class UserCreator {
   
   private userFinder: UserFinder;
 
+  private moduleFinder: ModuleFinder;
+
   constructor(
     private userRepository: UserRepository,
-    private sucursalRepository: SucursalRepository
+    private sucursalRepository: SucursalRepository,
+    private moduleRepository: ModuleRepository
   ) {
     this.passwordEncryptor = new UserPasswordEncryptor();
     
     this.sucursalFinder = new SucursalFinder(this.sucursalRepository);
     
     this.userFinder = new UserFinder(this.userRepository);
+
+    this.moduleFinder = new ModuleFinder(this.moduleRepository);
   }
   
   async run(params: {
@@ -41,9 +49,9 @@ export class UserCreator {
     job: UserJob,
     phone: UserPhone,
     email: UserEmail,
-    role: Role,
     sucursalId: SucursalId,
     createdAt: UserDate,
+    modulesIds: ModuleId[]
     password: string
   }) {
     const idExists = await this.ensureUserIdDoesNotExist(params.id);
@@ -58,6 +66,14 @@ export class UserCreator {
       id: params.sucursalId
     });
 
+    const modulesPromises = params.modulesIds.map(async m => {
+      return await this.moduleFinder.run({
+        id: m
+      })
+    });
+    
+    const modules = await Promise.all(modulesPromises);
+
     const password: UserPassword = this.passwordEncryptor.run(params.password);
 
     const user = User.create({
@@ -67,10 +83,12 @@ export class UserCreator {
       job: params.job,
       phone: params.phone,
       email: params.email,
-      role: params.role,
+      modules,
       sucursal,
       createdAt: params.createdAt
     });
+
+    console.log(user.toPrimitives());
 
     await this.userRepository.save(user, password);
   }

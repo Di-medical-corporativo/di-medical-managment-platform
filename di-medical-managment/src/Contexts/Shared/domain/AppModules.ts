@@ -7,5 +7,6 @@ export enum AppModules {
   PERMISSIONS = 'permisos_modulo',
   ROUTE = 'ruta_modulo',
   TASKS = 'tareas_modulo',
-  SURVEYS = 'encuestas_modulo'
+  SURVEYS = 'encuestas_modulo',
+  MODULES = 'modulos_modulo'
 };

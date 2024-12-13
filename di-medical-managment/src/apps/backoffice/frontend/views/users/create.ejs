@@ -1,71 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nuevo usuario</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
+
 <body>
   <div id="admin-dash">
 
     <%- include('../partials/_leftbar') %>
-    
-    <main id="main-admin">
 
-      <header class="section-header">
-        <section class="breadcrumb">
-          <a href="/backoffice/user">
-            <small>Usuarios</small>
-          </a>
-          <span class="breadcrumb-slash">/</span>
-          <a href="/backoffice/user/new">
-            <small>Nuevo usuarioio</small>
-          </a>
+      <main id="main-admin">
+
+        <header class="section-header">
+          <section class="breadcrumb">
+            <a href="/backoffice/user">
+              <small>Usuarios</small>
+            </a>
+            <span class="breadcrumb-slash">/</span>
+            <a href="/backoffice/user/new">
+              <small>Nuevo usuario</small>
+            </a>
+          </section>
+        </header>
+
+        <section id="new-client-form">
+          <form action="/backoffice/user/<%= id %>" method="post">
+            <input type="text" hidden value="<%= id %>" name="id">
+
+            <label for="firstName">Nombre:</label>
+            <input type="text" id="firstName" name="firstName" class="input" required>
+
+            <label for="lastName">Apellido:</label>
+            <input type="text" name="lastName" id="lastName" class="input" required>
+
+            <label for="job">Puesto:</label>
+            <input type="text" name="job" id="job" class="input" required>
+
+
+            <label for="phone">Telefono: </label>
+            <input type="text" class="input" id="phone" name="phone" required>
+
+            <label for="email">Correo: </label>
+            <input type="text" class="input" required id="email" name="email">
+
+            <label for="password">Contraseña</label>
+            <input type="text" class="input" required id="password" name="password">
+
+            <label for="sucursalId">Sucursal</label>
+            <select name="sucursalId" class="input">
+              <% for (let i=0; i < sucursals.length; i++) {%>
+                <option value="<%= sucursals[i].id %>">
+                  <%= sucursals[i].name %>
+                </option>
+                <% } %>
+            </select>
+
+            <fieldset>
+              <legend>Permisos:</legend>
+              <% for (let k=0; k < modules.length; k++) { %>
+                  <input type="checkbox" name="modules[]" value="<%= modules[k].id %>"
+                    <%=modules[k].name==='perfil_modulo' ? 'checked' : '' %>
+                    <%=modules[k].name==='perfil_modulo' ? 'required' : '' %>
+                    >
+                  <%= modules[k].name %>
+                <br>
+                <% } %>
+            </fieldset>
+
+            <button type="submit" class="button primary">Nueva usuario</button>
+          </form>
         </section>
-      </header>
-
-      <section id="new-client-form">
-        <form action="/backoffice/user/<%= id %>" method="post">
-          <input type="text" hidden value="<%= id %>" name="id">
-          
-          <label for="firstName">Nombre:</label>
-          <input type="text" id="firstName" name="firstName" class="input" required>
-          
-          <label for="lastName">Apellido:</label>
-          <input type="text" name="lastName" id="lastName" class="input" required>
-          
-          <label for="job">Puesto:</label>
-          <input type="text" name="job" id="job" class="input" required>
-          
-
-          <label for="phone">Telefono: </label>
-          <input type="text" class="input" id="phone" name="phone" required>
-
-          <label for="email">Correo: </label>
-          <input type="text" class="input" required id="email" name="email">
-
-          <label for="password">Contraseña</label>
-          <input type="text" class="input" required id="password" name="password">
-
-          <label for="sucursalId">Sucursal</label>
-          <select name="sucursalId" class="input">
-            <% for (let i = 0; i < sucursals.length; i++) {%>
-              <option value="<%= sucursals[i].id %>"><%= sucursals[i].name %> </option>
-            <% } %>
-          </select>
-
-          <label for="role">Rol: </label>
-          <select name="role" class="input">
-            <% for (let j = 0; j < roles.length; j++) {%>
-              <option value="<%= roles[j] %>"><%= roles[j] %> </option>
-            <% } %>
-          </select>
-      
-          <button type="submit" class="button primary">Nueva usuario</button>
-        </form>
-      </section>
-    </main>
+      </main>
   </div>
 </body>
+
 </html>

@@ -33,7 +33,6 @@
                   <th>Telefono</th>
                   <th>Correo</th>
                   <th>Sucursal</th>
-                  <th>Rol</th>
                   <th></th>
               </tr>
           </thead>
@@ -45,7 +44,6 @@
                 <td><%= users[i].phone %></td>
                 <td><%= users[i].email %></td>
                 <td><%= users[i].sucursal.name %></td>
-                <td><%= users[i].role %></td>
                 <td style="text-align: right;" id="truck_actions">
                   <button class="button primary"
                     onclick="window.location.href='/backoffice/user/<%= users[i].id %>/update'"
