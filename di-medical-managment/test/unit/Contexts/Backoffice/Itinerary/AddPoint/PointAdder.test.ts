@@ -148,7 +148,7 @@ describe('PointAdder', () => {
       job: new UserJob(''),
       lastName: new UserLastName(''),
       phone: new UserPhone(''),
-      role: new Role(''),
+      modules: [],
       sucursal: Sucursal.create({
         address: new SucursalAddress(''),
         id: new SucursalId(''),

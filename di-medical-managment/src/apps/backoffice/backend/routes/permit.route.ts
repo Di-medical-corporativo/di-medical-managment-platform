@@ -7,6 +7,9 @@ import { PermitAcceptPageController } from "../controllers/permit/PermitAcceptPa
 import { PermitAcceptController } from "../controllers/permit/PermitAcceptController";
 import { PermitRejectPageController } from "../controllers/permit/PermitRejectPageController";
 import { PermitRejectController } from "../controllers/permit/PermitRejectController";
+import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
+import { authorizeModule } from "../middlewares/authorizeRoles";
+import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
 
 export const register = (app: Express) => {
   const permitCreateController: PermitCreateController = container.get('Apps.Backoffice.backend.controllers.PermitCreateController');
@@ -22,6 +25,8 @@ export const register = (app: Express) => {
   const permitRejectPageController: PermitRejectPageController = container.get('Apps.Backoffice.backend.controllers.PermitRejectPageController');
 
   const permitRejectController: PermitRejectController = container.get('Apps.Backoffice.backend.controllers.PermitRejectController');
+
+  app.use('/permit', ensureAuthenticated, authorizeModule(AppModules.PERMISSIONS));
 
   app.get('/permit/new', (req: Request, res: Response) => {
     res.status(200).render('permit/create');

@@ -16,6 +16,7 @@ import { AuthenticatedUserFinder } from '../../../Contexts/Shared/domain/Authent
 import { ensureAuthenticated } from './middlewares/ensureAuthenticated';
 import { UserNotFound } from '../../../Contexts/Backoffice/User/domain/UserNotFound';
 import { InvalidCredentials } from '../../../Contexts/Shared/domain/InvalidCredentials';
+import { UserAuthenticated } from '../../../Contexts/Shared/domain/UserAuthenticated';
 
 export class Server {
   private express: express.Express;
@@ -71,7 +72,7 @@ export class Server {
    
     passport.use(new Strategy(async (email: string, password: string, done) => {
       try {
-        const user = await authenticateUser.run({
+        const user: UserAuthenticated = await authenticateUser.run({
           email: new UserEmail(email),
           password
         });

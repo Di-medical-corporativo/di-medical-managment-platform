@@ -1,19 +1,29 @@
 .end-point {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 20px;
 }
  
 #point-end-form {
   display: flex;
-  margin-top: 10px;
   flex-direction: column;
   gap: 20px;
-  width: 90%;
+  width: 100%;
 }
 
 #point-end-form h2, img {
   align-self: center;
+}
+
+#point-end-form img{
+  max-width: 150px;
+      height: auto;
+      margin-bottom: 20px;
 }

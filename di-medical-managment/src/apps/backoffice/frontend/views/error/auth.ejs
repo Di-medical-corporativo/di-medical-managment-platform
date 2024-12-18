@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Error</title>
+  <title>Sin permisos suficientes</title>
   <style>
-        body {
+    /* Estilos básicos */
+    body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
@@ -20,7 +21,7 @@
       max-width: 150px; /* Tamaño máximo del logo */
       margin-bottom: 20px; /* Espacio entre el logo y el mensaje */
     }
-    #error-view {
+    #auth-view {
       text-align: center;
       padding: 20px;
       border: 1px solid #dee2e6;
@@ -44,9 +45,9 @@
 </head>
 <body>
   <img src="/images/logo.png" alt="Logo de la aplicación">
-  <div id="error-view">
-    <h2><%= message %></h2>
-    <p><a href="/backoffice">Regresa a tu perfil</a></p>
+  <div id="auth-view">
+    <h2>No tienes permiso para ver este módulo</h2>
+    <a href="/backoffice">Regresa a tu perfil</a>
   </div>
 </body>
 </html>

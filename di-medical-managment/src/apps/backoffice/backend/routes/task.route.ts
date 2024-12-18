@@ -10,8 +10,9 @@ import { TaskDeleteController } from "../controllers/tasks/TaskDeleteController"
 import { TaskChangeStatusController } from "../controllers/tasks/TaskChangeStatusController";
 import { TaskDetailPageController } from "../controllers/tasks/TaskDetailPageController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
-import { authorizeRoles } from "../middlewares/authorizeRoles";
+import { authorizeModule } from "../middlewares/authorizeRoles";
 import { adminRole, surperAdminRole } from "../../../../Contexts/Shared/domain/roles/Roles";
+import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
 
 export const register = (app: Express) => {
   const createTaskController: TaskCreateController = container.get('Apps.Backoffice.backend.controllers.TaskCreateController');
@@ -29,6 +30,8 @@ export const register = (app: Express) => {
   const changeStatusTaskController: TaskChangeStatusController = container.get('Apps.Backoffice.backend.controllers.TaskChangeStatusController');
 
   const detailTaskController: TaskDetailPageController = container.get('Apps.Backoffice.backend.controllers.TaskDetailPageController');
+
+  app.use('/task', ensureAuthenticated, authorizeModule(AppModules.TASKS));
 
   app.post('/task/:id', (req: Request, res: Response) => createTaskController.run(req, res));
 

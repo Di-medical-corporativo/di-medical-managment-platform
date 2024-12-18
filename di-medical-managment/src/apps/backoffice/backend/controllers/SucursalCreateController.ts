@@ -6,21 +6,12 @@ import { SucursalName } from "../../../../Contexts/Backoffice/Sucursal/domain/Su
 import { SucursalAddress } from "../../../../Contexts/Backoffice/Sucursal/domain/SucursalAddress";
 import { SucursalPhone } from "../../../../Contexts/Backoffice/Sucursal/domain/SucursalPhone";
 
-interface CreateRequest extends Request {
-  body: {
-    id: string;
-    name: string;
-    address: string;
-    phone: string;
-  }
-}
-
 export class SucursalCreateController implements Controller {
   constructor(
     private sucursalCreator: SucursalCreator
   ) {}
 
-  async run(req: CreateRequest, res: Response): Promise<void> {
+  async run(req: Request, res: Response): Promise<void> {
     try {
       const { address, id, name, phone } = req.body;
 

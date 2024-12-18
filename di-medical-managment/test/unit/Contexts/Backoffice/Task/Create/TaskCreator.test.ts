@@ -66,7 +66,7 @@ describe('TaskCreator', () => {
       job: new UserJob(''),
       lastName: new UserLastName(''),
       phone: new UserPhone(''),
-      role: new Role(userRole),
+      modules: [],
       sucursal: Sucursal.create({
         address: new SucursalAddress(''),
         id: new SucursalId(''),

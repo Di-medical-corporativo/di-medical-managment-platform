@@ -151,7 +151,7 @@ describe("ItineraryCreator", () => {
       job: new UserJob(''),
       lastName: new UserLastName(''),
       phone: new UserPhone(''),
-      role: new Role(''),
+      modules: [],
       sucursal
     }); 
 
@@ -230,7 +230,7 @@ describe("ItineraryCreator", () => {
       job: new UserJob(''),
       lastName: new UserLastName(''),
       phone: new UserPhone(''),
-      role: new Role(''),
+      modules: [],
       sucursal
     });
 
@@ -412,7 +412,7 @@ describe("ItineraryCreator", () => {
       job: new UserJob(''),
       lastName: new UserLastName(''),
       phone: new UserPhone(''),
-      role: new Role(''),
+      modules: [],
       sucursal
     });
 

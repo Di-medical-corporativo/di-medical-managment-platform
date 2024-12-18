@@ -7,8 +7,8 @@ import { SucursalUpdateController } from "../controllers/SucursalUpdateControlle
 import { SucursalFindAllController } from "../controllers/sucursal/SucursalFindAllController";
 import { SucursalSearchController } from "../controllers/sucursal/SucursalSearchController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
-import { adminRole, surperAdminRole } from "../../../../Contexts/Shared/domain/roles/Roles";
-import { authorizeRoles } from "../middlewares/authorizeRoles";
+import { authorizeModule } from "../middlewares/authorizeRoles";
+import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
 
 export const register = (app: Express) => {
   const createSucursalController: SucursalCreateController = container.get('Apps.Backoffice.backend.controllers.SucursalCreateController');
@@ -18,6 +18,8 @@ export const register = (app: Express) => {
   const findAllSucursalController: SucursalFindAllController = container.get('Apps.Backoffice.backend.controllers.SucursalFindAllController');
 
   const searchSucursalController: SucursalSearchController = container.get('Apps.Backoffice.backend.controllers.SucursalSearchController');
+
+  app.use('/sucursal', ensureAuthenticated, authorizeModule(AppModules.BRANCHES));
 
   app.post('/sucursal/:id', (req: Request, res: Response) => createSucursalController.run(req, res));
   

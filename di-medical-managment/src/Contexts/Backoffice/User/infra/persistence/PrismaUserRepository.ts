@@ -211,7 +211,12 @@ export class PrismaUserRepository implements UserRepository {
         email: email.toString()
       },
       include: {
-        login: true
+        login: true,
+        modules: {
+          include: {
+            module: true
+          }
+        }
       }
     });
     
@@ -227,7 +232,7 @@ export class PrismaUserRepository implements UserRepository {
         salt: user.login?.passwordSalt!
       },
       job: user.job,
-      role: user.role
+      modules: user.modules.map(m => ({ id: m.moduleId, name: m.module.name })),
     });
 
     return userAuthenticated;

@@ -16,6 +16,7 @@
 @import url('views/report.css');
 @import url('views/login.css');
 @import url('views/permit.css');
+@import url('views/auth.css');
 
 * {
   margin: 0;

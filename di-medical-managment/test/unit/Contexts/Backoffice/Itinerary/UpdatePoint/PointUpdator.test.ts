@@ -107,7 +107,7 @@ describe('PointUpdator', () => {
       job: new UserJob(''),
       lastName: new UserLastName(''),
       phone: new UserPhone(''),
-      role: new Role(''),
+      modules: [],
       sucursal
     }); 
 

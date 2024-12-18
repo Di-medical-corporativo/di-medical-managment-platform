@@ -7,10 +7,10 @@ export interface User {
   firstName: string;
   lastName: string;
   job: string;
-  role: string;
+  modules: { id: string; name: string }[];
 }
 
-export const authorizeRoles = (...roles: string[]) => {
+export const authorizeModule = (module: string) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const user = req.user as (User | undefined);
 
@@ -18,8 +18,10 @@ export const authorizeRoles = (...roles: string[]) => {
       return res.render('/login');
     }
 
-    if (!roles.includes(user.role)) {
-      return res.status(403).render('error/error', { message: 'No tienes permiso para ver este recurso' });
+    const modules = user.modules.map(m => m.name);
+
+    if (!modules.includes(module)) {
+      return res.status(403).render('error/auth', { message: 'No tienes permiso para ver este recurso' });
     }
 
     next();

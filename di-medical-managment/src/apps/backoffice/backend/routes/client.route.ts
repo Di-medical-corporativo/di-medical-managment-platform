@@ -7,8 +7,9 @@ import { ClientFindAllController } from "../controllers/client/ClientFindAllCont
 import { ClientSearchController } from "../controllers/client/ClientSearchController";
 import { ClientDeleteController } from "../controllers/client/ClientDeleteController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
-import { authorizeRoles } from "../middlewares/authorizeRoles";
+import { authorizeModule } from "../middlewares/authorizeRoles";
 import { adminRole, surperAdminRole, userRole } from "../../../../Contexts/Shared/domain/roles/Roles";
+import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
 
 export const register = (app: Express) => {
   const createClientController: ClientCreateController = container.get('Apps.Backoffice.backend.controllers.ClientCreateController');
@@ -20,6 +21,8 @@ export const register = (app: Express) => {
   const searchClientController: ClientSearchController = container.get('Apps.Backoffice.backend.controllers.ClientSearchController');
 
   const deleteClientController: ClientDeleteController = container.get('Apps.Backoffice.backend.controllers.ClientDeleteController');
+
+  app.use('/client', ensureAuthenticated, authorizeModule(AppModules.CLIENTS));
 
   app.post('/client/:id', (req: Request, res: Response) => createClientController.run(req, res));
   

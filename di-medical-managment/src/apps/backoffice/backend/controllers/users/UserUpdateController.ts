@@ -6,7 +6,6 @@ import { UserLastName } from "../../../../../Contexts/Backoffice/User/domain/Use
 import { UserJob } from "../../../../../Contexts/Backoffice/User/domain/UserJob";
 import { UserPhone } from "../../../../../Contexts/Backoffice/User/domain/UserPhone";
 import { UserEmail } from "../../../../../Contexts/Backoffice/User/domain/UserEmail";
-import { Role } from "../../../../../Contexts/Backoffice/User/domain/UserIsAdmin";
 import { SucursalId } from "../../../../../Contexts/Backoffice/Sucursal/domain/SucursalId";
 import { UserDate } from "../../../../../Contexts/Backoffice/User/domain/UserDate";
 import { SucursalNotFound } from "../../../../../Contexts/Backoffice/Sucursal/domain/SucursalNotFound";
@@ -37,8 +36,6 @@ export class UserUpdateController {
 
       res.redirect('/backoffice/user')
     } catch (error) {
-      console.log(error);
-
       if(error instanceof SucursalNotFound) {
         res.status(404).render('error/error', {
           message: 'No se encontro la sucursal seleccionada'

@@ -88,8 +88,6 @@ export class UserCreator {
       createdAt: params.createdAt
     });
 
-    console.log(user.toPrimitives());
-
     await this.userRepository.save(user, password);
   }
 

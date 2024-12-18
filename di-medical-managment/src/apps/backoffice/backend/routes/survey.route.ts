@@ -8,9 +8,10 @@ import { SurveySearchController } from "../controllers/survey/SurveySearchContro
 import { SurveyCloseController } from "../controllers/survey/SurveyCloseController";
 import { SurveyResultsController } from "../controllers/survey/SurveyResultsController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
-import { authorizeRoles } from "../middlewares/authorizeRoles";
+import { authorizeModule } from "../middlewares/authorizeRoles";
 import { surperAdminRole } from "../../../../Contexts/Shared/domain/roles/Roles";
 import { SurveyOpenController } from "../controllers/survey/SurveyOpenController";
+import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
 
 export const register = (app: Express) => {
   const createSurveyController: SurveyCreateController = container.get('Apps.Backoffice.backend.controllers.SurveyCreateController');
@@ -26,6 +27,8 @@ export const register = (app: Express) => {
   const openSurveyController: SurveyOpenController = container.get('Apps.Backoffice.backend.controllers.SurveyOpenController');
 
   const resultsSurveyController: SurveyResultsController = container.get('Apps.Backoffice.backend.controllers.SurveyResultsController');
+
+  app.use('/survey', ensureAuthenticated, authorizeModule(AppModules.SURVEYS));
 
   app.post('/survey/:id', (req: Request, res: Response) => createSurveyController.run(req, res));
 

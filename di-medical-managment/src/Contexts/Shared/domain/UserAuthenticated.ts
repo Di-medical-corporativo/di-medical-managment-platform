@@ -6,6 +6,7 @@ import { UserJob } from "../../Backoffice/User/domain/UserJob";
 import { UserLastName } from "../../Backoffice/User/domain/UserLastName";
 import { UserPassword } from "../../Backoffice/User/domain/UserPassword";
 import bcrypt from "bcrypt";
+import { Module } from "./Module";
 
 export class UserAuthenticated {
   constructor(
@@ -15,7 +16,7 @@ export class UserAuthenticated {
     private lastName: UserLastName,
     private password: UserPassword,
     private job: UserJob,
-    private role: Role
+    private modules: Module[]
   ) {}
 
   public isPasswordCorrect(passwordToCompare: string) {
@@ -36,7 +37,7 @@ export class UserAuthenticated {
     lastName: UserLastName,
     password: UserPassword,
     job: UserJob,
-    role: Role
+    modules: Module[]
   }) {
     return new UserAuthenticated(
       params.id,
@@ -45,7 +46,7 @@ export class UserAuthenticated {
       params.lastName,
       params.password,
       params.job,
-      params.role
+      params.modules
     );
   }
 
@@ -59,7 +60,7 @@ export class UserAuthenticated {
       salt: string
     };
     job: string;
-    role: string;
+    modules: { id: string; name: string }[];
   }) {
     return new UserAuthenticated(
       new UserId(params.id),
@@ -71,7 +72,7 @@ export class UserAuthenticated {
         params.password.salt
       ),
       new UserJob(params.job),
-      new Role(params.role)
+      params.modules.map(m => Module.fromPrimitives(m))
     );
   }
 
@@ -83,7 +84,7 @@ export class UserAuthenticated {
       lastName: this.lastName.toString(),
       password: this.password.toPrimitives(),
       job: this.job.toString(),
-      role: this.role.toString()
+      modules: this.modules.map(m => m.toPrimitives())
     }
   }
 }
