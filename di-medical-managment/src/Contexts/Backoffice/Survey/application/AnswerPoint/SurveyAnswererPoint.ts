@@ -1,8 +1,11 @@
 import { ItineraryRepository } from "../../../Itinerary/domain/ItineraryRepository";
+import { Point } from "../../../Itinerary/domain/Point";
 import { PointFinder } from "../../../Itinerary/domain/PointFinder";
 import { PointId } from "../../../Itinerary/domain/PointId";
 import { Answer } from "../../domain/Answer";
+import { Response } from "../../domain/Response";
 import { ResponseId } from "../../domain/ResponseId";
+import { Survey } from "../../domain/Survey";
 import { SurveyClosed } from "../../domain/SurveyClosed";
 import { SurveyFinder } from "../../domain/SurveyFinder";
 import { SurveyId } from "../../domain/SurveyId";
@@ -28,7 +31,7 @@ export class SurveyAnswererPoint {
     answers: Answer[],
     pointId: PointId
   }) {
-    const survey = await this.surveyFinder.run({
+    const survey: Survey = await this.surveyFinder.run({
       id: params.surveyId
     });
 
@@ -36,9 +39,19 @@ export class SurveyAnswererPoint {
       throw new SurveyClosed();
     }
 
-    const point = await this.pointFinder.run({
+    const point: Point = await this.pointFinder.run({
       id: params.pointId
     });
 
+    const response: Response = Response.create({
+      answers: params.answers,
+      id: params.id,
+      surveyId: params.surveyId
+    });
+
+    await this.repository.answerPoint(
+      response,
+      params.pointId
+    );
   }
 }

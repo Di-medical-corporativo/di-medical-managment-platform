@@ -5,6 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Terminado punto: <%= point.id %></title>
   <link rel="stylesheet" href="/css/main.css">
+
+  <style>
+    .survey-section {
+    margin: 20px 0;
+    padding: 15px;
+    border: 2px dashed #f8a900; /* Un borde para destacar la sección */
+    background-color: #f8aa0031; /* Un verde claro que no distraiga */
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .survey-section p {
+    margin: 0 0 10px 0;
+    color: #f8a900; /* Verde que combina con el borde */
+    font-weight: bold;
+  }
+  </style>
 </head>
 <body>
   <div class="end-point">
@@ -31,6 +48,13 @@
         Observaciones: <%= point.observation %>
       </small>
 
+      <% if (point.survey) { %>
+        <div class="survey-section">
+          <p>Este punto tiene una encuesta por contestar.</p>
+          <a href="/backoffice/survey-point/<%= point.survey.id %>/point/<%= point.id %>" class="button secondary" target="_blank">Ir a la encuesta</a>
+        </div>
+      <% } %>
+
       <label for="problem">El punto fue terminado con:</label>
       <select name="problem" id="problem" class="input" required>
         <option value="success">Exito</option>
@@ -39,7 +63,7 @@
 
       <label for="comment">Tus comentarios: </label>
 
-      <input type="text" name="comment" class="input"  placeholder="No olvides dejar tus comentarios o observaciones sobre este punto" required>
+      <input type="text" name="comment" class="input"  placeholder="No olvides dejar tus comentarios u observaciones sobre este punto" required>
 
       <button class="button primary">Terminar punto</button>
     </form>

@@ -103,14 +103,20 @@
             disabled
             />
 
-            <% if (task.status === 'assigned' || task.status === 'in-progress') { %>
-              <button type="submit" class="button primary">
-                <% if(task.status == 'assigned') { %>
-                  Iniciar tarea
-                <% } else { %>
-                  Terminar tarea
-                <% } %>
-              </button>
+            <% if (!task.isPoint) { %>
+
+              <% if (task.status === 'assigned' || task.status === 'in-progress') { %>
+                <button type="submit" class="button primary">
+                  <% if(task.status == 'assigned') { %>
+                    Iniciar tarea
+                  <% } else { %>
+                    Terminar tarea
+                  <% } %>
+                </button>
+              <% } %>
+
+            <% } else { %>
+              <p>Esta tarea pertenece a una ruta</p>
             <% } %>
         </form>
       </section>

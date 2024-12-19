@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { PointNotFound } from "../../../../../Contexts/Backoffice/Itinerary/domain/PointNotFound";
 import { PointFinder } from "../../../../../Contexts/Backoffice/Itinerary/domain/PointFinder";
 import { PointId } from "../../../../../Contexts/Backoffice/Itinerary/domain/PointId";
+import { Point } from "../../../../../Contexts/Backoffice/Itinerary/domain/Point";
 
 export class PointEndPageController {
   constructor(
@@ -12,9 +13,15 @@ export class PointEndPageController {
     try {
       const { id } = req.params;
 
-      const point = await this.pointFinder.run({
+      const point: Point = await this.pointFinder.run({
         id: new PointId(id)
       });
+
+      if(point.isFinished()) {
+        res.status(404).render('error/error', {
+          message: 'El punto ya ha sido terminado'
+        });
+      }
 
       res.status(200).render('itinerary/point-end', {
         point: point.toPrimitives()

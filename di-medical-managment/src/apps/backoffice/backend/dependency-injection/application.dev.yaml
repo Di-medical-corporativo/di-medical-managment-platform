@@ -3,6 +3,9 @@ services:
   Contexts.Shared.infra.persistence.ModuleRepository:
     class: ../../../../Contexts/Shared/infra/persistence/PrismaModuleRepository
 
+  Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository:
+    class: ../../../../Contexts/Backoffice/Itinerary/infra/persistence/PrismaItineraryRepository
+
   Contexts.Shared.application.ModuleCreator:
     class: ../../../../Contexts/Shared/application/ModuleCreator
     arguments: [
@@ -303,6 +306,13 @@ services:
     arguments: [
     "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
     ]
+
+  Contexts.Backoffice.Survey.application.AnswerPoint.SurveyAnswererPoint:
+    class: ../../../../Contexts/Backoffice/Survey/application/AnswerPoint/SurveyAnswererPoint
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+    ]
   
   Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher:
     class: ../../../../Contexts/Backoffice/Survey/application/SearchAll/SurveySearcher
@@ -346,6 +356,12 @@ services:
       "@Contexts.Backoffice.Survey.application.Create.SurveyAnswerer"
     ]
 
+  Apps.Backoffice.backend.controllers.SurveyAnswerPointController:
+    class: ../controllers/survey/SurveyAnswerPointController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.AnswerPoint.SurveyAnswererPoint"
+    ]
+
   Apps.Backoffice.backend.controllers.SurveyFindAllController:
     class: ../controllers/survey/SurveyFindAllController
     arguments: [
@@ -354,6 +370,12 @@ services:
 
   Apps.Backoffice.backend.controllers.SurveySearchController:
     class: ../controllers/survey/SurveySearchController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.Find.SurveyFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveyAnswerPointPageController:
+    class: ../controllers/survey/SurveyAnswerPointPageController
     arguments: [
       "@Contexts.Backoffice.Survey.application.Find.SurveyFinder"
     ]
@@ -515,9 +537,6 @@ services:
     "@Contexts.Backoffice.Task.infra.BullMQ.TaskScheduler",
     "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository"
   ]
-
-  Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository:
-    class: ../../../../Contexts/Backoffice/Itinerary/infra/persistence/PrismaItineraryRepository
 
   Contexts.Backoffice.Itinerary.application.SearchAll.ItinerarySearchAll:
     class: ../../../../Contexts/Backoffice/Itinerary/application/SearchAll/ItinerarySearcher

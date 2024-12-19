@@ -1,3 +1,4 @@
+import { PointId } from "../../../src/Contexts/Backoffice/Itinerary/domain/PointId";
 import { Response } from "../../../src/Contexts/Backoffice/Survey/domain/Response";
 import { Survey } from "../../../src/Contexts/Backoffice/Survey/domain/Survey";
 import { SurveyId } from "../../../src/Contexts/Backoffice/Survey/domain/SurveyId";
@@ -13,6 +14,7 @@ export class SurveyRepositoryMock implements SurveyRepository {
   private closeMock: jest.Mock;
   private resultsMock: jest.Mock;
   private openMock: jest.Mock;
+  private answerPointMock: jest.Mock;
 
   constructor() {
     this.saveMock = jest.fn();
@@ -22,6 +24,7 @@ export class SurveyRepositoryMock implements SurveyRepository {
     this.closeMock = jest.fn();
     this.resultsMock =jest.fn();
     this.openMock = jest.fn();
+    this.answerPointMock = jest.fn();
   }
 
   async open(id: SurveyId): Promise<void> {
@@ -52,6 +55,10 @@ export class SurveyRepositoryMock implements SurveyRepository {
     this.closeMock(id);
   }
 
+  async answerPoint(response: Response, pointId: PointId): Promise<void> {
+    this.answerPointMock(response, pointId);
+  }
+
   assertSaveHaveBeenCalledWith(expected: Survey) {
     expect(this.saveMock).toHaveBeenCalledWith(expected);
   }
@@ -62,6 +69,10 @@ export class SurveyRepositoryMock implements SurveyRepository {
 
   assertCloseHaveBeenCalledWith(expected: SurveyId) {
     expect(this.closeMock).toHaveBeenCalledWith(expected);
+  }
+
+  assertAnswerPointHaveBeenCalled() {
+    expect(this.answerPointMock).toHaveBeenCalled();
   }
 
   assertResultsHaveBeenCalledWith(expected: SurveyId) {

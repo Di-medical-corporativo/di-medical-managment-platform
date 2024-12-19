@@ -8,7 +8,7 @@
 </head>
 <body>
   <div id="answer" style="margin-bottom: 10px;">
-    <form id="survey-content" action="/backoffice/survey/<%= id %>/answer" method="post">
+    <form id="survey-content" action="/backoffice/survey-point/<%= pointId %>/answer" method="post">
       <input type="text" hidden value="<%= id %>" name="id" id="answerId">
       <input type="text" hidden value="<%= survey.id %>" name="surveyId" id="surveyId">
       <div id="survey-desc">

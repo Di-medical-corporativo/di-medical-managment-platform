@@ -1,3 +1,4 @@
+import { PointId } from "../../Itinerary/domain/PointId";
 import { Answer, AnswerMultiple, AnswerOpen } from "./Answer";
 import { ResponseId } from "./ResponseId";
 import { SurveyId } from "./SurveyId";

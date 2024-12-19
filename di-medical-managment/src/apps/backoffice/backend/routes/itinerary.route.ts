@@ -16,7 +16,6 @@ import { ItineraryReportPageController } from "../controllers/itinerary/Itinerar
 import { ItineraryImageGeneratorController } from "../controllers/itinerary/ItineraryImageGeneratorController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { authorizeModule } from "../middlewares/authorizeRoles";
-import { adminRole, surperAdminRole } from "../../../../Contexts/Shared/domain/roles/Roles";
 import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
 
 export const register = (app: Express) => {
@@ -48,33 +47,31 @@ export const register = (app: Express) => {
 
   const imageItineraryGeneratorController: ItineraryImageGeneratorController = container.get('Apps.Backoffice.backend.controllers.ItineraryImageGeneratorController');
 
-  app.use('/itinerary', ensureAuthenticated, authorizeModule(AppModules.ROUTE));
+  app.get('/itinerary/new', ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => createItineraryPage.run(req, res));
 
-  app.get('/itinerary/new', (req: Request, res: Response) => createItineraryPage.run(req, res));
+  app.get('/itinerary/:id/track',ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => trackingItineraryController.run(req, res));
 
-  app.get('/itinerary/:id/track', (req: Request, res: Response) => trackingItineraryController.run(req, res));
+  app.get('/itinerary', ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => searchAllItineraryController.run(req, res));
 
-  app.get('/itinerary', (req: Request, res: Response) => searchAllItineraryController.run(req, res));
+  app.post('/itinerary/create', ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => createItineraryController.run(req, res));
 
-  app.post('/itinerary/create', (req: Request, res: Response) => createItineraryController.run(req, res));
+  app.post('/itinerary/:id/start', ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => startItineraryController.run(req, res));
 
-  app.post('/itinerary/:id/start', (req: Request, res: Response) => startItineraryController.run(req, res));
+  app.get('/itinerary/:id/add',ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => addPointPageController.run(req, res));
 
-  app.get('/itinerary/:id/add', (req: Request, res: Response) => addPointPageController.run(req, res));
+  app.post('/itinerary/:id/end', ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => finishItineraryController.run(req, res));
 
-  app.post('/itinerary/:id/end', (req: Request, res: Response) => finishItineraryController.run(req, res));
+  app.get('/itinerary/point/:id/end', ensureAuthenticated, (req: Request, res: Response) => endPointPageController.run(req, res));
 
-  app.get('/itinerary/point/:id/end', (req: Request, res: Response) => endPointPageController.run(req, res));
+  app.post('/itinerary/point/:id/end', ensureAuthenticated,(req: Request, res: Response) => endPointController.run(req, res));
 
-  app.post('/itinerary/point/:id/end', (req: Request, res: Response) => endPointController.run(req, res));
+  app.get('/point/:id/update',ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => updatePointControllerPage.run(req, res));
 
-  app.get('/point/:id/update', (req: Request, res: Response) => updatePointControllerPage.run(req, res));
+  app.post('/itinerary/add', ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => addPointController.run(req, res));
 
-  app.post('/itinerary/add', (req: Request, res: Response) => addPointController.run(req, res));
+  app.put('/point/:id', ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => updatePointController.run(req, res));
 
-  app.put('/point/:id', (req: Request, res: Response) => updatePointController.run(req, res));
+  app.get('/itinerary/:id/report', ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => reportPointPageController.run(req, res));
 
-  app.get('/itinerary/:id/report', (req: Request, res: Response) => reportPointPageController.run(req, res));
-
-  app.get('/itinerary/:id/image', (req: Request, res: Response) => imageItineraryGeneratorController.run(req, res));
+  app.get('/itinerary/:id/image', ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => imageItineraryGeneratorController.run(req, res));
 }

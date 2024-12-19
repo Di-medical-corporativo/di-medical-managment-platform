@@ -1,4 +1,5 @@
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
+import { PointId } from "../../../Itinerary/domain/PointId";
 import { AnswerOption } from "../../domain/AnswerOption";
 import { QuestionResult, QuestionResultMultiple, QuestionResultOpen } from "../../domain/QuestionResult";
 import { Response } from "../../domain/Response";
@@ -20,16 +21,16 @@ export class PrismaSurveyRepository implements SurveyRepository {
         id: surveyPlain.id,
         title: surveyPlain.title,
         questions: {
-          create: surveyPlain.questions.map(q => ({ 
-            id: q.id, 
+          create: surveyPlain.questions.map(q => ({
+            id: q.id,
             text: q.text,
             order: q.order,
             type: q.type,
             options: {
               create: q.options.map(o => ({ id: o.id, value: o.value, order: o.order }))
-            } 
+            }
           }))
-        }        
+        }
       }
     });
   }
@@ -57,9 +58,9 @@ export class PrismaSurveyRepository implements SurveyRepository {
               option: []
             };
 
-            if(a.answerText) answer.answer = a.answerText
+            if (a.answerText) answer.answer = a.answerText
 
-            if(a.option) answer.option.push(a.option);
+            if (a.option) answer.option.push(a.option);
 
             return {
               id: answer.id,
@@ -68,8 +69,8 @@ export class PrismaSurveyRepository implements SurveyRepository {
                 connect: { id: answer.questionId }
               },
               answerOption: {
-                create: answer.option.map(o => ({ 
-                  option: { connect: { id: a.option.optionId } }, 
+                create: answer.option.map(o => ({
+                  option: { connect: { id: a.option.optionId } },
                   answerOptionId: a.option.id
                 }))
               }
@@ -94,7 +95,7 @@ export class PrismaSurveyRepository implements SurveyRepository {
       }
     });
 
-    if(!surveyDB) {
+    if (!surveyDB) {
       return null;
     }
 
@@ -113,7 +114,7 @@ export class PrismaSurveyRepository implements SurveyRepository {
         options: []
       }
 
-      if(q.type == 'open') {
+      if (q.type == 'open') {
         return question;
       }
 
@@ -124,7 +125,7 @@ export class PrismaSurveyRepository implements SurveyRepository {
       }));
 
       question.options = options;
-      
+
       return question;
     });
 
@@ -142,11 +143,11 @@ export class PrismaSurveyRepository implements SurveyRepository {
   async findAll(): Promise<SurveyPreview[]> {
     const surveysDB = await prisma.survey.findMany({
       include: {
-       _count: {
-        select: {
-          responses: true
+        _count: {
+          select: {
+            responses: true
+          }
         }
-       }
       }
     });
 
@@ -185,10 +186,10 @@ export class PrismaSurveyRepository implements SurveyRepository {
 
   async results(id: SurveyId): Promise<SurveyResult | null> {
     const surveyDB = await prisma.survey.findFirst({
-     where: {
+      where: {
         id: id.toString()
-     },
-     include: {
+      },
+      include: {
         questions: {
           orderBy: {
             order: "asc"
@@ -221,15 +222,15 @@ export class PrismaSurveyRepository implements SurveyRepository {
             responses: true
           }
         }
-     }
+      }
     });
 
-    if(!surveyDB){
+    if (!surveyDB) {
       return null;
     }
 
     const summaryPerQuestion: QuestionResult[] = surveyDB.questions.map(question => {
-      if(question.type == 'open') {
+      if (question.type == 'open') {
         return QuestionResultOpen.fromPrimitives({
           id: question.id,
           question: question.text,
@@ -256,5 +257,57 @@ export class PrismaSurveyRepository implements SurveyRepository {
 
 
     return surveyResult;
+  }
+
+  async answerPoint(response: Response, pointId: PointId): Promise<void> {
+    const responsePlain = response.toPrimitives();
+
+    interface Answer {
+      id: string;
+      questionId: string;
+      answer: string;
+      option: AnswerOption[];
+    }
+
+    await prisma.surveyResponse.create({
+      data: {
+        id: responsePlain.id,
+        surveyId: responsePlain.surveyId,
+        point: {
+          connect: {
+            id: pointId.toString()
+          }
+        },
+        answers: {
+          create: responsePlain.answers.map(a => {
+            let answer: Answer = {
+              id: a.id,
+              questionId: a.questionId,
+              answer: '',
+              option: []
+            };
+
+            if (a.answerText) answer.answer = a.answerText
+
+            if (a.option) answer.option.push(a.option);
+
+            return {
+              id: answer.id,
+              answer: answer.answer,
+              question: {
+                connect: { id: answer.questionId }
+              },
+              answerOption: {
+                create: answer.option.map(o => ({
+                  option: { connect: { id: a.option.optionId } },
+                  answerOptionId: a.option.id
+                }))
+              },
+              
+            };
+          })
+        }
+      }
+    });
   }
 }

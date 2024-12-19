@@ -12,6 +12,8 @@ import { authorizeModule } from "../middlewares/authorizeRoles";
 import { surperAdminRole } from "../../../../Contexts/Shared/domain/roles/Roles";
 import { SurveyOpenController } from "../controllers/survey/SurveyOpenController";
 import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
+import { SurveyAnswerPointController } from "../controllers/survey/SurveyAnswerPointController";
+import { SurveyAnswerPointPageController } from "../controllers/survey/SurveyAnswerPointPageController";
 
 export const register = (app: Express) => {
   const createSurveyController: SurveyCreateController = container.get('Apps.Backoffice.backend.controllers.SurveyCreateController');
@@ -28,23 +30,29 @@ export const register = (app: Express) => {
 
   const resultsSurveyController: SurveyResultsController = container.get('Apps.Backoffice.backend.controllers.SurveyResultsController');
 
-  app.use('/survey', ensureAuthenticated, authorizeModule(AppModules.SURVEYS));
+  const surveyAnswerPointController: SurveyAnswerPointController = container.get('Apps.Backoffice.backend.controllers.SurveyAnswerPointController');
 
-  app.post('/survey/:id', (req: Request, res: Response) => createSurveyController.run(req, res));
+  const surveyAnswerPointPageController: SurveyAnswerPointPageController = container.get('Apps.Backoffice.backend.controllers.SurveyAnswerPointPageController');
+
+  app.post('/survey/:id',  ensureAuthenticated, authorizeModule(AppModules.SURVEYS), (req: Request, res: Response) => createSurveyController.run(req, res));
 
   app.post('/survey/:id/answer', (req: Request, res: Response) => answerSurveyController.run(req, res));
 
-  app.post('/survey/:id/close', (req: Request, res: Response) => closeSurveyController.run(req, res));
+  app.post('/survey-point/:pointId/answer', (req: Request, res: Response) => surveyAnswerPointController.run(req, res));
 
-  app.post('/survey/:id/open' ,(req: Request, res: Response) => openSurveyController.run(req, res));
+  app.post('/survey/:id/close',  ensureAuthenticated, authorizeModule(AppModules.SURVEYS), (req: Request, res: Response) => closeSurveyController.run(req, res));
+
+  app.post('/survey/:id/open',  ensureAuthenticated, authorizeModule(AppModules.SURVEYS), (req: Request, res: Response) => openSurveyController.run(req, res));
 
   app.get('/survey/:id/answer', (req: Request, res: Response) => searchSurveyController.run(req, res));
 
-  app.get('/survey/:id/results', (req: Request, res: Response) => resultsSurveyController.run(req, res));
+  app.get('/survey-point/:id/point/:pointId', (req: Request, res: Response) => surveyAnswerPointPageController.run(req, res));
 
-  app.get('/survey/', (req: Request, res: Response) => findAllSurveyController.run(req, res));
+  app.get('/survey/:id/results',  ensureAuthenticated, authorizeModule(AppModules.SURVEYS), (req: Request, res: Response) => resultsSurveyController.run(req, res));
 
-  app.get('/survey/new', (req: Request, res: Response) => {
+  app.get('/survey/',  ensureAuthenticated, authorizeModule(AppModules.SURVEYS), (req: Request, res: Response) => findAllSurveyController.run(req, res));
+
+  app.get('/survey/new',  ensureAuthenticated, authorizeModule(AppModules.SURVEYS), (req: Request, res: Response) => {
     const id = uuid();
 
     res.status(200).render('surveys/create', {

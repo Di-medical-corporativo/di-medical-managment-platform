@@ -174,4 +174,63 @@ describe('SurveyAnswererPoint', () => {
 
     await expect(surveyAnswererPoint.run(data)).rejects.toThrow(PointNotFound);
   });
+
+  test('should give a response for an open survey succesfully', async () => {
+    const dataQuestion = {
+      id: new QuestionId('84b100e7-8efe-4f6b-9e91-99099df18c4c'),
+      text: new QuestionText('test question'),
+      order: new QuestionOrder(1),
+      type: new QuestionType('open'),
+      options: []
+    }
+
+    const question = Question.create(dataQuestion);
+
+    const surveyData = {
+      id: new SurveyId('52f2bbe9-28fb-40cb-b7eb-7be38e2750df'),
+      title: new SurveyTitle('Test survey'),
+      description: new SurveyDescription('This is a test question'),
+      questions: [question]
+    };
+
+    const survey = Survey.create(surveyData);
+
+    repository.setReturnForSearch(survey);
+
+    const answers: Answer[] = [
+      AnswerOpen.create({
+        id: new AnswerId('d20e57b1-7fe5-4234-89e8-46ae4af9d574'),
+        answerText: new AnswerText('Hey there'),
+        questionId: new QuestionId('84b100e7-8efe-4f6b-9e91-99099df18c4c')
+      })
+    ];
+
+    const point = CollectPoint.create({
+      certificate: new PointCertificate(''),
+      client: PointClient.create({ id: new ClientId(''), name: new ClientName('') }),
+      comment: new PointComment(''),
+      id: new PointId(''),
+      invoice: [Invoice.create({ id: new InvoiceId(''), number: new InvoiceNumber('') })],
+      itineraryId: new ItineraryId(''),
+      observation: new PointObservation(''),
+      ssa: new PointSSA(''),
+      status: new PointStatus(''),
+      survey: PointSurvey.create({ id: new SurveyId(''), title: new SurveyTitle('') }),
+      task: PointTask.create({ id: new TaskId(''), status: new TaskStatus('') }),
+      userAssigned: PointUser.create({ firstName: new UserFirstName(''), id: new UserId(''), lastName: new UserLastName('') })
+    })
+
+    itineraryRepository.setReturnForPoint(point);
+
+    const data = {
+      id: new ResponseId('03c3547d-ba50-4af3-93af-ddca07792c71'),
+      surveyId: new SurveyId('52f2bbe9-28fb-40cb-b7eb-7be38e2750df'),
+      answers: answers,
+      pointId: new PointId('')
+    }
+
+    await surveyAnswererPoint.run(data);
+
+    repository.assertAnswerPointHaveBeenCalled();
+  });
 })

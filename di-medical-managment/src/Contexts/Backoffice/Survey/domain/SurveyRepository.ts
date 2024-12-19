@@ -3,6 +3,7 @@ import { Response } from "./Response";
 import { SurveyId } from "./SurveyId";
 import { SurveyPreview } from "./SurveyPreview";
 import { SurveyResult } from "./SurveyResult";
+import { PointId } from "../../Itinerary/domain/PointId";
 
 export interface SurveyRepository {
   save(survey: Survey): Promise<void>
@@ -18,4 +19,6 @@ export interface SurveyRepository {
   results(id: SurveyId): Promise<SurveyResult | null>
 
   open(id: SurveyId): Promise<void>
+
+  answerPoint(response: Response, pointId: PointId): Promise<void>
 }

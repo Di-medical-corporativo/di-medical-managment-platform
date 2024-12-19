@@ -111,8 +111,12 @@ export class ItineraryCreator {
 
       const { id, name } = clientToDeliver.toPrimitives();
 
-      const descriptionHTMLForTaskTemplate = `
+      let descriptionHTMLForTaskTemplate = `
         <p>Esta tarea pertence a la ruta del ${params.scheduleDate.format()}</p>
+        <p></p>
+        <p>Cliente: <strong>${name}</strong></p>
+        <p></p>
+        <p>Facturas: ${point.invoices.join(',')}</p>
         <p></p>
         <p>Es un punto de tipo: <strong>${point.type.getValue()}</strong> </p>
         <p></p>
@@ -120,6 +124,15 @@ export class ItineraryCreator {
         <p></p>
         <p><a href="/backoffice/itinerary/point/${pointId}/end" rel="noopener noreferrer" target="_blank">Enlace</a></p>
       `
+
+      if(point.type.isCollect() || point.type.isRoute()) {
+        descriptionHTMLForTaskTemplate += `
+          <p></p>
+          <p>No olvides la encuesta: </p>
+          <p></p>
+          <p><a href="/backoffice/survey-point/${point.surveyId!}/point/${pointId}/" rel="noopener noreferrer" target="_blank">Enlace a la encuesta</a></p>
+        `;
+      }
 
       const titleForTask = `Punto tipo: ${point.type.getValue()}, itinerario: ${params.scheduleDate.format()}`;
 
