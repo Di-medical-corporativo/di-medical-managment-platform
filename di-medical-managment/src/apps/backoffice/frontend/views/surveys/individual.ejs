@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultados de encuesta</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/survey">
+            <small>Encuestas</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/survey/<%= id %>/results/individual">
+            <small>Resultados</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="client-list" class="summary-survey">
+        <button 
+          class="button primary" 
+          onclick="window.location.href='/backoffice/survey/<%= id %>/results/'">
+          Reporte de encuesta
+        </button>
+        <h3>Respuesta no. <span class="summary-survey-total"><%= position %></span></h3>
+        
+        <% if(answer.belongsToPoint) { %>
+          <div class="survey-point">
+            <h4>Esta respesta pertecene a un punto</h4>
+            <p>Itinerario: <%= new Intl.DateTimeFormat('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(answer.point.itinerarySchedule)) %></p>
+            <p>Facturas: <%= answer.point.invoices.map(i => i.number).join(', ') %></p>
+            <p>Asignado: <%= answer.point.userAssigned.firstName %> <%= answer.point.userAssigned.lastName %></p>
+          </div>
+        <% } %>
+        
+        <% for(let i = 0; i < answer.answers.length; i++) { %>
+          <div class="question-result">
+            <% const currentQuestion = answer.answers[i] %> 
+            <p class="question-result-text"><%= currentQuestion.questionText %></p>
+              <div class="question-result-open">
+                <div class="open-response">
+                  <p><%= currentQuestion.surveyResponse %></p>
+                </div>
+              </div>
+          </div>
+        <% } %>
+        <div class="survey-actions">
+          <button class="button" onclick="window.location.href='/backoffice/survey/<%= id %>/results/individual/?position=<%= prevAnswer %>'">Anterior</button>
+          <button class="button" onclick="window.location.href='/backoffice/survey/<%= id %>/results/individual/?position=<%= nextAnswer %>'">Siguiente</button>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

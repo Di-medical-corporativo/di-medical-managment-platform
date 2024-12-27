@@ -4,6 +4,7 @@ import { SurveyId } from "./SurveyId";
 import { SurveyPreview } from "./SurveyPreview";
 import { SurveyResult } from "./SurveyResult";
 import { PointId } from "../../Itinerary/domain/PointId";
+import { SurveyResponse } from "./SurveyResponse";
 
 export interface SurveyRepository {
   save(survey: Survey): Promise<void>
@@ -21,4 +22,6 @@ export interface SurveyRepository {
   open(id: SurveyId): Promise<void>
 
   answerPoint(response: Response, pointId: PointId): Promise<void>
+
+  resultsPaginated(surveyId: SurveyId, position: number): Promise<{ answers: SurveyResponse[], total: number }>
 }

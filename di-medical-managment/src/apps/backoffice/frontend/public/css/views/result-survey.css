@@ -70,3 +70,13 @@
   color: #b3b3b3;
 }
 
+.survey-point {
+  width: 600px;
+  background-color: #ffffff;
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+}

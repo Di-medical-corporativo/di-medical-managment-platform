@@ -14,6 +14,7 @@ import { SurveyOpenController } from "../controllers/survey/SurveyOpenController
 import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
 import { SurveyAnswerPointController } from "../controllers/survey/SurveyAnswerPointController";
 import { SurveyAnswerPointPageController } from "../controllers/survey/SurveyAnswerPointPageController";
+import { SurveyIndividualAnswersController } from "../controllers/survey/SurveyIndividualAnswersController";
 
 export const register = (app: Express) => {
   const createSurveyController: SurveyCreateController = container.get('Apps.Backoffice.backend.controllers.SurveyCreateController');
@@ -34,6 +35,8 @@ export const register = (app: Express) => {
 
   const surveyAnswerPointPageController: SurveyAnswerPointPageController = container.get('Apps.Backoffice.backend.controllers.SurveyAnswerPointPageController');
 
+  const surveyIndividualAnswersController: SurveyIndividualAnswersController = container.get('Apps.Backoffice.backend.controllers.SurveyIndividualAnswersController');
+
   app.post('/survey/:id',  ensureAuthenticated, authorizeModule(AppModules.SURVEYS), (req: Request, res: Response) => createSurveyController.run(req, res));
 
   app.post('/survey/:id/answer', (req: Request, res: Response) => answerSurveyController.run(req, res));
@@ -49,6 +52,8 @@ export const register = (app: Express) => {
   app.get('/survey-point/:id/point/:pointId', (req: Request, res: Response) => surveyAnswerPointPageController.run(req, res));
 
   app.get('/survey/:id/results',  ensureAuthenticated, authorizeModule(AppModules.SURVEYS), (req: Request, res: Response) => resultsSurveyController.run(req, res));
+
+  app.get('/survey/:id/results/individual', ensureAuthenticated, authorizeModule(AppModules.SURVEYS), (req: Request, res: Response) => surveyIndividualAnswersController.run(req, res));
 
   app.get('/survey/',  ensureAuthenticated, authorizeModule(AppModules.SURVEYS), (req: Request, res: Response) => findAllSurveyController.run(req, res));
 

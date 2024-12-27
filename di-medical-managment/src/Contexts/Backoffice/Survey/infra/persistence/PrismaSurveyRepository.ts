@@ -3,10 +3,12 @@ import { PointId } from "../../../Itinerary/domain/PointId";
 import { AnswerOption } from "../../domain/AnswerOption";
 import { QuestionResult, QuestionResultMultiple, QuestionResultOpen } from "../../domain/QuestionResult";
 import { Response } from "../../domain/Response";
+import { ResponsePoint } from "../../domain/ResponsePoint";
 import { Survey } from "../../domain/Survey";
 import { SurveyId } from "../../domain/SurveyId";
 import { SurveyPreview } from "../../domain/SurveyPreview";
 import { SurveyRepository } from "../../domain/SurveyRepository";
+import { SurveyResponse } from "../../domain/SurveyResponse";
 import { SurveyResult } from "../../domain/SurveyResult";
 import { SurveyTotalAnswers } from "../../domain/SurveyTotalAnswers";
 
@@ -309,5 +311,123 @@ export class PrismaSurveyRepository implements SurveyRepository {
         }
       }
     });
+  }
+
+  async resultsPaginated(surveyId: SurveyId, position: number): Promise<{ answers: SurveyResponse[]; total: number; }> {
+    const skip = position - 1;
+
+    const totalAnswers = await prisma.surveyResponse.count({
+      where: {
+        surveyId: surveyId.toString()
+      }
+    });
+
+    const answerDB = await prisma.surveyResponse.findFirst({
+      where: {
+        surveyId: surveyId.toString()
+      },
+      skip,
+      orderBy: {
+        id: 'asc'
+      },
+      include: {
+        point: {
+          include: {
+            itinerary: {
+              select: {
+                scheduleDate: true
+              }
+            },
+            invoices: true,
+            user: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true
+              }
+            }
+          }
+        },
+        survey: {
+          select: {
+            description: true,
+            title: true
+          }
+        },
+        answers: {
+          include: {
+            question: {
+              select: {
+                text: true,
+                type: true,
+                id: true,
+                order: true
+              }
+            },
+            answerOption: {
+              include: {
+                option: {
+                  select: {
+                    value: true
+                  }
+                }
+              }
+            }
+          },
+          orderBy: {
+            question: {
+              order: 'asc'
+            }
+          }
+        }
+      }
+    });
+
+    if(!answerDB) {
+      return { answers: [], total: totalAnswers }
+    }
+
+  
+    const surveResponse: SurveyResponse = SurveyResponse.fromPrimitives({
+      belongsToPoint: false,
+      surveyDescription: answerDB.survey.description,
+      surveyTitle: answerDB.survey.title,
+      answers: answerDB.answers.map(a => {
+        const data = {
+          questionId: a.questionId,
+          questionText: a.question.text,
+          questionType: a.question.type,
+          surveyResponse: ''
+        };
+
+        if(a.question.type == 'open') {
+          data.surveyResponse = a.answer
+        } else {
+          data.surveyResponse = a.answerOption[0].option.value;
+        }
+
+        return data;
+      })
+    });
+
+
+    if(answerDB.point) {
+      let point: ResponsePoint;
+
+      point = ResponsePoint.fromPrimitives({
+        id: answerDB.point.id,
+        invoices: answerDB.point.invoices.map(i => ({ id: i.invoceId, number: i.invoiceNumber })),
+        itinerarySchedule: answerDB.point.itinerary.scheduleDate.toISOString(),
+        userAssigned: {
+          firstName: answerDB.point.user.firstName,
+          id: answerDB.point.user.id,
+          lastName: answerDB.point.user.lastName
+        }
+      });
+
+      surveResponse.setPoint(point);
+    }
+    
+    return { answers: [surveResponse], total: totalAnswers };
   }
 }

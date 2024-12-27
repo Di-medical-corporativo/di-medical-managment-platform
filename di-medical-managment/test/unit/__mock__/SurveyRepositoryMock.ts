@@ -4,6 +4,7 @@ import { Survey } from "../../../src/Contexts/Backoffice/Survey/domain/Survey";
 import { SurveyId } from "../../../src/Contexts/Backoffice/Survey/domain/SurveyId";
 import { SurveyPreview } from "../../../src/Contexts/Backoffice/Survey/domain/SurveyPreview";
 import { SurveyRepository } from "../../../src/Contexts/Backoffice/Survey/domain/SurveyRepository";
+import { SurveyResponse } from "../../../src/Contexts/Backoffice/Survey/domain/SurveyResponse";
 import { SurveyResult } from "../../../src/Contexts/Backoffice/Survey/domain/SurveyResult";
 
 export class SurveyRepositoryMock implements SurveyRepository {
@@ -53,6 +54,10 @@ export class SurveyRepositoryMock implements SurveyRepository {
 
   async close(id: SurveyId): Promise<void> {
     this.closeMock(id);
+  }
+
+  async resultsPaginated(surveyId: SurveyId, position: number): Promise<{ answers: SurveyResponse[]; total: number; }> {
+    return { answers: [], total: 1 };
   }
 
   async answerPoint(response: Response, pointId: PointId): Promise<void> {

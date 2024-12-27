@@ -298,7 +298,7 @@ services:
   Contexts.Backoffice.Survey.application.Create.SurveyCreator:
     class: ../../../../Contexts/Backoffice/Survey/application/Create/SurveyCreator
     arguments: [
-    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",f
     ]
 
   Contexts.Backoffice.Survey.application.Create.SurveyAnswerer:
@@ -343,6 +343,13 @@ services:
     arguments: [
     "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
   ]
+
+  Contexts.Backoffice.Survey.application.ResultsPaginate.ResultsPaginator:
+    class: ../../../../Contexts/Backoffice/Survey/application/ResultsPaginate/ResultsPaginator
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+  ]
+  
 
   Apps.Backoffice.backend.controllers.SurveyCreateController:
     class: ../controllers/survey/SurveyCreateController
@@ -396,6 +403,12 @@ services:
     class: ../controllers/survey/SurveyResultsController
     arguments: [
       "@Contexts.Backoffice.Survey.application.Results.SurveyResultsDisplayer"
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveyIndividualAnswersController:
+    class: ../controllers/survey/SurveyIndividualAnswersController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.ResultsPaginate.ResultsPaginator"
     ]
 
   Contexts.Backoffice.Task.infra.persistence.TaskRepository:

@@ -27,6 +27,8 @@
 
       <section id="client-list" class="summary-survey">
         <h3>Resumen de encuesta: <span class="summary-survey-total"><%=result.total%> resp.</span></h3>
+        <button class="button primary" onclick="window.location.href='/backoffice/survey/<%= result.id %>/results/individual/'">Respuestas individuales</button>
+
         <% for(let i = 0; i < result.results.length; i++) { %>
           <div class="question-result">
             <% const currentQuestion = result.results[i] %> 
@@ -61,8 +63,5 @@
       </section>
     </main>
   </div>
-</body>
-</html>
-
 </body>
 </html>
