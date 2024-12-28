@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { UserKanbanGenerator } from "../../../../Contexts/Backoffice/Task/application/UserKanban/UserKanbanGenerator";
 import { UserId } from "../../../../Contexts/Backoffice/User/domain/UserId";
-import { InvalidCredentials } from "../../../../Contexts/Shared/domain/InvalidCredentials";
 
 export interface User {
   id: string;
@@ -58,10 +57,10 @@ export default class DashBoardInitController {
         assignedTasks,
         completedTasks,
         inProgressTasks,
-        overdueTasks
+        overdueTasks,
+        user
       });
     } catch (error) {
-
       res.status(500).render('error/error', {
         message: 'Ocurrio un error, contacta soporte'
       });

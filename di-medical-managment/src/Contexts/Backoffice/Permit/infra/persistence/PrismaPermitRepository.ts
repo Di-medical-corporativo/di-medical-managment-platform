@@ -6,6 +6,7 @@ import { PermitId } from "../../domain/PermitId";
 import { PermitRepository } from "../../domain/PermitRepository";
 import { PermitStatusList } from "../../domain/PermitStatus";
 import { PermitType } from "../../domain/PermitType";
+import { PermitUser } from "../../domain/PermitUser";
 
 export class PrismaPermitRepository implements PermitRepository {
 
@@ -50,64 +51,8 @@ export class PrismaPermitRepository implements PermitRepository {
             firstName: true,
             lastName: true
           }
-        }
-      }
-    });
-
-    const permits = permitsDB.map(p => {
-      let permitType: PermitType = PermitType.Personal;
-
-      if(p.type == PermitType.Sickness) permitType = PermitType.Sickness;
-      if(p.type == PermitType.Vacation) permitType = PermitType.Vacation;
-
-      if(p.status == 'pending-permit') {
-        return PermitWithNoDecision.fromPrimitives({
-          createdAt: p.createdAt.toISOString(),
-          id: p.id,
-          reason: p.reason,
-          status: p.status,
-          type: permitType,
-          user: {
-            id: p.user.id,
-            firstName: p.user.firstName,
-            lastName: p.user.lastName
-          }
-        });
-      } else {
-        return PermitWithDecision.fromPrimitives({
-          createdAt: p.createdAt.toISOString(),
-          id: p.id,
-          reason: p.reason,
-          status: p.status,
-          type: permitType,
-          user: {
-            id: p.user.id,
-            firstName: p.user.firstName,
-            lastName: p.user.lastName
-          },
-          adminCommment: p.adminComment || 'Sin comentario',
-          decitionTakenAt: p.decitionTakenAt?.toISOString()!
-        });
-      }
-    });
-
-    return permits;
-  }
-
-  async findAll(month: number, year: number): Promise<Permit[]> {
-    const startOfMonth: Date = new Date(year, month - 1, 1);
-    
-    const endOfMonth: Date = new Date(year, month, 1);
-
-    const permitsDB = await prisma.permit.findMany({
-      where: {
-        createdAt: {
-          gte: startOfMonth,
-          lt: endOfMonth
-        }
-      },
-      include: {
-        user: {
+        },
+        decitionTakenBy: {
           select: {
             id: true,
             firstName: true,
@@ -149,7 +94,12 @@ export class PrismaPermitRepository implements PermitRepository {
             lastName: p.user.lastName
           },
           adminCommment: p.adminComment || 'Sin comentario',
-          decitionTakenAt: p.decitionTakenAt?.toISOString()!
+          decitionTakenAt: p.decitionTakenAt?.toISOString()!,
+          decitionTakenBy: {
+            firstName: p.decitionTakenBy?.firstName!,
+            id: p.decitionTakenBy?.id!,
+            lastName: p.decitionTakenBy?.lastName!
+          }
         });
       }
     });
@@ -157,7 +107,82 @@ export class PrismaPermitRepository implements PermitRepository {
     return permits;
   }
 
-  async action(id: PermitId, comment: PermitAdminComment, action: PermitStatusList): Promise<void> {
+  async findAll(month: number, year: number): Promise<Permit[]> {
+    const startOfMonth: Date = new Date(year, month - 1, 1);
+    
+    const endOfMonth: Date = new Date(year, month, 1);
+
+    const permitsDB = await prisma.permit.findMany({
+      where: {
+        createdAt: {
+          gte: startOfMonth,
+          lt: endOfMonth
+        }
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true
+          }
+        },
+        decitionTakenBy: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true
+          }
+        }
+      }
+    });
+
+    const permits = permitsDB.map(p => {
+      let permitType: PermitType = PermitType.Personal;
+
+      if(p.type == PermitType.Sickness) permitType = PermitType.Sickness;
+      if(p.type == PermitType.Vacation) permitType = PermitType.Vacation;
+
+      if(p.status == 'pending-permit') {
+        return PermitWithNoDecision.fromPrimitives({
+          createdAt: p.createdAt.toISOString(),
+          id: p.id,
+          reason: p.reason,
+          status: p.status,
+          type: permitType,
+          user: {
+            id: p.user.id,
+            firstName: p.user.firstName,
+            lastName: p.user.lastName
+          }
+        });
+      } else {
+        return PermitWithDecision.fromPrimitives({
+          createdAt: p.createdAt.toISOString(),
+          id: p.id,
+          reason: p.reason,
+          status: p.status,
+          type: permitType,
+          user: {
+            id: p.user.id,
+            firstName: p.user.firstName,
+            lastName: p.user.lastName
+          },
+          adminCommment: p.adminComment || 'Sin comentario',
+          decitionTakenAt: p.decitionTakenAt?.toISOString()!,
+          decitionTakenBy: {
+            firstName: p.decitionTakenBy?.firstName!,
+            id: p.decitionTakenBy?.id!,
+            lastName: p.decitionTakenBy?.lastName!
+          }
+        });
+      }
+    });
+
+    return permits;
+  }
+
+  async action(id: PermitId, comment: PermitAdminComment, action: PermitStatusList, decitionTakenBy: UserId): Promise<void> {
     await prisma.permit.update({
       where: {
         id: id.toString()
@@ -165,9 +190,14 @@ export class PrismaPermitRepository implements PermitRepository {
       data: {
         status: action,
         decitionTakenAt: new Date().toISOString(),
-        adminComment: comment.value
+        adminComment: comment.value,
+        decitionTakenBy: {
+          connect: {
+            id: decitionTakenBy.toString()
+          }
+        }
       }
-    })
+    });
   }
 
   async find(id: PermitId): Promise<Permit | null> {
@@ -181,6 +211,13 @@ export class PrismaPermitRepository implements PermitRepository {
             firstName: true,
             lastName: true,
             id: true
+          }
+        },
+        decitionTakenBy: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true
           }
         }
       }
@@ -203,7 +240,6 @@ export class PrismaPermitRepository implements PermitRepository {
       });
     }
 
-
     return PermitWithDecision.fromPrimitives({
       createdAt: permitDB.createdAt.toISOString(),
       id: permitDB.id,
@@ -216,7 +252,12 @@ export class PrismaPermitRepository implements PermitRepository {
         id: permitDB.user.id
       },
       adminCommment: permitDB.adminComment!,
-      decitionTakenAt: permitDB.decitionTakenAt?.toISOString()!
+      decitionTakenAt: permitDB.decitionTakenAt?.toISOString()!,
+      decitionTakenBy: {
+        firstName: permitDB.decitionTakenBy?.firstName!,
+        id: permitDB.decitionTakenBy?.id!,
+        lastName: permitDB.decitionTakenBy?.lastName!
+      }
     })
   }
 }

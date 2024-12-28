@@ -14,7 +14,6 @@ import { UserLastName } from "../../../../../../src/Contexts/Backoffice/User/dom
 import { PermitRepositoryMock } from "../../../../__mock__/PermitRepositoryMock";
 
 describe('PermitDecition', () => {
-
   let repository: PermitRepositoryMock;
 
   let permitAcceptor: PermitAcceptor
@@ -36,7 +35,7 @@ describe('PermitDecition', () => {
         lastName: new UserLastName('') 
       }),
       createdAt: new PermitDate(''),
-      status: new PermitStatus(PermitStatusList.Pending)
+      status: new PermitStatus(PermitStatusList.Pending),
     }
 
     const permit = PermitWithNoDecision.create(dataPermit);
@@ -46,7 +45,8 @@ describe('PermitDecition', () => {
     const data = {
       id: new PermitId(''),
       comment: new PermitAdminComment(''),
-      action: PermitStatusList.Approved
+      action: PermitStatusList.Approved,
+      decitionTakenBy: new UserId('')
     };
 
     await permitAcceptor.run(data);
@@ -61,7 +61,8 @@ describe('PermitDecition', () => {
     const data = {
       id: new PermitId(''),
       comment: new PermitAdminComment(''),
-      action: PermitStatusList.Approved
+      action: PermitStatusList.Approved,
+      decitionTakenBy: new UserId('')
     };
 
     await expect(permitAcceptor.run(data)).rejects.toThrow(PermitNotFound);

@@ -41,7 +41,8 @@ export class PermitWithDecision extends Permit {
     createdAt: PermitDate,
     status: PermitStatus,
     private adminComment: PermitAdminComment,
-    private decitionTakenAt: PermitDate
+    private decitionTakenAt: PermitDate,
+    private decitionTakenBy: PermitUser
   ) {
     super(
       id,
@@ -61,7 +62,8 @@ export class PermitWithDecision extends Permit {
     createdAt: PermitDate,
     status: PermitStatus,
     adminComment: PermitAdminComment,
-    decitionTakenAt: PermitDate
+    decitionTakenAt: PermitDate,
+    decitionTakenBy: PermitUser
   }) {
     return new PermitWithDecision(
       params.id,
@@ -71,7 +73,8 @@ export class PermitWithDecision extends Permit {
       params.createdAt,
       params.status,
       params.adminComment,
-      params.decitionTakenAt
+      params.decitionTakenAt,
+      params.decitionTakenBy
     );
   }
 
@@ -83,11 +86,16 @@ export class PermitWithDecision extends Permit {
       id: string;
       firstName: string;
       lastName: string;
-    }
+    };
     createdAt: string;
     status: string;
     adminCommment: string;
     decitionTakenAt: string;
+    decitionTakenBy: {
+      id: string;
+      firstName: string;
+      lastName: string;
+    };
   }) {
     return new PermitWithDecision(
       new UserId(params.id),
@@ -101,7 +109,12 @@ export class PermitWithDecision extends Permit {
       new PermitDate(params.createdAt),
       new PermitStatus(params.status),
       new PermitAdminComment(params.adminCommment),
-      new PermitDate(params.decitionTakenAt)
+      new PermitDate(params.decitionTakenAt),
+      PermitUser.fromPrimitives({
+        id: params.decitionTakenBy.id,
+        firstName: params.decitionTakenBy.firstName,
+        lastName: params.decitionTakenBy.lastName
+      })
     );
   }
 
@@ -114,7 +127,8 @@ export class PermitWithDecision extends Permit {
       createdAt: this.createdAt.toString(),
       status: this.status.toString(),
       adminComment: this.adminComment.toString(),
-      decitionTakenAt: this.decitionTakenAt.toString()
+      decitionTakenAt: this.decitionTakenAt.toString(),
+      decitionTakenBy: this.decitionTakenBy.toPrimitives()
     }   
   }
 }

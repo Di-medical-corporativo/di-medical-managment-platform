@@ -1,3 +1,4 @@
+import { UserId } from "../../../User/domain/UserId";
 import { PermitAdminComment } from "../../domain/PermitComment";
 import { PermitFinder } from "../../domain/PermitFinder";
 import { PermitId } from "../../domain/PermitId";
@@ -16,14 +17,16 @@ export class PermitAcceptor {
   async run(params: {
     id: PermitId,
     comment: PermitAdminComment,
-    action: PermitStatusList
+    action: PermitStatusList,
+    decitionTakenBy: UserId
   }) {
     await this.ensurePermitExists(params.id);
     
     await this.repository.action(
       params.id,
       params.comment,
-      params.action
+      params.action,
+      params.decitionTakenBy
     );
   }
 

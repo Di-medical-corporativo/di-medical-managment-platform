@@ -16,6 +16,8 @@
       <header id="admin-info">
         <section id="name-admin">
           <h3>Bienvenido</h3>
+          <small><%= user.firstName %> <%= user.lastName %></small>
+          <small><%= user.job %> </small>
         </section>
 
         <form action="/logout" method="post">

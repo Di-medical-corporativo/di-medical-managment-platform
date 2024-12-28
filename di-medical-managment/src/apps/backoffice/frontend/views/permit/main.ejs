@@ -48,12 +48,7 @@
                 <small>Razón: <%= permit.reason %></small>
                 <small>Pedido el: <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
                 <small>Estado: Pendiente</small>
-                
-                <!-- Form for Accept/Reject Buttons -->
-                  <!-- Accept Button -->
                 <button type="submit" name="action" value="accept" class="button primary" onclick="window.location.href='/backoffice/permit/<%= permit.id %>/accept'">Aceptar</button>
-                  
-                  <!-- Reject Button -->
                 <button type="submit" name="action" value="reject" class="button danger" onclick="window.location.href='/backoffice/permit/<%= permit.id %>/reject'">Rechazar</button>
               </div>
             <% }) %>
@@ -77,9 +72,9 @@
                   <% } %>
                 </h3>
                 <small><strong>Empleado:</strong> <%= permit.user.firstName %> <%= permit.user.lastName %></small>
-                <small>Razón: <%= permit.reason %></small>
                 <small>Pedido el: <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
                 <small>Aprobado el: <%= new Date(permit.decitionTakenAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %> </small>
+                <small>Aprobado por: <%= permit. %></small>
                 <small>Estado: Aprobado</small>
                 <small>Comentarios: <%= permit.adminComment %> </small>
               </div>
