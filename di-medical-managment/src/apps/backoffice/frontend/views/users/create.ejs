@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nuevo usuario</title>
   <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 <body>
@@ -28,7 +29,7 @@
         </header>
 
         <section id="new-client-form">
-          <form action="/backoffice/user/<%= id %>" method="post">
+          <form action="/backoffice/user/<%= id %>" method="post" id="new-user-form">
             <input type="text" hidden value="<%= id %>" name="id">
 
             <label for="firstName">Nombre:</label>
@@ -76,6 +77,22 @@
         </section>
       </main>
   </div>
-</body>
 
+  <script>
+    document.getElementById('new-user-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      swal({
+        title: '¿Estás seguro?',
+        text: 'Estás a punto de crear un nuevo usuario. ¿Deseas continuar?',
+        buttons: true,
+        dangerMode: true,
+      }).then((accepted) => {
+        if (accepted) {
+          this.submit();
+        }
+      });
+    });
+  </script>
+</body>
 </html>

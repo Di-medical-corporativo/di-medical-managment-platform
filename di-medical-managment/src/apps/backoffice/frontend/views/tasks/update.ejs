@@ -8,10 +8,10 @@
 
   <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
   <link rel="stylesheet" href="/css/main.css">
-
   <style>
-
     .editor-task {
       background-color: #ffffff;
     }
@@ -29,10 +29,7 @@
     .ql-container {
       height: 140px;
     }
-
-  </style>
-
-  
+  </style>  
 </head>
 <body>
   <div id="admin-dash">
@@ -114,16 +111,19 @@
           
           <button type="submit" class="button primary">Actualizar tarea</button>
         </form>
-        <form action="/backoffice/task/<%= task.id %>?_method=DELETE" method="post" style="margin-top: 10px;" id="taskFormDelete">
-          <input type="text" value="<%= task.id %>" name="id" hidden>
-          <button class="button danger" type="submit">Eliminar tarea</button>
-        </form>
+
+        <% if(!task.isPoint) { %>
+          <form action="/backoffice/task/<%= task.id %>?_method=DELETE" method="post" style="margin-top: 10px;" id="taskFormDelete">
+            <input type="text" value="<%= task.id %>" name="id" hidden>
+            <button class="button danger" type="submit">Eliminar tarea</button>
+          </form>
+        <% } %>
+
       </section>
     </main>
   </div>
 
   <script>
-    // Initialize Quill editor
     const quill = new Quill('#editor', {
     modules: {
         toolbar: '#toolbar-container',
@@ -132,26 +132,48 @@
       theme: 'snow',
     });
 
-    // On form submit, copy the content of the editor to the hidden input
     document.getElementById('taskForm').onsubmit = function(e) {
       const descriptionInput = document.querySelector('input[name=description]');
       
+      e.preventDefault();
+
       if(quill.getLength() == 1) {
-        alert('Debes de dar instruciones para realizar las tarea');
-        e.preventDefault();
+        swal({
+          title: 'Error',
+          text: 'Debes de proveer las instruciones para realizar la tarea.',
+          dangerMode: true,
+        });
+        
         return;
       }
 
-      descriptionInput.value = quill.getSemanticHTML();    
+      swal({
+        title: '¿Estás seguro?',
+        text: 'Estás a punto de actualizar los datos de esta tarea. ¿Deseas continuar?',
+        buttons: true,
+        dangerMode: true,
+      }).then((accepted) => {
+        if (accepted) {
+          descriptionInput.value = quill.getSemanticHTML();    
+          this.submit();
+        }
+      });
+
     };
 
     document.getElementById('taskFormDelete').onsubmit = function(e) {
-      const deleteTask = confirm('Estas apunto de eliminar permanentemente esta tarea ¿Estás seguro? (Los cambios no se pueden revertir).');
+      e.preventDefault();
 
-      if(!deleteTask) {
-        e.preventDefault();
-        return;
-      };
+      swal({
+        title: '¿Estás seguro?',
+        text: 'Estás a punto de eliminar esta tarea. Esta acción no puede deshacerse.',
+        buttons: true,
+        dangerMode: true,
+      }).then((accepted) => {
+        if (accepted) {
+          this.submit();
+        }
+      });
     }
 
     function getMinDateTime() {

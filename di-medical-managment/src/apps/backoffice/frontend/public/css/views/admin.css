@@ -153,6 +153,7 @@
   gap: 10px;
   flex-direction: column;
   justify-content: space-between;
+  overflow: hidden;
 }
 
 .task footer {
@@ -168,9 +169,12 @@
 }
 
 .task p {
-  word-wrap: break-word; /* Para compatibilidad con versiones antiguas de IE */
-  overflow-wrap: break-word; /* Propiedad estándar */
+  word-wrap: break-word; /* Para versiones antiguas de navegadores */
+  overflow-wrap: break-word; /* Manejo moderno para quiebres */
   font-size: 15px;
+  overflow: hidden; /* Opcional: Oculta cualquier contenido extra */
+  text-overflow: ellipsis; /* Agrega "..." si el texto es demasiado largo */
+  max-height: 100px;
 }
 
 #admin-actions {

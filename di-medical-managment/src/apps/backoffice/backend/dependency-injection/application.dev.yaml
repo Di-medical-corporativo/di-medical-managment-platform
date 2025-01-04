@@ -30,7 +30,6 @@ services:
       "@Contexts.Shared.application.ModuleCreator"
     ]
 
-
   Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository:
     class: ../../../../Contexts/Backoffice/Sucursal/infra/persistence/PrismaSucursalRepository
   
@@ -797,3 +796,6 @@ services:
     arguments: [
       "@Contexts.Backoffice.Permit.application.SearchAll.PermitSearcher"
     ]
+
+  Contexts.Backoffice.Department.infra.persistence.DepartmentRepository:
+    class: ../../../../Contexts/Backoffice/Department/infra/persistence/PrismaDepartmentRepository

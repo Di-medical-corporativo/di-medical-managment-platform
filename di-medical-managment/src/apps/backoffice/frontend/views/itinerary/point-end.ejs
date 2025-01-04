@@ -5,20 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Terminado punto: <%= point.id %></title>
   <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
   <style>
     .survey-section {
     margin: 20px 0;
     padding: 15px;
-    border: 2px dashed #f8a900; /* Un borde para destacar la sección */
-    background-color: #f8aa0031; /* Un verde claro que no distraiga */
+    border: 2px dashed #f8a900;
+    background-color: #f8aa0031;
     border-radius: 8px;
     text-align: center;
   }
   
   .survey-section p {
     margin: 0 0 10px 0;
-    color: #f8a900; /* Verde que combina con el borde */
+    color: #f8a900;
     font-weight: bold;
   }
   </style>
@@ -30,7 +31,7 @@
 
       <h2>Terminar punto</h2>
       <img src="/images/logo.png" alt="logo" width="150px" height="150px">
-      <p>Estas por terminar el punto con la siguientes datos:</p>
+      <p>Estas por terminar el punto con los siguientes datos:</p>
       <small>Cliente: <%= point.client.name %></small>
       <small>Operador asignado: <%= point.userAssigned.firstName %></small>
       <small>
@@ -68,5 +69,22 @@
       <button class="button primary">Terminar punto</button>
     </form>
   </div>
+
+  <script>
+    document.getElementById('point-end-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      swal({
+        title: '¿Estás seguro?',
+        text: 'Estás a punto terminar este punto. Esta acción no puede deshacerse. Revise los detalles antes de confirmar.',
+        buttons: true,
+        dangerMode: true,
+      }).then((accepted) => {
+        if (accepted) {
+          this.submit();
+        }
+      });
+    });
+  </script> 
 </body>
 </html>

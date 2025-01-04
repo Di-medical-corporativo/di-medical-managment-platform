@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Actualizar sucursal</title>
   <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
   <div id="admin-dash">
@@ -20,13 +21,13 @@
           </a>
           <span class="breadcrumb-slash">/</span>
           <a href="/backoffice/sucursal/new">
-            <small>Nueva sucursal</small>
+            <small>Actualizar sucursal</small>
           </a>
         </section>
       </header>
 
       <section id="new-client-form">
-        <form action="/backoffice/sucursal/<%= branch.id %>?_method=PUT" method="post">
+        <form action="/backoffice/sucursal/<%= branch.id %>?_method=PUT" method="post" id="update-branch-form">
           <input type="text" hidden id="id" name="id" value="<%= branch.id %>">
           <label for="name">Nombre:</label>
           <input type="text" name="name" id="name" class="input" required value="<%= branch.name %>">
@@ -39,5 +40,22 @@
       </section>
     </main>
   </div>
+
+  <script>
+    document.getElementById('update-branch-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      swal({
+        title: '¿Estás seguro?',
+        text: 'Estás a punto de actualizar esta sucursal. ¿Deseas continuar?',
+        buttons: true,
+        dangerMode: true,
+      }).then((accepted) => {
+        if (accepted) {
+          this.submit();
+        }
+      });
+    });
+  </script>
 </body>
 </html>

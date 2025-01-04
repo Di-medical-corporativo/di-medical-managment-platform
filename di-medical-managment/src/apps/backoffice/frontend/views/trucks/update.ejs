@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clientes</title>
   <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
   <div id="admin-dash">
@@ -26,7 +27,7 @@
       </header>
 
       <section id="new-client-form">
-        <form action="/backoffice/truck/<%= truckData.id %>?_method=PUT" method="post">
+        <form action="/backoffice/truck/<%= truckData.id %>?_method=PUT" method="post" id="update-truck-form">
           <input type="text" hidden value="<%= truckData.id %>" name="id">
           
           <label for="plate">Placas:</label>
@@ -42,5 +43,22 @@
       </section>
     </main>
   </div>
+
+  <script>
+    document.getElementById('update-truck-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      swal({
+        title: '¿Estás seguro?',
+        text: 'Estás a punto de actualizar los datos de esta camioneta. ¿Deseas continuar?',
+        buttons: true,
+        dangerMode: true,
+      }).then((accepted) => {
+        if (accepted) {
+          this.submit();
+        }
+      });
+    });
+  </script>
 </body>
 </html>

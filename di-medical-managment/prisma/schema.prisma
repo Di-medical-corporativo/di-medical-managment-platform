@@ -161,6 +161,13 @@ model AnswerOption {
   option QuestionOption @relation(fields: [optionId], references: [id])
 }
 
+model Department {
+  id String @id
+  name String
+  tasks Task[]
+  isActive Boolean @default(true)
+}
+
 model Task {
   id String @id
   title String
@@ -173,6 +180,9 @@ model Task {
   point Point?
 
   belongsToItinerary Boolean @default(false)
+
+  departmentId String
+  department Department @relation(fields: [departmentId], references: [id])
 
   @@index([status])
   @@index([dueTo])

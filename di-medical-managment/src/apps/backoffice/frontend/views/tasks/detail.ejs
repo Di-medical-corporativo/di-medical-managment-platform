@@ -5,13 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detalle de tarea</title>
   <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
   <style>
-
     .editor-task {
       background-color: #ffffff;
     }
@@ -29,18 +27,13 @@
     .ql-container {
       height: 140px;
     }
-
   </style>
-
-  
 </head>
 <body>
   <div id="admin-dash">
-
     <%- include('../partials/_leftbar') %>
     
     <main id="main-admin">
-
       <header class="section-header">
         <section class="breadcrumb">
           <a href="/backoffice/">
@@ -56,23 +49,18 @@
       <section id="new-client-form">        
         <form action="/backoffice/task/<%= task.id %>/nextStatus?_method=PUT" method="post" id="taskForm"> 
           <div class="tags" style="display: flex; gap: 5px;">
-            
             <% if (task.isPoint) { %>
               <small class="tag" style="align-self: self-start;">Punto de ruta</small>
             <% } %>
-            
             <% if (task.status === 'completed') { %>
               <small class="tag done" style="align-self: self-start;">Completado</small>
             <% } %>
-
             <% if (task.status === 'pastdue') { %>
               <small class="tag overdue" style="align-self: self-start;">Sin completar</small>
             <% } %>
-
             <% if (task.status === 'in-progress') { %>
-              <small class="tag prog" style="align-self: self-start;">En progeso</small>
+              <small class="tag prog" style="align-self: self-start;">En progreso</small>
             <% } %>
-
             <% if (task.status === 'assigned') { %>
               <small class="tag assigned" style="align-self: self-start;">Asignado</small>
             <% } %>
@@ -81,9 +69,9 @@
           <input type="text" hidden id="id" name="id" value="<%= task.id %>">
           
           <label for="title">Titulo:</label>
-          <input type="text" id="title"  value="<%= task.title %>" class="input" placeholder="Titulo de la tarea" disabled> 
+          <input type="text" id="title" value="<%= task.title %>" class="input" placeholder="Titulo de la tarea" disabled> 
           
-          <label for="description">Instruciones:</label>
+          <label for="description">Instrucciones:</label>
           <div class="editor-task">
             <div id="editor" style="height: 200px;">
               <%- task.description %>
@@ -101,39 +89,56 @@
             value="<%= formattedDate %>"
             required
             disabled
-            />
-
-            <% if (!task.isPoint) { %>
-
-              <% if (task.status === 'assigned' || task.status === 'in-progress') { %>
-                <button type="submit" class="button primary">
-                  <% if(task.status == 'assigned') { %>
-                    Iniciar tarea
-                  <% } else { %>
-                    Terminar tarea
-                  <% } %>
-                </button>
-              <% } %>
-
-            <% } else { %>
-              <p>Esta tarea pertenece a una ruta</p>
+          />
+          
+          <% if (!task.isPoint) { %>
+            <% if (task.status === 'assigned' || task.status === 'in-progress') { %>
+              <button type="submit" class="button primary" id="submit-task-btn">
+                <% if(task.status == 'assigned') { %>
+                  Iniciar tarea
+                <% } else { %>
+                  Terminar tarea
+                <% } %>
+              </button>
             <% } %>
+          <% } else { %>
+            <p>Esta tarea pertenece a una ruta</p>
+          <% } %>
         </form>
       </section>
     </main>
   </div>
 
   <script>
-    // Initialize Quill editor
     const quill = new Quill('#editor', {
       readOnly: true, 
       modules: {
           toolbar: null,
-        },
-      placeholder: 'Instruciones de la tarea...',
+      },
+      placeholder: 'Instrucciones de la tarea...',
       theme: 'snow',
     });
 
+    document.getElementById('submit-task-btn').addEventListener('click', function (event) {
+      event.preventDefault();
+
+      const form = document.getElementById('taskForm');
+
+      if (form.reportValidity()) {
+        swal({
+          title: '¿Estás seguro?',
+          text: 'Estás a punto de cambiar el estado de la tarea. Revisa los detalles antes de confirmar. ',
+          buttons: true,
+          dangerMode: true,
+          confirmButtonText: 'Sí, continuar',
+          cancelButtonText: 'Cancelar',
+        }).then((accepted) => {
+          if (accepted) {
+            form.submit();
+          }
+        });
+      }
+    });
   </script>
 </body>
 </html>

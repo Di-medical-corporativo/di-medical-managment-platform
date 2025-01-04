@@ -1,4 +1,3 @@
-import { v4 as uuid } from "uuid";
 import { UserAuthenticated } from "../../../../Shared/domain/UserAuthenticated";
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
 import { User } from "../../domain/User";

@@ -76,7 +76,6 @@ function generateUUID() {
 }
 
 const createOption = (questionId = '', indexQuestion = 0) => {
-
   const optionId = generateUUID();
 
   const list = document.getElementById(`${questionId}-options`);

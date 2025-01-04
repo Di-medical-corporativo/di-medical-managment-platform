@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nueva encuesta</title>
   <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 </head>
 <body>
   <div id="admin-dash">
@@ -62,6 +64,35 @@
       </section>
     </main>
   </div>
+
+  <script>
+    document.getElementById('survey-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+  
+      const questionList = document.getElementById('question-list');
+      const hasQuestions = questionList.querySelectorAll('div').length > 0;
+  
+      if (!hasQuestions) {
+        swal({
+          title: 'Error',
+          text: 'Debes agregar al menos una pregunta a la encuesta.',
+          icon: 'error',
+        });
+        return;
+      }
+  
+      swal({
+        title: '¿Estás seguro?',
+        text: 'Estás a punto de crear la encuesta. ¿Deseas continuar?',
+        buttons: true,
+        dangerMode: true,
+      }).then((accepted) => {
+        if (accepted) {
+          this.submit();
+        }
+      });
+    });
+  </script>
 
   <script src="/js/survey.js"></script>
 </body>

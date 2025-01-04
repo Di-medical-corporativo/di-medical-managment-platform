@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seguimiento de ruta</title>
   <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 </head>
 <body>
   <div id="admin-dash">
@@ -29,7 +31,7 @@
         <button class="button warning" style="width: 150px; margin-bottom: 20px; align-self: flex-end; margin-right: 20px;"
           onclick="window.location.href='/backoffice/itinerary/<%= itinerary.id %>/add'"
           >Agregar puntos</button>
-        <form action="/backoffice/itinerary/<%= itinerary.id %>/end" method="post">
+        <form action="/backoffice/itinerary/<%= itinerary.id %>/end" method="post" id="itinerary-end-form">
           <input type="text" value="<%= itinerary.id %>" name="id" hidden>
           <button class="button primary" style="margin-bottom: 20px; align-self: flex-end; width: 150px;">Terminar ruta</button>
 
@@ -112,8 +114,22 @@
       </section>
     </main>
   </div>
-</body>
-</html>
 
+  <script>
+    document.getElementById('itinerary-end-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      swal({
+        title: '¿Estás seguro?',
+        text: 'Estás a punto de terminar el itinerario. Revise los detalles antes de confirmar. Esta acción no puede deshacerse.',
+        buttons: true,
+        dangerMode: true,
+      }).then((accepted) => {
+        if (accepted) {
+          this.submit();
+        }
+      });
+    });
+  </script>
 </body>
 </html>

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Usuario</title>
   <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
   <div id="admin-dash">
@@ -26,7 +27,7 @@
       </header>
 
       <section id="new-client-form">
-        <form action="/backoffice/permit/new" method="post">
+        <form action="/backoffice/permit/new" method="post" id="permit-request-form">
           <label for="type">Tipo:</label>
           <select name="type" class="input">
               <option value="vacation-permit">Vacaciones</option>
@@ -35,10 +36,33 @@
           </select>
           <label for="reason">Razon:</label>
           <input type="text" name="reason" id="address" class="input" required>
-          <button type="submit" class="button primary">Pedir permiso</button>
+          <button type="submit" class="button primary" id="request-permit-btn">Pedir permiso</button>
         </form>
       </section>
     </main>
   </div>
+
+
+  <script>
+    document.getElementById('request-permit-btn').addEventListener('click', function (event) {
+    event.preventDefault();
+
+    const form = document.getElementById('permit-request-form');
+
+    if (form.reportValidity()) {
+      swal({
+        title: '¿Estás seguro?',
+        text: 'Estás a punto de enviar una solicitud de permiso laboral. Revise los detalles antes de confirmar.',
+        buttons: true,
+        dangerMode: true,
+      }).then((accepted) => {
+        if (accepted) {
+          form.submit();
+        }
+      });
+    }
+  });
+  </script>
 </body>
 </html>
+

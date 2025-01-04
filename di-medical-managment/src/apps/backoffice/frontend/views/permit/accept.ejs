@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detalles del Permiso</title>
   <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
   <div id="admin-dash">
@@ -19,7 +20,9 @@
             <small>Permisos</small>
           </a>
           <span class="breadcrumb-slash">/</span>
-          <span><small>Detalles del Permiso</small></span>
+          <a href="/backoffice/permit/<%= permit.id %>/accept">
+            <small>Permisos</small>
+          </a>
         </section>
       </header>
 
@@ -34,14 +37,14 @@
             Personal
           <% } %></p>
           <p><strong>Razón:</strong> <%= permit.reason %></p>
-          <p><strong>Usuario:</strong> <%= permit.user.firstName %> <%= permit.user.lastName %></p>
+          <p><strong>Empleado:</strong> <%= permit.user.firstName %> <%= permit.user.lastName %></p>
           <% 
             const date = new Date(permit.createdAt);
             const day = date.getDate().toString().padStart(2, '0');
             const month = (date.getMonth() + 1).toString().padStart(2, '0');
             const year = date.getFullYear();
           %>
-          <p><strong>Fecha de Creación:</strong> <%= `${day}/${month}/${year}` %></p>
+          <p><strong>Pedido el:</strong> <%= `${day}/${month}/${year}` %></p>
           <p><strong>Estado:</strong> <% if (permit.status === 'pending-permit') { %>
             Pendiente
           <% } else if (permit.status === 'approved-permit') { %>
@@ -51,15 +54,32 @@
           <% } %></p>
         </div>
 
-        <form action="/backoffice/permit/<%= permit.id %>/accept" method="post" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+        <form action="/backoffice/permit/<%= permit.id %>/accept" id="accept-permit-form" method="post" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
           <input type="hidden" name="_method" value="PUT">
           <label for="adminComment">Comentario del Administrador:</label>
           <input name="comment" id="adminComment" class="input" placeholder="Escribe un comentario..." required />
           
-          <button type="submit" class="button primary">Aceptar Permiso</button>
+          <button type="submit" class="button primary">Aprobar Permiso</button>
         </form>
       </section>
     </main>
   </div>
+
+  <script>
+    document.getElementById('accept-permit-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      swal({
+        title: '¿Estás seguro?',
+        text: 'Estás a punto de aprobar este permiso. Esta acción no puede deshacerse.',
+        buttons: true,
+        dangerMode: true,
+      }).then((accepted) => {
+        if (accepted) {
+          this.submit();
+        }
+      });
+    });
+  </script>
 </body>
 </html>

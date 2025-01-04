@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nueva ruta</title>
   <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 </head>
 <body>
   <div id="admin-dash">
@@ -144,6 +146,34 @@
       </section>
     </main>
   </div>
+
+  <script>
+    document.getElementById('itinerary-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const pointsTableBody = document.getElementById('point-table-body-list');
+      if (pointsTableBody.rows.length === 0) {
+        swal({
+          title: "¡Error!",
+          text: "Debes agregar al menos un punto a la ruta.",
+          icon: "error",
+          dangerMode: true
+        });
+        return;
+      }
+
+      swal({
+        title: '¿Estás seguro?',
+        text: 'Estás a punto de agregar los puntos al itinerario. Revise los detalles antes de confirmar.',
+        buttons: true,
+        dangerMode: true,
+      }).then((accepted) => {
+        if (accepted) {
+          this.submit();
+        }
+      });
+    });
+  </script>
   <script src="/js/itinerary.js"></script>
 </body>
 </html>

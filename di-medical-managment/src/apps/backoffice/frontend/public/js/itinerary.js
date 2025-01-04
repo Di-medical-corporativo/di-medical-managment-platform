@@ -21,20 +21,25 @@ function addPointToTable() {
 
   const observations = document.getElementById('observation');
 
-  const observation = observations.value || 'Sin observaciones'; 
+  const observation = observations.value || 'Sin observaciones';
 
   let surveyValue = surveyId.value;
 
   let surveyText = surveyId.options[surveyId.selectedIndex].text
 
-  if(type.value === 'point-parcel') {
+  if (type.value === 'point-parcel') {
     surveyValue = 'point-no-survey';
 
     surveyText = 'Punto sin encuesta'
   }
 
-  if(invoices.value.length === 0) {
-    alert('Debes agregar almenos una factura en el campo');
+  if (invoices.value.length === 0) {
+    swal({
+      title: "¡Error!",
+      text: "Debes agregar al menos una factura al campo.",
+      icon: "error",
+      dangerMode: true
+    });
 
     return;
   }
@@ -93,7 +98,7 @@ function deletePoint(event) {
 
   const row = button.closest('tr');
 
-  if(row) {
+  if (row) {
     row.remove();
   }
 
@@ -104,32 +109,15 @@ function deletePoint(event) {
 
 
 function updatePointIndices() {
-  // Obtener todas las filas de la tabla
   const rows = document.querySelectorAll('#point-list-table-data tr');
 
-  // Recorrer cada fila y actualizar el índice
   rows.forEach((row, index) => {
-      // Asegurarse de que solo se actualizan las filas que contienen puntos
-      if (row.querySelector('input[name^="points["]')) {
-          // Actualizar el texto del índice de punto (primer <td>)
-          row.querySelector('td:first-child').textContent = index;
+    if (row.querySelector('input[name^="points["]')) {
+      row.querySelector('td:first-child').textContent = index;
 
-          // Actualizar los atributos name de los inputs dentro de la fila
-          row.querySelectorAll('input').forEach(input => {
-              // Actualizar el nombre usando el nuevo índice
-              input.name = input.name.replace(/\[\d+\]/, `[${index}]`);
-          });
-      }
+      row.querySelectorAll('input').forEach(input => {
+        input.name = input.name.replace(/\[\d+\]/, `[${index}]`);
+      });
+    }
   });
 }
-
-
-document.getElementById('itinerary-form').addEventListener('submit', (e) => {
-  if(totalPoints === 0) {
-    e.preventDefault();
-
-    alert('Debes tener al menos un punto en la ruta');
-
-    return;
-  }
-});

@@ -9,7 +9,7 @@
 <body>
   <div id="admin-dash">
     <%- include('../partials/_leftbar') %>
-    
+  
     <main id="main-admin">
       <header class="section-header">
         <section class="breadcrumb">
@@ -45,9 +45,9 @@
                   <% } %>
                 </h3>
                 <small><strong>Empleado:</strong> <%= permit.user.firstName %> <%= permit.user.lastName %></small>
-                <small>Razón: <%= permit.reason %></small>
-                <small>Pedido el: <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
-                <small>Estado: Pendiente</small>
+                <small> <strong>Pedido el:</strong> <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
+                <small><strong>Estado:</strong> Pendiente</small>
+                <small><strong>Comentarios:</strong> <%= permit.adminComment %> </small>
                 <button type="submit" name="action" value="accept" class="button primary" onclick="window.location.href='/backoffice/permit/<%= permit.id %>/accept'">Aceptar</button>
                 <button type="submit" name="action" value="reject" class="button danger" onclick="window.location.href='/backoffice/permit/<%= permit.id %>/reject'">Rechazar</button>
               </div>
@@ -71,12 +71,13 @@
                     Tipo de Permiso Desconocido
                   <% } %>
                 </h3>
+                <small><strong>Razón:</strong> <%= permit.reason %></small>
                 <small><strong>Empleado:</strong> <%= permit.user.firstName %> <%= permit.user.lastName %></small>
-                <small>Pedido el: <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
-                <small>Aprobado el: <%= new Date(permit.decitionTakenAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %> </small>
-                <small>Aprobado por: <%= permit. %></small>
-                <small>Estado: Aprobado</small>
-                <small>Comentarios: <%= permit.adminComment %> </small>
+                <small><strong>Aprobado por:</strong> <%= permit.decitionTakenBy.firstName %> <%= permit.decitionTakenBy.lastName %> </small>
+                <small> <strong>Pedido el:</strong> <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
+                <small> <strong>Aprobado el:</strong> <%= new Date(permit.decitionTakenAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %> </small>
+                <small><strong>Estado:</strong> Aprobado</small>
+                <small><strong>Comentarios:</strong> <%= permit.adminComment %> </small>
               </div>
             <% }) %>
           </div>
@@ -98,12 +99,13 @@
                     Tipo de Permiso Desconocido
                   <% } %>
                 </h3>
+                <small>Razón: </strong> <%= permit.reason %></small>
                 <small><strong>Empleado:</strong> <%= permit.user.firstName %> <%= permit.user.lastName %></small>
-                <small>Razón: <%= permit.reason %></small>
-                <small>Fecha: <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
-                <small>Estado: Rechazado</small>
-                <small>Rechazado el: <%= new Date(permit.decitionTakenAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %> </small>
-                <small>Comentarios: <%= permit.adminComment %> </small>
+                <small><strong>Rechazado por:</strong> <%= permit.decitionTakenBy.firstName %> <%= permit.decitionTakenBy.lastName %> </small>
+                <small> <strong>Pedido el:</strong> <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
+                <small> <strong>Rechazado el:</strong> <%= new Date(permit.decitionTakenAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %> </small>
+                <small><strong>Estado:</strong> Rechazado</small>
+                <small><strong>Comentarios:</strong> <%= permit.adminComment %> </small>
               </div>
             <% }) %>
           </div>

@@ -1,0 +1,10 @@
+.swal-overlay {
+  background-color: rgba(249, 203, 78, 0.691)
+}
+
+.swal-title {
+  margin: 0px;
+  font-size: 16px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
+  margin-bottom: 28px;
+}

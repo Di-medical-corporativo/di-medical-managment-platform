@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Usuario</title>
   <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 </head>
 <body>
   <div id="admin-dash">
@@ -12,7 +14,6 @@
     <%- include('../partials/_leftbar') %>
     
     <main id="main-admin">
-
       <header class="section-header">
         <section class="breadcrumb">
           <a href="/backoffice/client">
@@ -26,7 +27,7 @@
       </header>
 
       <section id="new-client-form">
-        <form action="/backoffice/client/<%= id %>" method="post">
+        <form action="/backoffice/client/<%= id %>" method="post" id="create-client-form">
           <input type="text" hidden id="id" name="id" value="<%= id %>">
           <label for="name">Nombre:</label>
           <input type="text" name="name" id="name" class="input" required>
@@ -37,5 +38,22 @@
       </section>
     </main>
   </div>
+
+  <script>
+    document.getElementById('create-client-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      swal({
+        title: '¿Estás seguro?',
+        text: 'Estás a punto de crear un nuevo cliente. ¿Deseas continuar?',
+        buttons: true,
+        dangerMode: true,
+      }).then((accepted) => {
+        if (accepted) {
+          this.submit();
+        }
+      });
+    });
+  </script>
 </body>
 </html>

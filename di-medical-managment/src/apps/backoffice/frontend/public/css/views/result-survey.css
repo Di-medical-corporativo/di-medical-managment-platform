@@ -72,11 +72,28 @@
 
 .survey-point {
   width: 600px;
-  background-color: #ffffff;
-  box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
-  min-height: 130px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 10px;
+  background-color: #ffffff; /* Fondo suave para destacar */
+  border: 2px solid var(--color-dmc); /* Borde azul para llamar la atención */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 16px; /* Espaciado interno */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para un efecto elevado */
+}
+
+.survey-point h4 {
+  color: var(--color-dmc); /* Tono de azul más oscuro para el título */
+  font-size: 18px; /* Tamaño del texto del título */
+  margin-bottom: 12px; /* Espacio debajo del título */
+  font-weight: bold; /* Negrita para destacar */
+}
+
+.survey-point p {
+  color: #333; /* Texto oscuro para mayor legibilidad */
+  font-size: 16px; /* Tamaño adecuado para lectura */
+  line-height: 1.6; /* Mejor espaciado entre líneas */
+  margin: 6px 0; /* Separación entre párrafos */
+}
+
+.survey-point p strong {
+  color: #0056b3; /* Destacar texto en negrita */
+  font-weight: bold;
 }
