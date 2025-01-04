@@ -1,3 +1,8 @@
+import { DeparmentId } from "../../../Department/domain/DeparmentId";
+import { Department } from "../../../Department/domain/Department";
+import { DeparmentFinder } from "../../../Department/domain/DepartmentFinder";
+import { DepartmentRepository } from "../../../Department/domain/DepartmentRepository";
+import { Task } from "../../domain/Task";
 import { TaskDescription } from "../../domain/TaskDescription";
 import { TaskDueTo } from "../../domain/TaskDueTo";
 import { TaskFinder } from "../../domain/TaskFinder";
@@ -9,20 +14,30 @@ import { TaskTitle } from "../../domain/TaskTitle";
 export class TaskUpdator {
   private taskFinder: TaskFinder;
 
+  private departmentFinder: DeparmentFinder;
+
   constructor(
     private repository: TaskRepository,
-    private taskScheduler: TaskScheduler
+    private taskScheduler: TaskScheduler,
+    private departmentRepository: DepartmentRepository
   ) {
     this.taskFinder = new TaskFinder(repository);
+
+    this.departmentFinder = new DeparmentFinder(departmentRepository);
   }
 
   async run(params: {
     id: TaskId,
     title: TaskTitle,
     description: TaskDescription,
-    dueTo: TaskDueTo 
+    dueTo: TaskDueTo,
+    departmentId: DeparmentId
   }) {
-    const task = await this.taskFinder.run({
+    const department: Department = await this.departmentFinder.run({
+      id: params.departmentId
+    });
+
+    const task: Task = await this.taskFinder.run({
       id: params.id
     });
 
@@ -31,6 +46,8 @@ export class TaskUpdator {
     task.updateTitle(params.title);
 
     task.updateDueTo(params.dueTo);
+
+    task.updateDepartment(department);
 
     if(task.shouldBeReschedule(params.dueTo)) {
       await this.taskScheduler.reschedule(

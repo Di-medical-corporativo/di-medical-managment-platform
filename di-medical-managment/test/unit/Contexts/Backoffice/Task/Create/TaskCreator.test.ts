@@ -1,3 +1,6 @@
+import { DeparmentId } from "../../../../../../src/Contexts/Backoffice/Department/domain/DeparmentId";
+import { Department } from "../../../../../../src/Contexts/Backoffice/Department/domain/Department";
+import { DepartmentName } from "../../../../../../src/Contexts/Backoffice/Department/domain/DepartmentName";
 import { Sucursal } from "../../../../../../src/Contexts/Backoffice/Sucursal/domain/Sucursal";
 import { SucursalAddress } from "../../../../../../src/Contexts/Backoffice/Sucursal/domain/SucursalAddress";
 import { SucursalId } from "../../../../../../src/Contexts/Backoffice/Sucursal/domain/SucursalId";
@@ -16,24 +19,26 @@ import { UserDate } from "../../../../../../src/Contexts/Backoffice/User/domain/
 import { UserEmail } from "../../../../../../src/Contexts/Backoffice/User/domain/UserEmail";
 import { UserFirstName } from "../../../../../../src/Contexts/Backoffice/User/domain/UserFirstName";
 import { UserId } from "../../../../../../src/Contexts/Backoffice/User/domain/UserId";
-import { Role } from "../../../../../../src/Contexts/Backoffice/User/domain/UserIsAdmin";
 import { UserJob } from "../../../../../../src/Contexts/Backoffice/User/domain/UserJob";
 import { UserLastName } from "../../../../../../src/Contexts/Backoffice/User/domain/UserLastName";
 import { UserNotFound } from "../../../../../../src/Contexts/Backoffice/User/domain/UserNotFound";
 import { UserPhone } from "../../../../../../src/Contexts/Backoffice/User/domain/UserPhone";
-import { userRole } from "../../../../../../src/Contexts/Shared/domain/roles/Roles";
+import { DepartmentRepositoryMock } from "../../../../__mock__/DepartmentRepositoryMock";
 import { TaskRepositoryMock } from "../../../../__mock__/TaskRepositoryMock";
 import { TaskSchedulerMock } from "../../../../__mock__/TaskSchedulerMock";
 import { UserRepositoryMock } from "../../../../__mock__/UserRepositoryMock";
 
 describe('TaskCreator', () => {
   let taskCreator: TaskCreator;
-  
+
   let repository: TaskRepositoryMock;
 
   let userRepository: UserRepositoryMock;
-  
+
+  let departmentRepository: DepartmentRepositoryMock;
+
   let taskScheduler: TaskSchedulerMock;
+  
   beforeAll(() => {
     repository = new TaskRepositoryMock();
 
@@ -41,21 +46,33 @@ describe('TaskCreator', () => {
 
     taskScheduler = new TaskSchedulerMock();
 
-    taskCreator = new TaskCreator(repository, userRepository, taskScheduler);
+    departmentRepository = new DepartmentRepositoryMock();
+
+    taskCreator = new TaskCreator(repository, userRepository, taskScheduler, departmentRepository);
   });
 
-  test('should create a valid task with an existing user' , async () => {
+  test('should create a valid task with an existing user', async () => {
+    const departmentData = {
+      id: new DeparmentId('dep-1'),
+      name: new DepartmentName('1')
+    };
+
+    const expected = Department.create(departmentData);
+
+    departmentRepository.setReturnValueForSearch(expected);
+
     const taskParams = {
       id: new TaskId(''),
       title: new TaskTitle(''),
       description: new TaskDescription(''),
-      userAssigned: TaskUser.create({ 
-        id: new UserId(''), 
+      userAssigned: TaskUser.create({
+        id: new UserId(''),
         firstName: new UserFirstName(''),
-        lastName: new UserLastName('') 
+        lastName: new UserLastName('')
       }),
       dueTo: new TaskDueTo(new Date().toISOString()),
-      isPoint: new TaskIsPoint(false)
+      isPoint: new TaskIsPoint(false),
+      department: expected
     }
 
     const user = User.create({
@@ -84,26 +101,37 @@ describe('TaskCreator', () => {
       dueTo: taskParams.dueTo,
       id: taskParams.id,
       title: taskParams.title,
-      userId: new UserId('')
+      userId: new UserId(''),
+      departmentId: departmentData.id
     });
 
     repository.assertSaveHaveBeenCalledWith(task);
   });
 
   test('should throw user not found with a non existing user', async () => {
+    const departmentData = {
+      id: new DeparmentId('dep-1'),
+      name: new DepartmentName('1')
+    };
+
+    const expected = Department.create(departmentData);
+
+    departmentRepository.setReturnValueForSearch(expected);
+
     const taskParams = {
       id: new TaskId(''),
       title: new TaskTitle(''),
       description: new TaskDescription(''),
-      userAssigned: TaskUser.create({ 
-        id: new UserId(''), 
+      userAssigned: TaskUser.create({
+        id: new UserId(''),
         firstName: new UserFirstName(''),
-        lastName: new UserLastName('') 
+        lastName: new UserLastName('')
       }),
       dueTo: new TaskDueTo(new Date().toISOString()),
-      isPoint: new TaskIsPoint(false)
+      isPoint: new TaskIsPoint(false),
+      department: expected
     }
-    
+
     userRepository.setReturnForSearch(null);
 
     const task = Task.create(taskParams);
@@ -113,7 +141,8 @@ describe('TaskCreator', () => {
       dueTo: taskParams.dueTo,
       id: taskParams.id,
       title: taskParams.title,
-      userId: new UserId('')
+      userId: new UserId(''),
+      departmentId: departmentData.id
     })).rejects.toThrow(UserNotFound);
   });
 });

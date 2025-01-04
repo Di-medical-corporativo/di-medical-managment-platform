@@ -2,6 +2,9 @@ import { Client } from "../../../../../../src/Contexts/Backoffice/Client/domain/
 import { ClientAddress } from "../../../../../../src/Contexts/Backoffice/Client/domain/ClientAddress";
 import { ClientId } from "../../../../../../src/Contexts/Backoffice/Client/domain/ClientId";
 import { ClientName } from "../../../../../../src/Contexts/Backoffice/Client/domain/ClientName";
+import { DeparmentId } from "../../../../../../src/Contexts/Backoffice/Department/domain/DeparmentId";
+import { Department } from "../../../../../../src/Contexts/Backoffice/Department/domain/Department";
+import { DepartmentName } from "../../../../../../src/Contexts/Backoffice/Department/domain/DepartmentName";
 import { PointAdder } from "../../../../../../src/Contexts/Backoffice/Itinerary/application/AddPoint/PointAdder";
 import { Invoice } from "../../../../../../src/Contexts/Backoffice/Itinerary/domain/Invoice";
 import { InvoiceId } from "../../../../../../src/Contexts/Backoffice/Itinerary/domain/InvoiceId";
@@ -53,6 +56,7 @@ import { UserJob } from "../../../../../../src/Contexts/Backoffice/User/domain/U
 import { UserLastName } from "../../../../../../src/Contexts/Backoffice/User/domain/UserLastName";
 import { UserPhone } from "../../../../../../src/Contexts/Backoffice/User/domain/UserPhone";
 import { ClientRepositoryMock } from "../../../../__mock__/ClientRepositoryMock";
+import { DepartmentRepositoryMock } from "../../../../__mock__/DepartmentRepositoryMock";
 import { SurveyRepositoryMock } from "../../../../__mock__/SurveyRepositoryMock";
 import { TaskRepositoryMock } from "../../../../__mock__/TaskRepositoryMock";
 import { TaskSchedulerMock } from "../../../../__mock__/TaskSchedulerMock";
@@ -61,11 +65,11 @@ import { UserRepositoryMock } from "../../../../__mock__/UserRepositoryMock";
 
 describe('PointAdder', () => {
   let repository: ItineraryRepositoryMock;
-  
+
   let clientRepository: ClientRepositoryMock;
 
   let userRepository: UserRepositoryMock;
-  
+
   let taskRepository: TaskRepositoryMock;
 
   let taskScheduler: TaskSchedulerMock;
@@ -73,6 +77,8 @@ describe('PointAdder', () => {
   let surveyRepository: SurveyRepositoryMock;
 
   let pointAdder: PointAdder;
+
+  let departmentRepository: DepartmentRepositoryMock;
 
   beforeEach(() => {
     repository = new ItineraryRepositoryMock();
@@ -86,18 +92,30 @@ describe('PointAdder', () => {
     taskScheduler = new TaskSchedulerMock();
 
     surveyRepository = new SurveyRepositoryMock();
-  
+
+    departmentRepository = new DepartmentRepositoryMock();
+
     pointAdder = new PointAdder(
       repository,
       clientRepository,
       userRepository,
       taskRepository,
       taskScheduler,
-      surveyRepository
+      surveyRepository,
+      departmentRepository
     );
   });
 
   test('should add more points to the itinerary', async () => {
+    const departmentData = {
+      id: new DeparmentId('dep-1'),
+      name: new DepartmentName('1')
+    };
+
+    const department = Department.create(departmentData);
+
+    departmentRepository.setReturnValueForSearch(department);
+
     const itinerary: Itinerary = Itinerary.create({
       createdAt: new ItineraryDate(''),
       id: new ItineraryId(''),
@@ -106,7 +124,7 @@ describe('PointAdder', () => {
         client: PointClient.create({ id: new ClientId(''), name: new ClientName('') }),
         comment: new PointComment(''),
         id: new PointId(''),
-        invoice: [ Invoice.create({ id: new InvoiceId(''), number: new InvoiceNumber('') }) ],
+        invoice: [Invoice.create({ id: new InvoiceId(''), number: new InvoiceNumber('') })],
         itineraryId: new ItineraryId(''),
         observation: new PointObservation(''),
         ssa: new PointSSA(''),
@@ -167,19 +185,19 @@ describe('PointAdder', () => {
 
     clientRepository.setReturnForSearch(client);
 
-    const dataQuestion =  { 
-      id: new QuestionId(''), 
-      text: new QuestionText(''), 
-      order: new QuestionOrder(1), 
-      type: new QuestionType(''), 
-      options: [Option.create({ 
-        id: new OptionId(''), 
-        order: new OptionOrder(1), 
-        value: new OptionValue('') 
+    const dataQuestion = {
+      id: new QuestionId(''),
+      text: new QuestionText(''),
+      order: new QuestionOrder(1),
+      type: new QuestionType(''),
+      options: [Option.create({
+        id: new OptionId(''),
+        order: new OptionOrder(1),
+        value: new OptionValue('')
       }
-    )] 
+      )]
     }
-    
+
     const question = Question.create(dataQuestion);
 
     const data = {
@@ -190,13 +208,14 @@ describe('PointAdder', () => {
     };
 
     const survey = Survey.create(data);
-    
+
     surveyRepository.setReturnForSearch(survey);
 
     await pointAdder.run({
       itineraryId: new ItineraryId(''),
       points,
-      scheduleDate: new ItinerarySchedule(new Date().toISOString())
+      scheduleDate: new ItinerarySchedule(new Date().toISOString()),
+      departmentId: new DeparmentId('')
     });
 
     repository.assertAddPointsHaveBeenCalled();

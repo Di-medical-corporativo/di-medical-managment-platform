@@ -1,3 +1,4 @@
+import { Department } from "../../Department/domain/Department";
 import { TaskDescription } from "./TaskDescription";
 import { TaskDueTo } from "./TaskDueTo";
 import { TaskId } from "./TaskId";
@@ -14,8 +15,13 @@ export class Task {
     private userAssigned: TaskUser,
     private status: TaskStatus,
     private dueTo: TaskDueTo,
-    private isPoint: TaskIsPoint
+    private isPoint: TaskIsPoint,
+    private department: Department
   ) {}
+
+  public updateDepartment(department: Department) {
+    this.department = department;
+  }
 
   public updateTitle(title: TaskTitle) {
     this.title = title;
@@ -88,7 +94,8 @@ export class Task {
     description: TaskDescription,
     userAssigned: TaskUser
     dueTo: TaskDueTo,
-    isPoint: TaskIsPoint
+    isPoint: TaskIsPoint,
+    department: Department
   }) {
     return new Task(
       params.id,
@@ -97,7 +104,8 @@ export class Task {
       params.userAssigned,
       new TaskStatus(StatusList.Assigned),
       params.dueTo,
-      params.isPoint
+      params.isPoint,
+      params.department
     );
   }
 
@@ -109,6 +117,7 @@ export class Task {
     status: string;
     dueTo: string;
     isPoint: boolean;
+    department: { id: string; name: string; }
   }) {
     return new Task(
       new TaskId(params.id),
@@ -121,7 +130,8 @@ export class Task {
       }),
       new TaskStatus(params.status),
       new TaskDueTo(params.dueTo),
-      new TaskIsPoint(params.isPoint)
+      new TaskIsPoint(params.isPoint),
+      Department.fromPrimitives({ id: params.department.id, name: params.department.name })
     );
   }
 
@@ -133,7 +143,8 @@ export class Task {
       userAssigned: this.userAssigned.toPrimitives(),
       status: this.status.toString(),
       dueTo: this.dueTo.toString(),
-      isPoint: this.isPoint.value
+      isPoint: this.isPoint.value,
+      department: this.department.toPrimitives()
     }
   }
 }

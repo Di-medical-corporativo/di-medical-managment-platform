@@ -47,6 +47,9 @@ import { ItinerarySucursal } from "../../domain/ItinerarySucursal";
 import { SucursalName } from "../../../Sucursal/domain/SucursalName";
 import { Survey } from "../../../Survey/domain/Survey";
 import { TaskIsPoint } from "../../../Task/domain/TaskIsPoint";
+import { DeparmentId } from "../../../Department/domain/DeparmentId";
+import { DeparmentFinder } from "../../../Department/domain/DepartmentFinder";
+import { DepartmentRepository } from "../../../Department/domain/DepartmentRepository";
 
 export class ItineraryCreator {
   private sucursalFinder: SucursalFinder;
@@ -59,6 +62,8 @@ export class ItineraryCreator {
   
   private surveyFinder: SurveyFinder;
 
+  private departmentFinder: DeparmentFinder;
+
   constructor(
     private repository: ItineraryRepository,
     private sucursalRepository: SucursalRepository,
@@ -66,7 +71,8 @@ export class ItineraryCreator {
     private userRepository: UserRepository,
     private taskRepository: TaskRepository,
     private taskScheduler: TaskScheduler,
-    private surveyRepository: SurveyRepository
+    private surveyRepository: SurveyRepository,
+    private departmentRepository: DepartmentRepository
   ) {
     this.sucursalFinder = new SucursalFinder(sucursalRepository);
   
@@ -74,7 +80,7 @@ export class ItineraryCreator {
   
     this.userFinder = new UserFinder(userRepository);
   
-    this.taskCreator = new TaskCreator(taskRepository, userRepository, taskScheduler);
+    this.taskCreator = new TaskCreator(taskRepository, userRepository, taskScheduler, departmentRepository);
     
     this.surveyFinder = new SurveyFinder(surveyRepository);
   }
@@ -93,7 +99,8 @@ export class ItineraryCreator {
       surveyId?: SurveyId;
     }[],
     createdAt: ItineraryDate,
-    scheduleDate: ItinerarySchedule    
+    scheduleDate: ItinerarySchedule,
+    departmentId: DeparmentId
   }) {
     const itineraryId = new ItineraryId(uuid());
 
@@ -142,7 +149,8 @@ export class ItineraryCreator {
         dueTo: new TaskDueTo(params.scheduleDate.toString()),
         userId: point.userId,
         title: new TaskTitle(titleForTask),
-        isPoint: new TaskIsPoint(true)
+        isPoint: new TaskIsPoint(true),
+        departmentId: params.departmentId
       }
 
       await this.taskCreator.runForPoint(taskForPoint);

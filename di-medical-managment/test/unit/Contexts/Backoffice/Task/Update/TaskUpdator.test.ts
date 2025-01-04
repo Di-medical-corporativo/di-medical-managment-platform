@@ -1,3 +1,6 @@
+import { DeparmentId } from "../../../../../../src/Contexts/Backoffice/Department/domain/DeparmentId";
+import { Department } from "../../../../../../src/Contexts/Backoffice/Department/domain/Department";
+import { DepartmentName } from "../../../../../../src/Contexts/Backoffice/Department/domain/DepartmentName";
 import { TaskUpdator } from "../../../../../../src/Contexts/Backoffice/Task/application/Update/TaskUpdator";
 import { Task } from "../../../../../../src/Contexts/Backoffice/Task/domain/Task";
 import { TaskDescription } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskDescription";
@@ -5,6 +8,7 @@ import { TaskDueTo } from "../../../../../../src/Contexts/Backoffice/Task/domain
 import { TaskId } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskId";
 import { StatusList } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskStatus";
 import { TaskTitle } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskTitle";
+import { DepartmentRepositoryMock } from "../../../../__mock__/DepartmentRepositoryMock";
 import { TaskRepositoryMock } from "../../../../__mock__/TaskRepositoryMock";
 import { TaskSchedulerMock } from "../../../../__mock__/TaskSchedulerMock";
 
@@ -14,16 +18,29 @@ describe('TaskUpdator', () => {
   let taskUpdator: TaskUpdator;
 
   let taskScheduler: TaskSchedulerMock;
-  
+
+  let departmentRepository: DepartmentRepositoryMock;
+
   beforeEach(() => {
     repository = new TaskRepositoryMock();
 
     taskScheduler = new TaskSchedulerMock();
 
-    taskUpdator = new TaskUpdator(repository, taskScheduler);
+    departmentRepository = new DepartmentRepositoryMock();
+
+    taskUpdator = new TaskUpdator(repository, taskScheduler, departmentRepository);
   });
 
   test('with an overdue task and giving more time to do it, should update the date and status to in-progress', async () => {
+    const departmentData = {
+      id: new DeparmentId('dep-1'),
+      name: new DepartmentName('1')
+    };
+
+    const department = Department.create(departmentData);
+
+    departmentRepository.setReturnValueForSearch(department);
+
     const task = Task.fromPrimitives({
       description: '',
       dueTo: new Date('2024-08-17 02:50:00').toISOString(),
@@ -35,7 +52,11 @@ describe('TaskUpdator', () => {
         id: '',
         lastName: ''
       },
-      isPoint: false
+      isPoint: false,
+      department: {
+        id: '',
+        name: ''
+      }
     });
 
     repository.setReturnForSearch(task);
@@ -50,7 +71,8 @@ describe('TaskUpdator', () => {
       id,
       description: new TaskDescription(''),
       dueTo: new TaskDueTo(formattedDate),
-      title: new TaskTitle('')
+      title: new TaskTitle(''),
+      departmentId: new DeparmentId('')
     });
 
     const plainTask = task.toPrimitives();
@@ -61,6 +83,15 @@ describe('TaskUpdator', () => {
   });
 
   test('should reschedule a task when they give more time to complete it (Assigned)', async () => {
+    const departmentData = {
+      id: new DeparmentId('dep-1'),
+      name: new DepartmentName('1')
+    };
+
+    const department = Department.create(departmentData);
+
+    departmentRepository.setReturnValueForSearch(department);
+    
     const task = Task.fromPrimitives({
       description: '',
       dueTo: new Date('2024-08-17 02:50:00').toISOString(),
@@ -72,7 +103,11 @@ describe('TaskUpdator', () => {
         id: '',
         lastName: ''
       },
-      isPoint: false
+      isPoint: false,
+      department: {
+        id: '',
+        name: ''
+      }
     });
 
     repository.setReturnForSearch(task);
@@ -87,13 +122,23 @@ describe('TaskUpdator', () => {
       id,
       description: new TaskDescription(''),
       dueTo: new TaskDueTo(formattedDate),
-      title: new TaskTitle('')
+      title: new TaskTitle(''),
+      departmentId: new DeparmentId('')
     });
 
-    taskScheduler.assertReschedulerHaveBeenCalled();  
+    taskScheduler.assertReschedulerHaveBeenCalled();
   });
 
   test('should reschedule a task when they give more time to complete it (In-progres)', async () => {
+    const departmentData = {
+      id: new DeparmentId('dep-1'),
+      name: new DepartmentName('1')
+    };
+
+    const department = Department.create(departmentData);
+
+    departmentRepository.setReturnValueForSearch(department);
+    
     const task = Task.fromPrimitives({
       description: '',
       dueTo: new Date('2024-08-17 02:50:00').toISOString(),
@@ -105,7 +150,11 @@ describe('TaskUpdator', () => {
         id: '',
         lastName: ''
       },
-      isPoint: false
+      isPoint: false,
+      department: {
+        id: '',
+        name: ''
+      }
     });
 
     repository.setReturnForSearch(task);
@@ -120,13 +169,23 @@ describe('TaskUpdator', () => {
       id,
       description: new TaskDescription(''),
       dueTo: new TaskDueTo(formattedDate),
-      title: new TaskTitle('')
+      title: new TaskTitle(''),
+      departmentId: new DeparmentId('')
     });
 
-    taskScheduler.assertReschedulerHaveBeenCalled();  
+    taskScheduler.assertReschedulerHaveBeenCalled();
   });
 
   test('should reschedule a task when they give more time to complete it (completed)', async () => {
+    const departmentData = {
+      id: new DeparmentId('dep-1'),
+      name: new DepartmentName('1')
+    };
+
+    const department = Department.create(departmentData);
+
+    departmentRepository.setReturnValueForSearch(department);
+    
     const task = Task.fromPrimitives({
       description: '',
       dueTo: new Date('2024-08-17 02:50:00').toISOString(),
@@ -138,7 +197,11 @@ describe('TaskUpdator', () => {
         id: '',
         lastName: ''
       },
-      isPoint: false
+      isPoint: false,
+      department: {
+        id: '',
+        name: ''
+      }
     });
 
     repository.setReturnForSearch(task);
@@ -153,13 +216,23 @@ describe('TaskUpdator', () => {
       id,
       description: new TaskDescription(''),
       dueTo: new TaskDueTo(formattedDate),
-      title: new TaskTitle('')
+      title: new TaskTitle(''),
+      departmentId: new DeparmentId('')
     });
 
-    taskScheduler.assertReschedulerHaveBeenCalled();  
+    taskScheduler.assertReschedulerHaveBeenCalled();
   });
 
   test('should not reschedule if when updating the new dueTo date is before the assigned', async () => {
+    const departmentData = {
+      id: new DeparmentId('dep-1'),
+      name: new DepartmentName('1')
+    };
+
+    const department = Department.create(departmentData);
+
+    departmentRepository.setReturnValueForSearch(department);
+    
     const task = Task.fromPrimitives({
       description: '',
       dueTo: new Date('2024-08-17 02:50:00').toISOString(),
@@ -171,7 +244,11 @@ describe('TaskUpdator', () => {
         id: '',
         lastName: ''
       },
-      isPoint: false
+      isPoint: false,
+      department: {
+        id: '',
+        name: ''
+      }
     });
 
     repository.setReturnForSearch(task);
@@ -186,10 +263,11 @@ describe('TaskUpdator', () => {
       id,
       description: new TaskDescription(''),
       dueTo: new TaskDueTo(formattedDate),
-      title: new TaskTitle('')
+      title: new TaskTitle(''),
+      departmentId: new DeparmentId('')
     });
 
-    taskScheduler.assertRescheduleNotHaveBeenCalled();  
+    taskScheduler.assertRescheduleNotHaveBeenCalled();
   });
 
 });

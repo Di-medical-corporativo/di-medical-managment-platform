@@ -1,3 +1,6 @@
+import { DeparmentId } from "../../../Department/domain/DeparmentId";
+import { DeparmentFinder } from "../../../Department/domain/DepartmentFinder";
+import { DepartmentRepository } from "../../../Department/domain/DepartmentRepository";
 import { UserFinder } from "../../../User/domain/UserFinder";
 import { UserFirstName } from "../../../User/domain/UserFirstName";
 import { UserId } from "../../../User/domain/UserId";
@@ -15,13 +18,17 @@ import { TaskUser } from "../../domain/TaskUser";
 
 export class TaskCreator {
   private userFinder: UserFinder;
+  private departmentFinder: DeparmentFinder;
   
   constructor(
     private repository: TaskRepository,
     private userRepository: UserRepository,
-    private taskScheduler: TaskScheduler
+    private taskScheduler: TaskScheduler,
+    private departmentRepository: DepartmentRepository
   ) {
     this.userFinder = new UserFinder(userRepository);
+
+    this.departmentFinder = new DeparmentFinder(departmentRepository);
   }
 
   async run(params: {
@@ -29,11 +36,16 @@ export class TaskCreator {
     title: TaskTitle,
     description: TaskDescription,
     userId: UserId,
-    dueTo: TaskDueTo
+    dueTo: TaskDueTo,
+    departmentId: DeparmentId
   }) {
     const user = await this.userFinder.run(params.userId.toString());
     
     const { firstName, lastName, id } = user.toPrimitives();
+
+    const department = await this.departmentFinder.run({
+      id: params.departmentId
+    });
 
     const taskUser = TaskUser.create({
       firstName: new UserFirstName(firstName),
@@ -47,7 +59,8 @@ export class TaskCreator {
       id: params.id,
       title: params.title,
       userAssigned: taskUser,
-      isPoint: new TaskIsPoint(false)
+      isPoint: new TaskIsPoint(false),
+      department
     });
 
     await this.repository.save(task);
@@ -64,11 +77,16 @@ export class TaskCreator {
     description: TaskDescription,
     userId: UserId,
     dueTo: TaskDueTo,
-    isPoint: TaskIsPoint
+    isPoint: TaskIsPoint,
+    departmentId: DeparmentId
   }) {
     const user = await this.userFinder.run(params.userId.toString());
     
     const { firstName, lastName, id } = user.toPrimitives();
+
+    const department = await this.departmentFinder.run({
+      id: params.departmentId
+    });
 
     const taskUser = TaskUser.create({
       firstName: new UserFirstName(firstName),
@@ -82,7 +100,8 @@ export class TaskCreator {
       id: params.id,
       title: params.title,
       userAssigned: taskUser,
-      isPoint: params.isPoint
+      isPoint: params.isPoint,
+      department
     });
 
     await this.repository.save(task);

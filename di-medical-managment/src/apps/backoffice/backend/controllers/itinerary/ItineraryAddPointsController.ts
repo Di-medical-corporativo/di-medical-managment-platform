@@ -11,18 +11,20 @@ import { PointCertificate } from "../../../../../Contexts/Backoffice/Itinerary/d
 import { PointSSA } from "../../../../../Contexts/Backoffice/Itinerary/domain/PointSSA";
 import { PointType } from "../../../../../Contexts/Backoffice/Itinerary/domain/PointType";
 import { SurveyId } from "../../../../../Contexts/Backoffice/Survey/domain/SurveyId";
+import { DeparmentId } from "../../../../../Contexts/Backoffice/Department/domain/DeparmentId";
+import { DepartmentNotFound } from "../../../../../Contexts/Backoffice/Department/domain/DepartmentNotFound";
 
 export class ItineraryAddPointsController {
   constructor(
     private pointAdder: PointAdder
-  ) {}
+  ) { }
 
   async run(req: Request, res: Response) {
     try {
-      const { scheduleDate: scheduleDateV, id, points = [] } = req.body;
+      const { scheduleDate: scheduleDateV, id, points = [], departmentId } = req.body;
 
-        const scheduleDate = new Date(scheduleDateV);
-      
+      const scheduleDate = new Date(scheduleDateV);
+
       scheduleDate.setDate(scheduleDate.getDate() + 1);
 
       scheduleDate.setHours(23, 59, 0, 0);
@@ -34,7 +36,7 @@ export class ItineraryAddPointsController {
           const invoices = p.invoice.split(",").map((i: string) => i.trim());
 
           const observation = p.observation || 'Sin observaciones';
-          
+
           let point = {
             clientId: new ClientId(p.clientId),
             userId: new UserId(p.userId),
@@ -46,25 +48,27 @@ export class ItineraryAddPointsController {
             type: new PointType(p.type),
           }
 
-          if(p.type === 'point-parcel') return point;
+          if (p.type === 'point-parcel') return point;
           else return { ...point, surveyId: new SurveyId(p.surveyId) }
-        })
+        }),
+        departmentId: new DeparmentId(departmentId)
       });
 
       res.redirect(`/backoffice/itinerary/${id}/track`);
     } catch (error) {
-      if(error instanceof SurveyClosed) {
+      if (error instanceof SurveyClosed) {
         res.status(400).render('error/error', {
           message: 'Una de las encuestas seleccionadas no acepta mas respuestas'
         });
-      }
-
-      console.log(error);
-
-      res.status(500).render('error/error', {
+      } else if (error instanceof DepartmentNotFound) {
+        res.status(404).render('error/error', {
+          message: 'No se encontro el departamento seleccionado'
+        });
+      } else {
+        res.status(500).render('error/error', {
           message: 'Ocurrio un error, contacta soporte'
-        }
-      );
+        });
+      }
     }
   }
 }

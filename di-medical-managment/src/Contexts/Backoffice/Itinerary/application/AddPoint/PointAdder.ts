@@ -41,6 +41,8 @@ import { ClientName } from "../../../Client/domain/ClientName";
 import { InvoiceNumber } from "../../domain/InvoiceNumber";
 import { SurveyTitle } from "../../../Survey/domain/SurveyTitle";
 import { CollectPoint, ParcelPoint, Point, RoutePoint } from "../../domain/Point";
+import { DepartmentRepository } from "../../../Department/domain/DepartmentRepository";
+import { DeparmentId } from "../../../Department/domain/DeparmentId";
 
 export class PointAdder {
   private itineraryFinder: ItineraryFinder;
@@ -59,7 +61,8 @@ export class PointAdder {
     private userRepository: UserRepository,
     private taskRepository: TaskRepository,
     private taskScheduler: TaskScheduler,
-    private surveyRepository: SurveyRepository
+    private surveyRepository: SurveyRepository,
+    private departmentRepository: DepartmentRepository
   ) {
     this.itineraryFinder = new ItineraryFinder(repository);
 
@@ -67,7 +70,7 @@ export class PointAdder {
   
     this.userFinder = new UserFinder(userRepository);
   
-    this.taskCreator = new TaskCreator(taskRepository, userRepository, taskScheduler);
+    this.taskCreator = new TaskCreator(taskRepository, userRepository, taskScheduler, departmentRepository);
     
     this.surveyFinder = new SurveyFinder(surveyRepository);
   }
@@ -85,7 +88,8 @@ export class PointAdder {
         ssa: PointSSA;
         type: PointType;
         surveyId?: SurveyId;
-      }[]
+      }[],
+      departmentId: DeparmentId
     }
   ) {
     await this.ensureItineraryExists(params.itineraryId);
@@ -124,7 +128,8 @@ export class PointAdder {
         dueTo: new TaskDueTo(params.scheduleDate.toString()),
         userId: point.userId,
         title: new TaskTitle(titleForTask),
-        isPoint: new TaskIsPoint(true)
+        isPoint: new TaskIsPoint(true),
+        departmentId: params.departmentId
       }
 
       await this.taskCreator.runForPoint(taskForPoint);

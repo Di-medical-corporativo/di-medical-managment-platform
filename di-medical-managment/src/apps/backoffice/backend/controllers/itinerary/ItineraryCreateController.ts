@@ -12,6 +12,8 @@ import { PointSSA } from "../../../../../Contexts/Backoffice/Itinerary/domain/Po
 import { PointType } from "../../../../../Contexts/Backoffice/Itinerary/domain/PointType";
 import { SurveyId } from "../../../../../Contexts/Backoffice/Survey/domain/SurveyId";
 import { SurveyClosed } from "../../../../../Contexts/Backoffice/Survey/domain/SurveyClosed";
+import { DeparmentId } from "../../../../../Contexts/Backoffice/Department/domain/DeparmentId";
+import { DepartmentNotFound } from "../../../../../Contexts/Backoffice/Department/domain/DepartmentNotFound";
 
 export class ItineraryCreateController {
   constructor(
@@ -20,7 +22,7 @@ export class ItineraryCreateController {
 
   async run(req: Request, res: Response) {
     try {
-      const { dueTo, sucursalId, points = [] } = req.body;
+      const { dueTo, sucursalId, points = [], departmentId } = req.body;
 
       const createdAt = new Date();
 
@@ -52,7 +54,8 @@ export class ItineraryCreateController {
 
           if(p.type === 'point-parcel') return point
           else return { ...point, surveyId: new SurveyId(p.surveyId) }
-        })
+        }),
+        departmentId: new DeparmentId(departmentId)
       });
 
       res.redirect('/backoffice/itinerary');
@@ -61,12 +64,15 @@ export class ItineraryCreateController {
         res.status(400).render('error/error', {
           message: 'Una de las encuestas seleccionadas no acepta mas respuestas'
         });
-      }
-
-      res.status(500).render('error/error', {
+      } else if(error instanceof DepartmentNotFound) {
+        res.status(404).render('error/error', {
+          message: 'No se encontro el departamento seleccionado'
+        });
+      } else {
+        res.status(500).render('error/error', {
           message: 'Ocurrio un error, contacta soporte'
-        }
-      );
+        });
+      }
     }
   }
 }

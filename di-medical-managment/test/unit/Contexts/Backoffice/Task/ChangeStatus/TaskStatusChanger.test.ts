@@ -33,7 +33,11 @@ describe('TaskStatusChanger', () => {
         id: '',
         lastName: ''
       },
-      isPoint: false
+      isPoint: false,
+      department: {
+        id: '',
+        name: ''
+      }
     });
 
     repository.setReturnForSearch(task);
@@ -59,7 +63,11 @@ describe('TaskStatusChanger', () => {
         id: '',
         lastName: ''
       },
-      isPoint: false
+      isPoint: false,
+      department: {
+        id: '',
+        name: ''
+      }
     });
 
     repository.setReturnForSearch(task);
@@ -83,7 +91,11 @@ describe('TaskStatusChanger', () => {
         id: '',
         lastName: ''
       },
-      isPoint: false
+      isPoint: false,
+      department: {
+        id: '',
+        name: ''
+      }
     });
 
     repository.setReturnForSearch(task);
@@ -105,7 +117,11 @@ describe('TaskStatusChanger', () => {
         id: '',
         lastName: ''
       },
-      isPoint: false
+      isPoint: false,
+      department: {
+        id: '',
+        name: ''
+      }
     });
 
     repository.setReturnForSearch(task);

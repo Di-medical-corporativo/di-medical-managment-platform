@@ -1,3 +1,6 @@
+import { DeparmentId } from "../../../../../../src/Contexts/Backoffice/Department/domain/DeparmentId";
+import { Department } from "../../../../../../src/Contexts/Backoffice/Department/domain/Department";
+import { DepartmentName } from "../../../../../../src/Contexts/Backoffice/Department/domain/DepartmentName";
 import { TaskDeleter } from "../../../../../../src/Contexts/Backoffice/Task/application/Delete/TaskDeleter";
 import { Task } from "../../../../../../src/Contexts/Backoffice/Task/domain/Task";
 import { TaskDescription } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskDescription";
@@ -19,7 +22,7 @@ describe('TaskDeleter', () => {
   let taskDeleter: TaskDeleter;
 
   let taskScheduler: TaskSchedulerMock;
-  
+
   beforeEach(() => {
     taskRepositoryMock = new TaskRepositoryMock();
 
@@ -30,25 +33,33 @@ describe('TaskDeleter', () => {
 
   test('should delete an existing task', async () => {
     const id = new TaskId('');
-    
+
+    const departmentData = {
+      id: new DeparmentId('dep-1'),
+      name: new DepartmentName('1')
+    };
+
+    const department = Department.create(departmentData);
+
     const taskParams = {
       id,
       title: new TaskTitle(''),
       description: new TaskDescription(''),
-      userAssigned: TaskUser.create({ 
-        id: new UserId(''), 
+      userAssigned: TaskUser.create({
+        id: new UserId(''),
         firstName: new UserFirstName(''),
-        lastName: new UserLastName('') 
+        lastName: new UserLastName('')
       }),
       dueTo: new TaskDueTo(new Date().toISOString()),
-      isPoint: new TaskIsPoint(false)
+      isPoint: new TaskIsPoint(false),
+      department
     }
     const task = Task.create(taskParams);
-    
+
     taskRepositoryMock.setReturnForSearch(task);
 
     await taskDeleter.run({
-      id    
+      id
     });
 
     taskRepositoryMock.assertDeleteHaveBeenCalledWith(id);

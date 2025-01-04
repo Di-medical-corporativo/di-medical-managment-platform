@@ -1,14 +1,7 @@
 import { TaskTimeOutProcessor } from "../../../../../../src/Contexts/Backoffice/Task/application/TimeOut/TaskTimeOutProcessor";
 import { Task } from "../../../../../../src/Contexts/Backoffice/Task/domain/Task";
-import { TaskDescription } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskDescription";
-import { TaskDueTo } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskDueTo";
 import { TaskId } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskId";
 import { StatusList } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskStatus";
-import { TaskTitle } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskTitle";
-import { TaskUser } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskUser";
-import { UserFirstName } from "../../../../../../src/Contexts/Backoffice/User/domain/UserFirstName";
-import { UserId } from "../../../../../../src/Contexts/Backoffice/User/domain/UserId";
-import { UserLastName } from "../../../../../../src/Contexts/Backoffice/User/domain/UserLastName";
 import { TaskRepositoryMock } from "../../../../__mock__/TaskRepositoryMock";
 
 describe('TaskTimeOutProcessor', () => {
@@ -36,7 +29,11 @@ describe('TaskTimeOutProcessor', () => {
         id: '',
         lastName: ''
       },
-      isPoint: false
+      isPoint: false,
+      department: {
+        id: '',
+        name: ''
+      }
     });
 
     repository.setReturnForSearch(task);
@@ -60,7 +57,11 @@ describe('TaskTimeOutProcessor', () => {
         id: '',
         lastName: ''
       },
-      isPoint: false
+      isPoint: false,
+      department: {
+        id: '',
+        name: ''
+      }
     });
 
     repository.setReturnForSearch(task);

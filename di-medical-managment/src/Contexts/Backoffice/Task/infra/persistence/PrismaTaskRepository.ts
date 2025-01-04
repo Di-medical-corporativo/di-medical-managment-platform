@@ -21,6 +21,11 @@ export class PrismaTaskRepository implements TaskRepository {
             id: taskPlain.userAssigned.id
           }
         },
+        department: {
+          connect: {
+            id: taskPlain.department.id
+          }
+        },
         belongsToItinerary: taskPlain.isPoint
       }
     });
@@ -40,6 +45,7 @@ export class PrismaTaskRepository implements TaskRepository {
             lastName: true
           }
         },
+        department: true
       },
       where: {
         OR: [
@@ -81,7 +87,11 @@ export class PrismaTaskRepository implements TaskRepository {
         id: t.userAssignedId,
         lastName: t.userAssigned.lastName
       },
-      isPoint: t.belongsToItinerary
+      isPoint: t.belongsToItinerary,
+      department: {
+        id: t.department.id,
+        name: t.department.name
+      }
     }));
 
     return tasks;
@@ -99,7 +109,8 @@ export class PrismaTaskRepository implements TaskRepository {
             lastName: true,
             id: true
           }
-        }
+        },
+        department: true
       }
     });
 
@@ -118,7 +129,11 @@ export class PrismaTaskRepository implements TaskRepository {
         firstName: taskDB.userAssigned.firstName,
         lastName: taskDB.userAssigned.lastName
       },
-      isPoint: taskDB.belongsToItinerary
+      isPoint: taskDB.belongsToItinerary,
+      department: {
+        id: taskDB.department.id,
+        name: taskDB.department.name
+      }
     });
 
     return task;
@@ -135,7 +150,12 @@ export class PrismaTaskRepository implements TaskRepository {
         description: plainTask.description,
         dueTo: plainTask.dueTo,
         status: plainTask.status,
-        title: plainTask.title
+        title: plainTask.title,
+        department: {
+          connect: {
+            id: plainTask.department.id
+          }
+        }
       }
     });
   }
@@ -185,7 +205,8 @@ export class PrismaTaskRepository implements TaskRepository {
             firstName: true,
             lastName: true
           }
-        }
+        },
+        department: true
       },
       where: {
         userAssignedId: id.toString(),
@@ -228,7 +249,11 @@ export class PrismaTaskRepository implements TaskRepository {
         id: t.userAssignedId,
         lastName: t.userAssigned.lastName
       },
-      isPoint: t.belongsToItinerary
+      isPoint: t.belongsToItinerary,
+      department: {
+        id: t.department.id,
+         name: t.department.name
+      }
     }));
 
     return tasks;

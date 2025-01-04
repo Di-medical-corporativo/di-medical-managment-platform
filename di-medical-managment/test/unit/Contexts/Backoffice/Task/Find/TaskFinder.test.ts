@@ -1,3 +1,6 @@
+import { DeparmentId } from "../../../../../../src/Contexts/Backoffice/Department/domain/DeparmentId";
+import { Department } from "../../../../../../src/Contexts/Backoffice/Department/domain/Department";
+import { DepartmentName } from "../../../../../../src/Contexts/Backoffice/Department/domain/DepartmentName";
 import { Task } from "../../../../../../src/Contexts/Backoffice/Task/domain/Task";
 import { TaskDescription } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskDescription";
 import { TaskDueTo } from "../../../../../../src/Contexts/Backoffice/Task/domain/TaskDueTo";
@@ -16,7 +19,7 @@ describe('TaskFinder', () => {
   let repository: TaskRepositoryMock;
 
   let taskFinder: TaskFinder;
-  
+
   beforeAll(() => {
     repository = new TaskRepositoryMock();
 
@@ -24,30 +27,39 @@ describe('TaskFinder', () => {
   });
 
   test('should find an existing task', async () => {
+
+    const departmentData = {
+      id: new DeparmentId('dep-1'),
+      name: new DepartmentName('1')
+    };
+
+    const department = Department.create(departmentData);
+
     const taskParams = {
       id: new TaskId(''),
       title: new TaskTitle(''),
       description: new TaskDescription(''),
-      userAssigned: TaskUser.create({ 
-        id: new UserId(''), 
+      userAssigned: TaskUser.create({
+        id: new UserId(''),
         firstName: new UserFirstName(''),
-        lastName: new UserLastName('') 
+        lastName: new UserLastName('')
       }),
       dueTo: new TaskDueTo(new Date().toISOString()),
-      isPoint: new TaskIsPoint(false)
+      isPoint: new TaskIsPoint(false),
+      department
     }
-      const task = Task.create(taskParams);
+    const task = Task.create(taskParams);
 
-      repository.setReturnForSearch(task);
+    repository.setReturnForSearch(task);
 
-      const id = new TaskId('')
+    const id = new TaskId('')
 
-      await taskFinder.run({
-        id
-      });
-
-      repository.assertSearchHaveBeenCalledWith(id);
+    await taskFinder.run({
+      id
     });
+
+    repository.assertSearchHaveBeenCalledWith(id);
+  });
 
   test('should throw TaskNotFound if searching a non existing task', async () => {
     const id = new TaskId('')
