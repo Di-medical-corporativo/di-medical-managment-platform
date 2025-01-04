@@ -33,6 +33,7 @@ export class UserCreator {
     private sucursalRepository: SucursalRepository,
     private moduleRepository: ModuleRepository
   ) {
+
     this.passwordEncryptor = new UserPasswordEncryptor();
     
     this.sucursalFinder = new SucursalFinder(this.sucursalRepository);

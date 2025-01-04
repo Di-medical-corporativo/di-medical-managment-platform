@@ -1,0 +1,30 @@
+services:
+  Contexts.Backoffice.Client.application.Create.ClientCreator:
+    class: ../../../../../Contexts/Backoffice/Client/application/Create/ClientCreator
+    arguments: [
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository",
+    ]
+  
+  Contexts.Backoffice.Client.application.Delete.ClientDeleter:
+    class: ../../../../../Contexts/Backoffice/Client/application/Delete/ClientDeleter
+    arguments: [
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository"
+    ]
+    
+  Contexts.Backoffice.Client.application.Find.ClientFinder:
+    class: ../../../../../Contexts/Backoffice/Client/domain/ClientFinder
+    arguments: [
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository",
+    ]
+  
+  Contexts.Backoffice.Client.application.Update.ClientUpdator:
+    class: ../../../../../Contexts/Backoffice/Client/application/Update/ClientUpdator
+    arguments: [
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository"
+    ]
+
+  Contexts.Backoffice.Client.application.SearchAll.ClientSearcher:
+    class: ../../../../../Contexts/Backoffice/Client/application/SearchAll/ClientSearcher
+    arguments: [
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository"
+    ]

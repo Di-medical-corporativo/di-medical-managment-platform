@@ -8,5 +8,6 @@ export enum AppModules {
   ROUTE = 'ruta_modulo',
   TASKS = 'tareas_modulo',
   SURVEYS = 'encuestas_modulo',
-  MODULES = 'modulos_modulo'
+  MODULES = 'modulos_modulo',
+  DEPARTMENTS = 'departamentos_modulo'
 };

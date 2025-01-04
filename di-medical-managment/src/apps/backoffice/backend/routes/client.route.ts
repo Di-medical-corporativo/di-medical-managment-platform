@@ -1,14 +1,13 @@
-import { Express, Request, Response } from "express"
-import { ClientCreateController } from "../controllers/client/ClientCreateController"
-import container from "../dependency-injection"
-import { ClientUpdateController } from "../controllers/client/ClientUpdateController";
+import container from "../dependency-injection";
 import { v4 as uuid } from "uuid";
+import { Express, Request, Response } from "express";
+import { ClientCreateController } from "../controllers/client/ClientCreateController"
+import { ClientUpdateController } from "../controllers/client/ClientUpdateController";
 import { ClientFindAllController } from "../controllers/client/ClientFindAllController";
 import { ClientSearchController } from "../controllers/client/ClientSearchController";
 import { ClientDeleteController } from "../controllers/client/ClientDeleteController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { authorizeModule } from "../middlewares/authorizeRoles";
-import { adminRole, surperAdminRole, userRole } from "../../../../Contexts/Shared/domain/roles/Roles";
 import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
 
 export const register = (app: Express) => {
@@ -39,6 +38,6 @@ export const register = (app: Express) => {
     
     res.render('clients/create', {
       id
-    })
+    });
   });
 }

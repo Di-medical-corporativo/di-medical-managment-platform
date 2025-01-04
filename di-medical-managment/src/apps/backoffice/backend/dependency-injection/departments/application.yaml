@@ -1,0 +1,24 @@
+services:
+  Contexts.Backoffice.Department.application.Create.DepartmentCreator:
+    class: ../../../../../Contexts/Backoffice/Department/application/Create/DepartmentCreator
+    arguments: [
+    "@Contexts.Backoffice.Department.infra.persistence.DepartmentRepository",
+    ]
+
+  Contexts.Backoffice.Department.application.Delete.DepartmentDeleter:
+    class: ../../../../../Contexts/Backoffice/Department/application/Delete/DepartmentDeleter
+    arguments: [
+    "@Contexts.Backoffice.Department.infra.persistence.DepartmentRepository",
+    ]
+
+  Contexts.Backoffice.Department.application.SearchAll.DepartmentSearcher:
+    class: ../../../../../Contexts/Backoffice/Department/application/SearchAll/DepartmentSearcher
+    arguments: [
+    "@Contexts.Backoffice.Department.infra.persistence.DepartmentRepository",
+    ]
+
+  Contexts.Backoffice.Department.application.Update.DepartmentUpdator:
+    class: ../../../../../Contexts/Backoffice/Department/application/Update/DepartmentUpdator
+    arguments: [
+    "@Contexts.Backoffice.Department.infra.persistence.DepartmentRepository",
+    ]

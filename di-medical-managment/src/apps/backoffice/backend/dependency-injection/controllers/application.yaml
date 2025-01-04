@@ -1,0 +1,393 @@
+services:
+  Apps.Backoffice.backend.controllers.ClientDeleteController:
+    class: ../../controllers/client/ClientDeleteController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.Delete.ClientDeleter"
+    ]
+
+  Apps.Backoffice.backend.controllers.ClientCreateController:
+    class: ../../controllers/client/ClientCreateController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.Create.ClientCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.ClientUpdateController:
+    class: ../../controllers/client/ClientUpdateController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.Update.ClientUpdator"
+    ]
+
+  Apps.Backoffice.backend.controllers.ClientFindAllController:
+    class: ../../controllers/client/ClientFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.ClientSearchController:
+    class: ../../controllers/client/ClientSearchController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.Find.ClientFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.DashBoardInitController:
+    class: ../../controllers/DashboardInitController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.UserKanban.UserKanbanGenerator"
+    ]
+
+  Apps.Backoffice.backend.controllers.PointUpdateControllerPage:
+    class: ../../controllers/itinerary/PointUpdateControllerPage
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.FindPoint.PointFinder",
+      "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher",
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher",
+    ]
+
+  Apps.Backoffice.backend.controllers.PointUpdateController:
+    class: ../../controllers/itinerary/UpdatePointController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.UpdatePoint.PointUpdator",
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryCreatePageController:
+    class: ../../controllers/itinerary/ItineraryCreatePageController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher",
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher",
+      "@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher",
+      "@Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher"
+    ]
+  
+  Apps.Backoffice.backend.controllers.ItineraryCreateController:
+    class: ../../controllers/itinerary/ItineraryCreateController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.Create.ItineraryCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryFindAllController:
+    class: ../../controllers/itinerary/ItineraryFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.SearchAll.ItinerarySearchAll"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryStartController:
+    class: ../../controllers/itinerary/ItineraryStartController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.StartItinerary.ItineraryStarter"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryTrackController:
+    class: ../../controllers/itinerary/ItineraryTrackController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.Tracking.ItineraryTracker"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryEndController:
+    class: ../../controllers/itinerary/ItineraryEndController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.Finish.ItineraryFinisher"
+    ]
+
+  Apps.Backoffice.backend.controllers.PointEndPageController:
+    class: ../../controllers/itinerary/PointEndPageController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.FindPoint.PointFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.PointEndController:
+    class: ../../controllers/itinerary/PointEndController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.FinishPoint.PointFinisher"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryAddPointPageController:
+    class: ../../controllers/itinerary/ItineraryAddPointPageController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher",
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher",
+      "@Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher",
+      "@Contexts.Backoffice.Itinerary.application.Find.ItineraryFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryAddPointsController:
+    class: ../../controllers/itinerary/ItineraryAddPointsController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.AddPoint.PointAdder"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryReportPageController:
+    class: ../../controllers/itinerary/ItineraryReportPageController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.Report.ItineraryReporter"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryImageGeneratorController:
+    class: ../../controllers/itinerary/ItineraryImageGeneratorController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.ItineraryImage.ItineraryImageGenerator"
+    ]
+
+  Apps.Backoffice.backend.controllers.ModuleFindAllController:
+    class: ../../controllers/modules/ModuleFindAllController
+    arguments: [
+      "@Contexts.Shared.application.ModuleSearcher"
+    ]
+  
+  Apps.Backoffice.backend.controllers.ModuleCreateController:
+    class: ../../controllers/modules/ModuleCreateController
+    arguments: [
+      "@Contexts.Shared.application.ModuleCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.PermitCreateController:
+    class: ../../controllers/permit/PermitCreateController
+    arguments: [
+      "@Contexts.Backoffice.Permit.application.Create.PermitCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.PermitAcceptPageController:
+    class: ../../controllers/permit/PermitAcceptPageController
+    arguments: [
+      "@Contexts.Backoffice.Permit.application.Find.PermitFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.PermitRejectPageController:
+    class: ../../controllers/permit/PermitRejectPageController
+    arguments: [
+      "@Contexts.Backoffice.Permit.application.Find.PermitFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.PermitAcceptController:
+    class: ../../controllers/permit/PermitAcceptController
+    arguments: [
+      "@Contexts.Backoffice.Permit.application.Accept.PermitAcceptor"
+    ]
+  
+  Apps.Backoffice.backend.controllers.PermitRejectController:
+    class: ../../controllers/permit/PermitRejectController
+    arguments: [
+      "@Contexts.Backoffice.Permit.application.Accept.PermitAcceptor"
+    ]
+
+  Apps.Backoffice.backend.controllers.PermitByUserPageController:
+    class: ../../controllers/permit/PermitByUserPageController
+    arguments: [
+      "@Contexts.Backoffice.Permit.application.UserPermits.UserPermitsFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.PermitFindAllController:
+    class: ../../controllers/permit/PermitFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Permit.application.SearchAll.PermitSearcher"
+    ]
+  
+  Apps.Backoffice.backend.controllers.SucursalSearchController:
+    class: ../../controllers/sucursal/SucursalSearchController
+    arguments: ["@Contexts.Backoffice.Sucursal.application.Find.SucursalFinder"]
+
+  Apps.Backoffice.backend.controllers.SucursalCreateController:
+    class: ../../controllers/SucursalCreateController
+    arguments: ["@Contexts.Backoffice.Sucursal.application.Create.SucursalCreator"]
+  
+  Apps.Backoffice.backend.controllers.SucursalUpdateController:
+    class: ../../controllers/SucursalUpdateController
+    arguments: ["@Contexts.Backoffice.Sucursal.application.Update.SucursalUpdator"]
+  
+  Apps.Backoffice.backend.controllers.SucursalFindAllController:
+    class: ../../controllers/sucursal/SucursalFindAllController
+    arguments: ["@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher"]
+
+  Apps.Backoffice.backend.controllers.SurveyCreateController:
+    class: ../../controllers/survey/SurveyCreateController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.Create.SurveyCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveyAnswerController:
+    class: ../../controllers/survey/SurveyAnswerController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.Create.SurveyAnswerer"
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveyAnswerPointController:
+    class: ../../controllers/survey/SurveyAnswerPointController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.AnswerPoint.SurveyAnswererPoint"
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveyFindAllController:
+    class: ../../controllers/survey/SurveyFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveySearchController:
+    class: ../../controllers/survey/SurveySearchController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.Find.SurveyFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveyAnswerPointPageController:
+    class: ../../controllers/survey/SurveyAnswerPointPageController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.Find.SurveyFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveyCloseController:
+    class: ../../controllers/survey/SurveyCloseController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.Close.SurveyTerminator"
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveyOpenController:
+    class: ../../controllers/survey/SurveyOpenController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.Open.SurveyOpener"
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveyResultsController:
+    class: ../../controllers/survey/SurveyResultsController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.Results.SurveyResultsDisplayer"
+    ]
+
+  Apps.Backoffice.backend.controllers.SurveyIndividualAnswersController:
+    class: ../../controllers/survey/SurveyIndividualAnswersController
+    arguments: [
+      "@Contexts.Backoffice.Survey.application.ResultsPaginate.ResultsPaginator"
+    ]
+
+  Apps.Backoffice.backend.controllers.TaskChangeStatusController:
+    class: ../../controllers/tasks/TaskChangeStatusController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.ChangeStatus.TaskStatusChanger"
+    ]
+
+  Apps.Backoffice.backend.controllers.TaskCreateController:
+    class: ../../controllers/tasks/TaskCreateController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.Create.TaskCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.TaskCreatePageController:
+    class: ../../controllers/tasks/TaskCreatePageController
+    arguments: [
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.TaskGlobalKanban:
+    class: ../../controllers/tasks/TaskGlobalKanban
+    arguments: [
+      "@Contexts.Backoffice.Task.application.SearchAll.TaskSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.TaskUpdateController:
+    class: ../../controllers/tasks/TaskUpdateController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.Update.TaskUpdator"
+    ]
+
+  Apps.Backoffice.backend.controllers.TaskSearchController:
+    class: ../../controllers/tasks/TaskSearchController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.Find.TaskFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.TaskDeleteController:
+    class: ../../controllers/tasks/TaskDeleteController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.Delete.TaskDeleter"
+    ]
+
+  Apps.Backoffice.backend.controllers.TaskDetailPageController:
+    class: ../../controllers/tasks/TaskDetailPageController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.Find.TaskFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.TruckSearchControllers:
+    class: ../../controllers/truck/TruckSearchController
+    arguments: [
+      "@Contexts.Backoffice.Truck.application.Find.TruckFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.TruckCreateController:
+    class: ../../controllers/truck/TruckCreateController
+    arguments: [
+      "@Contexts.Backoffice.Truck.application.Create.TruckCreator"
+    ]
+  
+  Apps.Backoffice.backend.controllers.TruckUpdateController:
+    class: ../../controllers/truck/TruckUpdateController
+    arguments: [
+      "@Contexts.Backoffice.Truck.application.Update.TruckUpdator"
+    ]
+
+  Apps.Backoffice.backend.controllers.IncidentCreateController:
+    class: ../../controllers/truck/IncidentCreateController
+    arguments: [
+      "@Contexts.Backoffice.Truck.application.AddIncident.TruckIncidentAdder"
+    ]
+
+  Apps.Backoffice.backend.controllers.IncidentFindAllController:
+    class: ../../controllers/truck/IncidentFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Truck.application.SearchAllIncident.IncidentSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.IncidentRemoveController:
+    class: ../../controllers/truck/IncidentRemoveController
+    arguments: [
+      "@Contexts.Backoffice.Truck.application.RemoveIncident.TruckIncidentRemover"
+    ]
+
+  Apps.Backoffice.backend.controllers.TruckFindAllController:
+    class: ../../controllers/truck/TruckFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Truck.application.SearchAll.TruckSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.UserCreateController:
+    class: ../../controllers/UserCreateController
+    arguments: [
+      "@Contexts.Backoffice.User.application.Create.UserCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.UserUpdateController:
+    class: ../../controllers/users/UserUpdateController
+    arguments: [
+      "@Contexts.Backoffice.User.application.Update.UserUpdator"
+    ]
+
+  Apps.Backoffice.backend.controllers.UserCreatePageController:
+    class: ../../controllers/users/UserCreatePageController
+    arguments: [
+      "@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher",
+      "@Contexts.Shared.application.ModuleSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.UserSearchAllController:
+    class: ../../controllers/users/UserSearchAllController
+    arguments: [
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.UserSearchController:
+    class: ../../controllers/users/UserSearchController
+    arguments: [
+      "@Contexts.Backoffice.User.application.Find.UserFinder",
+      "@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher",
+      "@Contexts.Shared.application.ModuleSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.UserDeleteController:
+    class: ../../controllers/users/UserDeleteController
+    arguments: [
+      "@Contexts.Backoffice.User.application.Delete.UserDeleter"
+    ]
+
+  Apps.Backoffice.backend.controllers.DepartmentsFindAllController:
+    class: ../../controllers/departments/DepartmentsFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Department.application.SearchAll.DepartmentSearcher"
+    ]

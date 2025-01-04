@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Departamentos</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+
+      <main id="main-admin">
+
+        <header class="section-header">
+          <section class="breadcrumb">
+            <a href="/backoffice/department">
+              <small>Departamentos</small>
+            </a>
+            <span class="breadcrumb-slash">/</span>
+          </section>
+
+          <button id="new-client" class="button primary"
+            onclick="window.location.href='/backoffice/department/new'">Nuevo departamento</button>
+        </header>
+
+        <section id="client-list" style="margin-top: 20px;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(let i=0; i < departments.length; i++) { %>
+                <tr>
+                  <td>
+                    <%= departments[i].name %>
+                  </td>
+                  <td>
+                    <button class="button primary">Actualizar</button>
+                    <button class="button danger">Eliminar</button>
+                  </td>
+                </tr>
+                <% } %>
+            </tbody>
+          </table>
+        </section>
+      </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+services:
+  Contexts.Backoffice.Sucursal.application.Create.SucursalCreator:
+    class: ../../../../../Contexts/Backoffice/Sucursal/application/Create/SucursalCreator
+    arguments: ["@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository"]
+  
+  Contexts.Backoffice.Sucursal.application.Update.SucursalUpdator:
+    class: ../../../../../Contexts/Backoffice/Sucursal/application/Update/SucursalUpdator
+    arguments: ["@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository"]
+
+  Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher:
+    class: ../../../../../Contexts/Backoffice/Sucursal/application/SearchAll/SucursalSearcher
+    arguments: ["@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository"]
+  
+  Contexts.Backoffice.Sucursal.application.Find.SucursalFinder:
+    class: ../../../../../Contexts/Backoffice/Sucursal/domain/SucursalFinder
+    arguments: ["@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository"]

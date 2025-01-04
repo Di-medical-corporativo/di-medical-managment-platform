@@ -1,0 +1,91 @@
+services:
+  Contexts.Backoffice.Itinerary.infra.imageGenerator.ImageGenerator:
+    class: ../../../../../Contexts/Backoffice/Itinerary/infra/ImageGenerator/PuppeterImageGenerator
+
+  Contexts.Backoffice.Itinerary.application.Create.ItineraryCreator:
+    class: ../../../../../Contexts/Backoffice/Itinerary/application/Create/ItineraryCreator  
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository",
+    "@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository",
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository",
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository",
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository",
+    "@Contexts.Backoffice.Task.infra.BullMQ.TaskScheduler",
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+    "@Contexts.Backoffice.Department.infra.persistence.DepartmentRepository"
+  ]
+
+  Contexts.Backoffice.Itinerary.application.SearchAll.ItinerarySearchAll:
+    class: ../../../../../Contexts/Backoffice/Itinerary/application/SearchAll/ItinerarySearcher
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+  ]
+
+  Contexts.Backoffice.Itinerary.application.StartItinerary.ItineraryStarter:
+    class: ../../../../../Contexts/Backoffice/Itinerary/application/StartItinerary/ItineraryStarter
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+  ]
+
+  Contexts.Backoffice.Itinerary.application.Find.ItineraryFinder:
+    class: ../../../../../Contexts/Backoffice/Itinerary/domain/ItineraryFinder
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+  ]
+
+  Contexts.Backoffice.Itinerary.application.Tracking.ItineraryTracker:
+    class: ../../../../../Contexts/Backoffice/Itinerary/application/Tracking/ItineraryTracker
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+  ]
+
+  Contexts.Backoffice.Itinerary.application.Finish.ItineraryFinisher:
+    class: ../../../../../Contexts/Backoffice/Itinerary/application/Finish/ItineraryFinisher
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+  ]
+
+  Contexts.Backoffice.Itinerary.application.FinishPoint.PointFinisher:
+    class: ../../../../../Contexts/Backoffice/Itinerary/application/FinishPoint/PointFinisher
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+  ]
+
+  Contexts.Backoffice.Itinerary.application.FindPoint.PointFinder:
+    class: ../../../../../Contexts/Backoffice/Itinerary/domain/PointFinder
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+  ]
+
+  Contexts.Backoffice.Itinerary.application.AddPoint.PointAdder:
+    class: ../../../../../Contexts/Backoffice/Itinerary/application/AddPoint/PointAdder
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository",
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository",
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository",
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository",
+    "@Contexts.Backoffice.Task.infra.BullMQ.TaskScheduler",
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+    "@Contexts.Backoffice.Department.infra.persistence.DepartmentRepository"
+  ]
+
+  Contexts.Backoffice.Itinerary.application.UpdatePoint.PointUpdator:
+    class: ../../../../../Contexts/Backoffice/Itinerary/application/UpdatePoint/PointUpdator
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository",
+    "@Contexts.Backoffice.Client.infra.persistence.ClientRepository",
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
+  ]
+
+  Contexts.Backoffice.Itinerary.application.Report.ItineraryReporter:
+    class: ../../../../../Contexts/Backoffice/Itinerary/application/Report/ItineraryReporter
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+  ]
+
+  Contexts.Backoffice.Itinerary.application.ItineraryImage.ItineraryImageGenerator:
+    class: ../../../../../Contexts/Backoffice/Itinerary/application/ItineraryImage/ItineraryImageGenerator
+    arguments: [
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository",
+    "@Contexts.Backoffice.Itinerary.infra.imageGenerator.ImageGenerator"
+  ]

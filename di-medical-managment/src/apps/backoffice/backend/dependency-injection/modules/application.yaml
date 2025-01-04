@@ -1,0 +1,12 @@
+services:
+  Contexts.Shared.application.ModuleCreator:
+    class: ../../../../../Contexts/Shared/application/ModuleCreator
+    arguments: [
+    "@Contexts.Shared.infra.persistence.ModuleRepository"
+  ]
+
+  Contexts.Shared.application.ModuleSearcher:
+    class: ../../../../../Contexts/Shared/application/ModuleSearcher
+    arguments: [
+    "@Contexts.Shared.infra.persistence.ModuleRepository"
+  ]

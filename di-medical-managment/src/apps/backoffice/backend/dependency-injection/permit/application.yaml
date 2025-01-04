@@ -1,0 +1,30 @@
+services:
+  Contexts.Backoffice.Permit.application.Create.PermitCreator:
+    class: ../../../../../Contexts/Backoffice/Permit/application/Create/PermitCreator
+    arguments: [
+    "@Contexts.Backoffice.Permit.infra.persistence.PermitRepository"
+  ]
+
+  Contexts.Backoffice.Permit.application.UserPermits.UserPermitsFinder:
+    class: ../../../../../Contexts/Backoffice/Permit/application/UserPermits/UserPermitsFinder
+    arguments: [
+    "@Contexts.Backoffice.Permit.infra.persistence.PermitRepository"
+  ]
+
+  Contexts.Backoffice.Permit.application.SearchAll.PermitSearcher:
+    class: ../../../../../Contexts/Backoffice/Permit/application/SearchAll/PermitSearcher
+    arguments: [
+    "@Contexts.Backoffice.Permit.infra.persistence.PermitRepository"
+  ]
+
+  Contexts.Backoffice.Permit.application.Accept.PermitAcceptor:
+    class: ../../../../../Contexts/Backoffice/Permit/application/Acept/PermitAcceptor
+    arguments: [
+    "@Contexts.Backoffice.Permit.infra.persistence.PermitRepository"
+  ]
+
+  Contexts.Backoffice.Permit.application.Find.PermitFinder:
+    class: ../../../../../Contexts/Backoffice/Permit/domain/PermitFinder
+    arguments: [
+    "@Contexts.Backoffice.Permit.infra.persistence.PermitRepository"
+  ]

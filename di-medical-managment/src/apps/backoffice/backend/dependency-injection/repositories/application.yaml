@@ -1,0 +1,33 @@
+services:
+  Contexts.Backoffice.Department.infra.persistence.DepartmentRepository:
+    class: ../../../../../Contexts/Backoffice/Department/infra/persistence/PrismaDepartmentRepository
+
+  Contexts.Shared.infra.persistence.ModuleRepository:
+    class: ../../../../../Contexts/Shared/infra/persistence/PrismaModuleRepository
+
+  Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository:
+    class: ../../../../../Contexts/Backoffice/Itinerary/infra/persistence/PrismaItineraryRepository
+
+  Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository:
+    class: ../../../../../Contexts/Backoffice/Sucursal/infra/persistence/PrismaSucursalRepository
+
+  Contexts.Backoffice.User.infra.persistence.UserRepository:
+    class: ../../../../../Contexts/Backoffice/User/infra/persistence/PrismaUserRepository
+
+  Contexts.Backoffice.Client.infra.persistence.ClientRepository:
+    class: ../../../../../Contexts/Backoffice/Client/infra/persistence/PrismaClientRepository
+
+  Contexts.Backoffice.Permit.infra.persistence.PermitRepository:
+    class: ../../../../../Contexts/Backoffice/Permit/infra/persistence/PrismaPermitRepository
+
+  Contexts.Backoffice.Survey.infra.persistence.SurveyRepository:
+    class: ../../../../../Contexts/Backoffice/Survey/infra/persistence/PrismaSurveyRepository
+
+  Contexts.Backoffice.Task.infra.persistence.TaskRepository:
+    class: ../../../../../Contexts/Backoffice/Task/infra/persistence/PrismaTaskRepository
+
+  Contexts.Backoffice.Truck.infra.persistence.TruckRepository:
+    class: ../../../../../Contexts/Backoffice/Truck/infra/persistence/PrismaTruckRepository
+
+  Contexts.Backoffice.Task.infra.BullMQ.BullConfig:
+    class: ../../../../../Contexts/Backoffice/Task/infra/BullMQ/BullConfig

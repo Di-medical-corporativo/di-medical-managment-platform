@@ -1,0 +1,55 @@
+services:
+  Contexts.Backoffice.Survey.application.Create.SurveyCreator:
+    class: ../../../../../Contexts/Backoffice/Survey/application/Create/SurveyCreator
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+    ]
+
+  Contexts.Backoffice.Survey.application.Create.SurveyAnswerer:
+    class: ../../../../../Contexts/Backoffice/Survey/application/Answer/SurveyAnswerer
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+    ]
+
+  Contexts.Backoffice.Survey.application.AnswerPoint.SurveyAnswererPoint:
+    class: ../../../../../Contexts/Backoffice/Survey/application/AnswerPoint/SurveyAnswererPoint
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+    "@Contexts.Backoffice.Itinerary.infra.persistence.ItineraryRepository"
+    ]
+  
+  Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher:
+    class: ../../../../../Contexts/Backoffice/Survey/application/SearchAll/SurveySearcher
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+    ]
+
+  Contexts.Backoffice.Survey.application.Find.SurveyFinder:
+    class: ../../../../../Contexts/Backoffice/Survey/domain/SurveyFinder
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+    ]
+
+  Contexts.Backoffice.Survey.application.Close.SurveyTerminator:
+    class: ../../../../../Contexts/Backoffice/Survey/application/Close/SurveyTerminator
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+  ]
+
+  Contexts.Backoffice.Survey.application.Open.SurveyOpener:
+    class: ../../../../../Contexts/Backoffice/Survey/application/Open/SurveyOpener
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+  ]
+
+  Contexts.Backoffice.Survey.application.Results.SurveyResultsDisplayer:
+    class: ../../../../../Contexts/Backoffice/Survey/application/Results/SurveyResultsDisplayer
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+  ]
+
+  Contexts.Backoffice.Survey.application.ResultsPaginate.ResultsPaginator:
+    class: ../../../../../Contexts/Backoffice/Survey/application/ResultsPaginate/ResultsPaginator
+    arguments: [
+    "@Contexts.Backoffice.Survey.infra.persistence.SurveyRepository",
+  ]

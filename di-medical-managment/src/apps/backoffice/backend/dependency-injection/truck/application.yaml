@@ -1,0 +1,42 @@
+services:
+  Contexts.Backoffice.Truck.application.Create.TruckCreator:
+    class: ../../../../../Contexts/Backoffice/Truck/application/Create/TruckCreator
+    arguments: [
+    "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
+    ]
+  
+  Contexts.Backoffice.Truck.application.Update.TruckUpdator:
+    class: ../../../../../Contexts/Backoffice/Truck/application/Update/TruckUpdator
+    arguments: [
+    "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
+  ]
+  
+  Contexts.Backoffice.Truck.application.AddIncident.TruckIncidentAdder:
+    class: ../../../../../Contexts/Backoffice/Truck/application/AddIncident/TruckIncidentAdder
+    arguments: [
+    "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
+    ]
+
+  Contexts.Backoffice.Truck.application.RemoveIncident.TruckIncidentRemover:
+    class: ../../../../../Contexts/Backoffice/Truck/application/RemoveIncident/TruckIncidentRemover
+    arguments: [
+    "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
+    ]
+
+  Contexts.Backoffice.Truck.application.SearchAllIncident.IncidentSearcher:
+    class: ../../../../../Contexts/Backoffice/Truck/application/SearchAllIncident/IncidentSearcher
+    arguments: [
+    "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
+    ]  
+
+  Contexts.Backoffice.Truck.application.SearchAll.TruckSearcher:
+    class: ../../../../../Contexts/Backoffice/Truck/application/SearchAll/TruckSearcher
+    arguments: [
+    "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
+    ]
+
+  Contexts.Backoffice.Truck.application.Find.TruckFinder:
+    class: ../../../../../Contexts/Backoffice/Truck/domain/TruckFinder
+    arguments: [
+    "@Contexts.Backoffice.Truck.infra.persistence.TruckRepository",
+    ]

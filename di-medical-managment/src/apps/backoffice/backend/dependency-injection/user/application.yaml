@@ -1,0 +1,34 @@
+services:
+  Contexts.Backoffice.User.application.Create.UserCreator:
+    class: ../../../../../Contexts/Backoffice/User/application/Create/UserCreator
+    arguments: [
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository",
+    "@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository",
+    "@Contexts.Shared.infra.persistence.ModuleRepository"
+    ]
+
+  Contexts.Backoffice.User.application.Find.UserFinder:
+    class: ../../../../../Contexts/Backoffice/User/domain/UserFinder
+    arguments: [
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
+    ]
+
+  Contexts.Backoffice.User.application.Update.UserUpdator:
+    class: ../../../../../Contexts/Backoffice/User/application/Update/UserUpdator
+    arguments: [
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository",
+    "@Contexts.Backoffice.Sucursal.infra.persistence.SucursalRepository",
+    "@Contexts.Shared.infra.persistence.ModuleRepository"
+    ]
+
+  Contexts.Backoffice.User.application.SearchAll.UserSearcher:
+    class: ../../../../../Contexts/Backoffice/User/application/SearchAll/UserSearcher
+    arguments: [
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
+    ]
+
+  Contexts.Backoffice.User.application.Delete.UserDeleter:
+    class: ../../../../../Contexts/Backoffice/User/application/Delete/UserDeleter
+    arguments: [
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
+    ]
