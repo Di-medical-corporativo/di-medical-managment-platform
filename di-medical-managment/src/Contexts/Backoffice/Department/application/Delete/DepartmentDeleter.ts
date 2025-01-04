@@ -1,14 +1,14 @@
 import { DeparmentId } from "../../domain/DeparmentId";
-import { DeparmentFinder } from "../../domain/DepartmentFinder";
+import { DepartmentFinder } from "../../domain/DepartmentFinder";
 import { DepartmentRepository } from "../../domain/DepartmentRepository";
 
 export class DepartmentDeleter {
-  private departmentFinder: DeparmentFinder;
+  private departmentFinder: DepartmentFinder;
 
   constructor(
     private repository: DepartmentRepository
   ) {
-    this.departmentFinder = new DeparmentFinder(repository);
+    this.departmentFinder = new DepartmentFinder(repository);
   }
 
   async run(params: {

@@ -1,16 +1,16 @@
 import { DeparmentId } from "../../domain/DeparmentId";
 import { Department } from "../../domain/Department";
-import { DeparmentFinder } from "../../domain/DepartmentFinder";
+import { DepartmentFinder } from "../../domain/DepartmentFinder";
 import { DepartmentName } from "../../domain/DepartmentName";
 import { DepartmentRepository } from "../../domain/DepartmentRepository";
 
 export class DepartmentUpdator {
-  private departmentFinder: DeparmentFinder;
+  private departmentFinder: DepartmentFinder;
 
   constructor(
     private repository: DepartmentRepository
   ) {
-    this.departmentFinder = new DeparmentFinder(repository);
+    this.departmentFinder = new DepartmentFinder(repository);
   }
 
   async run(params: {

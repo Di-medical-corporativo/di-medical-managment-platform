@@ -391,3 +391,27 @@ services:
     arguments: [
       "@Contexts.Backoffice.Department.application.SearchAll.DepartmentSearcher"
     ]
+
+  Apps.Backoffice.backend.controllers.DepartmentCreateController:
+    class: ../../controllers/departments/DepartmentCreateController
+    arguments: [
+      "@Contexts.Backoffice.Department.application.Create.DepartmentCreator"
+    ]
+  
+  Apps.Backoffice.backend.controllers.DepartmentUpdatePageController:
+    class: ../../controllers/departments/DepartmentUpdatePageController
+    arguments: [
+      "@Contexts.Backoffice.Department.application.Find.DepartmentFinder"
+    ]
+  
+  Apps.Backoffice.backend.controllers.DepartmentsUpdateController:
+    class: ../../controllers/departments/DepartmentsUpdateController
+    arguments: [
+      "@Contexts.Backoffice.Department.application.Update.DepartmentUpdator"
+    ]
+
+  Apps.Backoffice.backend.controllers.DepartmentsDeleteController:
+    class: ../../controllers/departments/DepartmentsDeleteController
+    arguments: [
+      "@Contexts.Backoffice.Department.application.Delete.DepartmentDeleter"
+    ]

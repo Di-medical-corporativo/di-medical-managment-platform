@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clientes</title>
+  <title>Actualizar departamento</title>
   <link rel="stylesheet" href="/css/main.css">
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
@@ -12,42 +12,40 @@
   <div id="admin-dash">
 
     <%- include('../partials/_leftbar') %>
-
+    
     <main id="main-admin">
-
       <header class="section-header">
         <section class="breadcrumb">
-          <a href="/backoffice/client">
-            <small>Clientes</small>
+          <a href="/backoffice/department">
+            <small>Departamentos</small>
           </a>
           <span class="breadcrumb-slash">/</span>
-          <a href="/backoffice/client/<%= clientData.id %>/update">
+          <a href="/backoffice/department/<%= department.id %>/update">
             <small>Actualizar</small>
           </a>
         </section>
       </header>
 
       <section id="new-client-form">
-        <form id="update-client-form" action="/backoffice/client/<%= clientData.id %>?_method=PUT" method="post">
-          <input type="text" hidden id="id" name="id" value="<%= clientData.id %>">
+        <form action="/backoffice/department/<%= department.id %>/update?_method=PUT" method="post" id="create-client-form">
+          <input type="text" hidden id="id" name="id" value="<%= department.id %>">
+          
           <label for="name">Nombre:</label>
-          <input type="text" name="name" id="name" value="<%= clientData.name %>" class="input" required>
-          <label for="address">Dirección:</label>
-          <input type="text" name="address" id="address" value="<%= clientData.address %>" class="input" required>
-          <button type="submit" class="button primary">Actualizar cliente</button>
+          <input type="text" name="name" id="name" class="input" value="<%= department.name %>" required>
+
+          <button type="submit" class="button primary">Actualizar</button>
         </form>
       </section>
     </main>
   </div>
 
-
   <script>
-    document.getElementById('update-client-form').addEventListener('submit', function(event) {
+    document.getElementById('create-client-form').addEventListener('submit', function(event) {
       event.preventDefault();
 
       swal({
         title: '¿Estás seguro?',
-        text: 'Estás a punto de actualizar los datos de este cliente. ¿Deseas continuar?',
+        text: 'Estás a punto de actualizar el departamento. Revisa los detalles',
         buttons: true,
         dangerMode: true,
       }).then((accepted) => {
@@ -57,6 +55,5 @@
       });
     });
   </script>
-
 </body>
 </html>

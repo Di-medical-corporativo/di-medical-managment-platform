@@ -48,7 +48,7 @@ import { SucursalName } from "../../../Sucursal/domain/SucursalName";
 import { Survey } from "../../../Survey/domain/Survey";
 import { TaskIsPoint } from "../../../Task/domain/TaskIsPoint";
 import { DeparmentId } from "../../../Department/domain/DeparmentId";
-import { DeparmentFinder } from "../../../Department/domain/DepartmentFinder";
+import { DepartmentFinder } from "../../../Department/domain/DepartmentFinder";
 import { DepartmentRepository } from "../../../Department/domain/DepartmentRepository";
 
 export class ItineraryCreator {
@@ -62,7 +62,7 @@ export class ItineraryCreator {
   
   private surveyFinder: SurveyFinder;
 
-  private departmentFinder: DeparmentFinder;
+  private departmentFinder: DepartmentFinder;
 
   constructor(
     private repository: ItineraryRepository,

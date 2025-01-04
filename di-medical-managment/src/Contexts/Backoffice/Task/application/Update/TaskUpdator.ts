@@ -1,6 +1,6 @@
 import { DeparmentId } from "../../../Department/domain/DeparmentId";
 import { Department } from "../../../Department/domain/Department";
-import { DeparmentFinder } from "../../../Department/domain/DepartmentFinder";
+import { DepartmentFinder } from "../../../Department/domain/DepartmentFinder";
 import { DepartmentRepository } from "../../../Department/domain/DepartmentRepository";
 import { Task } from "../../domain/Task";
 import { TaskDescription } from "../../domain/TaskDescription";
@@ -14,7 +14,7 @@ import { TaskTitle } from "../../domain/TaskTitle";
 export class TaskUpdator {
   private taskFinder: TaskFinder;
 
-  private departmentFinder: DeparmentFinder;
+  private departmentFinder: DepartmentFinder;
 
   constructor(
     private repository: TaskRepository,
@@ -23,7 +23,7 @@ export class TaskUpdator {
   ) {
     this.taskFinder = new TaskFinder(repository);
 
-    this.departmentFinder = new DeparmentFinder(departmentRepository);
+    this.departmentFinder = new DepartmentFinder(departmentRepository);
   }
 
   async run(params: {

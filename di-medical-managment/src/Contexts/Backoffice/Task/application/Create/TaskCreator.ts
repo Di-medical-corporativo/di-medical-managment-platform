@@ -1,5 +1,5 @@
 import { DeparmentId } from "../../../Department/domain/DeparmentId";
-import { DeparmentFinder } from "../../../Department/domain/DepartmentFinder";
+import { DepartmentFinder } from "../../../Department/domain/DepartmentFinder";
 import { DepartmentRepository } from "../../../Department/domain/DepartmentRepository";
 import { UserFinder } from "../../../User/domain/UserFinder";
 import { UserFirstName } from "../../../User/domain/UserFirstName";
@@ -18,7 +18,7 @@ import { TaskUser } from "../../domain/TaskUser";
 
 export class TaskCreator {
   private userFinder: UserFinder;
-  private departmentFinder: DeparmentFinder;
+  private departmentFinder: DepartmentFinder;
   
   constructor(
     private repository: TaskRepository,
@@ -28,7 +28,7 @@ export class TaskCreator {
   ) {
     this.userFinder = new UserFinder(userRepository);
 
-    this.departmentFinder = new DeparmentFinder(departmentRepository);
+    this.departmentFinder = new DepartmentFinder(departmentRepository);
   }
 
   async run(params: {

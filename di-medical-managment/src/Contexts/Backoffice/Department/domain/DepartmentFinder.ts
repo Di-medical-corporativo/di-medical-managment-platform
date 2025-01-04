@@ -3,7 +3,7 @@ import { Department } from "./Department";
 import { DepartmentNotFound } from "./DepartmentNotFound";
 import { DepartmentRepository } from "./DepartmentRepository";
 
-export class DeparmentFinder {
+export class DepartmentFinder {
   constructor(
     private repository: DepartmentRepository
   ) {}

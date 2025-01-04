@@ -22,3 +22,9 @@ services:
     arguments: [
     "@Contexts.Backoffice.Department.infra.persistence.DepartmentRepository",
     ]
+
+  Contexts.Backoffice.Department.application.Find.DepartmentFinder:
+    class: ../../../../../Contexts/Backoffice/Department/domain/DepartmentFinder
+    arguments: [
+    "@Contexts.Backoffice.Department.infra.persistence.DepartmentRepository",
+    ]
