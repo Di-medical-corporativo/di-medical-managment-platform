@@ -1,7 +1,7 @@
 import { DepartmentCreator } from "../../../../../../src/Contexts/Backoffice/Department/application/Create/DepartmentCreator";
 import { DeparmentId } from "../../../../../../src/Contexts/Backoffice/Department/domain/DeparmentId";
 import { Department } from "../../../../../../src/Contexts/Backoffice/Department/domain/Department";
-import { DeparmentFinder } from "../../../../../../src/Contexts/Backoffice/Department/domain/DepartmentFinder";
+import { DepartmentFinder } from "../../../../../../src/Contexts/Backoffice/Department/domain/DepartmentFinder";
 import { DepartmentName } from "../../../../../../src/Contexts/Backoffice/Department/domain/DepartmentName";
 import { DepartmentNotFound } from "../../../../../../src/Contexts/Backoffice/Department/domain/DepartmentNotFound";
 import { DepartmentRepositoryMock } from "../../../../__mock__/DepartmentRepositoryMock";
@@ -9,12 +9,12 @@ import { DepartmentRepositoryMock } from "../../../../__mock__/DepartmentReposit
 describe('DeparmentFinder', () => {
   let repository: DepartmentRepositoryMock;
 
-  let departmentFinder: DeparmentFinder;
+  let departmentFinder: DepartmentFinder;
 
   beforeEach(() => {
     repository = new DepartmentRepositoryMock();
 
-    departmentFinder = new DeparmentFinder(repository);
+    departmentFinder = new DepartmentFinder(repository);
   });
 
   test('should find the department', async () => {

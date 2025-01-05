@@ -55,7 +55,8 @@ services:
       "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher",
       "@Contexts.Backoffice.User.application.SearchAll.UserSearcher",
       "@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher",
-      "@Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher"
+      "@Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher",
+      "@Contexts.Backoffice.Department.application.SearchAll.DepartmentSearcher"
     ]
   
   Apps.Backoffice.backend.controllers.ItineraryCreateController:
@@ -106,7 +107,8 @@ services:
       "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher",
       "@Contexts.Backoffice.User.application.SearchAll.UserSearcher",
       "@Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher",
-      "@Contexts.Backoffice.Itinerary.application.Find.ItineraryFinder"
+      "@Contexts.Backoffice.Itinerary.application.Find.ItineraryFinder",
+      "@Contexts.Backoffice.Department.application.SearchAll.DepartmentSearcher"
     ]
 
   Apps.Backoffice.backend.controllers.ItineraryAddPointsController:
@@ -272,7 +274,8 @@ services:
   Apps.Backoffice.backend.controllers.TaskCreatePageController:
     class: ../../controllers/tasks/TaskCreatePageController
     arguments: [
-      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher"
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher",
+      "@Contexts.Backoffice.Department.application.SearchAll.DepartmentSearcher"
     ]
 
   Apps.Backoffice.backend.controllers.TaskGlobalKanban:
@@ -290,7 +293,8 @@ services:
   Apps.Backoffice.backend.controllers.TaskSearchController:
     class: ../../controllers/tasks/TaskSearchController
     arguments: [
-      "@Contexts.Backoffice.Task.application.Find.TaskFinder"
+      "@Contexts.Backoffice.Task.application.Find.TaskFinder",
+      "@Contexts.Backoffice.Department.application.SearchAll.DepartmentSearcher"
     ]
 
   Apps.Backoffice.backend.controllers.TaskDeleteController:

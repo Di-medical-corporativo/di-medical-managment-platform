@@ -1,177 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Usuario</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
+
 <body>
   <div id="admin-dash">
 
     <%- include('partials/_leftbar') %>
-    
-    <main id="main-admin">
 
-      <header id="admin-info">
-        <section id="name-admin">
-          <h3>Bienvenido</h3>
-          <small><%= user.firstName %> <%= user.lastName %></small>
-          <small><%= user.job %> </small>
+      <main id="main-admin">
+
+        <header id="admin-info">
+          <section id="name-admin">
+            <h3>Bienvenido</h3>
+            <small>
+              <%= user.firstName %>
+                <%= user.lastName %>
+            </small>
+            <small>
+              <%= user.job %>
+            </small>
+          </section>
+
+          <form action="/logout" method="post">
+            <input type="text" value="1" name="id" hidden>
+            <button id="logout" class="button primary">Cerrar sesión</button>
+          </form>
+        </header>
+
+        <section id="admin-actions" style="margin-top: 20px;">
+          <button class="button" onclick="window.location.href='/backoffice/permit/new'">Pedir permiso</button>
+          <button class="button" onclick="window.location.href='/backoffice/permit/mine/'">Mis permisos</button>
         </section>
 
-        <form action="/logout" method="post">
-          <input type="text" value="1" name="id" hidden>
-          <button id="logout" class="button primary">Cerrar sesión</button>
-        </form> 
-      </header>
+        <section id="tasks-filter" style="margin-top: 20px;">
+          <form action="/backoffice/" method="get">
+            <input type="month" name="filter" class="input" required>
+            <button type="submit" class="button primary">Filtro</button>
+          </form>
+        </section>
 
-      <section id="admin-actions" style="margin-top: 20px;">
-        <button class="button" onclick="window.location.href='/backoffice/permit/new'">Pedir permiso</button>
-        <button class="button" onclick="window.location.href='/backoffice/permit/mine/'">Mis permisos</button>
-      </section>
+        <section id="admin-tasks">
+          <div class="task-list">
+            <div class="task-title">
+              <small>Tareas asignadas</small>
+            </div>
 
-      <section id="tasks-filter" style="margin-top: 20px;">
-        <form action="/backoffice/" method="get">
-          <input type="month" name="filter" class="input" required>
-          <button type="submit" class="button primary">Filtro</button>
-        </form>
-      </section>
-    
-      <section id="admin-tasks">
-        <div class="task-list">
-          <div class="task-title">
-            <small>Tareas asignadas</small>
-          </div>
-
-          <div class="tasks">
-            <% assignedTasks.forEach(task => { 
-              const formattedDate = new Date(task.dueTo).toLocaleString('es-MX', {
-                day: '2-digit', month: '2-digit', year: 'numeric', 
+            <div class="tasks">
+              <% assignedTasks.forEach(task=> {
+                const formattedDate = new Date(task.dueTo).toLocaleString('es-MX', {
+                day: '2-digit', month: '2-digit', year: 'numeric',
                 hour: '2-digit', minute: '2-digit'
-              });
-            %>
-              <div class="task">
-                <header>
-                  <% if(task.isPoint) {%>
-                    <small class="tag">Punto de ruta</small>
-                  <% } %>
-                  <p><%= task.title %></p>
-                  <small>Fecha de termino: <%= formattedDate %></small>
-                </header>
-                <footer>
-                  <small>
-                    <%= task.userAssigned.firstName %>
-                    <%= task.userAssigned.lastName %>
-                  </small>
-                  
-                  <button class="button primary" onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Comenzar tarea</button>
-                </footer>
-              </div>
-            <% }) %>
-          </div>
-        </div>
+                });
+                %>
+                <div class="task">
+                  <header>
+                    <div class="task-tags" style="display: flex; flex-direction: row; gap: 5px; flex-wrap: wrap;">
+                      <% if(task.isPoint) {%>
+                        <small class="tag">Punto de ruta</small>
+                      <% } %>
+                      <small class="tag"> <%= task.department.name %> </small>
+                    </div>
+                        <p>
+                          <%= task.title %>
+                        </p>
+                        <small>Fecha de termino: <%= formattedDate %></small>
+                  </header>
+                  <footer>
+                    <small>
+                      <%= task.userAssigned.firstName %>
+                        <%= task.userAssigned.lastName %>
+                    </small>
 
-        <div class="task-list">
-          <div class="task-title">
-            <small>Tareas en progreso</small>
+                    <button class="button primary"
+                      onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Comenzar tarea</button>
+                  </footer>
+                </div>
+                <% }) %>
+            </div>
           </div>
 
-          <div class="tasks">
-            <% inProgressTasks.forEach(task => { 
-              const formattedDate = new Date(task.dueTo).toLocaleString('es-MX', {
-                day: '2-digit', month: '2-digit', year: 'numeric', 
+          <div class="task-list">
+            <div class="task-title">
+              <small>Tareas en progreso</small>
+            </div>
+
+            <div class="tasks">
+              <% inProgressTasks.forEach(task=> {
+                const formattedDate = new Date(task.dueTo).toLocaleString('es-MX', {
+                day: '2-digit', month: '2-digit', year: 'numeric',
                 hour: '2-digit', minute: '2-digit'
-              });
-            %>
-              <div class="task">
-                <header>
-                  <% if(task.isPoint) {%>
-                    <small class="tag">Punto de ruta</small>
-                  <% } %>
-                  
-                  <p><%= task.title %></p>
-                  <small>Fecha de termino: <%= formattedDate %></small>
-                </header>
-                <footer>
-                  <small>
-                    <%= task.userAssigned.firstName %>
-                    <%= task.userAssigned.lastName %>
-                  </small>
+                });
+                %>
+                <div class="task">
+                  <header>
+                    <div class="task-tags" style="display: flex; flex-direction: row; gap: 5px; flex-wrap: wrap;">
+                      <% if(task.isPoint) {%>
+                        <small class="tag">Punto de ruta</small>
+                      <% } %>
+                      <small class="tag"> <%= task.department.name %> </small>
+                    </div>
 
-                  <button class="button primary" onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Continuar tarea</button>
-                </footer>
-              </div>
-            <% }) %>
+                        <p>
+                          <%= task.title %>
+                        </p>
+                        <small>Fecha de termino: <%= formattedDate %></small>
+                  </header>
+                  <footer>
+                    <small>
+                      <%= task.userAssigned.firstName %>
+                        <%= task.userAssigned.lastName %>
+                    </small>
+
+                    <button class="button primary"
+                      onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Continuar tarea</button>
+                  </footer>
+                </div>
+                <% }) %>
+            </div>
           </div>
-        </div>
 
-        <div class="task-list">
-          <div class="task-title">
-            <small>Tareas concluidas</small>
-          </div>
+          <div class="task-list">
+            <div class="task-title">
+              <small>Tareas concluidas</small>
+            </div>
 
-          <div class="tasks">
-            <% completedTasks.forEach(task => { 
-              const formattedDate = new Date(task.dueTo).toLocaleString('es-MX', {
-                day: '2-digit', month: '2-digit', year: 'numeric', 
+            <div class="tasks">
+              <% completedTasks.forEach(task=> {
+                const formattedDate = new Date(task.dueTo).toLocaleString('es-MX', {
+                day: '2-digit', month: '2-digit', year: 'numeric',
                 hour: '2-digit', minute: '2-digit'
-              });
-            %>
-              <div class="task">
-                <header>
-                  <% if(task.isPoint) {%>
-                    <small class="tag">Punto de ruta</small>
-                  <% } %>
-                  <p><%= task.title %></p>
-                  <small>Fecha de termino: <%= formattedDate %></small>
-                </header>
-                <footer>
-                  <small>
-                    <%= task.userAssigned.firstName %>
-                    <%= task.userAssigned.lastName %>
-                  </small>
+                });
+                %>
+                <div class="task">
+                  <header>
+                    <div class="task-tags" style="display: flex; flex-direction: row; gap: 5px; flex-wrap: wrap;">
+                      <% if(task.isPoint) {%>
+                        <small class="tag">Punto de ruta</small>
+                      <% } %>
+                      <small class="tag"> <%= task.department.name %> </small>
+                    </div>
+                        <p>
+                          <%= task.title %>
+                        </p>
+                        <small>Fecha de termino: <%= formattedDate %></small>
+                  </header>
+                  <footer>
+                    <small>
+                      <%= task.userAssigned.firstName %>
+                        <%= task.userAssigned.lastName %>
+                    </small>
 
-                  <button class="button primary" onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Detalles</button>
-                </footer>
-              </div>
-            <% }) %>
+                    <button class="button primary"
+                      onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Detalles</button>
+                  </footer>
+                </div>
+                <% }) %>
+            </div>
           </div>
-        </div>
 
-        <div class="task-list">
-          <div class="task-title">
-            <small>Tareas vencidas</small>
-          </div>
+          <div class="task-list">
+            <div class="task-title">
+              <small>Tareas vencidas</small>
+            </div>
 
-          <div class="tasks">
-            <% overdueTasks.forEach(task => { 
-              const formattedDate = new Date(task.dueTo).toLocaleString('es-MX', {
-                day: '2-digit', month: '2-digit', year: 'numeric', 
+            <div class="tasks">
+              <% overdueTasks.forEach(task=> {
+                const formattedDate = new Date(task.dueTo).toLocaleString('es-MX', {
+                day: '2-digit', month: '2-digit', year: 'numeric',
                 hour: '2-digit', minute: '2-digit'
-              });
-            %>
-              <div class="task">
-                <header>
-                  <% if(task.isPoint) {%>
-                    <small class="tag">Punto de ruta</small>
-                  <% } %>
-                  <p><%= task.title %></p>
-                  <small>Fecha de termino: <%= formattedDate %></small>
-                </header>
-                <footer>
-                  <small>
-                    <%= task.userAssigned.firstName %>
-                    <%= task.userAssigned.lastName %>
-                  </small>
-                  <button class="button primary" onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Detalles</button>
-                </footer>
-              </div>
-            <% }) %>
+                });
+                %>
+                <div class="task">
+                  <header>
+                    <div class="task-tags" style="display: flex; flex-direction: row; gap: 5px; flex-wrap: wrap;">
+                      <% if(task.isPoint) {%>
+                        <small class="tag">Punto de ruta</small>
+                      <% } %>
+                      <small class="tag"> <%= task.department.name %> </small>
+                    </div>
+                        <p>
+                          <%= task.title %>
+                        </p>
+                        <small>Fecha de termino: <%= formattedDate %></small>
+                  </header>
+                  <footer>
+                    <small>
+                      <%= task.userAssigned.firstName %>
+                        <%= task.userAssigned.lastName %>
+                    </small>
+                    <button class="button primary"
+                      onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Detalles</button>
+                  </footer>
+                </div>
+                <% }) %>
+            </div>
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
+      </main>
   </div>
 </body>
+
 </html>

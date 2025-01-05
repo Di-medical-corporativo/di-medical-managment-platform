@@ -46,9 +46,12 @@
             %>
               <div class="task">
                 <header>
-                  <% if(task.isPoint) {%>
-                    <small class="tag">Punto de ruta</small>
-                  <% } %>
+                  <div class="task-tags" style="display: flex; flex-direction: row; gap: 5px; flex-wrap: wrap;">
+                    <% if(task.isPoint) {%>
+                      <small class="tag">Punto de ruta</small>
+                    <% } %>
+                    <small class="tag"> <%= task.department.name %> </small>
+                  </div>
                   <p><%= task.title %></p>
                   <small>Fecha de termino: <%= formattedDate %></small>
                 </header>
@@ -78,10 +81,12 @@
             %>
               <div class="task">
                 <header>
-                  <% if(task.isPoint) {%>
-                    <small class="tag">Punto de ruta</small>
-                  <% } %>
-                  
+                  <div class="task-tags" style="display: flex; flex-direction: row; gap: 5px; flex-wrap: wrap;">
+                    <% if(task.isPoint) {%>
+                      <small class="tag">Punto de ruta</small>
+                    <% } %>
+                    <small class="tag"> <%= task.department.name %> </small>
+                  </div>
                   <p><%= task.title %></p>
                   <small>Fecha de termino: <%= formattedDate %></small>
                 </header>
@@ -111,9 +116,12 @@
             %>
               <div class="task">
                 <header>
-                  <% if(task.isPoint) {%>
-                    <small class="tag">Punto de ruta</small>
-                  <% } %>
+                  <div class="task-tags" style="display: flex; flex-direction: row; gap: 5px; flex-wrap: wrap;">
+                    <% if(task.isPoint) {%>
+                      <small class="tag">Punto de ruta</small>
+                    <% } %>
+                    <small class="tag"> <%= task.department.name %> </small>
+                  </div>
                   <p><%= task.title %></p>
                   <small>Fecha de termino: <%= formattedDate %></small>
                 </header>
@@ -143,9 +151,12 @@
             %>
               <div class="task">
                 <header>
-                  <% if(task.isPoint) {%>
-                    <small class="tag">Punto de ruta</small>
-                  <% } %>
+                  <div class="task-tags" style="display: flex; flex-direction: row; gap: 5px; flex-wrap: wrap;">
+                    <% if(task.isPoint) {%>
+                      <small class="tag">Punto de ruta</small>
+                    <% } %>
+                    <small class="tag"> <%= task.department.name %> </small>
+                  </div>
                   <p><%= task.title %></p>
                   <small>Fecha de termino: <%= formattedDate %></small>
                 </header>

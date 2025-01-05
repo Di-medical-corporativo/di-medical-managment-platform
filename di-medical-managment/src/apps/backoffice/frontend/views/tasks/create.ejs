@@ -94,6 +94,16 @@
               </div>
             </div>
 
+            <label for="departmentId">Departamento:</label>
+
+            <select name="departmentId" class="input">
+              <% for (let i=0; i < departments.length; i++) {%>
+                <option value="<%= departments[i].id %>">
+                  <%= departments[i].name %>
+                </option>
+                <% } %>
+            </select>
+
             <label for="userId">Usuario:</label>
             <select name="userId" class="input">
               <% for (let i=0; i < users.length; i++) {%>

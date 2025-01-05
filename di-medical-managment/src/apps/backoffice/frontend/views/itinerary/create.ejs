@@ -41,6 +41,16 @@
                 </option>
                 <% } %>
             </select>
+
+            <label for="departmentId">Departamento:</label>
+
+            <select name="departmentId" class="input">
+              <% for (let i=0; i < departments.length; i++) {%>
+                <option value="<%= departments[i].id %>">
+                  <%= departments[i].name %>
+                </option>
+                <% } %>
+            </select>
           </div>
 
           <table class="table" id="point-list-table">
@@ -113,6 +123,9 @@
                     <% for (let i=0; i < surveys.length; i++) {%>
                       <option value="<%= surveys[i].id %>">
                         <%= surveys[i].title %>
+                        <% if(!surveys[i].isActive) { %>
+                          (CERRADA)
+                        <% } %>
                       </option>
                       <% } %>
                   </select>
@@ -182,13 +195,14 @@
         });
         return;
       }
-
+      
       swal({
         title: '¿Estás seguro?',
         text: 'Estás a punto de crear el itinerario. Revise los detalles antes de confirmar.',
         buttons: true,
         dangerMode: true,
       }).then((accepted) => {
+        isFormDirty = false;
         if (accepted) {
           this.submit();
         }

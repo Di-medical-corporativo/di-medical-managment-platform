@@ -110,15 +110,19 @@ export class PointAdder {
 
       const formattedDate = params.scheduleDate.format();
 
-      const descriptionHTMLForTaskTemplate = `
-        <p>Esta tarea pertence a la ruta del ${formattedDate}</p>
-        <p></p>
-        <p>Es un punto de tipo: <strong>${point.type.getValue()}</strong> </p>
-        <p></p>
-        <p>No olvides que para terminar el punto que se te fue asignado debes acceder al siguiente enlace: </p>
-        <p></p>
-        <p><a href="/backoffice/itinerary/point/${pointId}/end" rel="noopener noreferrer" target="_blank">Enlace</a></p>
-      `
+      const descriptionHTMLForTaskTemplate =  `
+      <p>Esta tarea pertence a la ruta del ${params.scheduleDate.format()}</p>
+      <p></p>
+      <p>Cliente: <strong>${name}</strong></p>
+      <p></p>
+      <p>Facturas: ${point.invoices.join(',')}</p>
+      <p></p>
+      <p>Es un punto de tipo: <strong>${point.type.getValue()}</strong> </p>
+      <p></p>
+      <p>No olvides que para terminar el punto que se te fue asignado debes acceder al siguiente enlace: </p>
+      <p></p>
+      <p><a href="/backoffice/itinerary/point/${pointId}/end" rel="noopener noreferrer" target="_blank">Enlace</a></p>
+    `
       
       const titleForTask = `Punto tipo: ${point.type.getValue()}, itinerario: ${formattedDate}`;
 

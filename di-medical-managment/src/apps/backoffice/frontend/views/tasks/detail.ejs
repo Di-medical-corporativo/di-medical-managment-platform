@@ -52,6 +52,7 @@
             <% if (task.isPoint) { %>
               <small class="tag" style="align-self: self-start;">Punto de ruta</small>
             <% } %>
+            <small class="tag" style="align-self: self-start;"> <%= task.department.name %> </small>
             <% if (task.status === 'completed') { %>
               <small class="tag done" style="align-self: self-start;">Completado</small>
             <% } %>
@@ -64,6 +65,7 @@
             <% if (task.status === 'assigned') { %>
               <small class="tag assigned" style="align-self: self-start;">Asignado</small>
             <% } %>
+
           </div>
           
           <input type="text" hidden id="id" name="id" value="<%= task.id %>">

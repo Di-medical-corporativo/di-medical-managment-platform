@@ -41,6 +41,16 @@
             <p>Fecha de inicio: <%= formattedDate %></p>
 
             <p>Sucursal: <%= itinerary.sucursal.name %></p>
+
+            <label for="departmentId">Departamento:</label>
+
+            <select name="departmentId" class="input">
+              <% for (let i=0; i < departments.length; i++) {%>
+                <option value="<%= departments[i].id %>">
+                  <%= departments[i].name %>
+                </option>
+                <% } %>
+            </select>
           </div>
 
           <input type="text" type="text" value="<%= itinerary.id %>" name="id" hidden>
@@ -107,7 +117,12 @@
                 <td>
                   <select class="input" id="surveyId">
                     <% for (let i = 0; i < surveys.length; i++) {%>
-                      <option value="<%= surveys[i].id %>"><%= surveys[i].title %> </option>
+                      <option value="<%= surveys[i].id %>">
+                        <%= surveys[i].title %> 
+                        <% if(!surveys[i].isActive) { %>
+                          (CERRADA)
+                        <% } %>
+                      </option>
                     <% } %>
                   </select>
                 </td>

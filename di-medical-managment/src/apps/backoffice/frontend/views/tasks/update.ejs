@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +16,7 @@
     .editor-task {
       background-color: #ffffff;
     }
- 
+
     #toolbar-container {
       display: flex;
       flex-direction: row;
@@ -29,121 +30,130 @@
     .ql-container {
       height: 140px;
     }
-  </style>  
+  </style>
 </head>
+
 <body>
   <div id="admin-dash">
 
     <%- include('../partials/_leftbar') %>
-    
-    <main id="main-admin">
 
-      <header class="section-header">
-        <section class="breadcrumb">
-          <a href="/backoffice/task">
-            <small>Tareas</small>
-          </a>
-          <span class="breadcrumb-slash">/</span>
-          <a href="/backoffice/task/<%= task.id %>/update">
-            <small>Actualizar tarea</small>
-          </a>
-        </section>
-      </header>
+      <main id="main-admin">
 
-      <section id="new-client-form">        
-        <form action="/backoffice/task/<%= task.id %>?_method=PUT" method="post" id="taskForm"> 
-          <% if (task.isPoint) { %>
-            <small class="tag" style="align-self: self-start;">Punto de ruta</small>
-          <% } %>
-          
-          <input type="text" hidden id="id" name="id" value="<%= task.id %>">
-          
-          <label for="title">Titulo:</label>
-          <input type="text" name="title" id="title"  value="<%= task.title %>" class="input" placeholder="Titulo de la tarea" required> 
-          
-          <label for="description">Instruciones:</label>
-          <input type="text" name="description" id="description" hidden>
+        <header class="section-header">
+          <section class="breadcrumb">
+            <a href="/backoffice/task">
+              <small>Tareas</small>
+            </a>
+            <span class="breadcrumb-slash">/</span>
+            <a href="/backoffice/task/<%= task.id %>/update">
+              <small>Actualizar tarea</small>
+            </a>
+          </section>
+        </header>
+
+        <section id="new-client-form">
+          <form action="/backoffice/task/<%= task.id %>?_method=PUT" method="post" id="taskForm">
+            <% if (task.isPoint) { %>
+              <small class="tag" style="align-self: self-start;">Punto de ruta</small>
+              <% } %>
+
+                <input type="text" hidden id="id" name="id" value="<%= task.id %>">
+
+                <label for="title">Titulo:</label>
+                <input type="text" name="title" id="title" value="<%= task.title %>" class="input"
+                  placeholder="Titulo de la tarea" required>
+
+                <label for="description">Instruciones:</label>
+                <input type="text" name="description" id="description" hidden>
 
 
-          <div class="editor-task">
-            <div id="toolbar-container">
-              <span class="ql-formats">
-                <select class="ql-font"></select>
-                <select class="ql-size"></select>
-              </span>
-              <span class="ql-formats">
-                <button class="ql-bold"></button>
-                <button class="ql-italic"></button>
-                <button class="ql-underline"></button>
-                <button class="ql-strike"></button>
-              </span>
-              <span class="ql-formats">
-                <button class="ql-list" value="ordered"></button>
-                <button class="ql-list" value="bullet"></button>
-                <button class="ql-indent" value="-1"></button>
-                <button class="ql-indent" value="+1"></button>
-              </span>
-              <span class="ql-formats">
-                <button class="ql-direction" value="rtl"></button>
-                <select class="ql-align"></select>
-                <button class="ql-blockquote"></button>
-                <button class="ql-link"></button>
+                <div class="editor-task">
+                  <div id="toolbar-container">
+                    <span class="ql-formats">
+                      <select class="ql-font"></select>
+                      <select class="ql-size"></select>
+                    </span>
+                    <span class="ql-formats">
+                      <button class="ql-bold"></button>
+                      <button class="ql-italic"></button>
+                      <button class="ql-underline"></button>
+                      <button class="ql-strike"></button>
+                    </span>
+                    <span class="ql-formats">
+                      <button class="ql-list" value="ordered"></button>
+                      <button class="ql-list" value="bullet"></button>
+                      <button class="ql-indent" value="-1"></button>
+                      <button class="ql-indent" value="+1"></button>
+                    </span>
+                    <span class="ql-formats">
+                      <button class="ql-direction" value="rtl"></button>
+                      <select class="ql-align"></select>
+                      <button class="ql-blockquote"></button>
+                      <button class="ql-link"></button>
 
-              </span>
-            </div>
-            <div id="editor">
-              <%- task.description %>
-            </div>
-          </div>
-        
-          <label for="dueTo">Fecha límite:</label>
-          <% const date = new Date(task.dueTo) %>
-          <% const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`; %>
-          <input
-            class="input"
-            type="datetime-local"
-            id="dueTo"
-            min="<%= formattedDate %>"
-            name="dueTo"
-            value="<%= formattedDate %>"
-            required
-            />
-          
-          <button type="submit" class="button primary">Actualizar tarea</button>
-        </form>
+                    </span>
+                  </div>
+                  <div id="editor">
+                    <%- task.description %>
+                  </div>
+                </div>
 
-        <% if(!task.isPoint) { %>
-          <form action="/backoffice/task/<%= task.id %>?_method=DELETE" method="post" style="margin-top: 10px;" id="taskFormDelete">
-            <input type="text" value="<%= task.id %>" name="id" hidden>
-            <button class="button danger" type="submit">Eliminar tarea</button>
+                <label for="departmentId">Departamento:</label>
+
+                <select name="departmentId" class="input">
+                  <% for (let i=0; i < departments.length; i++) {%>
+                    <option value="<%= departments[i].id %>">
+                      <%= departments[i].name %>
+                    </option>
+                    <% } %>
+                </select>
+
+                <label for="dueTo">Fecha límite:</label>
+                <% const date=new Date(task.dueTo) %>
+                  <% const formattedDate=`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0'
+                    )}-${String(date.getDate()).padStart(2, '0' )} ${String(date.getHours()).padStart(2, '0'
+                    )}:${String(date.getMinutes()).padStart(2, '0' )}:${String(date.getSeconds()).padStart(2, '0' )}`;
+                    %>
+                    <input class="input" type="datetime-local" id="dueTo" min="<%= formattedDate %>" name="dueTo"
+                      value="<%= formattedDate %>" required />
+
+                    <button type="submit" class="button primary">Actualizar tarea</button>
           </form>
-        <% } %>
 
-      </section>
-    </main>
+          <% if(!task.isPoint) { %>
+            <form action="/backoffice/task/<%= task.id %>?_method=DELETE" method="post" style="margin-top: 10px;"
+              id="taskFormDelete">
+              <input type="text" value="<%= task.id %>" name="id" hidden>
+              <button class="button danger" type="submit">Eliminar tarea</button>
+            </form>
+            <% } %>
+
+        </section>
+      </main>
   </div>
 
   <script>
     const quill = new Quill('#editor', {
-    modules: {
+      modules: {
         toolbar: '#toolbar-container',
       },
       placeholder: 'Instruciones de la tarea...',
       theme: 'snow',
     });
 
-    document.getElementById('taskForm').onsubmit = function(e) {
+    document.getElementById('taskForm').onsubmit = function (e) {
       const descriptionInput = document.querySelector('input[name=description]');
-      
+
       e.preventDefault();
 
-      if(quill.getLength() == 1) {
+      if (quill.getLength() == 1) {
         swal({
           title: 'Error',
           text: 'Debes de proveer las instruciones para realizar la tarea.',
           dangerMode: true,
         });
-        
+
         return;
       }
 
@@ -154,14 +164,14 @@
         dangerMode: true,
       }).then((accepted) => {
         if (accepted) {
-          descriptionInput.value = quill.getSemanticHTML();    
+          descriptionInput.value = quill.getSemanticHTML();
           this.submit();
         }
       });
 
     };
 
-    document.getElementById('taskFormDelete').onsubmit = function(e) {
+    document.getElementById('taskFormDelete').onsubmit = function (e) {
       e.preventDefault();
 
       swal({
@@ -183,11 +193,12 @@
       const day = String(now.getDate()).padStart(2, '0');
       const hours = String(now.getHours()).padStart(2, '0');
       const minutes = String(now.getMinutes()).padStart(2, '0');
-    
+
       return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
 
-  document.getElementById('dueTo').min = getMinDateTime();
+    document.getElementById('dueTo').min = getMinDateTime();
   </script>
 </body>
+
 </html>

@@ -54,10 +54,10 @@ export default class DashBoardInitController {
       });
 
       res.status(200).render('admin', {
-        assignedTasks,
-        completedTasks,
-        inProgressTasks,
-        overdueTasks,
+        assignedTasks: assignedTasks.map(a => a.toPrimitives()),
+        completedTasks: completedTasks.map(c => c.toPrimitives()),
+        inProgressTasks: inProgressTasks.map(i => i.toPrimitives()),
+        overdueTasks: overdueTasks.map(o => o.toPrimitives()),
         user
       });
     } catch (error) {

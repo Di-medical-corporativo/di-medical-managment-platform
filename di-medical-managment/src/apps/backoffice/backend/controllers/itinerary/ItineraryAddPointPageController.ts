@@ -6,13 +6,16 @@ import { ItineraryId } from "../../../../../Contexts/Backoffice/Itinerary/domain
 import { ItineraryFinder } from "../../../../../Contexts/Backoffice/Itinerary/domain/ItineraryFinder";
 import { certificateStates } from "../../../../../Contexts/Backoffice/Itinerary/domain/PointCertificate";
 import { ssaStates } from "../../../../../Contexts/Backoffice/Itinerary/domain/PointSSA";
+import { DepartmentSearcher } from "../../../../../Contexts/Backoffice/Department/application/SearchAll/DepartmentSearcher";
+import { Department } from "../../../../../Contexts/Backoffice/Department/domain/Department";
 
 export class ItineraryAddPointPageController {
   constructor(
     private clientSearcher: ClientSearcher,
     private userSearcher: UserSearcher,
     private surveySearcher: SurveySearcher,
-    private itineraryFinder: ItineraryFinder
+    private itineraryFinder: ItineraryFinder,
+    private departmentSearcher: DepartmentSearcher
   ) {}
 
   async run(req: Request, res: Response) {
@@ -29,6 +32,8 @@ export class ItineraryAddPointPageController {
       const users = await this.userSearcher.run();
 
       const surveys = await this.surveySearcher.run();
+      
+      const departments: Department[] = await this.departmentSearcher.run();
 
       res.status(200).render('itinerary/add-point', {
         clients: clients.map(c => c.toPrimitives()),
@@ -36,7 +41,8 @@ export class ItineraryAddPointPageController {
         surveys: surveys.map(su => su.toPrimitives()),
         itinerary: itinerary.toPrimitives(),
         certificateStates,
-        ssaStates
+        ssaStates,
+        departments: departments.map(d => d.toPrimitives())
       });
     } catch (error) {
       res.status(500).render('error/error', {
