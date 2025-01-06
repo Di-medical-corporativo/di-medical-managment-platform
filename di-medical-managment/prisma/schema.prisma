@@ -27,7 +27,8 @@ model User {
   permit Permit[] @relation("RequestedPermits")
   approvals Permit[] @relation("ApprovedPermits")
   modules PlatformPermission[]
-  attendanceIssues AttendanceIssue[] @relation("AttendanceIssuesForUser")
+  attendanceIssues AttendanceIssue[]  
+  Justification Justification[]
 }
 
 model AttendanceIssue {
@@ -37,14 +38,15 @@ model AttendanceIssue {
   date       DateTime
   type       String
   createdAt  DateTime @default(now())
-  justification Justification? @relation(fields: [id], references: [issueId])
+  isJustified Boolean @default(false)
+  justification Justification?
 }
 
 model Justification {
-  id           String   @id @default(cuid())
-  issueId      String 
+  id           String   @id
+  issueId      String @unique
   issue        AttendanceIssue @relation(fields: [issueId], references: [id])
-  reason       String
+  reason       String 
   status       String
   approverId   String?
   approver     User?    @relation(fields: [approverId], references: [id])
