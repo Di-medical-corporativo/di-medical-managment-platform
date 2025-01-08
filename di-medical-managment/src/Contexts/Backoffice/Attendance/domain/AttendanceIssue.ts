@@ -2,6 +2,8 @@ import { AttendanceDate } from "./AttendanceDate";
 import { AttendanceId } from "./AttendanceId";
 import { AttendanceType } from "./AttendanceType";
 import { AttendanceUser } from "./AttendanceUser";
+import { Justification, JustificationActionTaken, JustificationActionUntaken } from "./Justification";
+import { JustificationStatusEnum } from "./JustificationStatus";
 
 export abstract class AttendanceIssue {
   constructor(
@@ -9,9 +11,9 @@ export abstract class AttendanceIssue {
     protected type: AttendanceType,
     protected date: AttendanceDate,
     protected issueUser: AttendanceUser
-  ) {}
+  ) { }
 
-  abstract toPrimitives(): {};
+  abstract toPrimitives(): { id: string; type: string; date: string; issueUser: { id: string; firstName: string; lastName: string; } };
 }
 
 export class AttendanceJustified extends AttendanceIssue {
@@ -19,7 +21,8 @@ export class AttendanceJustified extends AttendanceIssue {
     id: AttendanceId,
     type: AttendanceType,
     date: AttendanceDate,
-    issueUser: AttendanceUser
+    issueUser: AttendanceUser,
+    private justification: Justification
   ) {
     super(
       id,
@@ -33,13 +36,15 @@ export class AttendanceJustified extends AttendanceIssue {
     id: AttendanceId,
     type: AttendanceType,
     date: AttendanceDate,
-    issueUser: AttendanceUser
+    issueUser: AttendanceUser,
+    justification: Justification
   }) {
-    return new AttendanceUnjustified(
+    return new AttendanceJustified(
       params.id,
       params.type,
       params.date,
-      params.issueUser
+      params.issueUser,
+      params.justification
     );
   }
 
@@ -53,16 +58,53 @@ export class AttendanceJustified extends AttendanceIssue {
       lastName: string;
       job: string;
     };
+    justification: {
+      id: string;
+      reason: string;
+      status: string;
+      createdAt: string;
+      approver?: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        job: string;
+      };
+    }
   }) {
-    return new AttendanceUnjustified(
+    let justification: Justification;
+
+    if(params.justification.status == JustificationStatusEnum.pending) {
+      justification = JustificationActionUntaken.fromPrimitives({
+        createdAt: params.justification.createdAt,
+        id: params.justification.id,
+        reason: params.justification.reason,
+        status: params.justification.status
+      })
+    } else {
+      justification = JustificationActionTaken.fromPrimitives({
+        createdAt: params.justification.createdAt,
+        id: params.justification.id,
+        reason: params.justification.reason,
+        status: params.justification.status,
+        approver: {
+          firstName: params.justification.approver?.firstName!,
+          id: params.justification.approver?.id!,
+          job: params.justification.approver?.job!,
+          lastName: params.justification.approver?.lastName!
+        }
+      })
+    }
+
+    return new AttendanceJustified(
       new AttendanceId(params.id),
       params.type,
       new AttendanceDate(params.date),
-      AttendanceUser.fromPrimitives(params.issueUser)
+      AttendanceUser.fromPrimitives(params.issueUser),
+      justification
     );
   }
 
-  toPrimitives(): {} {
+  toPrimitives(): { id: string; type: string; date: string; issueUser: { id: string; firstName: string; lastName: string; } } & { isJustified: boolean } {
     return {
       id: this.id.toString(),
       type: this.type,
@@ -121,7 +163,7 @@ export class AttendanceUnjustified extends AttendanceIssue {
     );
   }
 
-  toPrimitives(): {} {
+  toPrimitives(): { id: string; type: string; date: string; issueUser: { id: string; firstName: string; lastName: string; } } & { isJustified: boolean } {
     return {
       id: this.id.toString(),
       type: this.type,
