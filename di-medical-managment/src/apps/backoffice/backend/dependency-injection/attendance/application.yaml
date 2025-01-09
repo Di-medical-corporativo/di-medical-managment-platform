@@ -1,0 +1,7 @@
+services:
+  Contexts.Backoffice.Attendance.application.SearchAll.IssueSearcher:
+    class: ../../../../../Contexts/Backoffice/Attendance/application/SearchAll/IssueSearcher
+    arguments: [
+    "@Contexts.Backoffice.Attendance.infra.persistence.AttendanceRepository",
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
+    ]

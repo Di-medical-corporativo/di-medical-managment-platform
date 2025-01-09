@@ -31,3 +31,6 @@ services:
 
   Contexts.Backoffice.Task.infra.BullMQ.BullConfig:
     class: ../../../../../Contexts/Backoffice/Task/infra/BullMQ/BullConfig
+
+  Contexts.Backoffice.Attendance.infra.persistence.AttendanceRepository:
+    class: ../../../../../Contexts/Backoffice/Attendance/infra/persistence/PrismaAttendanceRepository
