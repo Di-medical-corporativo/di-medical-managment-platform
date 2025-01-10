@@ -5,3 +5,9 @@ services:
     "@Contexts.Backoffice.Attendance.infra.persistence.AttendanceRepository",
     "@Contexts.Backoffice.User.infra.persistence.UserRepository"
     ]
+
+  Contexts.Backoffice.Attendance.application.CreateIssue.IssueCreator:
+    class: ../../../../../Contexts/Backoffice/Attendance/application/CreateIssue/IssueCreator
+    arguments: [
+    "@Contexts.Backoffice.Attendance.infra.persistence.AttendanceRepository"
+    ]

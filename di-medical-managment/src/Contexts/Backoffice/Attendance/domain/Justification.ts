@@ -12,6 +12,8 @@ export abstract class Justification {
     protected status: JustificationStatus,
     protected createdAt: JustificationDate
   ) {}
+
+  public abstract toPrimitives(): { id: string; reason: string; status: string; createdAt: string; };
 }
 
 export class JustificationActionTaken extends Justification {
@@ -33,13 +35,25 @@ export class JustificationActionTaken extends Justification {
 
   private approver: AttendanceUser;
 
-  toPrimitives() {
+  toPrimitives(): { 
+    id: string; 
+    reason: string; 
+    status: string; 
+    createdAt: string; 
+  } & { 
+    approver: { 
+      id: string; 
+      firstName: string;
+      lastName: string;
+      job: string;
+    } 
+  } {
     return {
       id: this.id.toString(),
       reason: this.reason.toString(),
-      status: this.status,
+      status: this.status.toString(),
       createdAt: this.createdAt.toString(),
-      approver: this.approver.toString()
+      approver: this.approver.toPrimitives()
     };
   }
 
@@ -98,11 +112,16 @@ export class JustificationActionUntaken extends Justification {
     );
   }
 
-  toPrimitives() {
+  toPrimitives(): { 
+    id: string; 
+    reason: string; 
+    status: string; 
+    createdAt: string; 
+  } {
     return {
       id: this.id.toString(),
       reason: this.reason.toString(),
-      status: this.status,
+      status: this.status.toString(),
       createdAt: this.createdAt.toString()
     };
   }

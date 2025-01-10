@@ -104,13 +104,14 @@ export class AttendanceJustified extends AttendanceIssue {
     );
   }
 
-  toPrimitives(): { id: string; type: string; date: string; issueUser: { id: string; firstName: string; lastName: string; } } & { isJustified: boolean } {
+  toPrimitives(): { id: string; type: string; date: string; issueUser: { id: string; firstName: string; lastName: string; } } & { isJustified: boolean, justification: {} } {
     return {
       id: this.id.toString(),
       type: this.type,
       date: this.date.toString(),
       issueUser: this.issueUser.toPrimitives(),
-      isJustified: false
+      isJustified: false,
+      justification: this.justification.toPrimitives()
     }
   }
 }

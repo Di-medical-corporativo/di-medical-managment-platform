@@ -21,7 +21,7 @@ export const register = (app: Express) => {
 
   const departmentDeleteController: DepartmentsDeleteController = container.get('Apps.Backoffice.backend.controllers.DepartmentsDeleteController');
 
-  app.use('/department', ensureAuthenticated);
+  app.use('/department', ensureAuthenticated, authorizeModule(AppModules.DEPARTMENTS));
 
   app.get('/department', (req: Request, res: Response) => departmentFindAllController.run(req, res));
 

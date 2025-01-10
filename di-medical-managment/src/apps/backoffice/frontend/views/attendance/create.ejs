@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nueva incidencia</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/attendance">
+            <small>Faltas y retardos</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/attendance/new">
+            <small>Registro de falta o retardo</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="new-client-form">
+        <form action="/backoffice/client/<%= id %>" method="post" id="create-client-form">
+          <input type="text" hidden id="id" name="id" value="<%= id %>">
+
+          <input type="text" hidden id="id-user" name="userId" value="<%= userId %>">
+
+          <label for="type">Tipo:</label>
+          <select name="type" class="input">
+            <option value="delay-issue">Retardo</option>
+            <option value="absence-issue">Enfermedad</option>
+        </select>
+
+          <label for="date">Fecha:</label>
+          <input type="datetime-local" name="date" id="date" class="input" required>
+          
+          <button type="submit" class="button primary">Registrar incidencia</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById('create-client-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      swal({
+        title: '¿Estás seguro?',
+        text: 'Estás a punto de registrar una nueva incidencia. ¿Deseas continuar?',
+        buttons: true,
+        dangerMode: true,
+      }).then((accepted) => {
+        if (accepted) {
+          this.submit();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

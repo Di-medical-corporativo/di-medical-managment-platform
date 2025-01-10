@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuarios</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/attendance">
+            <small>Faltas y retardos</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+        </section>
+      </header>
+
+      <section id="client-list">
+        <table class="table">
+          <thead>
+              <tr>
+                  <th>Nombre</th>
+                  <th>Puesto</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+            <% for(let i = 0; i < users.length; i++) { %>
+              <tr>
+                <td><%= users[i].firstName %></td>
+                <td><%= users[i].job %></td>
+                <td style="text-align: right;" id="truck_actions">
+                  <button class="button primary"
+                    onclick="window.location.href='/backoffice/attendance/<%= users[i].id %>/new'"
+                  >Registrar incidencia</button>
+                  <button class="button secondary"
+                    onclick="window.location.href='/backoffice/attendance/<%= users[i].id %>/update'"
+                  >Ver incidencias</button> 
+                </td>
+            </tr>
+            <% } %>
+          </tbody>
+      </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

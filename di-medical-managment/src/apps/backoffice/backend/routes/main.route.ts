@@ -4,7 +4,6 @@ import container from "../dependency-injection";
 import DashBoardInitController from "../controllers/DashboardInitController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { authorizeModule } from "../middlewares/authorizeRoles";
-import { adminRole, surperAdminRole, userRole } from "../../../../Contexts/Shared/domain/roles/Roles";
 import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
 
 export const register = (app: Express) => {
