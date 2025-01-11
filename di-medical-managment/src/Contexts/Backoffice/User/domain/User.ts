@@ -1,4 +1,5 @@
 import { Module } from "../../../Shared/domain/Module";
+import { AttendanceUser } from "../../Attendance/domain/AttendanceUser";
 import { Sucursal } from "../../Sucursal/domain/Sucursal";
 import { UserDate } from "./UserDate";
 import { UserEmail } from "./UserEmail";
@@ -46,7 +47,16 @@ export class User {
   public updateSucursal(sucursal: Sucursal) {
     this.sucursal = sucursal;
   }
- 
+
+  public getIssueUser() {
+    return new AttendanceUser(
+      this.id,
+      this.firstName,
+      this.lastName,
+      this.job
+    );
+  }
+
   static create(data: {
     id: UserId,
     firstName: UserFirstName,

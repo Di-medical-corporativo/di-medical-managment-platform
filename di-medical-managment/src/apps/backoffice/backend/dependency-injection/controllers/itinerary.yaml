@@ -1,0 +1,94 @@
+services:
+  Apps.Backoffice.backend.controllers.PointUpdateControllerPage:
+    class: ../../controllers/itinerary/PointUpdateControllerPage
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.FindPoint.PointFinder",
+      "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher",
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher",
+    ]
+
+  Apps.Backoffice.backend.controllers.PointUpdateController:
+    class: ../../controllers/itinerary/UpdatePointController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.UpdatePoint.PointUpdator",
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryCreatePageController:
+    class: ../../controllers/itinerary/ItineraryCreatePageController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher",
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher",
+      "@Contexts.Backoffice.Sucursal.application.SearchAll.SucursalSearcher",
+      "@Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher",
+      "@Contexts.Backoffice.Department.application.SearchAll.DepartmentSearcher"
+    ]
+  
+  Apps.Backoffice.backend.controllers.ItineraryCreateController:
+    class: ../../controllers/itinerary/ItineraryCreateController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.Create.ItineraryCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryFindAllController:
+    class: ../../controllers/itinerary/ItineraryFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.SearchAll.ItinerarySearchAll"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryStartController:
+    class: ../../controllers/itinerary/ItineraryStartController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.StartItinerary.ItineraryStarter"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryTrackController:
+    class: ../../controllers/itinerary/ItineraryTrackController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.Tracking.ItineraryTracker"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryEndController:
+    class: ../../controllers/itinerary/ItineraryEndController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.Finish.ItineraryFinisher"
+    ]
+
+  Apps.Backoffice.backend.controllers.PointEndPageController:
+    class: ../../controllers/itinerary/PointEndPageController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.FindPoint.PointFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.PointEndController:
+    class: ../../controllers/itinerary/PointEndController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.FinishPoint.PointFinisher"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryAddPointPageController:
+    class: ../../controllers/itinerary/ItineraryAddPointPageController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher",
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher",
+      "@Contexts.Backoffice.Survey.application.SearchAll.SurveySearcher",
+      "@Contexts.Backoffice.Itinerary.application.Find.ItineraryFinder",
+      "@Contexts.Backoffice.Department.application.SearchAll.DepartmentSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryAddPointsController:
+    class: ../../controllers/itinerary/ItineraryAddPointsController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.AddPoint.PointAdder"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryReportPageController:
+    class: ../../controllers/itinerary/ItineraryReportPageController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.Report.ItineraryReporter"
+    ]
+
+  Apps.Backoffice.backend.controllers.ItineraryImageGeneratorController:
+    class: ../../controllers/itinerary/ItineraryImageGeneratorController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.ItineraryImage.ItineraryImageGenerator"
+    ]

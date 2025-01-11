@@ -1,0 +1,30 @@
+services:
+   Apps.Backoffice.backend.controllers.ClientDeleteController:
+    class: ../../controllers/client/ClientDeleteController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.Delete.ClientDeleter"
+    ]
+
+  Apps.Backoffice.backend.controllers.ClientCreateController:
+    class: ../../controllers/client/ClientCreateController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.Create.ClientCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.ClientUpdateController:
+    class: ../../controllers/client/ClientUpdateController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.Update.ClientUpdator"
+    ]
+
+  Apps.Backoffice.backend.controllers.ClientFindAllController:
+    class: ../../controllers/client/ClientFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.ClientSearchController:
+    class: ../../controllers/client/ClientSearchController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.Find.ClientFinder"
+    ]

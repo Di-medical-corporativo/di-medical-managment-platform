@@ -20,14 +20,14 @@
             <small>Faltas y retardos</small>
           </a>
           <span class="breadcrumb-slash">/</span>
-          <a href="/backoffice/attendance/new">
+          <a href="/backoffice/attendance/<%= userId %>/new">
             <small>Registro de falta o retardo</small>
           </a>
         </section>
       </header>
 
       <section id="new-client-form">
-        <form action="/backoffice/client/<%= id %>" method="post" id="create-client-form">
+        <form action="/backoffice/attendance/<%= userId %>/new" method="post" id="create-client-form">
           <input type="text" hidden id="id" name="id" value="<%= id %>">
 
           <input type="text" hidden id="id-user" name="userId" value="<%= userId %>">
@@ -35,7 +35,7 @@
           <label for="type">Tipo:</label>
           <select name="type" class="input">
             <option value="delay-issue">Retardo</option>
-            <option value="absence-issue">Enfermedad</option>
+            <option value="absence-issue">Falta</option>
         </select>
 
           <label for="date">Fecha:</label>

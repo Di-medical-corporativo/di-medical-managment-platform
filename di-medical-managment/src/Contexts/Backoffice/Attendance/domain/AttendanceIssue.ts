@@ -110,7 +110,7 @@ export class AttendanceJustified extends AttendanceIssue {
       type: this.type,
       date: this.date.toString(),
       issueUser: this.issueUser.toPrimitives(),
-      isJustified: false,
+      isJustified: true,
       justification: this.justification.toPrimitives()
     }
   }
@@ -170,7 +170,7 @@ export class AttendanceUnjustified extends AttendanceIssue {
       type: this.type,
       date: this.date.toString(),
       issueUser: this.issueUser.toPrimitives(),
-      isJustified: true
+      isJustified: false
     }
   }
 }

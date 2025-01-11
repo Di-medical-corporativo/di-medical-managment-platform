@@ -410,7 +410,7 @@ services:
   
   Apps.Backoffice.backend.controllers.DepartmentsUpdateController:
     class: ../../controllers/departments/DepartmentsUpdateController
-    arguments: [
+    arguments: [zz
       "@Contexts.Backoffice.Department.application.Update.DepartmentUpdator"
     ]
 
@@ -428,3 +428,34 @@ services:
 
   Apps.Backoffice.backend.controllers.AttendanceCreatePageController:
     class: ../../controllers/attendance/AttendanceCreatePageController
+    arguments: []
+
+  Apps.Backoffice.backend.controllers.AttendanceCreateController:
+    class: ../../controllers/attendance/AttendanceCreateController
+    arguments: [
+      "@Contexts.Backoffice.Attendance.application.CreateIssue.IssueCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.AttendanceIssuePageController:
+    class: ../../controllers/attendance/AttendanceIssuePageController
+    arguments: [
+      "@Contexts.Backoffice.Attendance.application.SearchAll.IssueSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.AttendanceJustificationFindController:
+    class: ../../controllers/attendance/AttendanceJustificationFindController
+    arguments: [
+      "@Contexts.Backoffice.Attendance.application.FindJustification.JustificationFinder"
+    ]
+
+  Apps.Backoffice.backend.controllers.AttendanceJustificationAction:
+    class: ../../controllers/attendance/AttendanceJustificationAction
+    arguments: [
+      "@Contexts.Backoffice.Attendance.application.Action.JustificationActionTaker"
+    ]
+
+  Apps.Backoffice.backend.controllers.AttendanceUserIssueController:
+    class: ../../controllers/attendance/AttendanceUserIssueController
+    arguments: [
+      "@Contexts.Backoffice.Attendance.application.SearchAll.IssueSearcher"
+    ]

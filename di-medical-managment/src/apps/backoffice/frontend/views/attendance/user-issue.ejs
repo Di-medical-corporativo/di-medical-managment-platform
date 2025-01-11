@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listado de incidencias</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/">
+            <small>Perfil</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/attendance/myhistory">
+            <small>Faltas y retardos</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="client-list">
+        <table class="table">
+          <thead>
+              <tr>
+                  <th>Tipo</th>
+                  <th>Fecha</th>
+                  <th></th>
+
+              </tr>
+          </thead>
+          <tbody>
+            <% for(let i = 0; i < issues.length; i++) { %>
+              <tr>
+                <td>
+                  <% if(issues[i].type === 'delay-issue') { %>
+                    Retardo
+                  <% } %>
+                  
+                  <% if(issues[i].type === 'absence-issue') { %>
+                    Falta
+                  <% } %>
+                </td>
+                <td><%= new Date(issues[i].date).toLocaleDateString('es-MX') %></td>
+
+                <% if(issues[i].isJustified) { %>
+                  <td>
+                    if(issues[i].justification.status === 'approved-justification') {
+                      Justificante aprovado
+                    } else if(issues[i].justification.status === 'pending-justification') {
+                      Justificante en espera de revisión
+                    } else {
+                      Justificante rechazado
+                    }
+                  </td>
+                <% } else { %>
+                  <td style="text-align: right;" id="truck_actions">
+                    <button class="button danger"
+                      onclick="window.location.href='/backoffice/attendance/<%= issues[i].id %>/justify'"
+                    >Justificar</button>
+                  </td>
+                <% } %>
+            </tr>
+            <% } %>
+          </tbody>
+      </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

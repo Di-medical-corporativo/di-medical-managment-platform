@@ -11,4 +11,5 @@ imports:
   - { resource: ./itinerary/application.yaml }
   - { resource: ./permit/application.yaml }
   - { resource: ./departments/application.yaml }
+  - { resource: ./attendance/application.yaml }
   - { resource: ./controllers/application.yaml }

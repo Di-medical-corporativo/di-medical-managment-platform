@@ -1,16 +1,18 @@
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
 import { UserId } from "../../../User/domain/UserId";
+import { AttendanceId } from "../../domain/AttendanceId";
 import { AttendanceIssue, AttendanceJustified, AttendanceUnjustified } from "../../domain/AttendanceIssue";
 import { AttendanceRepository } from "../../domain/AttendanceRepository";
 import { AttendanceType } from "../../domain/AttendanceType";
-import { Justification } from "../../domain/Justification";
-import { JustificationStatusEnum } from "../../domain/JustificationStatus";
+import { Justification, JustificationActionUntaken } from "../../domain/Justification";
+import { JustificationId } from "../../domain/JustificationId";
+import { JustificationStatus, JustificationStatusEnum } from "../../domain/JustificationStatus";
 
 export class PrismaAttendanceRepository implements AttendanceRepository {
   async saveIssue(issue: AttendanceUnjustified): Promise<void> {
     const issuePrimitves = issue.toPrimitives();
 
-    prisma.attendanceIssue.create({
+    await prisma.attendanceIssue.create({
       data: {
         id: issuePrimitves.id,
         date: issuePrimitves.date,
@@ -99,5 +101,61 @@ export class PrismaAttendanceRepository implements AttendanceRepository {
     });
 
     return issues;
+  }
+
+  async findJustification(justificationId: JustificationId): Promise<Justification | null> {
+    const justificationDB = await prisma.justification.findUnique({
+      where: {
+        id: justificationId.toString()
+      }
+    });
+
+    if(justificationDB === null) {
+      return null
+    }
+
+    let justification: JustificationActionUntaken = JustificationActionUntaken.fromPrimitives({
+      createdAt: justificationDB.createdAt.toISOString(),
+      id: justificationDB.id,
+      reason: justificationDB.reason,
+      status: justificationDB.status
+    });
+
+    return justification;
+  }
+
+  async changeStatus(justificantId: JustificationId, action: JustificationStatus, approverId: UserId): Promise<void> {
+    await prisma.justification.update({
+      where: {
+        id: justificantId.toString()
+      },
+      data: {
+        approver: {
+          connect: {
+            id: approverId.toString()
+          }
+        },
+        status: action.toString()
+      }
+    })
+  }
+
+  async justify(justificationId: JustificationId, issueId: AttendanceId, reason: JustificationId): Promise<void> {
+    await prisma.attendanceIssue.update({
+      where: {
+        id: issueId.toString()
+      },
+      data: {
+        isJustified: true,
+        justification: {
+          create: {
+            id: justificationId.toString(),
+            reason: reason.toString(),
+            status: JustificationStatusEnum.pending,
+            createdAt: new Date().toISOString()
+          }
+        }        
+      }
+    });
   }
 }

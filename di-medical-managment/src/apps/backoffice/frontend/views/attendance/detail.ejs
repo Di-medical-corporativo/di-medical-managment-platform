@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalles del Permiso</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <style>
+    .editor-task {
+      background-color: #ffffff;
+    }
+
+    #toolbar-container {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .ql-formats {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .ql-container {
+      height: 140px;
+    }
+  </style>
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/attendance">
+            <small>Faltas y retardos</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/attendance/<%= justification.id %>/justification">
+            <small>Justificación</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="permit-details" >
+        <h2>Detalle de la justificación</h2>
+        <div class="permit-info" >
+          <p> <strong>Justificante enviado el:</strong> 
+             <%= new Date(justification.createdAt).toLocaleDateString('es-MX') %></p>
+          <p><strong>Estatus:</strong>  
+          <% if (justification.status === 'pending-justification') { %>
+            Pendiente
+          <% } else if (justification.status === 'approved-justification') { %>
+            Aprovado
+          <% } else if (justification.status === 'personal-permit') { %>
+            Rechazado
+          <% } %></p>
+          <p></p>
+          <div class="editor-task">
+            <div id="editor" style="height: 200px;">
+              <%- justification.reason %>
+            </div>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 10px;">
+          <form action="/backoffice/attendance/<%= justification.id %>/action?_method=PUT" id="accept-permit-form" method="post" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+            <input type="hidden" name="action" value="approved-justification">
+            <button type="submit" class="button primary">Aprobar</button>
+          </form>
+  
+          <form action="/backoffice/attendance/<%= justification.id %>/action?_method=PUT" id="reject-permit-form" method="post" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+            <input type="hidden" name="action" value="rejected-justification">
+            <button type="submit" class="button danger">Rechazar</button>
+          </form>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const quill = new Quill('#editor', {
+      readOnly: true, 
+      modules: {
+          toolbar: null,
+      },
+      placeholder: 'Instrucciones de la tarea...',
+      theme: 'snow',
+    });
+
+    document.getElementById('accept-permit-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const form = document.getElementById('accept-permit-form');
+
+      if (form.reportValidity()) {
+        swal({
+          title: '¿Estás seguro?',
+          text: 'Estás a punto de aprobar el justificante. Revisa los detalles antes de confirmar. Esta accion no se puede deshacer.',
+          buttons: true,
+          dangerMode: true,
+          confirmButtonText: 'Sí, continuar',
+          cancelButtonText: 'Cancelar',
+        }).then((accepted) => {
+          if (accepted) {
+            form.submit();
+          }
+        });
+      }
+    });
+
+    document.getElementById('reject-permit-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const form = document.getElementById('reject-permit-form');
+
+      if (form.reportValidity()) {
+        swal({
+          title: '¿Estás seguro?',
+          text: 'Estás a punto de rechazar el justificante. Revisa los detalles antes de confirmar. Esta accion no se puede deshacer.',
+          buttons: true,
+          dangerMode: true,
+          confirmButtonText: 'Sí, continuar',
+          cancelButtonText: 'Cancelar',
+        }).then((accepted) => {
+          if (accepted) {
+            form.submit();
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+services:
+  Apps.Backoffice.backend.controllers.DashBoardInitController:
+    class: ../../controllers/DashboardInitController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.UserKanban.UserKanbanGenerator"
+    ]

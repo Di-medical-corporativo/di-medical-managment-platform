@@ -1,0 +1,9 @@
+services:
+  Apps.Backoffice.backend.controllers.AttendanceUserListController:
+    class: ../../controllers/attendance/AttendanceUserListController
+    arguments: [
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher"
+    ]
+    
+  Apps.Backoffice.backend.controllers.AttendanceCreatePageController:
+    class: ../../controllers/attendance/AttendanceCreatePageController

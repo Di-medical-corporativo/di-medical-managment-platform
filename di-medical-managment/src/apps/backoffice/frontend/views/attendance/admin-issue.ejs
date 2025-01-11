@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listado de incidencias</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/attendance">
+            <small>Faltas y retardos</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/attendance/<%= userId %>/history">
+            <small>Historial</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="client-list">
+        <table class="table">
+          <thead>
+              <tr>
+                  <th>Usuario</th>
+                  <th>Puesto</th>
+                  <th>Tipo</th>
+                  <th>Fecha</th>
+                  <th></th>
+                  <th></th>
+
+              </tr>
+          </thead>
+          <tbody>
+            <% for(let i = 0; i < issues.length; i++) { %>
+              <tr>
+                <td><%= issues[i].issueUser.firstName %> <%= issues[i].issueUser.lastName %></td>
+                <td><%= issues[i].issueUser.job %></td>
+                <td>
+                  <% if(issues[i].type === 'delay-issue') { %>
+                    Retartdo
+                  <% } %>
+                  
+                  <% if(issues[i].type === 'absence-issue') { %>
+                    Falta
+                  <% } %>
+                </td>
+                <td><%= new Date(issues[i].date).toLocaleDateString('es-MX') %></td>
+
+
+                <% if(issues[i].isJustified) { %>
+
+                  <% if(issues[i].justification.status === 'pending-justification') { %>
+                    <td style="text-align: right;" id="truck_actions">
+                      <button class="button danger"
+                        onclick="window.location.href='/backoffice/attendance/<%= issues[i].justification.id %>/justification/'"
+                      >Justificante pendiente</button>
+                    </td>
+                  <% } else { %>
+                    <td>
+                      <% if(issues[i].justification.status === 'approved-justification') { %>
+                        <p>Justificación aprovada</p>
+                      <% } %>
+                      <% if(issues[i].justification.status === 'rejected-justification') { %>
+                        <p>Justificación rechazada</p>
+                      <% } %>
+                    </td>
+                    <td>
+                      Aprovado por <%= issues[i].justification.approver.firstName %> <%= issues[i].justification.approver.lastName %>
+                    </td>
+                  <% } %>
+
+                <% } %>
+            </tr>
+            <% } %>
+          </tbody>
+      </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

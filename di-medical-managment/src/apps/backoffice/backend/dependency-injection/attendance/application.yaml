@@ -9,5 +9,20 @@ services:
   Contexts.Backoffice.Attendance.application.CreateIssue.IssueCreator:
     class: ../../../../../Contexts/Backoffice/Attendance/application/CreateIssue/IssueCreator
     arguments: [
+    "@Contexts.Backoffice.Attendance.infra.persistence.AttendanceRepository",
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
+    ]
+
+  Contexts.Backoffice.Attendance.application.FindJustification.JustificationFinder:
+    class: ../../../../../Contexts/Backoffice/Attendance/application/FindJustification/JustificationFinder
+    arguments: [
     "@Contexts.Backoffice.Attendance.infra.persistence.AttendanceRepository"
     ]
+
+  Contexts.Backoffice.Attendance.application.Action.JustificationActionTaker:
+    class: ../../../../../Contexts/Backoffice/Attendance/application/Action/JustificationActionTaker
+    arguments: [
+    "@Contexts.Backoffice.Attendance.infra.persistence.AttendanceRepository",
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
+    ]
+

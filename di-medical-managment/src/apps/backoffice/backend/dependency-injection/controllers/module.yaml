@@ -1,0 +1,12 @@
+services:
+  Apps.Backoffice.backend.controllers.ModuleFindAllController:
+    class: ../../controllers/modules/ModuleFindAllController
+    arguments: [
+      "@Contexts.Shared.application.ModuleSearcher"
+    ]
+  
+  Apps.Backoffice.backend.controllers.ModuleCreateController:
+    class: ../../controllers/modules/ModuleCreateController
+    arguments: [
+      "@Contexts.Shared.application.ModuleCreator"
+    ]
