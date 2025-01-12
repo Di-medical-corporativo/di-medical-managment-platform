@@ -20,12 +20,45 @@
           </a>
           <span class="breadcrumb-slash">/</span>
           <a href="/backoffice/attendance/myhistory">
-            <small>Faltas y retardos</small>
+            <small>Mis faltas y retardos</small>
           </a>
         </section>
       </header>
 
       <section id="client-list">
+        <div class="overview-attendance">
+          <div class="attendance-data">
+            <p>Faltas</p>
+            <p class="attendance-data-number">
+              <%= overview.absence %>
+            </p>
+          </div>
+          <div class="attendance-data">
+            <p>Retardos</p>
+            <p class="attendance-data-number">
+              <%= overview.delay %>
+            </p>
+          </div>
+          <div class="attendance-data">
+            <p>Justificantes pendientes</p>
+            <p class="attendance-data-number">
+              <%= overview.pendingJustifications %>
+            </p>
+          </div>
+          <div class="attendance-data">
+            <p>Justificantes rechazados</p>
+            <p class="attendance-data-number">
+              <%= overview.rejectedJustifications %>
+            </p>
+          </div>
+          <div class="attendance-data">
+            <p>Justificantes aprobados</p>
+            <p class="attendance-data-number">
+              <%= overview.approvedJustifications %>
+            </p>
+          </div>
+        </div>
+
         <table class="table">
           <thead>
               <tr>
@@ -51,13 +84,13 @@
 
                 <% if(issues[i].isJustified) { %>
                   <td>
-                    if(issues[i].justification.status === 'approved-justification') {
-                      Justificante aprovado
-                    } else if(issues[i].justification.status === 'pending-justification') {
+                    <% if(issues[i].justification.status === 'approved-justification') { %>
+                      Justificante aprobado
+                    <% } else if(issues[i].justification.status === 'pending-justification') { %>
                       Justificante en espera de revisión
-                    } else {
+                    <% } else { %>
                       Justificante rechazado
-                    }
+                    <% } %>
                   </td>
                 <% } else { %>
                   <td style="text-align: right;" id="truck_actions">

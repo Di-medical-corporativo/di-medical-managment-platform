@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { UserKanbanGenerator } from "../../../../Contexts/Backoffice/Task/application/UserKanban/UserKanbanGenerator";
 import { UserId } from "../../../../Contexts/Backoffice/User/domain/UserId";
+import { UserOverviewer } from "../../../../Contexts/Backoffice/User/application/Overview/UserOverviewer";
 
 export interface User {
   id: string;
@@ -13,7 +14,8 @@ export interface User {
 
 export default class DashBoardInitController {
   constructor(
-    private userKanbanGenerator: UserKanbanGenerator
+    private userKanbanGenerator: UserKanbanGenerator,
+    private userOverviewer: UserOverviewer
   ) {}
 
   async run(req: Request, res: Response) {
@@ -42,11 +44,15 @@ export default class DashBoardInitController {
         monthToFilter = parseInt(monthNumber, 10);
       }
 
+      const overview = await this.userOverviewer.run({
+        userId: new UserId(user.id)
+      });
+
       const { 
         assignedTasks, 
         completedTasks, 
         inProgressTasks, 
-        overdueTasks 
+        overdueTasks
       } = await this.userKanbanGenerator.run({
         id: new UserId(user.id),
         month: monthToFilter,
@@ -58,7 +64,8 @@ export default class DashBoardInitController {
         completedTasks: completedTasks.map(c => c.toPrimitives()),
         inProgressTasks: inProgressTasks.map(i => i.toPrimitives()),
         overdueTasks: overdueTasks.map(o => o.toPrimitives()),
-        user
+        user,
+        overview
       });
     } catch (error) {
       res.status(500).render('error/error', {

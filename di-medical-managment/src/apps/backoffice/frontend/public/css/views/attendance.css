@@ -1,0 +1,50 @@
+.overview-attendance {
+  width: 95%;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  background-color: var(--color-white);
+  padding: 5px;
+}
+
+.attendance-data {
+  width: 250px;
+  height: 170px;
+  border-radius: 3px;
+  background-color: var(--color-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex-direction: column;
+}
+
+.attendance-data p {
+  margin-left: 5px;
+  margin-top: 5px;
+  font-size: 14px;
+  align-self: flex-start;
+  color: #bec0c2;
+}
+
+.attendance-data .attendance-data-number {
+  font-size: 30px;
+  align-self: center;
+  font-weight: bold;
+  color: black;
+}
+
+@media screen and (max-width: 768px) {
+  .overview-attendance {
+    width: 100%;
+    gap: 10px;
+    height: auto; /* Ajusta la altura */
+  }
+
+  .attendance-data {
+    width: 230px;
+  }
+}

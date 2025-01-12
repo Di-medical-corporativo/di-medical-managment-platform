@@ -6,6 +6,8 @@ import { UserId } from "./UserId";
 import { UserPassword } from "./UserPassword";
 
 export interface UserRepository {
+  overview(userId: UserId): Promise<{ delayCount: number; absenceCount: number; assignedTasksCount: number; inProgressTaskCount: number; finishedTasksCount: number; dueTasksCount: number; pendingPermitCount: number; approvedPermitCount: number; rejectedPermitCount: number; }>;
+  
   save(user: User, password: UserPassword): Promise<void>
 
   search(term: string): Promise<User | null>

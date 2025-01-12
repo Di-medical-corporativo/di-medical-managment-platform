@@ -4,8 +4,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Usuario</title>
+  <title>Perfil</title>
   <link rel="stylesheet" href="/css/main.css">
+
+  <style>
+    .attendance-data {
+      box-shadow: var(--shadow);
+    }
+
+    @media (max-width: 600px) {
+      .overview-attendance {
+        align-items: center !important;
+        justify-content: center !important;
+      }
+
+      .attendance-data {
+        width: 120px !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -34,10 +51,57 @@
         </header>
 
         <section id="admin-actions" style="margin-top: 20px;">
-          <button class="button" onclick="window.location.href='/backoffice/attendance/myhistory'">Faltas y retardos</button>
+          <button class="button" onclick="window.location.href='/backoffice/attendance/myhistory'">Faltas y
+            retardos</button>
           <button class="button" onclick="window.location.href='/backoffice/permit/new'">Pedir permiso</button>
           <button class="button" onclick="window.location.href='/backoffice/permit/mine/'">Mis permisos</button>
         </section>
+
+        <div class="overview-attendance"
+          style="justify-content: flex-start; margin-top: 20px; width: 98%; background: none; box-shadow: none;">
+          <div class="attendance-data"
+            style="width: 230px; background-color: white; height: 120px; border-radius: 8px;">
+            <p>Faltas</p>
+            <p class="attendance-data-number">
+              <%= overview.absenceCount %>
+            </p>
+          </div>
+          <div class="attendance-data"
+            style="width: 230px; background-color: white; height: 120px; border-radius: 8px;">
+            <p>Retardos</p>
+            <p class="attendance-data-number">
+              <%= overview.delayCount %>
+            </p>
+          </div>
+          <div class="attendance-data"
+            style="width: 230px; background-color: white; height: 120px; border-radius: 8px;">
+            <p>Tareas asignadas</p>
+            <p class="attendance-data-number">
+              <%= overview.assignedTasksCount %>
+            </p>
+          </div>
+          <div class="attendance-data"
+            style="width: 230px; background-color: white; height: 120px; border-radius: 8px;">
+            <p>Tareas en progreso</p>
+            <p class="attendance-data-number">
+              <%= overview.inProgressTaskCount %>
+            </p>
+          </div>
+          <div class="attendance-data"
+            style="width: 230px; background-color: white; height: 120px; border-radius: 8px;">
+            <p>Tareas terminadas</p>
+            <p class="attendance-data-number">
+              <%= overview.finishedTasksCount %>
+            </p>
+          </div>
+          <div class="attendance-data"
+            style="width: 230px; background-color: white; height: 120px; border-radius: 8px;">
+            <p>Tareas vencidas</p>
+            <p class="attendance-data-number">
+              <%= overview.dueTasksCount %>
+            </p>
+          </div>
+        </div>
 
         <section id="tasks-filter" style="margin-top: 20px;">
           <form action="/backoffice/" method="get">
@@ -64,13 +128,15 @@
                     <div class="task-tags" style="display: flex; flex-direction: row; gap: 5px; flex-wrap: wrap;">
                       <% if(task.isPoint) {%>
                         <small class="tag">Punto de ruta</small>
-                      <% } %>
-                      <small class="tag"> <%= task.department.name %> </small>
+                        <% } %>
+                          <small class="tag">
+                            <%= task.department.name %>
+                          </small>
                     </div>
-                        <p>
-                          <%= task.title %>
-                        </p>
-                        <small>Fecha de termino: <%= formattedDate %></small>
+                    <p>
+                      <%= task.title %>
+                    </p>
+                    <small>Fecha de termino: <%= formattedDate %></small>
                   </header>
                   <footer>
                     <small>
@@ -103,14 +169,16 @@
                     <div class="task-tags" style="display: flex; flex-direction: row; gap: 5px; flex-wrap: wrap;">
                       <% if(task.isPoint) {%>
                         <small class="tag">Punto de ruta</small>
-                      <% } %>
-                      <small class="tag"> <%= task.department.name %> </small>
+                        <% } %>
+                          <small class="tag">
+                            <%= task.department.name %>
+                          </small>
                     </div>
 
-                        <p>
-                          <%= task.title %>
-                        </p>
-                        <small>Fecha de termino: <%= formattedDate %></small>
+                    <p>
+                      <%= task.title %>
+                    </p>
+                    <small>Fecha de termino: <%= formattedDate %></small>
                   </header>
                   <footer>
                     <small>
@@ -143,13 +211,15 @@
                     <div class="task-tags" style="display: flex; flex-direction: row; gap: 5px; flex-wrap: wrap;">
                       <% if(task.isPoint) {%>
                         <small class="tag">Punto de ruta</small>
-                      <% } %>
-                      <small class="tag"> <%= task.department.name %> </small>
+                        <% } %>
+                          <small class="tag">
+                            <%= task.department.name %>
+                          </small>
                     </div>
-                        <p>
-                          <%= task.title %>
-                        </p>
-                        <small>Fecha de termino: <%= formattedDate %></small>
+                    <p>
+                      <%= task.title %>
+                    </p>
+                    <small>Fecha de termino: <%= formattedDate %></small>
                   </header>
                   <footer>
                     <small>
@@ -182,13 +252,15 @@
                     <div class="task-tags" style="display: flex; flex-direction: row; gap: 5px; flex-wrap: wrap;">
                       <% if(task.isPoint) {%>
                         <small class="tag">Punto de ruta</small>
-                      <% } %>
-                      <small class="tag"> <%= task.department.name %> </small>
+                        <% } %>
+                          <small class="tag">
+                            <%= task.department.name %>
+                          </small>
                     </div>
-                        <p>
-                          <%= task.title %>
-                        </p>
-                        <small>Fecha de termino: <%= formattedDate %></small>
+                    <p>
+                      <%= task.title %>
+                    </p>
+                    <small>Fecha de termino: <%= formattedDate %></small>
                   </header>
                   <footer>
                     <small>

@@ -37,8 +37,6 @@ export class IssueCreator {
       type: params.type
     });
 
-    console.log(issue.toPrimitives());
-
     await this.repository.saveIssue(issue);
   }
 }

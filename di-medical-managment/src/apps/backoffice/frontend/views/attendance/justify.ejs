@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nueva incidencia</title>
+  <title>Justificar incidencia</title>
   <link rel="stylesheet" href="/css/main.css">
   <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 
@@ -40,20 +40,21 @@
     <main id="main-admin">
       <header class="section-header">
         <section class="breadcrumb">
-          <a href="/backoffice/attendance">
+          <a href="/backoffice/attendance/myhistory">
             <small>Faltas y retardos</small>
           </a>
           <span class="breadcrumb-slash">/</span>
-          <a href="/backoffice/attendance/<%= id %>/justify">
+          <a href="/backoffice/attendance/<%= issueId %>/justify">
             <small>Justificar</small>
           </a>
         </section>
       </header>
 
       <section id="new-client-form">
-        <form action="/backoffice/attendance/<%= justficantId %>/justify" method="post" id="create-client-form">
+        <form action="/backoffice/attendance/<%= issueId %>/justify" method="post" id="create-client-form">
           <input type="text" hidden id="id" name="id" value="<%= id %>">
-          
+
+          <input type="text" name="reason" id="reason" hidden>
           <div class="editor-task">
             <div id="toolbar-container">
               <span class="ql-formats">
@@ -94,13 +95,25 @@
       modules: {
         toolbar: '#toolbar-container',
       },
-      placeholder: 'Instruciones de la tarea...',
+      placeholder: 'Describe el motivo de tu falta o retardo.',
       theme: 'snow',
     });
 
     document.getElementById('create-client-form').addEventListener('submit', function(event) {
+      const descriptionInput = document.querySelector('input[name=reason]');
+      
       event.preventDefault();
-
+    
+      if (quill.getLength() == 1) {
+        swal({
+          title: 'Error',
+          text: 'Debes de proveer la justificacion',
+          buttons: true,
+          dangerMode: true,
+        })
+        return;
+      }
+      
       swal({
         title: '¿Estás seguro?',
         text: 'Estás a a punto de justificar. Revisa los detalles. Esta accion no se puede deshacer.',
@@ -108,6 +121,7 @@
         dangerMode: true,
       }).then((accepted) => {
         if (accepted) {
+          descriptionInput.value = quill.getSemanticHTML();
           this.submit();
         }
       });

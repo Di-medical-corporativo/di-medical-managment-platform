@@ -11,6 +11,7 @@ import { AttendanceIssuePageController } from "../controllers/attendance/Attenda
 import { AttendanceJustificationFindController } from "../controllers/attendance/AttendanceJustificationFindController";
 import { AttendanceJustificationAction } from "../controllers/attendance/AttendanceJustificationAction";
 import { AttendanceUserIssueController } from "../controllers/attendance/AttendanceUserIssueController";
+import { AttendanceJustifyController } from "../controllers/attendance/AttendanceJustifyController";
 
 export const register = (app: Express) => {
 
@@ -28,6 +29,8 @@ export const register = (app: Express) => {
 
   const attendanceUserIssueController: AttendanceUserIssueController = container.get('Apps.Backoffice.backend.controllers.AttendanceUserIssueController');
 
+  const attendanceJustifyController: AttendanceJustifyController = container.get('Apps.Backoffice.backend.controllers.AttendanceJustifyController');
+
   app.use('/attendance', ensureAuthenticated);  
   
   app.get('/attendance', (req: Request, res: Response) => attendanceUserListController.run(req, res));
@@ -43,15 +46,18 @@ export const register = (app: Express) => {
   app.put('/attendance/:justificationId/action', (req: Request, res: Response) => attendanceJustificationAction.run(req, res));
 
   app.get('/attendance/myhistory', (req: Request, res: Response) => attendanceUserIssueController.run(req, res));
+  
+  app.post('/attendance/:issueId/justify', (req: Request, res: Response) => attendanceJustifyController.run(req, res));
 
-  app.get('/attendance/:justficantId/justify', (req: Request, res: Response) => {
+  app.get('/attendance/:issueId/justify', (req: Request, res: Response) => {
     const id = uuid();
 
-    const { justficantId } = req.params;
+    const { issueId } = req.params;
     
-    res.render('clients/create', {
+    res.render('attendance/justify', {
       id,
-      justficantId
+      issueId
     });
   });
+
 }

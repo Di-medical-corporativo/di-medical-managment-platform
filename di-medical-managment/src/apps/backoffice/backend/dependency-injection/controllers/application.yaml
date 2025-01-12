@@ -32,7 +32,8 @@ services:
   Apps.Backoffice.backend.controllers.DashBoardInitController:
     class: ../../controllers/DashboardInitController
     arguments: [
-      "@Contexts.Backoffice.Task.application.UserKanban.UserKanbanGenerator"
+      "@Contexts.Backoffice.Task.application.UserKanban.UserKanbanGenerator",
+      "@Contexts.Backoffice.User.application.Overview.UserOverviewer"
     ]
 
   Apps.Backoffice.backend.controllers.PointUpdateControllerPage:
@@ -439,7 +440,8 @@ services:
   Apps.Backoffice.backend.controllers.AttendanceIssuePageController:
     class: ../../controllers/attendance/AttendanceIssuePageController
     arguments: [
-      "@Contexts.Backoffice.Attendance.application.SearchAll.IssueSearcher"
+      "@Contexts.Backoffice.Attendance.application.SearchAll.IssueSearcher",
+      "@Contexts.Backoffice.Attendance.application.Overview.IssuesOverviewer"
     ]
 
   Apps.Backoffice.backend.controllers.AttendanceJustificationFindController:
@@ -457,5 +459,12 @@ services:
   Apps.Backoffice.backend.controllers.AttendanceUserIssueController:
     class: ../../controllers/attendance/AttendanceUserIssueController
     arguments: [
-      "@Contexts.Backoffice.Attendance.application.SearchAll.IssueSearcher"
+      "@Contexts.Backoffice.Attendance.application.SearchAll.IssueSearcher",
+      "@Contexts.Backoffice.Attendance.application.Overview.IssuesOverviewer"
+    ]
+
+  Apps.Backoffice.backend.controllers.AttendanceJustifyController:
+    class: ../../controllers/attendance/AttendanceJustifyController
+    arguments: [
+      "@Contexts.Backoffice.Attendance.application.Action.AttendanceJustifier"
     ]

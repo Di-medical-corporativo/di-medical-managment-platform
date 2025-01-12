@@ -3,7 +3,6 @@ import { UserEmail } from "../../../src/Contexts/Backoffice/User/domain/UserEmai
 import { UserId } from "../../../src/Contexts/Backoffice/User/domain/UserId";
 import { UserPassword } from "../../../src/Contexts/Backoffice/User/domain/UserPassword";
 import { UserRepository } from "../../../src/Contexts/Backoffice/User/domain/UserRepository";
-import { AuthenticateUser } from "../../../src/Contexts/Shared/application/Auth/AuthenticateUser";
 import { UserAuthenticated } from "../../../src/Contexts/Shared/domain/UserAuthenticated";
 
 export class UserRepositoryMock implements UserRepository {
@@ -21,6 +20,20 @@ export class UserRepositoryMock implements UserRepository {
     this.findAllMock = jest.fn();
     this.deleteMock = jest.fn();
     this.findByEmailMock = jest.fn();
+  }
+
+  async overview(userId: UserId): Promise<{ delayCount: number; absenceCount: number; assignedTasksCount: number; inProgressTaskCount: number; finishedTasksCount: number; dueTasksCount: number; pendingPermitCount: number; approvedPermitCount: number; rejectedPermitCount: number; }> {
+    return {
+      absenceCount: 0,
+      approvedPermitCount: 0,
+      assignedTasksCount: 0,
+      delayCount: 0,
+      dueTasksCount: 0,
+      finishedTasksCount: 0,
+      inProgressTaskCount: 0,
+      pendingPermitCount: 0,
+      rejectedPermitCount: 0
+    }
   }
 
   async delete(id: UserId): Promise<void> {

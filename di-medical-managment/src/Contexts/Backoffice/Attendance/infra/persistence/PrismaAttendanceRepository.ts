@@ -1,3 +1,4 @@
+import e from "express";
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
 import { UserId } from "../../../User/domain/UserId";
 import { AttendanceId } from "../../domain/AttendanceId";
@@ -53,6 +54,9 @@ export class PrismaAttendanceRepository implements AttendanceRepository {
             job: true
           }
         },
+      },
+      orderBy: {
+        date: 'desc'
       }
     });
 
@@ -110,7 +114,7 @@ export class PrismaAttendanceRepository implements AttendanceRepository {
       }
     });
 
-    if(justificationDB === null) {
+    if (justificationDB === null) {
       return null
     }
 
@@ -154,8 +158,172 @@ export class PrismaAttendanceRepository implements AttendanceRepository {
             status: JustificationStatusEnum.pending,
             createdAt: new Date().toISOString()
           }
-        }        
+        }
       }
     });
+  }
+
+  async findIssue(id: AttendanceId): Promise<AttendanceIssue | null> {
+    const issueDB = await prisma.attendanceIssue.findFirst({
+      where: {
+        id: id.toString()
+      },
+      include: {
+        justification: {
+          include: {
+            approver: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                job: true
+              }
+            }
+          }
+        },
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            job: true
+          }
+        }
+      }
+    });
+
+    if (issueDB == null) {
+      return null;
+    }
+
+    let attendanceIssue: AttendanceIssue;
+
+    if (!issueDB.isJustified) {
+      attendanceIssue = AttendanceUnjustified.fromPrimitives({
+        date: issueDB.date.toISOString(),
+        id: issueDB.id,
+        type: issueDB.type as AttendanceType,
+        issueUser: {
+          firstName: issueDB.user.firstName,
+          lastName: issueDB.user.lastName,
+          job: issueDB.user.job,
+          id: issueDB.user.id
+        }
+      });
+    } else {
+      if (issueDB.justification?.status == JustificationStatusEnum.pending) {
+        attendanceIssue = AttendanceJustified.fromPrimitives({
+          date: issueDB.date.toISOString(),
+          id: issueDB.id,
+          type: issueDB.type as AttendanceType,
+          issueUser: {
+            firstName: issueDB.user.firstName,
+            lastName: issueDB.user.lastName,
+            job: issueDB.user.job,
+            id: issueDB.user.id
+          },
+          justification: {
+            createdAt: issueDB.justification.createdAt.toDateString(),
+            id: issueDB.justification.id,
+            reason: issueDB.justification.reason,
+            status: issueDB.justification.status
+          }
+        });
+      } else {
+        attendanceIssue = AttendanceJustified.fromPrimitives({
+          date: issueDB.date.toISOString(),
+          id: issueDB.id,
+          type: issueDB.type as AttendanceType,
+          issueUser: {
+            firstName: issueDB.user.firstName,
+            lastName: issueDB.user.lastName,
+            job: issueDB.user.job,
+            id: issueDB.user.id
+          },
+          justification: {
+            createdAt: issueDB.justification?.createdAt.toDateString()!,
+            id: issueDB.justification?.id!,
+            reason: issueDB.justification?.reason!,
+            status: issueDB.justification?.status!,
+            approver: {
+              firstName: issueDB.justification?.approver?.firstName!,
+              lastName: issueDB.justification?.approver?.lastName!,
+              id: issueDB.justification?.approver?.id!,
+              job: issueDB.justification?.approver?.job!
+            }
+          }
+        });
+      }
+
+    }
+
+    return attendanceIssue;
+  }
+
+  async overview(userId: UserId): Promise<{ absence: number; delay: number; pendingJustifications: number; rejectedJustifications: number; approvedJustifications: number; }> {
+    const [absence, delay, pending, approved, rejected] = await Promise.all([
+      prisma.attendanceIssue.count({
+        where: {
+          userId: userId.toString(),
+          type: 'absence-issue',
+          OR: [
+            { isJustified: false },
+            {
+              isJustified: true,
+              justification: {
+                status: { in: ['pending-justification', 'rejected-justification'] },
+              },
+            },
+          ],
+        },
+      }),
+      prisma.attendanceIssue.count({
+        where: {
+          userId: userId.toString(),
+          type: 'delay-issue',
+          OR: [
+            { isJustified: false },
+            {
+              isJustified: true,
+              justification: {
+                status: { in: ['pending-justification', 'rejected-justification'] },
+              },
+            },
+          ],
+        },
+      }),
+      prisma.justification.count({
+        where: {
+          issue: {
+            userId: userId.toString(),
+          },
+          status: 'pending-justification',
+        },
+      }),
+      prisma.justification.count({
+        where: {
+          issue: {
+            userId: userId.toString(),
+          },
+          status: 'approved-justification',
+        },
+      }),
+      prisma.justification.count({
+        where: {
+          issue: {
+            userId: userId.toString(),
+          },
+          status: 'rejected-justification',
+        },
+      }),
+    ]);
+
+    return {
+      absence,
+      delay,
+      approvedJustifications: approved,
+      pendingJustifications: pending,
+      rejectedJustifications: rejected
+    }
   }
 }

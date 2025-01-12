@@ -32,3 +32,9 @@ services:
     arguments: [
     "@Contexts.Backoffice.User.infra.persistence.UserRepository"
     ]
+  
+  Contexts.Backoffice.User.application.Overview.UserOverviewer:
+    class: ../../../../../Contexts/Backoffice/User/application/Overview/UserOverviewer
+    arguments: [
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
+    ]

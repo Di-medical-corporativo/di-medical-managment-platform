@@ -236,4 +236,112 @@ export class PrismaUserRepository implements UserRepository {
 
     return userAuthenticated;
   }
+
+  async overview(userId: UserId): Promise<{ 
+    delayCount: number; 
+    absenceCount: number; 
+    assignedTasksCount: number; 
+    inProgressTaskCount: number; 
+    finishedTasksCount: number; 
+    dueTasksCount: number; 
+    pendingPermitCount: number; 
+    approvedPermitCount: number; 
+    rejectedPermitCount: number; }> {
+    const [
+      absenceCount,
+      delayCount,
+      assignedTasksCount,
+      inProgressTaskCount,
+      finishedTasksCount,
+      dueTasksCount,
+      pendingPermitCount,
+      approvedPermitCount,
+      rejectedPermitCount
+    ] = await Promise.all([
+      prisma.attendanceIssue.count({
+        where: {
+          userId: userId.toString(),
+          type: 'absence-issue',
+          OR: [
+            { isJustified: false },
+            {
+              isJustified: true,
+              justification: {
+                status: { in: ['pending-justification', 'rejected-justification'] },
+              },
+            },
+          ],
+        },
+      }),
+      prisma.attendanceIssue.count({
+        where: {
+          userId: userId.toString(),
+          type: 'delay-issue',
+          OR: [
+            { isJustified: false },
+            {
+              isJustified: true,
+              justification: {
+                status: { in: ['pending-justification', 'rejected-justification'] },
+              },
+            },
+          ],
+        },
+      }),
+      prisma.task.count({
+        where: {
+          userAssignedId: userId.toString(),
+          status: 'assigned'
+        }
+      }),
+      prisma.task.count({
+        where: {
+          userAssignedId: userId.toString(),
+          status: 'in-progress'
+        }
+      }),
+      prisma.task.count({
+        where: {
+          userAssignedId: userId.toString(),
+          status: 'completed'
+        }
+      }),
+      prisma.task.count({
+        where: {
+          userAssignedId: userId.toString(),
+          status: 'pastdue'
+        }
+      }),
+      prisma.permit.count({
+        where: {
+          userId: userId.toString(),
+          status: 'pending-permit'
+        }
+      }),
+      prisma.permit.count({
+        where: {
+          userId: userId.toString(),
+          status: 'approved-permit'
+        }
+      }),
+      prisma.permit.count({
+        where: {
+          userId: userId.toString(),
+          status: 'rejected-permit'
+        }
+      })
+    ]);
+
+    return {
+      absenceCount,
+      delayCount,
+      assignedTasksCount,
+      inProgressTaskCount,
+      finishedTasksCount,
+      dueTasksCount,
+      pendingPermitCount,
+      approvedPermitCount,
+      rejectedPermitCount
+    }
+  }
 }

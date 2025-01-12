@@ -26,6 +26,39 @@
       </header>
 
       <section id="client-list">
+        <div class="overview-attendance">
+          <div class="attendance-data">
+            <p>Faltas</p>
+            <p class="attendance-data-number">
+              <%= overview.absence %>
+            </p>
+          </div>
+          <div class="attendance-data">
+            <p>Retardos</p>
+            <p class="attendance-data-number">
+              <%= overview.delay %>
+            </p>
+          </div>
+          <div class="attendance-data">
+            <p>Justificantes pendientes</p>
+            <p class="attendance-data-number">
+              <%= overview.pendingJustifications %>
+            </p>
+          </div>
+          <div class="attendance-data">
+            <p>Justificantes rechazados</p>
+            <p class="attendance-data-number">
+              <%= overview.rejectedJustifications %>
+            </p>
+          </div>
+          <div class="attendance-data">
+            <p>Justificantes aprobados</p>
+            <p class="attendance-data-number">
+              <%= overview.approvedJustifications %>
+            </p>
+          </div>
+        </div>
+
         <table class="table">
           <thead>
               <tr>
@@ -53,8 +86,6 @@
                   <% } %>
                 </td>
                 <td><%= new Date(issues[i].date).toLocaleDateString('es-MX') %></td>
-
-
                 <% if(issues[i].isJustified) { %>
 
                   <% if(issues[i].justification.status === 'pending-justification') { %>
@@ -66,7 +97,7 @@
                   <% } else { %>
                     <td>
                       <% if(issues[i].justification.status === 'approved-justification') { %>
-                        <p>Justificación aprovada</p>
+                        <p>Justificación aprobada</p>
                       <% } %>
                       <% if(issues[i].justification.status === 'rejected-justification') { %>
                         <p>Justificación rechazada</p>

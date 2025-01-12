@@ -26,3 +26,15 @@ services:
     "@Contexts.Backoffice.User.infra.persistence.UserRepository"
     ]
 
+  Contexts.Backoffice.Attendance.application.Action.AttendanceJustifier:
+    class: ../../../../../Contexts/Backoffice/Attendance/application/Justify/AttendanceJustifier
+    arguments: [
+    "@Contexts.Backoffice.Attendance.infra.persistence.AttendanceRepository"
+    ]
+
+  Contexts.Backoffice.Attendance.application.Overview.IssuesOverviewer:
+    class: ../../../../../Contexts/Backoffice/Attendance/application/Overview/IssuesOverviewer
+    arguments: [
+    "@Contexts.Backoffice.Attendance.infra.persistence.AttendanceRepository",
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
+    ]

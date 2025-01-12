@@ -3,14 +3,13 @@
   display: flex;
   justify-content: space-between;
   width: 100vw;
-  min-height: 100vh;
 }
 
 #aside-admin {
   background-color: #FFFF;
   border-left: 1px solid red;
-  width: 18vw;
-  height: 100%;
+  width: 17vw;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,7 +21,6 @@
     display: none;
   }
 }
-
 
 #aside-admin a{
   color: #001219;
@@ -46,7 +44,7 @@
 
 
 #main-admin {
-  width: 82vw;
+  width: 84vw;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -60,7 +58,6 @@
     width: 100%;
   }
 }
-
 
 #admin-info {
   width: 100%;
