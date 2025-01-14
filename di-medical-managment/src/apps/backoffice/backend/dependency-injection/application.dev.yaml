@@ -12,4 +12,5 @@ imports:
   - { resource: ./permit/application.yaml }
   - { resource: ./departments/application.yaml }
   - { resource: ./attendance/application.yaml }
+  - { resource: ./analytics/application.yaml }
   - { resource: ./controllers/application.yaml }

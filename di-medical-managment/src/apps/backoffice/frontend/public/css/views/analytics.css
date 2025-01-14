@@ -1,0 +1,39 @@
+#analytics {
+  width: 95%;
+  align-self: center;
+}
+
+.analytics-title {
+  width: 100%;
+  text-align: center;
+}
+
+.analytics-row {
+  width: 95%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.analytics-data {
+  background-color: var(--color-white);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+  border-radius: 5px;
+}
+
+.analytics-data .analytics-data-title {
+  font-size: 15px;
+  color: #9ea0a1;
+  align-self: flex-start;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.analytics-data-number {
+  font-size: 40px;
+  font-weight: bold; 
+}

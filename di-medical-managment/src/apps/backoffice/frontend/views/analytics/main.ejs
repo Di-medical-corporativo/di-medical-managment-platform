@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clientes</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+
+      <main id="main-admin">
+
+        <header class="section-header">
+          <section class="breadcrumb">
+            <a href="/backoffice/analytics">
+              <small>Analiticas</small>
+            </a>
+            <span class="breadcrumb-slash">/</span>
+          </section>
+        </header>
+
+        <section id="client-list">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  Reporte general de usuario
+                </td>
+                <td style="text-align: right; align-items: center;" id="actions">
+                  <form action="/backoffice/analytics/user-general-report" method="post" style="display: flex; gap: 10px; align-items: center;">
+                    <label for="from">Desde: </label>
+                    <input type="date" name="from" id="from" placeholder="Desde" class="input" required>
+                    <label for="to">Hasta: </label>
+                    <input type="date" name="to" id="to" class="input" required>
+                    <label for="userId">Usuario:</label>
+                    <select name="userId" class="input">
+                      <% for (let i=0; i < userList.length; i++) {%>
+                        <option value="<%= userList[i].id %>">
+                          <%= userList[i].firstName %>
+                        </option>
+                        <% } %>
+                    </select>
+
+                    <button class="button primary" style="margin-left: 10px;">Generar</button>
+                  </form>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </main>
+  </div>
+
+  <script>
+    const deleteForms = document.querySelectorAll('.delete-form');
+
+    deleteForms.forEach(form => {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        swal({
+          title: '¿Estás seguro?',
+          text: 'Estás a punto de eliminar a este cliente. Esta acción no puede deshacerse.',
+          buttons: true,
+          dangerMode: true,
+        }).then((accepted) => {
+          if (accepted) {
+            form.submit();
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+
+</html>

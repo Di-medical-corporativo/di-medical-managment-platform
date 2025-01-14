@@ -1,4 +1,3 @@
-import { AttendanceDate } from "./AttendanceDate";
 import { AttendanceUser } from "./AttendanceUser";
 import { JustificationDate } from "./JustificationDate";
 import { JustificationId } from "./JustificationId";

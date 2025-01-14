@@ -9,5 +9,6 @@ export enum AppModules {
   TASKS = 'tareas_modulo',
   SURVEYS = 'encuestas_modulo',
   MODULES = 'modulos_modulo',
-  DEPARTMENTS = 'departamentos_modulo'
+  DEPARTMENTS = 'departamentos_modulo',
+  ANALYTICS = 'analiticas_modulo'
 };

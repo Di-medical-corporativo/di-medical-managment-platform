@@ -34,3 +34,6 @@ services:
 
   Contexts.Backoffice.Attendance.infra.persistence.AttendanceRepository:
     class: ../../../../../Contexts/Backoffice/Attendance/infra/persistence/PrismaAttendanceRepository
+
+  Contexts.Backoffice.Analytics.infra.persistence.AnalyticsRepository:
+    class: ../../../../../Contexts/Backoffice/Analytics/infra/persistence/PrismaAnalyticsRepository

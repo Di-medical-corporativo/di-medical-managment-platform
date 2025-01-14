@@ -468,3 +468,15 @@ services:
     arguments: [
       "@Contexts.Backoffice.Attendance.application.Action.AttendanceJustifier"
     ]
+  
+  Apps.Backoffice.backend.controllers.AnalyticsPageController:
+    class: ../../controllers/analytics/AnalyticsPageController
+    arguments: [
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.GeneralUserReportController:
+    class: ../../controllers/analytics/GeneralUserReportController
+    arguments: [
+      "@Contexts.Backoffice.Analytics.application.UserGeneral.UserGeneralReporter"
+    ]

@@ -1,0 +1,6 @@
+services:
+  Contexts.Backoffice.Analytics.application.UserGeneral.UserGeneralReporter:
+    class: ../../../../../Contexts/Backoffice/Analytics/application/UserGeneral/UserGeneralReporter
+    arguments: [
+    "@Contexts.Backoffice.Analytics.infra.persistence.AnalyticsRepository",
+    ]
