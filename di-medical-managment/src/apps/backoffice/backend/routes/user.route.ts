@@ -24,7 +24,7 @@ export const register = (app: Express) => {
 
   const deleteUserController: UserDeleteController = container.get('Apps.Backoffice.backend.controllers.UserDeleteController');
 
-  app.use('/user', ensureAuthenticated, authorizeModule(AppModules.USERS));
+  // app.use('/user', ensureAuthenticated, authorizeModule(AppModules.USERS));
 
   app.post('/user/:id', (req: Request, res: Response) => createUserController.run(req, res));
 

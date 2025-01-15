@@ -8,7 +8,7 @@ export class PuppeterImageGenerator implements ImageGenerator {
       const image: Buffer = await nodeHtmlToImage({
         html: template,
         type: 'jpeg',
-        quality: 50,
+        quality: 80,
         encoding: 'binary',
         transparent: false,
         puppeteerArgs: {

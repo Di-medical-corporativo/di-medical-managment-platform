@@ -26,8 +26,6 @@ export const register = (app: Express) => {
 
   const permitRejectController: PermitRejectController = container.get('Apps.Backoffice.backend.controllers.PermitRejectController');
 
-  app.use('/permit', ensureAuthenticated, authorizeModule(AppModules.PERMISSIONS));
-
   app.get('/permit/new', (req: Request, res: Response) => {
     res.status(200).render('permit/create');
   });
@@ -36,13 +34,13 @@ export const register = (app: Express) => {
 
   app.post('/permit/new', (req: Request, res: Response) => permitCreateController.run(req, res));
 
-  app.get('/permit', (req: Request, res: Response) => permitFindAllController.run(req, res));
+  app.get('/permit', ensureAuthenticated, authorizeModule(AppModules.PERMISSIONS), (req: Request, res: Response) => permitFindAllController.run(req, res));
 
-  app.get('/permit/:id/accept', (req: Request, res: Response) => permitAcceptPageController.run(req, res));
+  app.get('/permit/:id/accept', ensureAuthenticated, authorizeModule(AppModules.PERMISSIONS), (req: Request, res: Response) => permitAcceptPageController.run(req, res));
 
-  app.post('/permit/:id/accept', (req: Request, res: Response) => permitAcceptController.run(req, res));
+  app.post('/permit/:id/accept',ensureAuthenticated, authorizeModule(AppModules.PERMISSIONS), (req: Request, res: Response) => permitAcceptController.run(req, res));
 
-  app.get('/permit/:id/reject', (req: Request, res: Response) => permitRejectPageController.run(req, res));
+  app.get('/permit/:id/reject',ensureAuthenticated, authorizeModule(AppModules.PERMISSIONS), (req: Request, res: Response) => permitRejectPageController.run(req, res));
 
-  app.post('/permit/:id/reject', (req: Request, res: Response) => permitRejectController.run(req, res));
+  app.post('/permit/:id/reject', ensureAuthenticated, authorizeModule(AppModules.PERMISSIONS),(req: Request, res: Response) => permitRejectController.run(req, res));
 }

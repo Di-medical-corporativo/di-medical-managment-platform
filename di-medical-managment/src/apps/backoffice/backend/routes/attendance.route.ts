@@ -33,23 +33,23 @@ export const register = (app: Express) => {
 
   app.use('/attendance', ensureAuthenticated);  
   
-  app.get('/attendance', (req: Request, res: Response) => attendanceUserListController.run(req, res));
+  app.get('/attendance', ensureAuthenticated, authorizeModule(AppModules.ATTENDANCE), (req: Request, res: Response) => attendanceUserListController.run(req, res));
 
-  app.get('/attendance/:userId/new', (req: Request, res: Response) => attendanceCreatePageController.run(req, res));
+  app.get('/attendance/:userId/new',ensureAuthenticated, authorizeModule(AppModules.ATTENDANCE), (req: Request, res: Response) => attendanceCreatePageController.run(req, res));
 
-  app.get('/attendance/:userId/history', (req: Request, res: Response) => attendanceIssuePageController.run(req, res));
+  app.get('/attendance/:userId/history', ensureAuthenticated, authorizeModule(AppModules.ATTENDANCE), (req: Request, res: Response) => attendanceIssuePageController.run(req, res));
 
-  app.post('/attendance/:userId/new', (req: Request, res: Response) => attendanceCreateController.run(req, res));
+  app.post('/attendance/:userId/new', ensureAuthenticated, authorizeModule(AppModules.ATTENDANCE), (req: Request, res: Response) => attendanceCreateController.run(req, res));
 
-  app.get('/attendance/:justificationId/justification', (req: Request, res: Response) => attendanceJustificationFindController.run(req, res));
+  app.get('/attendance/:justificationId/justification',ensureAuthenticated, authorizeModule(AppModules.ATTENDANCE), (req: Request, res: Response) => attendanceJustificationFindController.run(req, res));
 
-  app.put('/attendance/:justificationId/action', (req: Request, res: Response) => attendanceJustificationAction.run(req, res));
+  app.put('/attendance/:justificationId/action', ensureAuthenticated, authorizeModule(AppModules.ATTENDANCE),(req: Request, res: Response) => attendanceJustificationAction.run(req, res));
 
-  app.get('/attendance/myhistory', (req: Request, res: Response) => attendanceUserIssueController.run(req, res));
+  app.get('/attendance/myhistory', ensureAuthenticated, (req: Request, res: Response) => attendanceUserIssueController.run(req, res));
   
-  app.post('/attendance/:issueId/justify', (req: Request, res: Response) => attendanceJustifyController.run(req, res));
+  app.post('/attendance/:issueId/justify', ensureAuthenticated,(req: Request, res: Response) => attendanceJustifyController.run(req, res));
 
-  app.get('/attendance/:issueId/justify', (req: Request, res: Response) => {
+  app.get('/attendance/:issueId/justify', ensureAuthenticated, (req: Request, res: Response) => {
     const id = uuid();
 
     const { issueId } = req.params;

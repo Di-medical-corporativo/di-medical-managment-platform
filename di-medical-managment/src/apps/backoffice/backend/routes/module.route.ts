@@ -12,7 +12,7 @@ export const register = (app: Express) => {
 
   const moduleCreateController: ModuleCreateController = container.get('Apps.Backoffice.backend.controllers.ModuleCreateController');
 
-  app.use('/modules', ensureAuthenticated, authorizeModule(AppModules.MODULES));
+  // app.use('/modules', ensureAuthenticated, authorizeModule(AppModules.MODULES));
 
   app.get('/modules', (req: Request, res: Response) => moduleFindAllController.run(req, res));
 

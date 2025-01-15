@@ -207,7 +207,8 @@ export class PrismaUserRepository implements UserRepository {
   async findByEmail(email: UserEmail): Promise<UserAuthenticated | null> {
     const user = await prisma.user.findFirst({
       where: {
-        email: email.toString()
+        email: email.toString(),
+        isActive: true
       },
       include: {
         login: true,
@@ -218,7 +219,7 @@ export class PrismaUserRepository implements UserRepository {
         }
       }
     });
-    
+
     if(!user) return null;
 
     const userAuthenticated = UserAuthenticated.fromPrimitives({
