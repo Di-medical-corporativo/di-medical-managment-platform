@@ -12,7 +12,7 @@
     "start:backoffice": "node ./dist/src/apps/backoffice/backend/start.js",
     "build": "npm run build:clean && npm run build:tsc && npm run build:di",
     "build:tsc": "tsc -p tsconfig.prod.json",
-    "build:di": "cp -rv src/apps/backoffice/frontend/. dist/src/apps/backoffice/frontend && cp -rv src/apps/backoffice/backend/dependency-injection/*.yaml dist/src/apps/backoffice/backend/dependency-injection",
+   "build:di": "cp -r src/apps/backoffice/frontend/. dist/src/apps/backoffice/frontend && cp -r src/apps/backoffice/backend/dependency-injection dist/src/apps/backoffice/backend/",
     "build:clean": "rm -r dist; exit 0",
     "dev:warehouse:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/backoffice/backend/start.ts",
     "test:unit": "NODE_ENV=test jest"
