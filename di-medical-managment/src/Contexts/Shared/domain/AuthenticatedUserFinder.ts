@@ -12,7 +12,6 @@ export class AuthenticatedUserFinder {
     email: UserEmail
   }): Promise<UserAuthenticated> {
     const user = await this.repository.findByEmail(params.email);
-    console.log(user);
 
     if(!user) {
       throw new UserNotFound();

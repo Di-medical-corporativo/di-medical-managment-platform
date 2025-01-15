@@ -11,7 +11,7 @@ export const register = (app: Express) => {
 
   const generalUserReportController: GeneralUserReportController = container.get('Apps.Backoffice.backend.controllers.GeneralUserReportController');
 
-  app.use('/analytics', ensureAuthenticated);
+  app.use('/analytics', ensureAuthenticated, authorizeModule(AppModules.ANALYTICS));
 
   app.get('/analytics', (req: Request, res: Response) => analyticsPageController.run(req, res));
 
