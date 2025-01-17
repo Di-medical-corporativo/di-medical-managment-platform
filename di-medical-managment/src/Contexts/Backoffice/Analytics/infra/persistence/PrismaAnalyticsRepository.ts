@@ -19,7 +19,13 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
     personalPermitCount: number,
     pendingPermitCount: number,
     approvedPermitCount: number,
-    rejectedPermitCount: number
+    rejectedPermitCount: number,
+    assignedTaskCount: number,
+    inProgressTaskCount: number,
+    completedTaskCount: number,
+    pastDueTaskCount: number,
+    pointDoneTotalCount: number,
+    pointProblemTotalCount: number
   }> {
 
     const [
@@ -36,7 +42,13 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       personalPermitCount,
       pendingPermitCount,
       approvedPermitCount,
-      rejectedPermitCount
+      rejectedPermitCount,
+      assignedTaskCount,
+      inProgressTaskCount,
+      completedTaskCount,
+      pastDueTaskCount,
+      pointDoneTotalCount,
+      pointProblemTotalCount
     ] = await Promise.all([
       prisma.attendanceIssue.count({
         where: {
@@ -207,6 +219,77 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
           }
         }
       }),
+
+      //TASKS
+      prisma.task.count({
+        where: {
+          userAssignedId: userId.toString(),
+          status: 'assigned',
+          dueTo: {
+            gte: from.toDate().toISOString(),
+            lte: toDate.toDate().toISOString()
+          }
+        }
+      }),
+      prisma.task.count({
+        where: {
+          userAssignedId: userId.toString(),
+          status: 'in-progress',
+          dueTo: {
+            gte: from.toDate().toISOString(),
+            lte: toDate.toDate().toISOString()
+          }
+        }
+      }),
+      prisma.task.count({
+        where: {
+          userAssignedId: userId.toString(),
+          status: 'completed',
+          dueTo: {
+            gte: from.toDate().toISOString(),
+            lte: toDate.toDate().toISOString()
+          }
+        }
+      }),
+      prisma.task.count({
+        where: {
+          userAssignedId: userId.toString(),
+          status: 'pastdue',
+          dueTo: {
+            gte: from.toDate().toISOString(),
+            lte: toDate.toDate().toISOString()
+          }
+        }
+      }),
+
+      // point
+      prisma.point.count({
+        where: {
+          userId: userId.toString(),
+          status: 'completed',
+          itinerary: {
+            done: true,
+            scheduleDate: {
+              gte: from.toDate().toISOString(),
+              lte: toDate.toDate().toISOString()
+            }
+          }
+        }
+      }),
+
+      prisma.point.count({
+        where: {
+          userId: userId.toString(),
+          status: 'point-has-problem',
+          itinerary: {
+            done: true,
+            scheduleDate: {
+              gte: from.toDate().toISOString(),
+              lte: toDate.toDate().toISOString()
+            }
+          }
+        }
+      }),
     ]);
 
     let shouldGroupBy = from.daysDifferenceWith(toDate) < 30 ? 'day' : 'month';
@@ -246,7 +329,13 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       personalPermitCount,
       pendingPermitCount,
       approvedPermitCount,
-      rejectedPermitCount
+      rejectedPermitCount,
+      assignedTaskCount,
+      inProgressTaskCount,
+      completedTaskCount,
+      pastDueTaskCount,
+      pointDoneTotalCount,
+      pointProblemTotalCount
     }
   }
 }

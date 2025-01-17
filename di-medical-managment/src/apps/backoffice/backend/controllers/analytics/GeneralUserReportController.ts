@@ -20,10 +20,9 @@ export class GeneralUserReportController {
         toDate: new ToDate(new Date(to))
       });
 
-      console.log(report.issuesGroupedByDate);
 
       const justificationFormatedPieChartDat = {
-        type: 'doughnut',
+        type: 'pie',
         data: {
           labels: [
             'Justificantes en espera de aprobacion',
@@ -112,7 +111,7 @@ export class GeneralUserReportController {
       };
 
       const permitStatusPieFormatted = {
-        type: 'doughnut',
+        type: 'pie',
         data: {
           labels: [
             'Permisos pendientes de aprobar',
@@ -140,6 +139,64 @@ export class GeneralUserReportController {
         }
       }; 
 
+      const taskStatusPieFormatted = {
+        type: 'pie',
+        data: {
+          labels: [
+            'Tareas asignadas',
+            'Tareas en progreso',
+            'Tareas completadas',
+            'Tareas a destiempo',
+          ],
+          datasets: [
+            {
+              label: 'Distribución de Tareas por Estatus',
+              data: [
+                report.assignedTaskCount,
+                report.inProgressTaskCount,
+                report.completedTaskCount,
+                report.pastDueTaskCount
+              ]
+            }
+          ]
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: 'Distribución de Tareas por Estatus'
+            }
+          }
+        }
+      }; 
+
+      const pointStatusPieFormatted = {
+        type: 'pie',
+        data: {
+          labels: [
+            'Puntos terminados',
+            'Puntos terminados con errores',
+          ],
+          datasets: [
+            {
+              label: 'Distribución de Puntos por Estatus',
+              data: [
+                report.pointDoneTotalCount,
+                report.pointProblemTotalCount,
+              ]
+            }
+          ]
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: 'Distribución de Puntos por Estatus'
+            }
+          }
+        }
+      }; 
+
       res.status(200).render('analytics/general-report-user', {
         from,
         to,
@@ -148,10 +205,14 @@ export class GeneralUserReportController {
         typeIssueFormatedPieChart,
         groupedAssitenceIssuesCount,
         permitTypePieFormatted,
-        permitStatusPieFormatted
+        permitStatusPieFormatted,
+        taskStatusPieFormatted,
+        pointStatusPieFormatted,
+        firstName: report.firstName,
+        lastName: report.lastName,
+        job: report.job
       });
     } catch (error) {
-      console.log(error)
       if (error instanceof UserNotFound) {
         res.status(404).render('error/error', {
           message: 'No se encontro el usuario seleccionado'

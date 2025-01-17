@@ -3,4 +3,5 @@ services:
     class: ../../../../../Contexts/Backoffice/Analytics/application/UserGeneral/UserGeneralReporter
     arguments: [
     "@Contexts.Backoffice.Analytics.infra.persistence.AnalyticsRepository",
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
     ]

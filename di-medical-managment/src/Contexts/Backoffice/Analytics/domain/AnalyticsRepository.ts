@@ -17,6 +17,12 @@ export interface AnalyticsRepository {
     personalPermitCount: number,
     pendingPermitCount: number,
     approvedPermitCount: number,
-    rejectedPermitCount: number
+    rejectedPermitCount: number,
+    assignedTaskCount: number,
+    inProgressTaskCount: number,
+    completedTaskCount: number,
+    pastDueTaskCount: number,
+    pointDoneTotalCount: number,
+    pointProblemTotalCount: number
   }>
 }

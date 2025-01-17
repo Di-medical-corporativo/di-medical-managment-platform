@@ -25,23 +25,23 @@
           </section>
         </header>
 
-        <section id="analytics">
+        <section id="analytics" style="margin-bottom: 5px;">
           <div class="analytics-title">
             <h3>Reporte general de usuario desde <%= new Date(from).toLocaleDateString('es-MX') %> hasta <%= new Date(to).toLocaleDateString('es-MX') %></h3>
           </div>
 
           <div class="analytics-row" style="margin-top: 20px;">
             
-            <div class="analytics-data" style="width: 300px; height: 140px; gap: 0; align-items: flex-start;">
+            <div class="analytics-data" style="width: 250px; height: 130px; gap: 0; align-items: flex-start;">
               <div class="analytics-data-title">
                 <p>Info del usuario</p>
               </div>
 
-              <h3 style="margin-left: 10px; margin-top: 10px;">Kevin Tapia</h3>
-              <h3 style="margin-left: 10px; margin-top: 3px;">Trabajo</h3>
+              <h4 style="margin-left: 10px; margin-top: 10px;"><%= firstName %> <%= lastName %></h4>
+              <h4 style="margin-left: 10px; margin-top: 3px;"><%= job %></h>
             </div>
 
-            <div class="analytics-data" style="width: 300px; height: 140px;">
+            <div class="analytics-data" style="width: 250px; height: 130px;">
               <div class="analytics-data-title">
                 <p>Faltas</p>
               </div>
@@ -51,7 +51,7 @@
               </div>
             </div>
 
-            <div class="analytics-data" style="width: 300px; height: 140px;">
+            <div class="analytics-data" style="width: 250px; height: 130px;">
               <div class="analytics-data-title">
                 <p>Retardos</p>
               </div>
@@ -65,30 +65,36 @@
 
           <div class="analytics-row" style="margin-top: 20px;">
             
-           <div class="analytics-data" style="width: 50%; height: 350px;">
+           <div class="analytics-data" style="width: 100%; height: 300px;">
             <canvas id="issue_grouped_line_data" style="width: 90%; height: 90%;"></canvas>
            </div>
-
-           <div class="analytics-data" style="width: 22%; height: 350px;">
-            <canvas id="justification_pie_data" style="width: 90%; height: 90%;"></canvas>
-           </div>
-
-           <div class="analytics-data" style="width: 22%; height: 350px;">
-            <canvas id="issue_type_pie_data" style="width: 90%; height: 90%;"></canvas>
-           </div>
-
-
           </div>
 
           <div class="analytics-row" style="margin-top: 20px;">
-            <div class="analytics-data" style="width: 30%; height: 350px;">
+            <div class="analytics-data" style="width: 31%; height: 300px;">
+              <canvas id="justification_pie_data" style="width: 90%; height: 90%;"></canvas>
+             </div>
+  
+             <div class="analytics-data" style="width: 31%; height: 300px;">
+              <canvas id="issue_type_pie_data" style="width: 90%; height: 90%;"></canvas>
+             </div>
+
+             <div class="analytics-data" style="width: 31%; height: 300px;">
               <canvas id="permit_type_canvas" style="width: 90%; height: 90%;"></canvas>
              </div>
-             <div class="analytics-data" style="width: 30%; height: 350 px;">
-              <canvas id="permit_status_canvas" style="width: 90%; height: 90%;"></canvas>
-            </div>
           </div>
 
+          <div class="analytics-row" style="margin-top: 20px;">
+             <div class="analytics-data" style="width: 31%; height: 300px;">
+              <canvas id="permit_status_canvas" style="width: 90%; height: 90%;"></canvas>
+            </div>
+            <div class="analytics-data" style="width: 31%; height: 300px;">
+              <canvas id="task_status_canvas" style="width: 90%; height: 90%;"></canvas>
+            </div>
+            <div class="analytics-data" style="width: 31%; height: 300px;">
+              <canvas id="point_status_canvas" style="width: 90%; height: 90%;"></canvas>
+            </div>
+          </div>
         </section>
       </main>
   </div>
@@ -107,6 +113,10 @@
 
   let permit_status_pie_data_formatted = <%- JSON.stringify(permitStatusPieFormatted) %>
 
+  let task_status_pie_data_formatted = <%- JSON.stringify(taskStatusPieFormatted) %>
+
+  let point_status_pie_data_formatted = <%- JSON.stringify(pointStatusPieFormatted) %>
+
   // canvas
   const justification_pie_data = document.getElementById('justification_pie_data');
 
@@ -117,6 +127,10 @@
   const permit_type_canvas = document.getElementById('permit_type_canvas');
 
   const permit_status_canvas = document.getElementById('permit_status_canvas');
+
+  const task_status_canvas = document.getElementById('task_status_canvas');
+
+  const point_status_canvas = document.getElementById('point_status_canvas');
 
 
   // charts
@@ -129,6 +143,10 @@
   new Chart(permit_type_canvas, permit_type_pie_data_formatted);
 
   new Chart(permit_status_canvas, permit_status_pie_data_formatted);
+
+  new Chart(task_status_canvas, task_status_pie_data_formatted);
+
+  new Chart(point_status_canvas, point_status_pie_data_formatted);
   
 </script>
  
