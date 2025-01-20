@@ -20,6 +20,7 @@ export class DepartmentsUpdateController {
 
       res.redirect('/backoffice/department')
     } catch (error) {
+      console.log(error);
       if(error instanceof DepartmentNotFound) {
         res.status(404).render('error/error', {
           message: 'No se encontro el departamento'

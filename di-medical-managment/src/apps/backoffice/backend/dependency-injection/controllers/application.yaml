@@ -411,7 +411,7 @@ services:
   
   Apps.Backoffice.backend.controllers.DepartmentsUpdateController:
     class: ../../controllers/departments/DepartmentsUpdateController
-    arguments: [zz
+    arguments: [
       "@Contexts.Backoffice.Department.application.Update.DepartmentUpdator"
     ]
 
