@@ -38,6 +38,12 @@ export class TaskRepositoryMock implements TaskRepository {
     this.kanbanMock = jest.fn();
   }
   
+  async overview(): Promise<{ asignedCount: number; inProgressCount: number; finishedCount: number; dueCount: number; }> {
+    return {
+      asignedCount: 1, inProgressCount: 1, finishedCount: 1, dueCount: 1
+    }
+  }
+
   async delete(id: TaskId) {
     await this.deleteMock(id);
   }

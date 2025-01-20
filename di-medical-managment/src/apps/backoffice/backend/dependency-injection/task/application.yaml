@@ -72,4 +72,10 @@ services:
     "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
   ]
 
+  Contexts.Backoffice.Task.application.Overview.TaskOverviewer:
+    class: ../../../../../Contexts/Backoffice/Task/application/Overview/TaskOverviewer
+    arguments: [
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
+  ]
+
   

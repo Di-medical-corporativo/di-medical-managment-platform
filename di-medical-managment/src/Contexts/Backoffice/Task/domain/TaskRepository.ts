@@ -18,4 +18,6 @@ export interface TaskRepository {
   updateStatus(task: Task): Promise<void>
 
   kanban(id: UserId, month: number, year: number): Promise<Task[]>
+
+  overview(): Promise<{ asignedCount: number, inProgressCount: number, finishedCount: number, dueCount: number }>
 }

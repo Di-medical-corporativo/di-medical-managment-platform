@@ -258,4 +258,41 @@ export class PrismaTaskRepository implements TaskRepository {
 
     return tasks;
   }
+
+  async overview(): Promise<{ asignedCount: number; inProgressCount: number; finishedCount: number; dueCount: number; }> {
+    const [
+      asignedCount,
+      inProgressCount,
+      finishedCount,
+      dueCount
+    ] = await Promise.all([
+      prisma.task.count({
+        where: {
+          status: 'assigned'
+        }
+      }),
+      prisma.task.count({
+        where: {
+          status: 'in-progress'
+        }
+      }),
+      prisma.task.count({
+        where: {
+          status: 'completed'
+        }
+      }),
+      prisma.task.count({
+        where: {
+          status: 'pastdue'
+        }
+      }),
+    ]);
+
+    return {
+      asignedCount,
+      inProgressCount,
+      finishedCount,
+      dueCount
+    }
+  }
 }

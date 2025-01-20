@@ -24,12 +24,48 @@
         <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/task/new'">Asignar tarea</button>
       </header>
 
+      <div class="overview-attendance"
+          style="justify-content: flex-start; margin-top: 20px; width: 98%; background: none; box-shadow: none;">
+          <div class="attendance-data"
+            style="width: 230px; background-color: white; height: 120px; border-radius: 8px;">
+            <p>Tareas asignadas</p>
+            <p class="attendance-data-number">
+              <%= overview.asignedCount %>
+            </p>
+          </div>
+          <div class="attendance-data"
+            style="width: 230px; background-color: white; height: 120px; border-radius: 8px;">
+            <p>Tareas en progreso</p>
+            <p class="attendance-data-number">
+              <%= overview.inProgressCount %>
+            </p>
+          </div>
+          <div class="attendance-data"
+            style="width: 230px; background-color: white; height: 120px; border-radius: 8px;">
+            <p>Tareas terminadas</p>
+            <p class="attendance-data-number">
+              <%= overview.finishedCount %>
+            </p>
+          </div>
+          <div class="attendance-data"
+            style="width: 230px; background-color: white; height: 120px; border-radius: 8px;">
+            <p>Tareas vencidas</p>
+            <p class="attendance-data-number">
+              <%= overview.dueCount %>
+            </p>
+          </div>
+        </div>
+
       <section id="tasks-filter">
         <form action="/backoffice/task" method="get">
           <input type="month" name="filter" class="input" required>
           <button type="submit" class="button primary">Filtro</button>
         </form>
       </section>
+
+      <div style="width: 95%;">
+        <p style="font-size: 12px;">Mostrando Kanban de <%= month %> / <%= yearToFilter %> </p>
+      </div>
 
       <section id="admin-tasks">
         <div class="task-list">

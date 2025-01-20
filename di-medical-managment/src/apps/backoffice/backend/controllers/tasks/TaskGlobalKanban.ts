@@ -1,10 +1,12 @@
 import { TaskSearcher } from "../../../../../Contexts/Backoffice/Task/application/SearchAll/TaskSearcher";
 import { Request, Response } from "express";
 import { StatusList } from "../../../../../Contexts/Backoffice/Task/domain/TaskStatus";
+import { TaskOverviewer } from "../../../../../Contexts/Backoffice/Task/application/Overview/TaskOverviewer";
 
 export class TaskGlobalKanban {
   constructor(
-    private taskSearcher: TaskSearcher
+    private taskSearcher: TaskSearcher,
+    private taskOverviewer: TaskOverviewer
   ) {}
 
   async run(req: Request, res: Response) {
@@ -25,6 +27,8 @@ export class TaskGlobalKanban {
         monthToFilter = parseInt(monthNumber, 10);
       }
 
+      const overview = await this.taskOverviewer.run();
+
       const tasks = await this.taskSearcher.run({
         month: monthToFilter,
         year: yearToFilter
@@ -44,12 +48,23 @@ export class TaskGlobalKanban {
         assignedTasks,
         inProgressTasks,
         completedTasks,
-        overdueTasks
+        overdueTasks,
+        yearToFilter,
+        month: this.getMonthName(monthToFilter),
+        overview
       });
     } catch (error) {
       res.status(500).render('error/error', {
         message: 'Ocurrio un error, contacta soporte'
       });
     }
+  }
+
+  private getMonthName(monthNumber: number) {
+    const months = [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+    return months[monthNumber - 1]; 
   }
 }

@@ -30,7 +30,7 @@ export default class DashBoardInitController {
 
       const { filter } = req.query as { filter?: string } as { filter?: string };; 
 
-      let dateToFilter = new Date();
+      let dateToFilter: Date = new Date();
 
       let monthToFilter: number = dateToFilter.getMonth() + 1;
 
@@ -65,6 +65,8 @@ export default class DashBoardInitController {
         inProgressTasks: inProgressTasks.map(i => i.toPrimitives()),
         overdueTasks: overdueTasks.map(o => o.toPrimitives()),
         user,
+        yearToFilter,
+        month: this.getMonthName(monthToFilter),
         overview
       });
     } catch (error) {
@@ -72,5 +74,13 @@ export default class DashBoardInitController {
         message: 'Ocurrio un error, contacta soporte'
       });
     }
+  }
+
+  private getMonthName(monthNumber: number) {
+    const months = [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+    return months[monthNumber - 1]; 
   }
 }

@@ -31,12 +31,22 @@ export class ItineraryFindAllController {
       });
 
       res.status(200).render('itinerary/main', {
-        itineraries: itineraries.map(i => i.toPrimitives())
+        itineraries: itineraries.map(i => i.toPrimitives()),
+        yearToFilter,
+        month: this.getMonthName(monthToFilter),
       });
     } catch (error) {
       res.status(500).render('error/error', {
         message: 'Ocurrio un error, contacta soporte'
       });
     }
+  }
+
+  private getMonthName(monthNumber: number) {
+    const months = [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+    return months[monthNumber - 1]; 
   }
 }

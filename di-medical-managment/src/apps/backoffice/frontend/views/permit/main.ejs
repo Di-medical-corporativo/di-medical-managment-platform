@@ -47,7 +47,6 @@
                 <small><strong>Empleado:</strong> <%= permit.user.firstName %> <%= permit.user.lastName %></small>
                 <small> <strong>Pedido el:</strong> <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
                 <small><strong>Estado:</strong> Pendiente</small>
-                <small><strong>Comentarios:</strong> <%= permit.adminComment %> </small>
                 <button type="submit" name="action" value="accept" class="button primary" onclick="window.location.href='/backoffice/permit/<%= permit.id %>/accept'">Aceptar</button>
                 <button type="submit" name="action" value="reject" class="button danger" onclick="window.location.href='/backoffice/permit/<%= permit.id %>/reject'">Rechazar</button>
               </div>

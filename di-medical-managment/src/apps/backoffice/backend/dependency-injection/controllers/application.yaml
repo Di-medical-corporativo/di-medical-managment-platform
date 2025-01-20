@@ -282,7 +282,8 @@ services:
   Apps.Backoffice.backend.controllers.TaskGlobalKanban:
     class: ../../controllers/tasks/TaskGlobalKanban
     arguments: [
-      "@Contexts.Backoffice.Task.application.SearchAll.TaskSearcher"
+      "@Contexts.Backoffice.Task.application.SearchAll.TaskSearcher",
+      "@Contexts.Backoffice.Task.application.Overview.TaskOverviewer"
     ]
 
   Apps.Backoffice.backend.controllers.TaskUpdateController:
