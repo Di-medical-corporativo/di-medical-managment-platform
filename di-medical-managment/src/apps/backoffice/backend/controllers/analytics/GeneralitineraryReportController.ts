@@ -41,11 +41,25 @@ export class GeneralitineraryReportController {
         }
       };
 
+      const groupedPointsByDate = {
+        type: 'line',
+        data: {
+          labels: Object.keys(report.aggregatedPointsByDate),
+          datasets: [
+            {
+              label: 'Puntos asignados en el rango',
+              data: Object.values(report.aggregatedPointsByDate)
+            }
+          ]
+        }
+      };
+
       res.status(200).render('analytics/general-report-itinerary', {
         from,
         to,
         report,
-        pointStatusTypeData
+        pointStatusTypeData,
+        groupedPointsByDate
       });
 
     } catch (error) {

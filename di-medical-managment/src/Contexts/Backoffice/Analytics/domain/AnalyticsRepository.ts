@@ -36,5 +36,7 @@ export interface AnalyticsRepository {
     routePointCount: number;
     parcelPointCount: number;
     collectPointCount: number;
+    aggregatedPointsByDate: Record<string, number>;
+    pointAnswerSurveyCount: number;
   }>
 }

@@ -25,7 +25,7 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
     completedTaskCount: number,
     pastDueTaskCount: number,
     pointDoneTotalCount: number,
-    pointProblemTotalCount: number
+    pointProblemTotalCount: number,
   }> {
 
     const [
@@ -48,7 +48,7 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       completedTaskCount,
       pastDueTaskCount,
       pointDoneTotalCount,
-      pointProblemTotalCount
+      pointProblemTotalCount,
     ] = await Promise.all([
       prisma.attendanceIssue.count({
         where: {
@@ -339,6 +339,7 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
     }
   }
 
+  //
 
   async itineraryGeneralReport(from: FromDate, toDate: ToDate): Promise<{
     totalItineraryCount: number,
@@ -349,7 +350,9 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
     topFiveClients: { name: string; totalPoints: number }[]
     routePointCount: number,
     parcelPointCount: number,
-    collectPointCount: number
+    collectPointCount: number,
+    aggregatedPointsByDate: Record<string, number>,
+    pointAnswerSurveyCount: number
   }> {
     const [
       totalItineraryCount,
@@ -360,7 +363,8 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       routePointCount,
       parcelPointCount,
       collectPointCount,
-      groupedItineraries
+      groupedItineraries,
+      pointAnswerSurveyCount
     ] = await Promise.all([
       prisma.itinerary.count({
         where: {
@@ -492,6 +496,30 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
         orderBy: {
           scheduleDate: 'asc'
         }
+      }),
+      prisma.point.count({
+        where: {
+          itinerary: {
+            scheduleDate: {
+              gte: from.toDate().toISOString(),
+              lte: toDate.toDate().toISOString()
+            }
+          },
+          response: {
+            isNot: null
+          }
+        }
+      }),
+      prisma.point.count({
+        where: {
+          itinerary: {
+            scheduleDate: {
+              gte: from.toDate().toISOString(),
+              lte: toDate.toDate().toISOString()
+            }
+          },
+          certificate: 'Listos'
+        }
       })
     ]);
 
@@ -519,7 +547,37 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       }
     });
 
-    
+    const pointsByItinerary = Object.fromEntries(
+      points.map((point) => [ point.itineraryId, point._count.id ])
+    );
+
+    const groupedResults = groupedItineraries.map(i => {
+      let shouldGroupBy = from.daysDifferenceWith(toDate) < 30 ? 'day' : 'month';
+
+      const month = i.scheduleDate.getMonth() + 1;
+      const year = i.scheduleDate.getFullYear();
+
+      const period = shouldGroupBy == 'day' ? i.scheduleDate.toLocaleDateString('es-MX')
+        : `${year}-${month.toString().padStart(2, '0')}`;
+
+        return {
+          period,
+          totalPoints: pointsByItinerary[i.id]
+        }
+    });
+
+    const aggregatedPointsByDate = groupedResults.reduce<Record<string, number>>((acc, item) => {
+      const { period, totalPoints } = item;
+
+      if(!acc[period]) {
+        acc[period] = 0;
+      }
+
+      acc[period] += totalPoints || 0;
+
+      return acc;
+    }, {});
+
 
     return {
       totalItineraryCount,
@@ -530,7 +588,9 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       topFiveClients: topClients,
       routePointCount,
       parcelPointCount,
-      collectPointCount
+      collectPointCount,
+      aggregatedPointsByDate,
+      pointAnswerSurveyCount
     }
   }
 }
