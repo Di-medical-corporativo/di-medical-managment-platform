@@ -30,7 +30,7 @@ export interface AnalyticsRepository {
     totalItineraryCount: number,
     totalPointsCount: number,
     totalPointProblemCount: number,
-    averagePointPerItinerary: number,
+    averagePointPerItinerary: number | string,
     topFiveOperators: { fullName: string; totalPoints: number }[];
     topFiveClients: { name: string; totalPoints: number }[];
     routePointCount: number;
@@ -38,5 +38,8 @@ export interface AnalyticsRepository {
     collectPointCount: number;
     aggregatedPointsByDate: Record<string, number>;
     pointAnswerSurveyCount: number;
+    invoiceCount: number;
+    averageInvoicePerPoint: number | string;
+    averageErrorPointPerItinerary: string | number;
   }>
 }

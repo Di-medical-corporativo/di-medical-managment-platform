@@ -345,14 +345,17 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
     totalItineraryCount: number,
     totalPointsCount: number,
     totalPointProblemCount: number,
-    averagePointPerItinerary: number
+    averagePointPerItinerary: number | string,
     topFiveOperators: { fullName: string; totalPoints: number }[];
     topFiveClients: { name: string; totalPoints: number }[]
     routePointCount: number,
     parcelPointCount: number,
     collectPointCount: number,
     aggregatedPointsByDate: Record<string, number>,
-    pointAnswerSurveyCount: number
+    pointAnswerSurveyCount: number,
+    invoiceCount: number,
+    averageInvoicePerPoint: number | string,
+    averageErrorPointPerItinerary: string | number
   }> {
     const [
       totalItineraryCount,
@@ -365,7 +368,7 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       collectPointCount,
       groupedItineraries,
       pointAnswerSurveyCount,
-      pointCertificateReady
+      invoiceCount
     ] = await Promise.all([
       prisma.itinerary.count({
         where: {
@@ -511,20 +514,21 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
           }
         }
       }),
-      prisma.point.count({
+      prisma.invoce.count({
         where: {
-          itinerary: {
-            scheduleDate: {
-              gte: from.toDate().toISOString(),
-              lte: toDate.toDate().toISOString()
+          point: {
+            itinerary: {
+              scheduleDate: {
+                gte: from.toDate().toISOString(),
+                lte: toDate.toDate().toISOString()
+              }
             }
-          },
-          certificate: 'Listos'
+          }
         }
       })
     ]);
 
-    const averagePointPerItinerary: number = (totalPointsCount / totalItineraryCount) || 0;
+    const averagePointPerItinerary = ((totalPointsCount / totalItineraryCount)).toFixed(2) || 0;
 
     const topUsers = topFiveOperators.map(user => ({
       fullName: `${user.firstName} ${user.lastName}`,
@@ -579,6 +583,9 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       return acc;
     }, {});
 
+    const averageInvoicePerPoint: string | number = ((invoiceCount / totalPointsCount)).toFixed(2) || 0;
+
+    const averageErrorPointPerItinerary: string | number = ((totalPointProblemCount / totalPointsCount)).toFixed(2) || 0;
 
     return {
       totalItineraryCount,
@@ -591,7 +598,10 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       parcelPointCount,
       collectPointCount,
       aggregatedPointsByDate,
-      pointAnswerSurveyCount
+      pointAnswerSurveyCount,
+      invoiceCount,
+      averageInvoicePerPoint,
+      averageErrorPointPerItinerary
     }
   }
 }
