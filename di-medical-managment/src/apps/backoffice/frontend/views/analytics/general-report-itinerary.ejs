@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reporte general de usuario</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+
+      <main id="main-admin">
+
+        <header class="section-header">
+          <section class="breadcrumb">
+            <a href="/backoffice/analytics">
+              <small>Analiticas</small>
+            </a>
+            <span class="breadcrumb-slash">/</span>
+          </section>
+        </header>
+
+        <section id="analytics" style="margin-bottom: 5px;">
+          <div class="analytics-title">
+            <h3>Reporte general de itinerarios desde <%= new Date(from).toLocaleDateString('es-MX') %> hasta <%= new Date(to).toLocaleDateString('es-MX') %></h3>
+          </div>
+
+          <div class="analytics-row" style="margin-top: 20px;">
+            <div class="analytics-data" style="width: 250px; height: 130px;">
+              <div class="analytics-data-title">
+                <p>Total de itinerarios</p>
+              </div>
+
+              <div class="analytics-data-number">
+                <%= report.totalItineraryCount %>
+              </div>
+            </div>
+
+            <div class="analytics-data" style="width: 250px; height: 130px;">
+              <div class="analytics-data-title">
+                <p>Total de puntos</p>
+              </div>
+
+              <div class="analytics-data-number">
+                <%= report.totalPointsCount %>
+              </div>
+            </div>
+
+            <div class="analytics-data" style="width: 250px; height: 130px;">
+              <div class="analytics-data-title">
+                <p>Promedio de puntos por itinerario</p>
+              </div>
+
+              <div class="analytics-data-number">
+                <%= report.averagePointPerItinerary %>
+              </div>
+            </div>
+
+            <div class="analytics-data" style="width: 250px; height: 130px;">
+              <div class="analytics-data-title">
+                <p>Puntos terminados con errores</p>
+              </div>
+
+              <div class="analytics-data-number">
+                <%= report.totalPointProblemCount %>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="analytics-row" style="margin-top: 20px;">
+            <div class="analytics-data" style="width: 25%; height: 300px; gap: 0;">
+              <div style="width: 100%; height: 30px; background-color: #f8a900; padding: 5px;">
+                <p style="font-size: 13px;">Top 5 operadores</p>
+              </div>
+    
+              <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                  <tr style="background-color: #E9ECEF; border-bottom: 2px solid #E9ECEF;">
+                    <th style="padding: 8px; width: 70%; font-size: 12px;">Nombre</th>
+                    <th style="padding: 8px; width: 30%; font-size: 12px;">Puntos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for(let i = 0; i < report.topFiveOperators.length; i++) { %>
+                    <tr style="border-bottom: 1px solid #ccc;">
+                      <td style="padding: 8px; font-size: 10px;"><%= report.topFiveOperators[i].fullName %></td>
+                      <td style="padding: 8px; font-size: 10px;"><%= report.topFiveOperators[i].totalPoints %></td>
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+  
+            <div class="analytics-data" style="width: 25%; height: 300px; gap: 0;">
+              <div style="width: 100%; height: 30px; background-color: #f8a900; padding: 5px;">
+                <p style="font-size: 13px;">Top 5 clientes</p>
+              </div>
+    
+              <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                  <tr style="background-color: #E9ECEF; border-bottom: 2px solid #E9ECEF;">
+                    <th style="padding: 8px; width: 70%; font-size: 12px;">Nombre</th>
+                    <th style="padding: 8px; width: 30%; font-size: 12px;">Puntos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for(let i = 0; i < report.topFiveClients.length; i++) { %>
+                    <tr style="border-bottom: 1px solid #ccc;">
+                      <td style="padding: 8px; font-size: 10px;"><%= report.topFiveClients[i].name %></td>
+                      <td style="padding: 8px; font-size: 10px;"><%= report.topFiveClients[i].totalPoints %></td>
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="analytics-data" style="width: 40%; height: 300px; gap: 0;">
+              <canvas id="point-status-canvas" style="width: 90%; height: 90%;"></canvas>
+            </div>
+          </div>
+
+          <div class="analytics-row" style="margin-top: 20px;">
+            <div class="analytics-data" style="width: 50%; height: 300px; gap: 0;">
+              <canvas id="point-status-canvas" style="width: 90%; height: 90%;"></canvas>
+            </div>
+          </div>
+        </section>
+      </main>
+  </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+let point_status_data = <%- JSON.stringify(pointStatusTypeData) %>;
+
+const point_status_canvas = document.getElementById('point-status-canvas');
+
+new Chart(point_status_canvas, point_status_data);
+  
+</script>
+ 
+
+</html>

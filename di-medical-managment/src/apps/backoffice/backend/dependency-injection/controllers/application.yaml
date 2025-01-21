@@ -481,3 +481,9 @@ services:
     arguments: [
       "@Contexts.Backoffice.Analytics.application.UserGeneral.UserGeneralReporter"
     ]
+
+  Apps.Backoffice.backend.controllers.GeneralitineraryReportController:
+    class: ../../controllers/analytics/GeneralitineraryReportController
+    arguments: [
+      "@Contexts.Backoffice.Analytics.application.ItineraryGeneral.ItineraryGeneralReporter"
+    ]

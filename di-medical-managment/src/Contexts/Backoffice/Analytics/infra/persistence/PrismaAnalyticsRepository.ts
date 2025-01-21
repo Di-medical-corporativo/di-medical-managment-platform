@@ -338,4 +338,199 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       pointProblemTotalCount
     }
   }
+
+
+  async itineraryGeneralReport(from: FromDate, toDate: ToDate): Promise<{
+    totalItineraryCount: number,
+    totalPointsCount: number,
+    totalPointProblemCount: number,
+    averagePointPerItinerary: number
+    topFiveOperators: { fullName: string; totalPoints: number }[];
+    topFiveClients: { name: string; totalPoints: number }[]
+    routePointCount: number,
+    parcelPointCount: number,
+    collectPointCount: number
+  }> {
+    const [
+      totalItineraryCount,
+      totalPointsCount,
+      totalPointProblemCount,
+      topFiveOperators,
+      topFiveClients,
+      routePointCount,
+      parcelPointCount,
+      collectPointCount,
+      groupedItineraries
+    ] = await Promise.all([
+      prisma.itinerary.count({
+        where: {
+          scheduleDate: {
+            gte: from.toDate().toISOString(),
+            lte: toDate.toDate().toISOString()
+          }
+        }
+      }),
+      prisma.point.count({
+        where: {
+          itinerary: {
+            scheduleDate: {
+              gte: from.toDate().toISOString(),
+              lte: toDate.toDate().toISOString()
+            }
+          }
+        }
+      }),
+      prisma.point.count({
+        where: {
+          itinerary: {
+            scheduleDate: {
+              gte: from.toDate().toISOString(),
+              lte: toDate.toDate().toISOString()
+            }
+          },
+          problem: true
+        }
+      }),
+      prisma.user.findMany({
+        select: {
+          firstName: true,
+          lastName: true,
+          _count: {
+            select: {
+              points: true
+            }
+          }
+        },
+        where: {
+          points: {
+            some: {
+              itinerary: {
+                scheduleDate: {
+                  gte: from.toDate().toISOString(),
+                  lte: toDate.toDate().toISOString()
+                }
+              }
+            }
+          },
+        },
+        orderBy: {
+          points: {
+            _count: 'desc'
+          }
+        },
+        take: 5
+      }),
+      prisma.client.findMany({
+        select: {
+          name: true,
+          _count: {
+            select: {
+              points: true
+            }
+          }
+        },
+        where: {
+          points: {
+            some: {
+              itinerary: {
+                scheduleDate: {
+                  gte: from.toDate().toISOString(),
+                  lte: toDate.toDate().toISOString()
+                }
+              }
+            }
+          }
+        },
+        orderBy: {
+          points: {
+            _count: 'desc'
+          }
+        }
+      }),
+      prisma.point.count({
+        where: {
+          itinerary: {
+            scheduleDate: {
+              gte: from.toDate().toISOString(),
+              lte: toDate.toDate().toISOString()
+            }
+          },
+          type: 'point-route'
+        }
+      }),
+      prisma.point.count({
+        where: {
+          itinerary: {
+            scheduleDate: {
+              gte: from.toDate().toISOString(),
+              lte: toDate.toDate().toISOString()
+            }
+          },
+          type: 'point-parcel'
+        }
+      }),
+      prisma.point.count({
+        where: {
+          itinerary: {
+            scheduleDate: {
+              gte: from.toDate().toISOString(),
+              lte: toDate.toDate().toISOString()
+            }
+          },
+          type: 'point-collect'
+        }
+      }),
+      prisma.itinerary.groupBy({
+        by: ['scheduleDate', 'id'],
+        where: {
+          scheduleDate: {
+            gte: from.toDate().toISOString(),
+            lte: toDate.toDate().toISOString()
+          }
+        },
+        _count: true,
+        orderBy: {
+          scheduleDate: 'asc'
+        }
+      })
+    ]);
+
+    const averagePointPerItinerary: number = (totalPointsCount / totalItineraryCount) || 0;
+
+    const topUsers = topFiveOperators.map(user => ({
+      fullName: `${user.firstName} ${user.lastName}`,
+      totalPoints: user._count.points
+    }));
+
+    const topClients = topFiveClients.map(client => ({
+      name: client.name,
+      totalPoints: client._count.points
+    }));
+
+    const itinerariesIds = groupedItineraries.map(i => i.id);
+
+    const points = await prisma.point.groupBy({
+      by: ['itineraryId'],
+      where: {
+        itineraryId: { in: itinerariesIds }
+      },
+      _count: {
+        id: true
+      }
+    });
+
+    
+
+    return {
+      totalItineraryCount,
+      totalPointsCount,
+      totalPointProblemCount,
+      averagePointPerItinerary,
+      topFiveOperators: topUsers,
+      topFiveClients: topClients,
+      routePointCount,
+      parcelPointCount,
+      collectPointCount
+    }
+  }
 }

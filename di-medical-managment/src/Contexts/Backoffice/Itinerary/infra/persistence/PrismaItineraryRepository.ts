@@ -101,7 +101,7 @@ export class PrismaItineraryRepository implements ItineraryRepository {
         }
       },
       where: {
-        createdAt: {
+        scheduleDate: {
           gt: startOfMonth,
           lt: endOfMonth
         }

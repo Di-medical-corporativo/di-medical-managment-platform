@@ -25,4 +25,16 @@ export interface AnalyticsRepository {
     pointDoneTotalCount: number,
     pointProblemTotalCount: number
   }>
+
+  itineraryGeneralReport(from: FromDate, toDate: ToDate): Promise<{
+    totalItineraryCount: number,
+    totalPointsCount: number,
+    totalPointProblemCount: number,
+    averagePointPerItinerary: number,
+    topFiveOperators: { fullName: string; totalPoints: number }[];
+    topFiveClients: { name: string; totalPoints: number }[];
+    routePointCount: number;
+    parcelPointCount: number;
+    collectPointCount: number;
+  }>
 }

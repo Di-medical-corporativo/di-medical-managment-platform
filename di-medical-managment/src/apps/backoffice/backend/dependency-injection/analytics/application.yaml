@@ -5,3 +5,9 @@ services:
     "@Contexts.Backoffice.Analytics.infra.persistence.AnalyticsRepository",
     "@Contexts.Backoffice.User.infra.persistence.UserRepository"
     ]
+
+  Contexts.Backoffice.Analytics.application.ItineraryGeneral.ItineraryGeneralReporter:
+    class: ../../../../../Contexts/Backoffice/Analytics/application/ItineraryGeneral/ItineraryGeneralReporter
+    arguments: [
+    "@Contexts.Backoffice.Analytics.infra.persistence.AnalyticsRepository"    
+    ]
