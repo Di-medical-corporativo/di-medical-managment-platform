@@ -31,21 +31,19 @@ export const register = (app: Express) => {
 
   const detailTaskController: TaskDetailPageController = container.get('Apps.Backoffice.backend.controllers.TaskDetailPageController');
 
-  app.use('/task', ensureAuthenticated, authorizeModule(AppModules.TASKS));
+  app.post('/task/:id',  ensureAuthenticated, authorizeModule(AppModules.TASKS), (req: Request, res: Response) => createTaskController.run(req, res));
 
-  app.post('/task/:id', (req: Request, res: Response) => createTaskController.run(req, res));
+  app.put('/task/:id',  ensureAuthenticated, authorizeModule(AppModules.TASKS), (req: Request, res: Response) => updateTaskController.run(req, res));
 
-  app.put('/task/:id', (req: Request, res: Response) => updateTaskController.run(req, res));
+  app.put('/task/:id/nextStatus',  ensureAuthenticated ,(req: Request, res: Response) => changeStatusTaskController.run(req, res));
 
-  app.put('/task/:id/nextStatus', (req: Request, res: Response) => changeStatusTaskController.run(req, res));
+  app.delete('/task/:id', ensureAuthenticated, authorizeModule(AppModules.TASKS), (req: Request, res: Response) => deleteTaskController.run(req, res))
 
-  app.delete('/task/:id', (req: Request, res: Response) => deleteTaskController.run(req, res))
+  app.get('/task/new', ensureAuthenticated, authorizeModule(AppModules.TASKS), (req: Request, res: Response) => createPageTaskController.run(req, res));
 
-  app.get('/task/new', (req: Request, res: Response) => createPageTaskController.run(req, res));
+  app.get('/task/', ensureAuthenticated, authorizeModule(AppModules.TASKS), (req: Request, res: Response) => globalKanbanTaskController.run(req, res));
 
-  app.get('/task/', (req: Request, res: Response) => globalKanbanTaskController.run(req, res));
+  app.get('/task/:id/update', ensureAuthenticated, authorizeModule(AppModules.TASKS), (req: Request, res: Response) => searchTaskController.run(req, res));
 
-  app.get('/task/:id/update', (req: Request, res: Response) => searchTaskController.run(req, res));
-
-  app.get('/task/:id/detail', (req: Request, res: Response) => detailTaskController.run(req, res));
+  app.get('/task/:id/detail', ensureAuthenticated, (req: Request, res: Response) => detailTaskController.run(req, res));
 }

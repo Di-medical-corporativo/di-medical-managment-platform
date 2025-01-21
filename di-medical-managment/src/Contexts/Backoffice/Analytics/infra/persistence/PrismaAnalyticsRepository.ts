@@ -339,7 +339,7 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
     }
   }
 
-  //
+  // --------------------------------------------------------------
 
   async itineraryGeneralReport(from: FromDate, toDate: ToDate): Promise<{
     totalItineraryCount: number,
@@ -364,7 +364,8 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       parcelPointCount,
       collectPointCount,
       groupedItineraries,
-      pointAnswerSurveyCount
+      pointAnswerSurveyCount,
+      pointCertificateReady
     ] = await Promise.all([
       prisma.itinerary.count({
         where: {
