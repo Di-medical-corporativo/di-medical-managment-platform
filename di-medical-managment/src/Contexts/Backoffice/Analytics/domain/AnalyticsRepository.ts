@@ -42,4 +42,6 @@ export interface AnalyticsRepository {
     averageInvoicePerPoint: number | string;
     averageErrorPointPerItinerary: string | number;
   }>
+
+  pointPerPersonGeneral(from: FromDate, to: ToDate): Promise<{ fullName: string; points: number }[]>
 }

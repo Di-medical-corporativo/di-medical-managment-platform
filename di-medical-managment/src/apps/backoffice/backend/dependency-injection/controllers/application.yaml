@@ -487,3 +487,9 @@ services:
     arguments: [
       "@Contexts.Backoffice.Analytics.application.ItineraryGeneral.ItineraryGeneralReporter"
     ]
+
+  Apps.Backoffice.backend.controllers.GeneralPointsPerPersonReport:
+    class: ../../controllers/analytics/GeneralPointsPerPersonReport
+    arguments: [
+      "@Contexts.Backoffice.Analytics.application.PointGeneral.PointGeneralReporter"
+    ]

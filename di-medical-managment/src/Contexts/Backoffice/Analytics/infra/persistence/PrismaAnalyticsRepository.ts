@@ -604,4 +604,46 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       averageErrorPointPerItinerary
     }
   }
+
+  async pointPerPersonGeneral(from: FromDate, to: ToDate): Promise<{ fullName: string; points: number }[]> {
+    const pointPerPerson = await prisma.user.findMany({
+      where: {
+        points: {
+          some: {
+            itinerary: {
+              scheduleDate: {
+                gte: from.toDate().toISOString(),
+                lte: to.toDate().toISOString()
+              }
+            }
+          }, // Filtra solo los usuarios que tienen al menos un punto
+        },
+      },
+      select: {
+        firstName: true,
+        lastName: true,
+        _count: {
+          select: {
+            points: {
+              where: {
+                itinerary: {
+                  scheduleDate: {
+                    gte: from.toDate().toISOString(),
+                    lte: to.toDate().toISOString()
+                  }
+                }
+              }
+            } // Cuenta cuántos puntos tiene cada usuario
+          },
+        },
+      },
+    });
+
+    const aggregatedPointsPerPerson = pointPerPerson.map(u => ({
+      fullName: u.firstName + ' ' + u.lastName,
+      points: u._count.points
+    }))
+    
+    return aggregatedPointsPerPerson
+  }
 }

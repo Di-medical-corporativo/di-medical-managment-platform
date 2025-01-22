@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reporte puntos por persona</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+
+      <main id="main-admin">
+
+        <header class="section-header">
+          <section class="breadcrumb">
+            <a href="/backoffice/analytics">
+              <small>Analiticas</small>
+            </a>
+            <span class="breadcrumb-slash">/</span>
+          </section>
+        </header>
+
+        <section id="analytics" style="margin-bottom: 5px;">
+          <div class="analytics-title">
+            <h3>Reporte puntos-persona desde <%= new Date(from).toLocaleDateString('es-MX') %> hasta <%= new Date(to).toLocaleDateString('es-MX') %></h3>
+          </div>
+
+          <div class="analytics-row" style="margin-top: 20px;">
+          </div>
+        </section>
+      </main>
+  </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+</script>
+ 
+
+</html>

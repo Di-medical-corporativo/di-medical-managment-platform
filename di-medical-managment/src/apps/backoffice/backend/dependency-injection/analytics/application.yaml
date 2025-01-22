@@ -11,3 +11,15 @@ services:
     arguments: [
     "@Contexts.Backoffice.Analytics.infra.persistence.AnalyticsRepository"    
     ]
+
+  Contexts.Backoffice.Analytics.application.UserGeneral.UserGeneral:
+    class: ../../../../../Contexts/Backoffice/Analytics/application/UserGeneral/UserGeneralReporter
+    arguments: [
+    "@Contexts.Backoffice.Analytics.infra.persistence.AnalyticsRepository" 
+    ]
+
+  Contexts.Backoffice.Analytics.application.PointGeneral.PointGeneralReporter:
+    class: ../../../../../Contexts/Backoffice/Analytics/application/PointGeneral/PointGeneralReporter
+    arguments: [
+    "@Contexts.Backoffice.Analytics.infra.persistence.AnalyticsRepository" 
+    ]
