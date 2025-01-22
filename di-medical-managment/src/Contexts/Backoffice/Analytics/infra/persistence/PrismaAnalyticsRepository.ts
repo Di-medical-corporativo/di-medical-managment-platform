@@ -453,7 +453,8 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
           points: {
             _count: 'desc'
           }
-        }
+        },
+        take: 5
       }),
       prisma.point.count({
         where: {
@@ -605,7 +606,7 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
     }
   }
 
-  async pointPerPersonGeneral(from: FromDate, to: ToDate): Promise<{ fullName: string; points: number }[]> {
+  async pointPerPersonGeneral(from: FromDate, to: ToDate): Promise<{ fullName: string; goodPoints: number; badPoints: number; totalPoints: number }[]> {
     const pointPerPerson = await prisma.user.findMany({
       where: {
         points: {
@@ -615,8 +616,8 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
                 gte: from.toDate().toISOString(),
                 lte: to.toDate().toISOString()
               }
-            }
-          }, // Filtra solo los usuarios que tienen al menos un punto
+            },
+          },
         },
       },
       select: {
@@ -630,19 +631,39 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
                   scheduleDate: {
                     gte: from.toDate().toISOString(),
                     lte: to.toDate().toISOString()
-                  }
-                }
+                  },
+                  
+                },
+                problem: false,
               }
-            } // Cuenta cuántos puntos tiene cada usuario
+            }
           },
         },
+        
+        points: {
+          select: {
+            problem: true
+          },
+          where: {
+            itinerary: {
+              scheduleDate: {
+                gte: from.toDate().toISOString(),
+                lte: to.toDate().toISOString()
+              }
+            },
+            problem: true
+          },
+
+        }
       },
     });
 
     const aggregatedPointsPerPerson = pointPerPerson.map(u => ({
       fullName: u.firstName + ' ' + u.lastName,
-      points: u._count.points
-    }))
+      goodPoints: u._count.points || 0,
+      badPoints: u.points.length || 0,
+      totalPoints: u._count.points + u.points.length
+    }));
     
     return aggregatedPointsPerPerson
   }

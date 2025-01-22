@@ -19,7 +19,8 @@ export class GeneralPointsPerPersonReport {
 
       res.status(200).render('analytics/general-report-points-person', {
         from,
-        to
+        to,
+        report
       });
     } catch (error) {
       res.status(500).render('error/error', {

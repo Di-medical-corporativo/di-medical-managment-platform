@@ -17,8 +17,6 @@ export const register = (app: Express) => {
 
   const generalPointsUserGeneral: GeneralPointsPerPersonReport = container.get('Apps.Backoffice.backend.controllers.GeneralPointsPerPersonReport');
 
-  console.log(generalPointsUserGeneral);
-
   app.use('/analytics', ensureAuthenticated, authorizeModule(AppModules.ANALYTICS));
 
   app.get('/analytics', (req: Request, res: Response) => analyticsPageController.run(req, res));

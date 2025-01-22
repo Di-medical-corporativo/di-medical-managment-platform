@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reporte puntos por persona</title>
   <link rel="stylesheet" href="/css/main.css">
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 <body>
@@ -31,16 +30,36 @@
           </div>
 
           <div class="analytics-row" style="margin-top: 20px;">
+            <div class="analytics-data" style="width: 100%; gap: 0;">
+              <div style="width: 100%; height: 30px; background-color: #f8a900; padding: 5px;">
+                <p style="font-size: 13px;">Puntos realizados por persona</p>
+              </div>
+    
+              <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                  <tr style="background-color: #E9ECEF; border-bottom: 2px solid #E9ECEF;">
+                    <th style="padding: 8px; font-size: 12px;">Nombre</th>
+                    <th style="padding: 8px; font-size: 12px;">Puntos sin errores</th>
+                    <th style="padding: 8px; font-size: 12px;">Puntos con errores</th>
+                    <th style="padding: 8px; font-size: 12px;">Puntos totales</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for(let i = 0; i < report.length; i++) { %>
+                    <tr style="border-bottom: 1px solid #ccc;">
+                      <td style="padding: 8px; font-size: 10px;"><%= report[i].fullName %></td>
+                      <td style="padding: 8px; font-size: 10px;"><%= report[i].goodPoints %></td>
+                      <td style="padding: 8px; font-size: 10px;"><%= report[i].badPoints %></td>
+                      <td style="padding: 8px; font-size: 10px;"><%= report[i].totalPoints %></td>
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
       </main>
   </div>
 </body>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-</script>
  
-
 </html>

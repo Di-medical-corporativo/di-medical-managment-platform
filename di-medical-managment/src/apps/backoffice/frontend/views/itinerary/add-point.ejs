@@ -74,14 +74,14 @@
             <tbody id="point-table-body">
               <tr>
                 <td>
-                  <select class="input" id="clientId">
+                  <select class="input" id="clientId" style="width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                     <% for (let i = 0; i < clients.length; i++) {%>
                       <option value="<%= clients[i].id %>"><%= clients[i].name %> </option>
                     <% } %>
                   </select>
                 </td>
                 <td>
-                  <select class="input" id="userId">
+                  <select class="input" id="userId" style="width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                     <% for (let i = 0; i < users.length; i++) {%>
                       <option value="<%= users[i].id %>"><%= users[i].firstName %> </option>
                     <% } %>
@@ -115,7 +115,7 @@
                   <input type="text" class="input" id="observation" placeholder="Observaciones del punto">
                 </td>
                 <td>
-                  <select class="input" id="surveyId">
+                  <select class="input" id="surveyId" style="width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                     <% for (let i = 0; i < surveys.length; i++) {%>
                       <option value="<%= surveys[i].id %>">
                         <%= surveys[i].title %> 

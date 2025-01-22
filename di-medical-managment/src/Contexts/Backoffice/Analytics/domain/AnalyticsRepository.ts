@@ -43,5 +43,5 @@ export interface AnalyticsRepository {
     averageErrorPointPerItinerary: string | number;
   }>
 
-  pointPerPersonGeneral(from: FromDate, to: ToDate): Promise<{ fullName: string; points: number }[]>
+  pointPerPersonGeneral(from: FromDate, to: ToDate): Promise<{ fullName: string; goodPoints: number; badPoints: number; totalPoints: number }[]>
 }
