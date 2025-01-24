@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rutas</title>
   <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 </head>
 <body>
   <div id="admin-dash">
@@ -68,9 +70,10 @@
                 </td>
                 <td style="text-align: right;" id="truck_actions">
                   <% if(!itineraries[i].done && !itineraries[i].active){ %>
-                    <form action="/backoffice/itinerary/<%= itineraries[i].id %>/start" method="post">
+                    <form action="/backoffice/itinerary/<%= itineraries[i].id %>/start" method="post" class="start-form">
                       <input type="text" value="<%= itineraries[i].id %>" name="id" hidden>
-                      <button class="button primary" type="submit">Iniciar ruta</button>
+                      <button class="button warning" type="submit">Iniciar ruta</button>
+                      <button class="button"  onclick="window.location.href='/backoffice/itinerary/<%= itineraries[i].id %>/add'" type="button">Agregar puntos</button>
                     </form> 
                   <% } else if(itineraries[i].active) {%>
                     <button 
@@ -90,5 +93,27 @@
       </section>
     </main>
   </div>
+
+  <script>
+    const deleteForms = document.querySelectorAll('.start-form');
+
+    deleteForms.forEach(form => {
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        swal({
+          title: '¿Estás seguro?',
+          text: 'Estás a punto de iniciar este itinerario. Todos los puntos pasaran a En progreso. Esta acción no puede deshacerse.',
+          buttons: true,
+          dangerMode: true,
+        }).then((accepted) => {
+          if (accepted) {
+            form.submit();
+          }
+        });
+      });
+    });
+  </script>
+
 </body>
 </html>

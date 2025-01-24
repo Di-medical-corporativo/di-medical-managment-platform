@@ -56,7 +56,7 @@ export class Server {
       {
         secret: 'MY-SECRET',
         resave: false,
-        saveUninitialized: false
+        saveUninitialized: false,
       }
     ));
 

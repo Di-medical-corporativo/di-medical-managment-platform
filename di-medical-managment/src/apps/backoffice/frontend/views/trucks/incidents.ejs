@@ -67,6 +67,7 @@
                     </td>
                     <td style="text-align: right;" id="truck_actions">
                       <form
+                        class="delete-form"
                         action="/backoffice/truck/<%= incidents[i].truckId %>/incident/<%= incidents[i].id %>?_method=DELETE"
                         method="post">
                         <input type="text" value="<%= incidents[i].id %>" name="id" hidden>
@@ -80,6 +81,29 @@
           </section>
         </main>
     </div>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+      const deleteForms = document.querySelectorAll('.delete-form');
+
+      deleteForms.forEach(form => {
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+
+          swal({
+            title: '¿Estás seguro?',
+            text: 'Estás a punto de resolver este incidente. Esta acción no puede deshacerse.',
+            buttons: true,
+            dangerMode: true,
+          }).then((accepted) => {
+            if (accepted) {
+              form.submit();
+            }
+          });
+        });
+      });
+    </script>
+
   </body>
 
   </html>

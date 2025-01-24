@@ -165,6 +165,7 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       prisma.permit.count({
         where: {
           type: 'vacation-permit',
+          userId: userId.toString(),
           createdAt: {
             gte: from.toDate().toISOString(),
             lte: toDate.toDate().toISOString()
@@ -174,6 +175,7 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       prisma.permit.count({
         where: {
           type: 'sick-permit',
+          userId: userId.toString(),
           createdAt: {
             gte: from.toDate().toISOString(),
             lte: toDate.toDate().toISOString()
@@ -183,6 +185,7 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       prisma.permit.count({
         where: {
           type: 'personal-permit',
+          userId: userId.toString(),
           createdAt: {
             gte: from.toDate().toISOString(),
             lte: toDate.toDate().toISOString()

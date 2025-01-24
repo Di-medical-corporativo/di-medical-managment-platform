@@ -7,7 +7,7 @@
   <title>Nueva ruta</title>
   <link rel="stylesheet" href="/css/main.css">
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 
 <body>
@@ -15,7 +15,7 @@
  
     <main id="main-admin" class="itinerary-page">
 
-      <header class="section-header">
+      <header class="section-header" style="height: 15px;">
         <section class="breadcrumb">
           <a href="/backoffice/itinerary">
             <small>Ruta</small>
@@ -51,6 +51,8 @@
                 </option>
                 <% } %>
             </select>
+
+            <button class="button primary" style="width: 140px;" id="download-image" type="button">Descargar imagen</button>
           </div>
 
           <table class="table" id="point-list-table">
@@ -161,7 +163,7 @@
             </table>
           </div>
 
-          <button class="button primary">Crear ruta</button>
+          <button class="button warning" style="width: 180px;">Crear ruta</button>
         </form>
       </section>
     </main>
@@ -206,6 +208,29 @@
         if (accepted) {
           this.submit();
         }
+      });
+    });
+
+
+    document.getElementById('download-image').addEventListener('click', function() {
+      const element = document.getElementById('point-list-table-data');
+
+      const excludeElements = document.querySelectorAll('.hide');
+
+      excludeElements.forEach(e => {
+        e.style.display = 'none';
+      });
+
+      html2canvas(element).then((canvas) => {
+      // Convierte el canvas a imagen
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png'); // Cambia a 'image/jpeg' si prefieres JPG
+        link.download = 'ruta.png'; // Nombre del archivo
+        link.click(); // Descarga la imagen
+
+        excludeElements.forEach(e => {
+        e.style.display = '';
+      });
       });
     });
   </script>

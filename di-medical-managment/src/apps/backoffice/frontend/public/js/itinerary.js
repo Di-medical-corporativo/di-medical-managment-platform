@@ -82,7 +82,7 @@ function addPointToTable() {
                   <input value="${surveyValue}" type="text" class="input" readonly name="points[${totalPoints}][surveyId]" hidden>
                 </td>
                 <td>
-                  <button class="button danger" id="delete-point" onclick="deletePoint(event)" type="button">X</button>
+                  <button class="button danger hide" id="delete-point" onclick="deletePoint(event)" type="button">X</button>
                 </td>
     </tr>
   `
