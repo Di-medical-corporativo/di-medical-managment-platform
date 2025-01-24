@@ -102,11 +102,12 @@
                 <label for="departmentId">Departamento:</label>
 
                 <select name="departmentId" class="input">
-                  <% for (let i=0; i < departments.length; i++) {%>
-                    <option value="<%= departments[i].id %>">
+                  <% for (let i = 0; i < departments.length; i++) { %>
+                    <option value="<%= departments[i].id %>" 
+                      <%= departments[i].id === task.department.id ? 'selected' : '' %>>
                       <%= departments[i].name %>
                     </option>
-                    <% } %>
+                  <% } %>
                 </select>
 
                 <label for="dueTo">Fecha límite:</label>
@@ -120,6 +121,19 @@
 
                     <button type="submit" class="button primary">Actualizar tarea</button>
           </form>
+
+          <% if(task.isPoint) {%>
+            <form action="/backoffice/task/<%= task.id %>/nextStatus/admin?_method=PUT" method="post" style="margin-top: 10px;" id="task-end-admin">
+              <input type="text" hidden id="id" name="id" value="<%= task.id %>">
+              <button type="submit" class="button primary">
+                <% if(task.status == 'assigned') { %>
+                  Iniciar tarea
+                <% } else { %>
+                  Terminar tarea
+                <% } %>
+              </button>
+            </form>
+        <% } %>
 
           <% if(!task.isPoint) { %>
             <form action="/backoffice/task/<%= task.id %>?_method=DELETE" method="post" style="margin-top: 10px;"
@@ -177,6 +191,22 @@
       swal({
         title: '¿Estás seguro?',
         text: 'Estás a punto de eliminar esta tarea. Esta acción no puede deshacerse.',
+        buttons: true,
+        dangerMode: true,
+      }).then((accepted) => {
+        if (accepted) {
+          this.submit();
+        }
+      });
+    }
+
+
+    document.getElementById('task-end-admin').onsubmit = function (e) {
+      e.preventDefault();
+
+      swal({
+        title: '¿Estás seguro?',
+        text: 'Estás a punto de cambiar el estado de esta tarea. Esta acción no puede deshacerse.',
         buttons: true,
         dangerMode: true,
       }).then((accepted) => {

@@ -266,6 +266,12 @@ services:
       "@Contexts.Backoffice.Task.application.ChangeStatus.TaskStatusChanger"
     ]
 
+  Apps.Backoffice.backend.controllers.TaskChangeStatusAdmin:
+    class: ../../controllers/tasks/TaskChangeStatusAdmin
+    arguments: [
+      "@Contexts.Backoffice.Task.application.ChangeStatus.TaskStatusChanger"
+    ]
+
   Apps.Backoffice.backend.controllers.TaskCreateController:
     class: ../../controllers/tasks/TaskCreateController
     arguments: [
