@@ -23,9 +23,10 @@ model User {
   sucursalId String
   sucursal Sucursal @relation(fields: [sucursalId], references: [id])
   points Point[]
-  tasks Task[]
+  tasks Task[] @relation("AssignedTasksToUser")
   permit Permit[] @relation("RequestedPermits")
   approvals Permit[] @relation("ApprovedPermits")
+  assignedTasks Task[] @relation("TasksAssignedByUser")
   modules PlatformPermission[]
   attendanceIssues AttendanceIssue[]  
   Justification Justification[]
@@ -197,7 +198,7 @@ model Task {
   title String
   description String
   userAssignedId String
-  userAssigned User @relation(fields: [userAssignedId], references: [id])
+  userAssigned User @relation("AssignedTasksToUser", fields: [userAssignedId], references: [id])
   status String
   dueTo DateTime
 
@@ -207,6 +208,9 @@ model Task {
 
   departmentId String
   department Department @relation(fields: [departmentId], references: [id])
+
+  assignerId String?
+  assigner User? @relation("TasksAssignedByUser", fields: [assignerId], references: [id])
 
   @@index([status])
   @@index([dueTo])

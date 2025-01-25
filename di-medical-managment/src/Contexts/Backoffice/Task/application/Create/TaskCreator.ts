@@ -1,12 +1,14 @@
 import { DeparmentId } from "../../../Department/domain/DeparmentId";
 import { DepartmentFinder } from "../../../Department/domain/DepartmentFinder";
 import { DepartmentRepository } from "../../../Department/domain/DepartmentRepository";
+import { User } from "../../../User/domain/User";
 import { UserFinder } from "../../../User/domain/UserFinder";
 import { UserFirstName } from "../../../User/domain/UserFirstName";
 import { UserId } from "../../../User/domain/UserId";
 import { UserLastName } from "../../../User/domain/UserLastName";
 import { UserRepository } from "../../../User/domain/UserRepository";
 import { Task } from "../../domain/Task";
+import { TaskAssiger } from "../../domain/TaskAssigner";
 import { TaskDescription } from "../../domain/TaskDescription";
 import { TaskDueTo } from "../../domain/TaskDueTo";
 import { TaskId } from "../../domain/TaskId";
@@ -37,7 +39,8 @@ export class TaskCreator {
     description: TaskDescription,
     userId: UserId,
     dueTo: TaskDueTo,
-    departmentId: DeparmentId
+    departmentId: DeparmentId,
+    assignerId?: UserId
   }) {
     const user = await this.userFinder.run(params.userId.toString());
     
@@ -53,6 +56,26 @@ export class TaskCreator {
       id: new UserId(id)
     });
 
+    let assigner: User;
+
+    let assigerPrimitives;
+
+    if(params.assignerId) {
+      assigner = await this.userFinder.run(params.assignerId.toString());
+
+      assigerPrimitives = assigner.toPrimitives();
+    }
+
+    let assignerUser: undefined | TaskAssiger = undefined;
+
+    if(params.assignerId) {
+      assignerUser = new TaskAssiger(
+        new UserId(assigerPrimitives?.id!),
+        new UserFirstName(assigerPrimitives?.firstName!),
+        new UserLastName(assigerPrimitives?.lastName!)
+      )
+    }
+
     const task = Task.create({
       description: params.description,
       dueTo: params.dueTo,
@@ -60,7 +83,8 @@ export class TaskCreator {
       title: params.title,
       userAssigned: taskUser,
       isPoint: new TaskIsPoint(false),
-      department
+      department,
+      assigner: assignerUser
     });
 
     await this.repository.save(task);

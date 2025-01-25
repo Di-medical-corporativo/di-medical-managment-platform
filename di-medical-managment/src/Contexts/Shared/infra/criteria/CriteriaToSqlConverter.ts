@@ -9,8 +9,8 @@ export class CriteriaToSqlConverter {
 
       const whereQuery = criteria.filters.value.map((filter) => {
         return `"${filter.field.value}" ${filter.operator.value} '${filter.value.value}'`
-      })
-
+      });
+      
       query = query.concat(whereQuery.join(" AND "))
     }
 

@@ -90,11 +90,13 @@
                   </div>
                   <p><%= task.title %></p>
                   <small>Fecha de termino: <%= formattedDate %></small>
+                  <small class="footer-task" style="max-width: 95%;">
+                    Asignado por: <%= task.assigner.firstName %> <%= task.assigner.lastName %>
+                  </small>
                 </header>
                 <footer>
                   <small class="footer-task">
-                    <%= task.userAssigned.firstName %>
-                    <%= task.userAssigned.lastName %>
+                    <%= task.userAssigned.firstName %> <%= task.userAssigned.lastName %>
                   </small>
                   <button class="button primary" onclick="window.location.href='/backoffice/task/<%= task.id %>/update'">Actualizar tarea</button>
                 </footer>
@@ -125,6 +127,9 @@
                   </div>
                   <p><%= task.title %></p>
                   <small>Fecha de termino: <%= formattedDate %></small>
+                  <small class="footer-task" style="max-width: 95%;">
+                    Asignado por: <%= task.assigner.firstName %> <%= task.assigner.lastName %>
+                  </small>
                 </header>
                 <footer>
                   <small class="footer-task">
@@ -160,6 +165,9 @@
                   </div>
                   <p><%= task.title %></p>
                   <small>Fecha de termino: <%= formattedDate %></small>
+                  <small class="footer-task" style="max-width: 95%;">
+                    Asignado por: <%= task.assigner.firstName %> <%= task.assigner.lastName %>
+                  </small>
                 </header>
                 <footer>
                   <small class="footer-task">
@@ -195,6 +203,9 @@
                   </div>
                   <p><%= task.title %></p>
                   <small>Fecha de termino: <%= formattedDate %></small>
+                  <small class="footer-task" style="max-width: 95%;">
+                    Asignado por: <%= task.assigner.firstName %> <%= task.assigner.lastName %>
+                  </small>
                 </header>
                 <footer>
                   <small class="footer-task">

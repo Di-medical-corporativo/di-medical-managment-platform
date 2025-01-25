@@ -1,4 +1,8 @@
 import { Department } from "../../Department/domain/Department";
+import { UserFirstName } from "../../User/domain/UserFirstName";
+import { UserId } from "../../User/domain/UserId";
+import { UserLastName } from "../../User/domain/UserLastName";
+import { TaskAssiger } from "./TaskAssigner";
 import { TaskDescription } from "./TaskDescription";
 import { TaskDueTo } from "./TaskDueTo";
 import { TaskId } from "./TaskId";
@@ -16,7 +20,8 @@ export class Task {
     private status: TaskStatus,
     private dueTo: TaskDueTo,
     private isPoint: TaskIsPoint,
-    private department: Department
+    private department: Department,
+    private assigner?: TaskAssiger
   ) {}
 
   public updateDepartment(department: Department) {
@@ -95,7 +100,8 @@ export class Task {
     userAssigned: TaskUser
     dueTo: TaskDueTo,
     isPoint: TaskIsPoint,
-    department: Department
+    department: Department,
+    assigner?: TaskAssiger
   }) {
     return new Task(
       params.id,
@@ -105,7 +111,8 @@ export class Task {
       new TaskStatus(StatusList.Assigned),
       params.dueTo,
       params.isPoint,
-      params.department
+      params.department,
+      params.assigner
     );
   }
 
@@ -118,7 +125,17 @@ export class Task {
     dueTo: string;
     isPoint: boolean;
     department: { id: string; name: string; }
+    assigner?: { id: string; firstName: string; lastName: string; }
   }) {
+    let assigner: undefined | TaskAssiger = undefined;
+    if(params.assigner) {
+      assigner =  new TaskAssiger(
+        new UserId(params.assigner.id),
+        new UserFirstName(params.assigner.firstName),
+        new UserLastName(params.assigner.lastName)
+      )
+    }
+
     return new Task(
       new TaskId(params.id),
       new TaskTitle(params.title),
@@ -131,7 +148,8 @@ export class Task {
       new TaskStatus(params.status),
       new TaskDueTo(params.dueTo),
       new TaskIsPoint(params.isPoint),
-      Department.fromPrimitives({ id: params.department.id, name: params.department.name })
+      Department.fromPrimitives({ id: params.department.id, name: params.department.name }),
+      assigner
     );
   }
 
@@ -144,7 +162,8 @@ export class Task {
       status: this.status.toString(),
       dueTo: this.dueTo.toString(),
       isPoint: this.isPoint.value,
-      department: this.department.toPrimitives()
+      department: this.department.toPrimitives(),
+      assigner: this.assigner?.toPrimitives()
     }
   }
 }

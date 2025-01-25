@@ -9,6 +9,15 @@ import { UserNotFound } from "../../../../../Contexts/Backoffice/User/domain/Use
 import { DeparmentId } from "../../../../../Contexts/Backoffice/Department/domain/DeparmentId";
 import { DepartmentNotFound } from "../../../../../Contexts/Backoffice/Department/domain/DepartmentNotFound";
 
+export interface User {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  job: string;
+  modules: { id: string; name: string }[];
+}
+
 export class TaskCreateController {
   constructor(
     private taskCreator: TaskCreator
@@ -16,6 +25,14 @@ export class TaskCreateController {
 
   async run(req: Request, res: Response) {
     try {
+      const user = req.user as (User | undefined);
+
+      if (!user) {
+        res.status(400).redirect('/login');
+
+        return;
+      }
+
       const { id, title, description, userId, dueTo, departmentId } = req.body;
 
       await this.taskCreator.run({
@@ -24,11 +41,13 @@ export class TaskCreateController {
         title: new TaskTitle(title),
         dueTo: new TaskDueTo(new Date(dueTo).toISOString()),
         userId: new UserId(userId),
-        departmentId: new DeparmentId(departmentId)
+        departmentId: new DeparmentId(departmentId),
+        assignerId: new UserId(user.id)
       });
 
       res.redirect('/backoffice/task');
     } catch (error) {
+      console.log(error);
       if(error instanceof UserNotFound) {
         res.status(404).render('error/error', {
           message: 'No se encontro el usuario seleccionado'

@@ -8,37 +8,52 @@ import { StatusList } from "../../domain/TaskStatus";
 export class PrismaTaskRepository implements TaskRepository {
   async save(task: Task): Promise<void> {
     const taskPlain = task.toPrimitives();
-    
-    await prisma.task.create({
-      data: {
-        id: taskPlain.id,
-        description: taskPlain.description,
-        dueTo: taskPlain.dueTo,
-        status: taskPlain.status,
-        title: taskPlain.title,
-        userAssigned: {
-          connect: {
-            id: taskPlain.userAssigned.id
-          }
+
+    const data: any = {
+      id: taskPlain.id,
+      description: taskPlain.description,
+      dueTo: taskPlain.dueTo,
+      status: taskPlain.status,
+      title: taskPlain.title,
+      userAssigned: {
+        connect: {
+          id: taskPlain.userAssigned.id,
         },
-        department: {
-          connect: {
-            id: taskPlain.department.id
-          }
+      },
+      department: {
+        connect: {
+          id: taskPlain.department.id,
         },
-        belongsToItinerary: taskPlain.isPoint
-      }
-    });
+      },
+      belongsToItinerary: taskPlain.isPoint,
+    };
+
+    if (taskPlain.assigner) {
+      data.assigner = {
+        connect: {
+          id: taskPlain.assigner.id
+        }
+      };
+    }
+
+    await prisma.task.create({ data });
   }
 
   async findAll(month: number, year: number): Promise<Task[]> {
     const startOfMonth: Date = new Date(year, month - 1, 1);
-    
+
     const endOfMonth: Date = new Date(year, month, 1);
 
     const tasksDB = await prisma.task.findMany({
       include: {
         userAssigned: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true
+          }
+        },
+        assigner: {
           select: {
             id: true,
             firstName: true,
@@ -76,23 +91,32 @@ export class PrismaTaskRepository implements TaskRepository {
       }
     });
 
-    const tasks = tasksDB.map(t => Task.fromPrimitives({
-      description: t.description,
-      dueTo: t.dueTo.toISOString(),
-      id: t.id,
-      status: t.status,
-      title: t.title,
-      userAssigned: {
-        firstName: t.userAssigned.firstName,
-        id: t.userAssignedId,
-        lastName: t.userAssigned.lastName
-      },
-      isPoint: t.belongsToItinerary,
-      department: {
-        id: t.department.id,
-        name: t.department.name
-      }
-    }));
+    const tasks = tasksDB.map(t => {
+      const task = Task.fromPrimitives({
+        description: t.description,
+        dueTo: t.dueTo.toISOString(),
+        id: t.id,
+        status: t.status,
+        title: t.title,
+        userAssigned: {
+          firstName: t.userAssigned.firstName,
+          id: t.userAssignedId,
+          lastName: t.userAssigned.lastName
+        },
+        isPoint: t.belongsToItinerary,
+        department: {
+          id: t.department.id,
+          name: t.department.name
+        },
+        assigner: {
+          firstName: t.assigner?.firstName || '-',
+          lastName: t.assigner?.lastName || '-',
+          id: t.assigner?.id || '-'
+        }
+      });
+
+      return task
+    });
 
     return tasks;
   }
@@ -110,11 +134,18 @@ export class PrismaTaskRepository implements TaskRepository {
             id: true
           }
         },
+        assigner: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true
+          }
+        },
         department: true
       }
     });
 
-    if(!taskDB) {
+    if (!taskDB) {
       return null;
     }
 
@@ -133,6 +164,11 @@ export class PrismaTaskRepository implements TaskRepository {
       department: {
         id: taskDB.department.id,
         name: taskDB.department.name
+      },
+      assigner: {
+        firstName: taskDB.assigner?.firstName || '-',
+        lastName: taskDB.assigner?.lastName || '-',
+        id: taskDB.assigner?.id || '-'
       }
     });
 
@@ -141,7 +177,7 @@ export class PrismaTaskRepository implements TaskRepository {
 
   async update(task: Task): Promise<void> {
     const plainTask = task.toPrimitives();
-    
+
     await prisma.task.update({
       where: {
         id: plainTask.id
@@ -181,25 +217,32 @@ export class PrismaTaskRepository implements TaskRepository {
 
   async updateStatus(task: Task): Promise<void> {
     const { status, id } = task.toPrimitives();
-  
+
     await prisma.task.update({
       where: {
         id
       },
       data: {
-        status 
+        status
       }
     });
   }
 
   async kanban(id: UserId, month: number, year: number): Promise<Task[]> {
     const startOfMonth: Date = new Date(year, month - 1, 1);
-    
+
     const endOfMonth: Date = new Date(year, month, 1);
-    
+
     const tasksDB = await prisma.task.findMany({
       include: {
         userAssigned: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true
+          }
+        },
+        assigner: {
           select: {
             id: true,
             firstName: true,
@@ -252,7 +295,12 @@ export class PrismaTaskRepository implements TaskRepository {
       isPoint: t.belongsToItinerary,
       department: {
         id: t.department.id,
-         name: t.department.name
+        name: t.department.name
+      },
+      assigner: {
+        firstName: t.assigner?.firstName || '-',
+        lastName: t.assigner?.lastName || '-',
+        id: t.assigner?.id || '-'
       }
     }));
 
