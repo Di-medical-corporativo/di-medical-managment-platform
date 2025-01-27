@@ -64,11 +64,9 @@ export class PrismaTaskRepository implements TaskRepository {
       },
       where: {
         OR: [
-          // Mostrar todas las tareas asignadas y en progreso sin importar la fecha
           {
             status: { in: [StatusList.Assigned, StatusList.Progress] }
           },
-          // Mostrar tareas completadas solo si están dentro del rango de fechas
           {
             status: StatusList.Completed,
             dueTo: {
@@ -76,7 +74,6 @@ export class PrismaTaskRepository implements TaskRepository {
               lt: endOfMonth
             }
           },
-          // Mostrar tareas vencidas dentro del rango de fechas
           {
             status: StatusList.PastDue,
             dueTo: {
