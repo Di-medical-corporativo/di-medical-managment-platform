@@ -44,4 +44,11 @@ export interface AnalyticsRepository {
   }>
 
   pointPerPersonGeneral(from: FromDate, to: ToDate): Promise<{ fullName: string; goodPoints: number; badPoints: number; totalPoints: number }[]>
+
+  attendanceGeneralReport(from: FromDate, to: ToDate): Promise<{
+    fullName: string;
+    job: string;
+    absenceCount: number;
+    delayCount: number;
+  }[]>
 }

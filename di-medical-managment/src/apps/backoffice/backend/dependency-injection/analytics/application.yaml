@@ -23,3 +23,9 @@ services:
     arguments: [
     "@Contexts.Backoffice.Analytics.infra.persistence.AnalyticsRepository" 
     ]
+  
+  Contexts.Backoffice.Analytics.application.AttendanceGeneral.AttendanceGeneralReporter:
+    class: ../../../../../Contexts/Backoffice/Analytics/application/AttendanceGeneral/AttendanceGeneralReporter
+    arguments: [
+    "@Contexts.Backoffice.Analytics.infra.persistence.AnalyticsRepository" 
+    ]

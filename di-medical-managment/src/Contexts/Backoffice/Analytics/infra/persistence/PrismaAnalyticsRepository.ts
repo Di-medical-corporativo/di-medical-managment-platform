@@ -1,4 +1,6 @@
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
+import { AttendanceType } from "../../../Attendance/domain/AttendanceType";
+import { JustificationStatusEnum } from "../../../Attendance/domain/JustificationStatus";
 import { UserId } from "../../../User/domain/UserId";
 import { AnalyticsRepository } from "../../domain/AnalyticsRepository";
 import { FromDate } from "../../domain/FromDate";
@@ -669,5 +671,66 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
     }));
     
     return aggregatedPointsPerPerson
+  }
+
+  // analytics
+
+  async attendanceGeneralReport(from: FromDate, to: ToDate): Promise<{
+    fullName: string;
+    job: string;
+    absenceCount: number;
+    delayCount: number;
+  }[]> {
+    const attendanceIssue = await prisma.user.findMany({
+      select: {
+        _count: {
+          select: {
+            attendanceIssues: {
+              where: {
+                date: {
+                  gte: from.toDate().toISOString(),
+                  lte: to.toDate().toISOString()
+                },
+                OR: [
+                  { isJustified: false },
+                  { justification: { status: JustificationStatusEnum.pending } },
+                  { justification: { status: JustificationStatusEnum.rejected } },
+                ],
+                type: AttendanceType.ABSENCE 
+              }
+            }
+          }
+        },
+        firstName: true,
+        lastName: true,
+        job: true,
+        attendanceIssues: {
+          select: {
+            id: true
+          },
+          where: {
+            date: {
+              gte: from.toDate().toISOString(),
+              lte: to.toDate().toISOString()
+            },
+            OR: [
+              { isJustified: false },
+              { justification: { status: JustificationStatusEnum.pending } },
+              { justification: { status: JustificationStatusEnum.rejected } },
+            ],
+            type: AttendanceType.DELAY
+          } 
+        }
+      }
+    });
+
+    const table = attendanceIssue.map(a => ({
+      fullName: a.firstName + ' ' + a.lastName,
+      job: a.job,
+      absenceCount: a._count.attendanceIssues,
+      delayCount: a.attendanceIssues.length
+    }))
+
+    return table
   }
 }

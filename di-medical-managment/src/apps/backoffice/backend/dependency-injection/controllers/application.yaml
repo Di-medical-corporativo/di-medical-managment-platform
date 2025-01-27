@@ -499,3 +499,9 @@ services:
     arguments: [
       "@Contexts.Backoffice.Analytics.application.PointGeneral.PointGeneralReporter"
     ]
+
+  Apps.Backoffice.backend.controllers.GeneralAttendanceReport:
+    class: ../../controllers/analytics/GeneralAttendanceReport
+    arguments: [
+      "@Contexts.Backoffice.Analytics.application.AttendanceGeneral.AttendanceGeneralReporter"
+    ]
