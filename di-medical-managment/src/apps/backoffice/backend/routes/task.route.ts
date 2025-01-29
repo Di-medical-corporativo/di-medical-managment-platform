@@ -14,6 +14,7 @@ import { authorizeModule } from "../middlewares/authorizeRoles";
 import { adminRole, surperAdminRole } from "../../../../Contexts/Shared/domain/roles/Roles";
 import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
 import { TaskChangeStatusAdmin } from "../controllers/tasks/TaskChangeStatusAdmin";
+import { TaskFilterKanbanController } from "../controllers/tasks/TaskFilterKanbanController";
 
 export const register = (app: Express) => {
   const createTaskController: TaskCreateController = container.get('Apps.Backoffice.backend.controllers.TaskCreateController');
@@ -33,6 +34,10 @@ export const register = (app: Express) => {
   const detailTaskController: TaskDetailPageController = container.get('Apps.Backoffice.backend.controllers.TaskDetailPageController');
 
   const changeStatusAdminController: TaskChangeStatusAdmin = container.get('Apps.Backoffice.backend.controllers.TaskChangeStatusAdmin');
+
+  const taskFilterKanbanController: TaskFilterKanbanController = container.get('Apps.Backoffice.backend.controllers.TaskFilterKanbanController');
+
+  app.post('/task/filter', ensureAuthenticated, authorizeModule(AppModules.TASKS), (req: Request, res: Response) => taskFilterKanbanController.run(req, res))
 
   app.post('/task/:id',  ensureAuthenticated, authorizeModule(AppModules.TASKS), (req: Request, res: Response) => createTaskController.run(req, res));
 

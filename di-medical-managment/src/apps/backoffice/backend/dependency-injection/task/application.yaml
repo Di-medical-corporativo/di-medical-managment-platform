@@ -78,4 +78,10 @@ services:
     "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
   ]
 
+  Contexts.Backoffice.Task.application.SearchCriteria.TaskFilter:
+    class: ../../../../../Contexts/Backoffice/Task/application/SearchCriteria/TaskFilter
+    arguments: [
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
+  ]
+
   

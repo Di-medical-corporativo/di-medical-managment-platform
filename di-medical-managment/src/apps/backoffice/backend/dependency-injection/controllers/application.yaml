@@ -289,7 +289,15 @@ services:
     class: ../../controllers/tasks/TaskGlobalKanban
     arguments: [
       "@Contexts.Backoffice.Task.application.SearchAll.TaskSearcher",
-      "@Contexts.Backoffice.Task.application.Overview.TaskOverviewer"
+      "@Contexts.Backoffice.Task.application.Overview.TaskOverviewer",
+      "@Contexts.Backoffice.User.application.SearchAll.UserSearcher",
+      "@Contexts.Backoffice.Department.application.SearchAll.DepartmentSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.TaskFilterKanbanController:
+    class: ../../controllers/tasks/TaskFilterKanbanController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.SearchCriteria.TaskFilter"
     ]
 
   Apps.Backoffice.backend.controllers.TaskUpdateController:

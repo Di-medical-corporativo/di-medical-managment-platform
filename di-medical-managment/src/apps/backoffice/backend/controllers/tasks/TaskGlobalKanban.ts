@@ -2,16 +2,22 @@ import { TaskSearcher } from "../../../../../Contexts/Backoffice/Task/applicatio
 import { Request, Response } from "express";
 import { StatusList } from "../../../../../Contexts/Backoffice/Task/domain/TaskStatus";
 import { TaskOverviewer } from "../../../../../Contexts/Backoffice/Task/application/Overview/TaskOverviewer";
+import { UserSearcher } from "../../../../../Contexts/Backoffice/User/application/SearchAll/UserSearcher";
+import { DepartmentSearcher } from "../../../../../Contexts/Backoffice/Department/application/SearchAll/DepartmentSearcher";
+import { User } from "../../../../../Contexts/Backoffice/User/domain/User";
+import { Department } from "../../../../../Contexts/Backoffice/Department/domain/Department";
 
 export class TaskGlobalKanban {
   constructor(
     private taskSearcher: TaskSearcher,
-    private taskOverviewer: TaskOverviewer
+    private taskOverviewer: TaskOverviewer,
+    private userSearcher: UserSearcher,
+    private departmentSearcher: DepartmentSearcher
   ) {}
 
   async run(req: Request, res: Response) {
     try {
-      const { filter } = req.query as { filter?: string } as { filter?: string };; 
+      const { filter } = req.query as { filter?: string }; 
 
       let dateToFilter = new Date();
 
@@ -34,6 +40,10 @@ export class TaskGlobalKanban {
         year: yearToFilter
       });
 
+      const users: User[] = await this.userSearcher.run();
+
+      const departments: Department[] = await this.departmentSearcher.run();
+
       const plainTasks = tasks.map(t => t.toPrimitives());
 
       const assignedTasks = plainTasks.filter(task => task.status === StatusList.Assigned)
@@ -51,7 +61,9 @@ export class TaskGlobalKanban {
         overdueTasks,
         yearToFilter,
         month: this.getMonthName(monthToFilter),
-        overview
+        overview,
+        users: users.map(u => u.toPrimitives()),
+        departments: departments.map(d => d.toPrimitives())
       });
     } catch (error) {
       res.status(500).render('error/error', {

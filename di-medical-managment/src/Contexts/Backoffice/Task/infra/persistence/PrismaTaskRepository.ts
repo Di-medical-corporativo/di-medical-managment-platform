@@ -1,9 +1,11 @@
+import e from "express";
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
+import { DeparmentId } from "../../../Department/domain/DeparmentId";
 import { UserId } from "../../../User/domain/UserId";
 import { Task } from "../../domain/Task";
 import { TaskId } from "../../domain/TaskId";
 import { TaskRepository } from "../../domain/TaskRepository";
-import { StatusList } from "../../domain/TaskStatus";
+import { StatusList, TaskStatus } from "../../domain/TaskStatus";
 
 export class PrismaTaskRepository implements TaskRepository {
   async save(task: Task): Promise<void> {
@@ -339,5 +341,89 @@ export class PrismaTaskRepository implements TaskRepository {
       finishedCount,
       dueCount
     }
+  }
+
+  async searchFilter(params: { departmentId?: DeparmentId; asignedTo?: UserId; asignedBy?: UserId; status?: StatusList; startMonth: Date; endMonth: Date; }): Promise<Task[]> {
+    let query: any = {
+      dueTo: {
+        gte: params.startMonth.toISOString(),
+        lt: params.endMonth.toISOString()
+      }
+    }
+
+    if(params.departmentId) {
+      query.departmentId = params.departmentId.toString()
+    }
+
+    if(params.asignedTo) {
+      query.userAssignedId = params.asignedTo.toString()
+    }
+    
+    if(params.asignedBy) {
+      query.assignerId = params.asignedBy.toString()
+    }
+
+    if(params.status) {
+      query.status = {
+        in: [params.status]
+      }
+    } else {
+      query.status = {
+        in: [StatusList.Assigned, StatusList.PastDue, StatusList.Completed, StatusList.Progress]
+      }
+    }
+
+    const taskDB = await prisma.task.findMany({
+      include: {
+        userAssigned: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true
+          }
+        },
+        assigner: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true
+          }
+        },
+        department: true
+      },
+      where: query,
+      orderBy: {
+        dueTo: 'desc'
+      }
+    });
+
+    const tasks = taskDB.map(t => {
+      const task = Task.fromPrimitives({
+        description: t.description,
+        dueTo: t.dueTo.toISOString(),
+        id: t.id,
+        status: t.status,
+        title: t.title,
+        userAssigned: {
+          firstName: t.userAssigned.firstName,
+          id: t.userAssignedId,
+          lastName: t.userAssigned.lastName
+        },
+        isPoint: t.belongsToItinerary,
+        department: {
+          id: t.department.id,
+          name: t.department.name
+        },
+        assigner: {
+          firstName: t.assigner?.firstName || '-',
+          lastName: t.assigner?.lastName || '-',
+          id: t.assigner?.id || '-'
+        }
+      });
+
+      return task
+    });
+
+    return tasks;
   }
 }

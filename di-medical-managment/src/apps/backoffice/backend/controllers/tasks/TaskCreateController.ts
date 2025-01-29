@@ -47,7 +47,6 @@ export class TaskCreateController {
 
       res.redirect('/backoffice/task');
     } catch (error) {
-      console.log(error);
       if(error instanceof UserNotFound) {
         res.status(404).render('error/error', {
           message: 'No se encontro el usuario seleccionado'

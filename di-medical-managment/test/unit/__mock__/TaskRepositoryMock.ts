@@ -1,6 +1,8 @@
+import { DeparmentId } from "../../../src/Contexts/Backoffice/Department/domain/DeparmentId";
 import { Task } from "../../../src/Contexts/Backoffice/Task/domain/Task";
 import { TaskId } from "../../../src/Contexts/Backoffice/Task/domain/TaskId";
 import { TaskRepository } from "../../../src/Contexts/Backoffice/Task/domain/TaskRepository";
+import { StatusList } from "../../../src/Contexts/Backoffice/Task/domain/TaskStatus";
 import { UserId } from "../../../src/Contexts/Backoffice/User/domain/UserId";
 
 export class TaskRepositoryMock implements TaskRepository {
@@ -71,6 +73,10 @@ export class TaskRepositoryMock implements TaskRepository {
   async updateStatus(task: Task): Promise<void> {
     return this.updateStatusMock(task);
      
+  }
+
+  async searchFilter({ departmentId, asignedTo, asignedBy, status, startMonth, endMonth }: { departmentId?: DeparmentId; asignedTo?: UserId; asignedBy?: UserId; status?: StatusList; startMonth: Date; endMonth: Date; }): Promise<Task[]> {
+    return []
   }
 
   async kanban(id: UserId, month: number, year: number): Promise<Task[]> {

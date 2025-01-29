@@ -37,43 +37,12 @@
               <small>Kanban general</small>
             </a>
             <span class="breadcrumb-slash">/</span>
+            <small>Kanban filtrado</small>
           </section>
 
           <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/task/new'">Asignar
             tarea</button>
         </header>
-
-        <div class="overview-attendance"
-          style="justify-content: flex-start; margin-top: 20px; width: 98%; background: none; box-shadow: none;">
-          <div class="attendance-data"
-            style="width: 230px; background-color: white; height: 120px; border-radius: 8px;">
-            <p>Tareas asignadas</p>
-            <p class="attendance-data-number">
-              <%= overview.asignedCount %>
-            </p>
-          </div>
-          <div class="attendance-data"
-            style="width: 230px; background-color: white; height: 120px; border-radius: 8px;">
-            <p>Tareas en progreso</p>
-            <p class="attendance-data-number">
-              <%= overview.inProgressCount %>
-            </p>
-          </div>
-          <div class="attendance-data"
-            style="width: 230px; background-color: white; height: 120px; border-radius: 8px;">
-            <p>Tareas terminadas</p>
-            <p class="attendance-data-number">
-              <%= overview.finishedCount %>
-            </p>
-          </div>
-          <div class="attendance-data"
-            style="width: 230px; background-color: white; height: 120px; border-radius: 8px;">
-            <p>Tareas vencidas</p>
-            <p class="attendance-data-number">
-              <%= overview.dueCount %>
-            </p>
-          </div>
-        </div>
 
         <section id="tasks-filter">
           <form action="/backoffice/task" method="get">
@@ -82,61 +51,8 @@
           </form>
         </section>
 
-        <section style="width: 95%; display: flex; align-items: flex-end; justify-content: flex-end;">
-          <div style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 5px;" id="toggle-button">
-            <img src="/images/icons/filter.png" alt="" style="width: 24px; cursor: pointer;" id="filter-button">
-          </div>
-        </section>
-
-        <form class="filters" id="criteria-filters" style="width: 95%; margin-top: 10px;" action="/backoffice/task/filter" method="post">
-          <label for="departmentId">Departamento:</label>
-          <select name="departmentId" class="input" style="width: 165px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            <option value="all">Todos</option>
-            <% for (let i=0; i < departments.length; i++) {%>
-              <option value="<%= departments[i].id %>">
-                <%= departments[i].name %>
-              </option>
-              <% } %>
-          </select>
-
-          <label for="asignedTo">Asignado a:</label>
-          <select name="asignedTo" class="input" style="width: 165px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            <option value="all">Todos</option>
-            <% for (let i=0; i < users.length; i++) {%>
-              <option value="<%= users[i].id %>">
-                <%= users[i].firstName %>
-              </option>
-              <% } %>
-          </select>
-
-          <label for="asignedBy">Asignado por:</label>
-          <select name="asignedBy" class="input" style="width: 165px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            <option value="all">Todos</option>
-            <% for (let i=0; i < users.length; i++) {%>
-              <option value="<%= users[i].id %>">
-                <%= users[i].firstName %>
-              </option>
-              <% } %>
-          </select>
-
-          <label for="status">Estatus:</label>
-          <select name="status" class="input"
-            style="width: 165px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            <option value="all">Todos</option>
-            <option value="assigned">Asignadas</option>
-            <option value="in-progress">En progreso</option>
-            <option value="completed">Completadas</option>
-            <option value="pastdue">Tareas desfasadas</option>
-          </select>
-
-          <label for="month">Mes: </label>
-          <input type="month" name="date" id="date" class="input" style="width: 165px;" required>
-
-          <button class="button primary" style="width: 165px;">Filtrar</button>
-        </form>
-
         <div style="width: 95%;">
-          <p style="font-size: 12px;">Mostrando Kanban de <%= month %> / <%= yearToFilter %>
+          <p style="font-size: 12px;">Mostrando Kanban filtrado
           </p>
         </div>
 
