@@ -483,6 +483,12 @@ services:
     arguments: [
       "@Contexts.Backoffice.Attendance.application.Action.AttendanceJustifier"
     ]
+
+  Apps.Backoffice.backend.controllers.AttendanceDeleteController:
+    class: ../../controllers/attendance/AttendanceDeleteController
+    arguments: [
+      "@Contexts.Backoffice.Attendance.application.Delete.IssueRemover"
+    ]
   
   Apps.Backoffice.backend.controllers.AnalyticsPageController:
     class: ../../controllers/analytics/AnalyticsPageController

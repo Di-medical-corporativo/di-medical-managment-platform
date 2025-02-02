@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Listado de incidencias</title>
   <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
   <div id="admin-dash">
@@ -68,7 +69,6 @@
                   <th>Fecha</th>
                   <th></th>
                   <th></th>
-
               </tr>
           </thead>
           <tbody>
@@ -86,11 +86,13 @@
                   <% } %>
                 </td>
                 <td><%= new Date(issues[i].date).toLocaleDateString('es-MX') %></td>
+
                 <% if(issues[i].isJustified) { %>
 
                   <% if(issues[i].justification.status === 'pending-justification') { %>
+                    <td></td>
                     <td style="text-align: right;" id="truck_actions">
-                      <button class="button danger"
+                      <button class="button warning"
                         onclick="window.location.href='/backoffice/attendance/<%= issues[i].justification.id %>/justification/'"
                       >Justificante pendiente</button>
                     </td>
@@ -108,6 +110,15 @@
                     </td>
                   <% } %>
 
+                <% } else { %>
+                  <td></td>
+                  <td style="text-align: right;" id="truck_actions">
+                    <form action="/backoffice/attendance/<%= issues[i].id %>?_method=DELETE" method="post" class="delete-form">
+                      <input type="text" value="<%= issues[i].id %>" name="id" hidden>
+                      <input type="text" value="<%= userId %>" name="userId" hidden>
+                      <button class="button danger" type="submit">Eliminar incidencia</button>
+                    </form>
+                  </td>
                 <% } %>
             </tr>
             <% } %>
@@ -116,5 +127,27 @@
       </section>
     </main>
   </div>
+
+  <script>
+    const deleteForms = document.querySelectorAll('.delete-form');
+
+    deleteForms.forEach(form => {
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        swal({
+          title: '¿Estás seguro?',
+          text: 'Estás a punto de eliminar esta incidencia. Esta acción no puede deshacerse.',
+          buttons: true,
+          dangerMode: true,
+        }).then((accepted) => {
+          if (accepted) {
+            form.submit();
+          }
+        });
+      });
+    });
+  </script>
+
 </body>
 </html>

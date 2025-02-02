@@ -1,4 +1,3 @@
-import e from "express";
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
 import { UserId } from "../../../User/domain/UserId";
 import { AttendanceId } from "../../domain/AttendanceId";
@@ -325,5 +324,13 @@ export class PrismaAttendanceRepository implements AttendanceRepository {
       pendingJustifications: pending,
       rejectedJustifications: rejected
     }
+  }
+
+  async delete(id: AttendanceId): Promise<void> {
+    await prisma.attendanceIssue.delete({
+      where: {
+        id: id.toString()
+      }
+    });
   }
 }

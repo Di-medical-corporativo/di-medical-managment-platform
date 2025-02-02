@@ -38,3 +38,9 @@ services:
     "@Contexts.Backoffice.Attendance.infra.persistence.AttendanceRepository",
     "@Contexts.Backoffice.User.infra.persistence.UserRepository"
     ]
+
+  Contexts.Backoffice.Attendance.application.Delete.IssueRemover:
+    class: ../../../../../Contexts/Backoffice/Attendance/application/Delete/IssueRemover
+    arguments: [
+    "@Contexts.Backoffice.Attendance.infra.persistence.AttendanceRepository"
+    ]

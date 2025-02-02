@@ -12,6 +12,7 @@ import { AttendanceJustificationFindController } from "../controllers/attendance
 import { AttendanceJustificationAction } from "../controllers/attendance/AttendanceJustificationAction";
 import { AttendanceUserIssueController } from "../controllers/attendance/AttendanceUserIssueController";
 import { AttendanceJustifyController } from "../controllers/attendance/AttendanceJustifyController";
+import { AttendanceDeleteController } from "../controllers/attendance/AttendanceDeleteController";
 
 export const register = (app: Express) => {
 
@@ -30,6 +31,8 @@ export const register = (app: Express) => {
   const attendanceUserIssueController: AttendanceUserIssueController = container.get('Apps.Backoffice.backend.controllers.AttendanceUserIssueController');
 
   const attendanceJustifyController: AttendanceJustifyController = container.get('Apps.Backoffice.backend.controllers.AttendanceJustifyController');
+
+  const attendanceDeleteController: AttendanceDeleteController = container.get('Apps.Backoffice.backend.controllers.AttendanceDeleteController');
 
   app.use('/attendance', ensureAuthenticated);  
   
@@ -60,4 +63,5 @@ export const register = (app: Express) => {
     });
   });
 
+  app.delete('/attendance/:issueId', ensureAuthenticated, authorizeModule(AppModules.ATTENDANCE), (req: Request, res: Response) => attendanceDeleteController.run(req, res));
 }

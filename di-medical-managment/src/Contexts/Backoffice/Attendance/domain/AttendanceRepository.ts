@@ -13,4 +13,5 @@ export interface AttendanceRepository {
   findAll(userId: UserId): Promise<AttendanceIssue[]>
   findJustification(justificationId: JustificationId): Promise<Justification | null>
   findIssue(id: AttendanceId): Promise<AttendanceIssue | null>
+  delete(id: AttendanceId): Promise<void>
 }
