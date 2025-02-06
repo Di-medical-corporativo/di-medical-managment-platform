@@ -15,6 +15,8 @@ import { adminRole, surperAdminRole } from "../../../../Contexts/Shared/domain/r
 import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
 import { TaskChangeStatusAdmin } from "../controllers/tasks/TaskChangeStatusAdmin";
 import { TaskFilterKanbanController } from "../controllers/tasks/TaskFilterKanbanController";
+import { TaskCommentPageController } from "../controllers/tasks/TaskCommentPageController";
+import { TaskCommentController } from "../controllers/tasks/TaskCommentController";
 
 export const register = (app: Express) => {
   const createTaskController: TaskCreateController = container.get('Apps.Backoffice.backend.controllers.TaskCreateController');
@@ -36,6 +38,14 @@ export const register = (app: Express) => {
   const changeStatusAdminController: TaskChangeStatusAdmin = container.get('Apps.Backoffice.backend.controllers.TaskChangeStatusAdmin');
 
   const taskFilterKanbanController: TaskFilterKanbanController = container.get('Apps.Backoffice.backend.controllers.TaskFilterKanbanController');
+
+  const taskCommentPageController: TaskCommentPageController = container.get('Apps.Backoffice.backend.controllers.TaskCommentPageController');
+
+  const taskCommentController: TaskCommentController = container.get('Apps.Backoffice.backend.controllers.TaskCommentController');
+
+  app.post('/task/:id/comment', ensureAuthenticated, (req: Request, res: Response) => taskCommentController.run(req, res));
+
+  app.get('/task/:id/comments', ensureAuthenticated, (req: Request, res: Response) => taskCommentPageController.run(req, res));
 
   app.post('/task/filter', ensureAuthenticated, authorizeModule(AppModules.TASKS), (req: Request, res: Response) => taskFilterKanbanController.run(req, res))
 

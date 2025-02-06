@@ -325,6 +325,18 @@ services:
       "@Contexts.Backoffice.Task.application.Find.TaskFinder"
     ]
 
+  Apps.Backoffice.backend.controllers.TaskCommentPageController:
+    class: ../../controllers/tasks/TaskCommentPageController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.SearchAllComment.CommentSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.TaskCommentController:
+    class: ../../controllers/tasks/TaskCommentController
+    arguments: [
+      "@Contexts.Backoffice.Task.application.Comment.TaskCommenter"
+    ]
+
   Apps.Backoffice.backend.controllers.TruckSearchControllers:
     class: ../../controllers/truck/TruckSearchController
     arguments: [

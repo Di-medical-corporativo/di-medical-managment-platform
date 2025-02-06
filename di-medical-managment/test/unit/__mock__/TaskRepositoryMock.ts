@@ -1,4 +1,5 @@
 import { DeparmentId } from "../../../src/Contexts/Backoffice/Department/domain/DeparmentId";
+import { Comment } from "../../../src/Contexts/Backoffice/Task/domain/Comment";
 import { Task } from "../../../src/Contexts/Backoffice/Task/domain/Task";
 import { TaskId } from "../../../src/Contexts/Backoffice/Task/domain/TaskId";
 import { TaskRepository } from "../../../src/Contexts/Backoffice/Task/domain/TaskRepository";
@@ -40,6 +41,14 @@ export class TaskRepositoryMock implements TaskRepository {
     this.kanbanMock = jest.fn();
   }
   
+  async findAllComments(id: TaskId): Promise<Comment[]> {
+    return []
+  }
+
+  async comment(comment: Comment): Promise<void> {
+      
+  }
+
   async overview(): Promise<{ asignedCount: number; inProgressCount: number; finishedCount: number; dueCount: number; }> {
     return {
       asignedCount: 1, inProgressCount: 1, finishedCount: 1, dueCount: 1

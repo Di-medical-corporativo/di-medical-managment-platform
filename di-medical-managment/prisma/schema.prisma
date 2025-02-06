@@ -28,8 +28,9 @@ model User {
   approvals Permit[] @relation("ApprovedPermits")
   assignedTasks Task[] @relation("TasksAssignedByUser")
   modules PlatformPermission[]
-  attendanceIssues AttendanceIssue[]  
+  attendanceIssues AttendanceIssue[]
   Justification Justification[]
+  comments Comment[]
 }
 
 model AttendanceIssue {
@@ -212,11 +213,22 @@ model Task {
   assignerId String?
   assigner User? @relation("TasksAssignedByUser", fields: [assignerId], references: [id])
 
+  comments Comment[]
+
   @@index([status])
   @@index([dueTo])
   @@index([userAssignedId])
 }
 
+model Comment {
+  id String @id
+  text String
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  taskId String
+  task Task @relation(fields: [taskId], references: [id])
+  createdAt DateTime
+}
 
 model Point {
   id String @id

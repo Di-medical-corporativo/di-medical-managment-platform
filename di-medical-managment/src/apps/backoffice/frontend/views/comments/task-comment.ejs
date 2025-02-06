@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comentarios</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <style>
+    #comments {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .comment {
+      width: 100%;
+      box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+    }
+
+    .comment-info {
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+
+      <main id="main-admin">
+        <header class="section-header">
+          <section class="breadcrumb">
+            <a href="/backoffice/task/<%= taskId %>/comments">
+              <small>Comentarios</small>
+            </a>
+            <span class="breadcrumb-slash">/</span>
+          </section>
+        </header>
+
+        <section id="new-client-form" style="margin-bottom: 10px; height: 100vh;">
+          <form action="/backoffice/task/<%= taskId %>/comment" method="post" id="create-client-form">
+            <input type="text" hidden id="commentId" name="commentId" value="<%= commentId %>" class="input">
+            <input type="text" hidden id="taskId" name="taskId" value="<%= taskId %>" class="input">
+
+            <input type="text" name="text" id="text" placeholder="Comentario..." class="input">
+            <button type="submit" class="button primary">Comentar</button>
+
+            <div style="width: 100%; height: 1px; background-color: black;"></div>
+
+            <section id="comments">
+              <% for(let i=0; i < comments.length; i++ ) { %>
+                <div class="comment">
+                  <div class="comment-info">
+                    <div class="comment-info-name">
+                      <small>
+                        <%= comments[i].userName %>
+                      </small>
+                    </div>
+                    <div class="comment-info-date">
+                      <small>
+                        <% const formattedDate = new Date(comments[i].createdAt).toLocaleString('es-MX', {
+                          day: '2-digit', month: '2-digit', year: 'numeric',
+                          hour: '2-digit', minute: '2-digit'
+                          }); %>
+
+                        <%= formattedDate %>
+                      </small>
+                    </div>
+                  </div>
+                  <input type="text" class="input comment-text" value="<%= comments[i].text %>"
+                    style="width: 100%; border: none; height: 60px; margin-top: 5px; background: white;" disabled>
+                </div>
+                <% } %>
+            </section>
+          </form>
+        </section>
+      </main>
+  </div>
+
+  <script>
+    document.getElementById('create-client-form').addEventListener('submit', function (event) {
+      const descriptionInput = document.querySelector('input[name=text]');
+
+      event.preventDefault();
+
+      swal({
+        title: '¿Estás seguro?',
+        text: 'Estás a a punto de comentar esta tarea. Revisa los detalles. Esta accion no se puede deshacer.',
+        buttons: true,
+        dangerMode: true,
+      }).then((accepted) => {
+        if (accepted) {
+          this.submit();
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -84,4 +84,16 @@ services:
     "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
   ]
 
+  Contexts.Backoffice.Task.application.Comment.TaskCommenter:
+    class: ../../../../../Contexts/Backoffice/Task/application/Comment/TaskCommenter
+    arguments: [
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository",
+    "@Contexts.Backoffice.User.infra.persistence.UserRepository"
+  ]
+
+  Contexts.Backoffice.Task.application.SearchAllComment.CommentSearcher:
+    class: ../../../../../Contexts/Backoffice/Task/application/SearchAllComment/CommentSearcher
+    arguments: [
+    "@Contexts.Backoffice.Task.infra.persistence.TaskRepository"
+  ]
   

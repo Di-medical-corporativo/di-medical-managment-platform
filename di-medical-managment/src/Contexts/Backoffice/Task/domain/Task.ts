@@ -12,6 +12,7 @@ import { TaskTitle } from "./TaskTitle";
 import { TaskUser } from "./TaskUser";
 
 export class Task {
+  private commentCount: number = 0;
   constructor(
     private id: TaskId,
     private title: TaskTitle,
@@ -23,6 +24,10 @@ export class Task {
     private department: Department,
     private assigner?: TaskAssiger
   ) {}
+
+  public setCommentCount(count: number) {
+    this.commentCount = count;
+  }
 
   public updateDepartment(department: Department) {
     this.department = department;
@@ -163,7 +168,8 @@ export class Task {
       dueTo: this.dueTo.toString(),
       isPoint: this.isPoint.value,
       department: this.department.toPrimitives(),
-      assigner: this.assigner?.toPrimitives()
+      assigner: this.assigner?.toPrimitives(),
+      commentCount: this.commentCount
     }
   }
 }

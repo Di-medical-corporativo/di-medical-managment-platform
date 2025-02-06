@@ -6,6 +6,7 @@ import { Task } from "../../domain/Task";
 import { TaskId } from "../../domain/TaskId";
 import { TaskRepository } from "../../domain/TaskRepository";
 import { StatusList, TaskStatus } from "../../domain/TaskStatus";
+import { Comment } from "../../domain/Comment";
 
 export class PrismaTaskRepository implements TaskRepository {
   async save(task: Task): Promise<void> {
@@ -62,7 +63,12 @@ export class PrismaTaskRepository implements TaskRepository {
             lastName: true
           }
         },
-        department: true
+        department: true,
+        _count: {
+          select: {
+            comments: true
+          }
+        }
       },
       where: {
         OR: [
@@ -113,6 +119,8 @@ export class PrismaTaskRepository implements TaskRepository {
           id: t.assigner?.id || '-'
         }
       });
+
+      task.setCommentCount(t._count.comments || 0);
 
       return task
     });
@@ -248,7 +256,12 @@ export class PrismaTaskRepository implements TaskRepository {
             lastName: true
           }
         },
-        department: true
+        department: true,
+        _count: {
+          select: {
+            comments: true
+          }
+        }
       },
       where: {
         userAssignedId: id.toString(),
@@ -280,28 +293,34 @@ export class PrismaTaskRepository implements TaskRepository {
       }
     });
 
-    const tasks = tasksDB.map(t => Task.fromPrimitives({
-      description: t.description,
-      dueTo: t.dueTo.toISOString(),
-      id: t.id,
-      status: t.status,
-      title: t.title,
-      userAssigned: {
-        firstName: t.userAssigned.firstName,
-        id: t.userAssignedId,
-        lastName: t.userAssigned.lastName
-      },
-      isPoint: t.belongsToItinerary,
-      department: {
-        id: t.department.id,
-        name: t.department.name
-      },
-      assigner: {
-        firstName: t.assigner?.firstName || '-',
-        lastName: t.assigner?.lastName || '-',
-        id: t.assigner?.id || '-'
-      }
-    }));
+    const tasks = tasksDB.map(t => {
+      const task = Task.fromPrimitives({
+        description: t.description,
+        dueTo: t.dueTo.toISOString(),
+        id: t.id,
+        status: t.status,
+        title: t.title,
+        userAssigned: {
+          firstName: t.userAssigned.firstName,
+          id: t.userAssignedId,
+          lastName: t.userAssigned.lastName
+        },
+        isPoint: t.belongsToItinerary,
+        department: {
+          id: t.department.id,
+          name: t.department.name
+        },
+        assigner: {
+          firstName: t.assigner?.firstName || '-',
+          lastName: t.assigner?.lastName || '-',
+          id: t.assigner?.id || '-'
+        }
+      });
+
+      task.setCommentCount(t._count.comments || 0);
+
+      return task;
+    });
 
     return tasks;
   }
@@ -389,7 +408,12 @@ export class PrismaTaskRepository implements TaskRepository {
             lastName: true
           }
         },
-        department: true
+        department: true,
+        _count: {
+          select: {
+            comments: true
+          }
+        }
       },
       where: query,
       orderBy: {
@@ -421,9 +445,67 @@ export class PrismaTaskRepository implements TaskRepository {
         }
       });
 
+      task.setCommentCount(t._count.comments || 0);
+
       return task
     });
 
     return tasks;
+  }
+
+  async comment(comment: Comment): Promise<void> {
+    const commentPrimitive = comment.toPrimitives();
+
+    await prisma.comment.create({
+      data: {
+        id: commentPrimitive.id,
+        text: commentPrimitive.text,
+        user: {
+          connect: {
+            id: commentPrimitive.userId
+          }
+        },
+        task: {
+          connect: {
+            id: commentPrimitive.taskId
+          }
+        },
+        createdAt: new Date().toISOString()
+      }
+    });
+  }
+
+  async findAllComments(id: TaskId): Promise<Comment[]> {
+    const commentsDB = await prisma.comment.findMany({
+      where: {
+        taskId: id.toString()
+      },
+      orderBy: {
+        createdAt: 'asc'
+      },
+      include: {
+         user: {
+          select: {
+            firstName: true,
+            lastName: true
+          }
+         }
+      }
+    });
+
+    const comments = commentsDB.map(c => {
+      const comment = Comment.fromPrimitives({
+        createdAt: c.createdAt,
+        id: c.id,
+        taskId: c.taskId,
+        text: c.text,
+        userId: c.userId,
+        userName: c.user.firstName + ' ' + c.user.lastName
+      });
+
+      return comment;
+    });
+
+    return comments;
   }
 }

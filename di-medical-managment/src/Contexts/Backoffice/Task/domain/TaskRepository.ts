@@ -1,5 +1,6 @@
 import { DeparmentId } from "../../Department/domain/DeparmentId";
 import { UserId } from "../../User/domain/UserId";
+import { Comment } from "./Comment";
 import { Task } from "./Task";
 import { TaskId } from "./TaskId";
 import { StatusList, TaskStatus } from "./TaskStatus";
@@ -38,4 +39,8 @@ export interface TaskRepository {
   }): Promise<Task[]>
 
   overview(): Promise<{ asignedCount: number, inProgressCount: number, finishedCount: number, dueCount: number }>
+
+  comment(comment: Comment): Promise<void>
+
+  findAllComments(id: TaskId): Promise<Comment[]>
 }

@@ -48,6 +48,10 @@ export class User {
     this.sucursal = sucursal;
   }
 
+  public fullNameString() {
+    return this.firstName.value + ' ' + this.lastName.value;
+  }
+
   public getIssueUser() {
     return new AttendanceUser(
       this.id,
