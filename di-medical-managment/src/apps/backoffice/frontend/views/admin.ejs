@@ -152,6 +152,9 @@
                     <button class="button primary"
                       onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Comenzar tarea</button>
                   </footer>
+                  <small>
+                    <a href="/backoffice/task/<%= task.id %>/comments" style="color: black;">Ver comentarios ( <%= task.commentCount %> )</a>
+                  </small>
                 </div>
                 <% }) %>
             </div>
@@ -194,6 +197,9 @@
                     <button class="button primary"
                       onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Continuar tarea</button>
                   </footer>
+                  <small>
+                    <a href="/backoffice/task/<%= task.id %>/comments" style="color: black;">Ver comentarios ( <%= task.commentCount %> )</a>
+                  </small>
                 </div>
                 <% }) %>
             </div>
@@ -235,6 +241,9 @@
                     <button class="button primary"
                       onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Detalles</button>
                   </footer>
+                  <small>
+                    <a href="/backoffice/task/<%= task.id %>/comments" style="color: black;">Ver comentarios ( <%= task.commentCount %> )</a>
+                  </small>
                 </div>
                 <% }) %>
             </div>
@@ -275,6 +284,9 @@
                     <button class="button primary"
                       onclick="window.location.href='/backoffice/task/<%= task.id %>/detail'">Detalles</button>
                   </footer>
+                  <small>
+                    <a href="/backoffice/task/<%= task.id %>/comments" style="color: black;">Ver comentarios ( <%= task.commentCount %> )</a>
+                  </small>
                 </div>
                 <% }) %>
             </div>
