@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Actualizar punto</title>
   <link rel="stylesheet" href="/css/main.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+  <style>
+    .choices__inner {
+      background-color: white;
+    }
+  </style>
 </head>
 <body>
   <div id="admin-dash">
@@ -29,14 +38,14 @@
         </section>
       </header>
 
-      <section id="new-client-form">
+      <section id="new-client-form" style="margin-bottom: 10px;">
         <form action="/backoffice/point/<%= point.id %>?_method=PUT" method="post">
           <input type="text" hidden value="<%= point.id %>" name="id">
 
           <input type="text" hidden value="<%= point.itineraryId %>" name="itineraryId">
           
           <label for="userAssigned">Responsable: </label>
-          <select name="userAssigned" class="input" required>
+          <select name="userAssigned" class="input" required id="userAssigned">
             <% for (let i = 0; i < users.length; i++) { %>
               <% if(users[i].id == point.userAssigned.id) { %>
                 <option value="<%= users[i].id %>" selected><%= users[i].firstName %> </option>
@@ -47,7 +56,7 @@
           </select>
 
           <label for="clientId">Cliente: </label>
-          <select name="clientId" class="input" required>
+          <select name="clientId" class="input" id="clientId" required>
             <% for (let j = 0; j < clients.length; j++) {%>
               <% if(clients[j].id == point.client.id) { %>
                 <option value="<%= clients[j].id %>" selected><%= clients[j].name %> </option>
@@ -66,14 +75,14 @@
           <input type="text" name="invoices" value="<%= invoices %>" class="input" required>
           
           <label for="certificate">Certificados: </label>
-          <select name="certificate" class="input">
+          <select name="certificate" class="input" id="certificate">
             <% for (let j = 0; j < certificateStates.length; j++) {%>
               <option value="<%= certificateStates[j] %>"><%= certificateStates[j] %> </option>
             <% } %>
           </select>
 
           <label for="ssa">SSA: </label>
-          <select name="ssa" class="input">
+          <select name="ssa" class="input" id="ssa">
             <% for (let j = 0; j < ssaStates.length; j++) {%>
               <option value="<%= ssaStates[j] %>"><%= ssaStates[j] %> </option>
             <% } %>
@@ -87,5 +96,29 @@
       </section>
     </main>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      new Choices('#userAssigned', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados', // Custom no results message
+      });
+
+      new Choices('#clientId', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });
+
+      new Choices('#certificate', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });
+
+      new Choices('#ssa', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });  
+    });
+  </script>
 </body>
 </html>

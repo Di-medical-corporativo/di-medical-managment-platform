@@ -8,13 +8,38 @@
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+  <style>
+    .choices {
+      width: 70%;
+      margin-bottom: 0;
+    }
+
+    .choices:nth-child(1) {
+      width: 100%;
+    }
+
+    .choices:nth-child(1) .choices__list {
+      width: 300px;
+    }
+
+    .choices:nth-child(1) .choices__inner {
+      width: 120px;
+      height: 40px;
+    }
+
+    
+  </style>
+
 </head>
 <body>
   <div id="admin-dash" style="height: 100vh;">
 
     <main id="main-admin" class="itinerary-page">
 
-      <header class="section-header">
+      <header class="section-header" style="height: 5px;">
         <section class="breadcrumb">
           <a href="/backoffice/itinerary">
             <small>Ruta</small>
@@ -32,7 +57,7 @@
 
       <section id="itinerary-creator">
         <form action="/backoffice/itinerary/add" method="post" id="itinerary-form">
-          <div id="itinerary-title" style="gap: 25px;">
+          <div id="itinerary-title" style="gap: 20px; height: 250px; margin-top: 10px;">
             <% 
               let date = new Date(itinerary.scheduleDate);
               let options = { day: '2-digit', month: '2-digit', year: 'numeric' };
@@ -45,7 +70,7 @@
 
             <label for="departmentId">Departamento:</label>
 
-            <select name="departmentId" class="input">
+            <select name="departmentId" class="input" id="departments">
               <% for (let i=0; i < departments.length; i++) {%>
                 <option value="<%= departments[i].id %>">
                   <%= departments[i].name %>
@@ -167,6 +192,43 @@
   </div>
 
   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      new Choices('#departments', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados', // Custom no results message
+      });
+
+      new Choices('#clientId', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });
+
+      new Choices('#userId', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });
+
+      new Choices('#surveyId', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });
+
+      new Choices('#certificate', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });
+
+      new Choices('#ssa', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });
+
+      new Choices('#type', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });      
+    });
+
     document.getElementById('itinerary-form').addEventListener('submit', function(event) {
       event.preventDefault();
 

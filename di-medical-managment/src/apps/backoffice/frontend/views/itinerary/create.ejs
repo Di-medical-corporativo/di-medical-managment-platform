@@ -8,11 +8,36 @@
   <link rel="stylesheet" href="/css/main.css">
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+  <style>
+    .choices {
+      width: 70%;
+      margin-bottom: 0;
+    }
+
+    .choices:nth-child(1) {
+      width: 100%;
+    }
+
+    .choices:nth-child(1) .choices__list {
+      width: 300px;
+    }
+
+    .choices:nth-child(1) .choices__inner {
+      width: 120px;
+      height: 40px;
+    }
+
+    
+  </style>
 </head>
 
 <body>
   <div id="admin-dash" style="height: 100vh;">
- 
+
     <main id="main-admin" class="itinerary-page">
 
       <header class="section-header" style="height: 15px;">
@@ -44,7 +69,7 @@
 
             <label for="departmentId">Departamento:</label>
 
-            <select name="departmentId" class="input">
+            <select name="departmentId" id="departments" class="input" style="width: 200px !important;">
               <% for (let i=0; i < departments.length; i++) {%>
                 <option value="<%= departments[i].id %>">
                   <%= departments[i].name %>
@@ -52,7 +77,8 @@
                 <% } %>
             </select>
 
-            <button class="button primary" style="width: 140px;" id="download-image" type="button">Descargar imagen</button>
+            <button class="button primary" style="width: 140px;" id="download-image" type="button">Descargar
+              imagen</button>
           </div>
 
           <table class="table" id="point-list-table">
@@ -72,7 +98,7 @@
             <tbody id="point-table-body">
               <tr>
                 <td>
-                  <select class="input" id="clientId" style="width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                  <select class="input" id="clientId" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                     <% for (let i=0; i < clients.length; i++) {%>
                       <option value="<%= clients[i].id %>">
                         <%= clients[i].name %>
@@ -81,10 +107,12 @@
                   </select>
                 </td>
                 <td>
-                  <select class="input" id="userId" style="width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                  <select class="input" id="userId"
+                    style="width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                     <% for (let i=0; i < users.length; i++) {%>
                       <option value="<%= users[i].id %>">
-                        <%= users[i].firstName %> <%= users[i].lastName %>
+                        <%= users[i].firstName %>
+                          <%= users[i].lastName %>
                       </option>
                       <% } %>
                   </select>
@@ -121,13 +149,14 @@
                   <input type="text" class="input" id="observation" placeholder="Observaciones del punto">
                 </td>
                 <td>
-                  <select class="input" id="surveyId" style="width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                  <select class="input" id="surveyId"
+                    style="width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                     <% for (let i=0; i < surveys.length; i++) {%>
                       <option value="<%= surveys[i].id %>">
                         <%= surveys[i].title %>
-                        <% if(!surveys[i].isActive) { %>
-                          (CERRADA)
-                        <% } %>
+                          <% if(!surveys[i].isActive) { %>
+                            (CERRADA)
+                            <% } %>
                       </option>
                       <% } %>
                   </select>
@@ -171,6 +200,49 @@
 
   <script>
 
+    document.addEventListener('DOMContentLoaded', function () {
+      new Choices('#departments', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados', // Custom no results message
+      });
+
+      new Choices('#clientId', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });
+
+      new Choices('#userId', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });
+
+      new Choices('#surveyId', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });
+
+      new Choices('#certificate', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });
+
+      new Choices('#ssa', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });
+
+      new Choices('#type', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });
+
+      new Choices('#sucursalId', {
+        searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+        noResultsText: 'No se encontraron resultados'
+      });
+      
+    });
+
     let isFormDirty = false;
 
     document.getElementById('itinerary-form').addEventListener('change', function () {
@@ -197,7 +269,7 @@
         });
         return;
       }
-      
+
       swal({
         title: '¿Estás seguro?',
         text: 'Estás a punto de crear el itinerario. Revise los detalles antes de confirmar.',
@@ -212,7 +284,7 @@
     });
 
 
-    document.getElementById('download-image').addEventListener('click', function() {
+    document.getElementById('download-image').addEventListener('click', function () {
       const element = document.getElementById('point-list-table-data');
 
       const excludeElements = document.querySelectorAll('.hide');
@@ -222,15 +294,15 @@
       });
 
       html2canvas(element).then((canvas) => {
-      // Convierte el canvas a imagen
+        // Convierte el canvas a imagen
         const link = document.createElement('a');
         link.href = canvas.toDataURL('image/png'); // Cambia a 'image/jpeg' si prefieres JPG
         link.download = 'ruta.png'; // Nombre del archivo
         link.click(); // Descarga la imagen
 
         excludeElements.forEach(e => {
-        e.style.display = '';
-      });
+          e.style.display = '';
+        });
       });
     });
   </script>
