@@ -531,3 +531,7 @@ services:
     arguments: [
       "@Contexts.Backoffice.Analytics.application.AttendanceGeneral.AttendanceGeneralReporter"
     ]
+  
+  Apps.Backoffice.backend.controllers.GeneralTaskReportController:
+    class: ../../controllers/analytics/GeneralTaskReportController
+    arguments: []

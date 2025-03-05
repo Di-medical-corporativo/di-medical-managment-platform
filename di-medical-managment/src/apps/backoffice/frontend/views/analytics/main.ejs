@@ -102,6 +102,21 @@
                   </form>
                 </td>
               </tr>
+
+              <tr>
+                <td>
+                  Reporte general de tareas
+                </td>
+                <td style="text-align: right; align-items: center;" id="actions">
+                  <form action="/backoffice/analytics/task-general-report" method="post" style="display: flex; gap: 10px; align-items: center;">
+                    <label for="from">Desde: </label>
+                    <input type="date" name="from" id="from" placeholder="Desde" class="input" required>
+                    <label for="to">Hasta: </label>
+                    <input type="date" name="to" id="to" class="input" required>
+                    <button class="button primary" style="margin-left: 10px;">Generar</button>
+                  </form>
+                </td>
+              </tr>
             </tbody>
           </table>
         </section>

@@ -51,4 +51,6 @@ export interface AnalyticsRepository {
     absenceCount: number;
     delayCount: number;
   }[]>
+
+  taskGeneralReport(from: FromDate, to: ToDate): Promise<{}>
 }

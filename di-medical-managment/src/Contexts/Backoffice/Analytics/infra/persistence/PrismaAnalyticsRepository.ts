@@ -733,4 +733,69 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
 
     return table
   }
+
+  async taskGeneralReport(from: FromDate, to: ToDate): Promise<{}> {
+    const taskMostPerUserDb = await prisma.user.findMany({
+      select: {
+        firstName: true,
+        lastName: true,
+        _count: {
+          select: {
+            tasks: {
+              where: {
+                dueTo: {
+                  gte: from.toDate().toISOString(),
+                  lte: to.toDate().toISOString()
+                }
+              }
+            }
+          }
+        }
+      },
+      orderBy: {
+        tasks: {
+          _count: 'desc'
+        }
+      },
+      take: 10
+    });
+
+    const taskLeastPerUser = await prisma.user.findMany({
+      select: {
+        firstName: true,
+        lastName: true,
+        _count: {
+          select: {
+            tasks: {
+              where: {
+                dueTo: {
+                  gte: from.toDate().toISOString(),
+                  lte: to.toDate().toISOString()
+                }
+              }
+            }
+          }
+        }
+      },
+      orderBy: {
+        tasks: {
+          _count: 'asc'
+        }
+      },
+      take: 10
+    });
+    
+
+    const topTenMostTasks = taskMostPerUserDb.map(u => ({
+      fullName: u.firstName + ' ' + u.lastName,
+      total: u._count.tasks
+    }));
+
+    const topTenLeastTasks = taskLeastPerUser.map(u => ({
+      fullName: u.firstName + ' ' + u.lastName,
+      total: u._count.tasks
+    }));
+
+    return { };
+  }
 }

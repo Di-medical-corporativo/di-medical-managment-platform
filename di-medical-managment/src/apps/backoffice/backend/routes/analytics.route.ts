@@ -8,6 +8,7 @@ import { GeneralUserReportController } from "../controllers/analytics/GeneralUse
 import { GeneralitineraryReportController } from "../controllers/analytics/GeneralitineraryReportController";
 import { GeneralPointsPerPersonReport } from "../controllers/analytics/GeneralPointsPerPersonReport";
 import { GeneralAttendanceReport } from "../controllers/analytics/GeneralAttendanceReport";
+import { GeneralTaskReportController } from "../controllers/analytics/GeneralTaskReportController";
 
 export const register = (app: Express) => {
   const analyticsPageController: AnalyticsPageController = container.get('Apps.Backoffice.backend.controllers.AnalyticsPageController');
@@ -20,6 +21,8 @@ export const register = (app: Express) => {
 
   const generalAttendanceReportController: GeneralAttendanceReport = container.get('Apps.Backoffice.backend.controllers.GeneralAttendanceReport');
 
+  const generalTaskReportController: GeneralTaskReportController = container.get('Apps.Backoffice.backend.controllers.GeneralTaskReportController');
+
   app.use('/analytics', ensureAuthenticated, authorizeModule(AppModules.ANALYTICS));
 
   app.get('/analytics', (req: Request, res: Response) => analyticsPageController.run(req, res));
@@ -31,4 +34,6 @@ export const register = (app: Express) => {
   app.post('/analytics/points-user-general-report', (req: Request, res: Response) => generalPointsUserGeneral.run(req, res));
 
   app.post('/analytics/attendance-general-report', (req: Request, res: Response) => generalAttendanceReportController.run(req, res));
+
+  app.post('/analytics/task-general-report', (req: Request, res: Response) => generalTaskReportController.run(req, res));
 }
