@@ -839,17 +839,17 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       const topTenMostTasks = taskMostPerUserDb.map(u => ({
         fullName: u.firstName + ' ' + u.lastName,
         total: u._count.tasks
-      }));
+      })).sort((a, b) => b.total - a.total);;
 
       const topTenLeastTasks = taskLeastPerUserDb.map(u => ({
         fullName: u.firstName + ' ' + u.lastName,
         total: u._count.tasks
-      }));
+      })).sort((a, b) => a.total - b.total);;
 
       const topTenMostDueTasks = taskMostDuePerUserDb.map(u => ({
         fullName: u.firstName + ' ' + u.lastName,
         total: u._count.tasks
-      }));
+      })).sort((a, b) => b.total - a.total);;
 
       const [
         asignedCount,
@@ -915,7 +915,7 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
       const topFivDepartmentsTasks = taskMostPertDepartmentDb.map(u => ({
         fullName: u.name,
         total: u._count.tasks
-      })); 
+      })).sort((a, b) => b.total - a.total); 
 
       return { 
         topTenLeastTasks,
