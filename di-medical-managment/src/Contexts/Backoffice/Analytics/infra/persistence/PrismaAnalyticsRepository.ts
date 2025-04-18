@@ -734,68 +734,198 @@ export class PrismaAnalyticsRepository implements AnalyticsRepository {
     return table
   }
 
-  async taskGeneralReport(from: FromDate, to: ToDate): Promise<{}> {
-    const taskMostPerUserDb = await prisma.user.findMany({
-      select: {
-        firstName: true,
-        lastName: true,
-        _count: {
-          select: {
-            tasks: {
-              where: {
-                dueTo: {
-                  gte: from.toDate().toISOString(),
-                  lte: to.toDate().toISOString()
+    async taskGeneralReport(from: FromDate, to: ToDate): Promise<{
+      topTenMostTasks: {
+        fullName: string,
+        total: number
+      }[],
+      topTenLeastTasks: {
+        fullName: string,
+        total: number
+      }[],
+      topTenMostDueTasks: {
+        fullName: string,
+        total: number
+      }[],
+      asignedCount: number,
+      inProgressCount: number,
+      finishedCount: number,
+      dueCount: number,
+      topFivDepartmentsTasks: {
+        fullName: string,
+        total: number
+      }[]
+    }> {
+      const taskMostPerUserDb = await prisma.user.findMany({
+        select: {
+          firstName: true,
+          lastName: true,
+          _count: {
+            select: {
+              tasks: {
+                where: {
+                  dueTo: {
+                    gte: from.toDate().toISOString(),
+                    lte: to.toDate().toISOString()
+                  },
+                  status: 'completed'
                 }
               }
             }
           }
-        }
-      },
-      orderBy: {
-        tasks: {
-          _count: 'desc'
-        }
-      },
-      take: 10
-    });
+        },
+        orderBy: {
+          tasks: {
+            _count: 'desc'
+          }
+        },
+        take: 10
+      });
 
-    const taskLeastPerUser = await prisma.user.findMany({
-      select: {
-        firstName: true,
-        lastName: true,
-        _count: {
-          select: {
-            tasks: {
-              where: {
-                dueTo: {
-                  gte: from.toDate().toISOString(),
-                  lte: to.toDate().toISOString()
+      const taskLeastPerUserDb = await prisma.user.findMany({
+        select: {
+          firstName: true,
+          lastName: true,
+          _count: {
+            select: {
+              tasks: {
+                where: {
+                  dueTo: {
+                    gte: from.toDate().toISOString(),
+                    lte: to.toDate().toISOString()
+                  },
+                  status: 'completed'
                 }
               }
             }
           }
-        }
-      },
-      orderBy: {
-        tasks: {
-          _count: 'asc'
-        }
-      },
-      take: 10
-    });
-    
+        },
+        orderBy: {
+          tasks: {
+            _count: 'asc'
+          }
+        },
+        take: 10
+      });
 
-    const topTenMostTasks = taskMostPerUserDb.map(u => ({
-      fullName: u.firstName + ' ' + u.lastName,
-      total: u._count.tasks
-    }));
+      const taskMostDuePerUserDb = await prisma.user.findMany({
+        select: {
+          firstName: true,
+          lastName: true,
+          _count: {
+            select: {
+              tasks: {
+                where: {
+                  dueTo: {
+                    gte: from.toDate().toISOString(),
+                    lte: to.toDate().toISOString()
+                  },
+                  status: 'pastdue'
+                }
+              }
+            }
+          }
+        },
+        orderBy: {
+          tasks: {
+            _count: 'desc'
+          }
+        },
+        take: 10
+      });
 
-    const topTenLeastTasks = taskLeastPerUser.map(u => ({
-      fullName: u.firstName + ' ' + u.lastName,
-      total: u._count.tasks
-    }));
+      
 
-    return { };
-  }
+      const topTenMostTasks = taskMostPerUserDb.map(u => ({
+        fullName: u.firstName + ' ' + u.lastName,
+        total: u._count.tasks
+      }));
+
+      const topTenLeastTasks = taskLeastPerUserDb.map(u => ({
+        fullName: u.firstName + ' ' + u.lastName,
+        total: u._count.tasks
+      }));
+
+      const topTenMostDueTasks = taskMostDuePerUserDb.map(u => ({
+        fullName: u.firstName + ' ' + u.lastName,
+        total: u._count.tasks
+      }));
+
+      const [
+        asignedCount,
+        inProgressCount,
+        finishedCount,
+        dueCount
+      ] = await Promise.all([
+        prisma.task.count({
+          where: {
+            status: 'assigned'
+          }
+        }),
+        prisma.task.count({
+          where: {
+            status: 'in-progress'
+          }
+        }),
+        prisma.task.count({
+          where: {
+            status: 'completed',
+            dueTo: {
+              gte: from.toDate().toISOString(),
+              lte: to.toDate().toISOString()
+            },
+          }
+        }),
+        prisma.task.count({
+          where: {
+            status: 'pastdue',
+            dueTo: {
+              gte: from.toDate().toISOString(),
+              lte: to.toDate().toISOString()
+            },
+          }
+        }),
+      ]);
+
+      const taskMostPertDepartmentDb = await prisma.department.findMany({
+        select: {
+          name: true,
+          _count: {
+            select: {
+              tasks: {
+                where: {
+                  dueTo: {
+                    gte: from.toDate().toISOString(),
+                    lte: to.toDate().toISOString()
+                  },
+                  status: 'completed'
+                }
+              }
+            }
+          }
+        },
+        orderBy: {
+          tasks: {
+            _count: 'desc'
+          }
+        },
+        take: 5
+      });
+
+      const topFivDepartmentsTasks = taskMostPertDepartmentDb.map(u => ({
+        fullName: u.name,
+        total: u._count.tasks
+      })); 
+
+      return { 
+        topTenLeastTasks,
+        topTenMostTasks,
+        topTenMostDueTasks,
+        asignedCount,
+        inProgressCount,
+        finishedCount,
+        dueCount,
+        topFivDepartmentsTasks
+       };
+    }
 }

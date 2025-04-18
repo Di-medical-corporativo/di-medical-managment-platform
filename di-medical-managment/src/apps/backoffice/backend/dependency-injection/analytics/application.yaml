@@ -29,3 +29,9 @@ services:
     arguments: [
     "@Contexts.Backoffice.Analytics.infra.persistence.AnalyticsRepository" 
     ]
+
+  Contexts.Backoffice.Analytics.application.TaskGeneral.TaskGeneralReporter:
+    class: ../../../../../Contexts/Backoffice/Analytics/application/TaskGeneral/TaskGeneralReporter
+    arguments: [
+    "@Contexts.Backoffice.Analytics.infra.persistence.AnalyticsRepository" 
+    ]

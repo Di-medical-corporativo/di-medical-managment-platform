@@ -37,6 +37,7 @@
               </div>
 
               <div class="analytics-data-number">
+                <%= report.asignedCount %>
               </div>
             </div>
 
@@ -46,6 +47,7 @@
               </div>
 
               <div class="analytics-data-number">
+                <%= report.inProgressCount %>
               </div>
             </div>
 
@@ -55,6 +57,7 @@
               </div>
 
               <div class="analytics-data-number">
+                <%= report.finishedCount %>
               </div>
             </div>
 
@@ -64,80 +67,107 @@
               </div>
 
               <div class="analytics-data-number">
+                <%= report.dueCount %>
               </div>
             </div>
 
           </div>
 
           <div class="analytics-row" style="margin-top: 20px;">
-            <div class="analytics-data" style="width: 25%; height: 300px; gap: 0;">
+            <div class="analytics-data" style="width: 25%; height: 320px; gap: 0;">
               <div style="width: 100%; height: 30px; background-color: #f8a900; padding: 5px;">
-                <p style="font-size: 13px;">Top 10 personal con mas tareas asignadas</p>
+                <p style="font-size: 13px;">Top 10 personal con mas tareas concluidas</p>
               </div>
     
               <table style="width: 100%; border-collapse: collapse; text-align: left;">
                 <thead>
                   <tr style="background-color: #E9ECEF; border-bottom: 2px solid #E9ECEF;">
                     <th style="padding: 8px; width: 70%; font-size: 12px;">Nombre</th>
-                    <th style="padding: 8px; width: 30%; font-size: 12px;">Puntos</th>
+                    <th style="padding: 8px; width: 30%; font-size: 12px;">Total</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <% for(let i = 0; i < 1; i++) { %>
+                  <% for(let i = 0; i < report.topTenMostTasks.length; i++) { %>
                     <tr style="border-bottom: 1px solid #ccc;">
-                      <td style="padding: 8px; font-size: 10px;"></td>
-                      <td style="padding: 8px; font-size: 10px;"></td>
+                      <td style="padding: 8px; font-size: 10px;"> <%= report.topTenMostTasks[i].fullName %> </td>
+                      <td style="padding: 8px; font-size: 10px;"> <%= report.topTenMostTasks[i].total  %> </td>
                     </tr>
                   <% } %>
                 </tbody>
               </table>
             </div>
   
-            <div class="analytics-data" style="width: 25%; height: 300px; gap: 0;">
+            <div class="analytics-data" style="width: 25%; height: 320px; gap: 0;">
               <div style="width: 100%; height: 30px; background-color: #f8a900; padding: 5px;">
-                <p style="font-size: 13px;">Top 10 personal con menos tareas asignadas</p>
+                <p style="font-size: 13px;">Top 10 personal con menos tareas concluidas</p>
               </div>
     
               <table style="width: 100%; border-collapse: collapse; text-align: left;">
                 <thead>
                   <tr style="background-color: #E9ECEF; border-bottom: 2px solid #E9ECEF;">
                     <th style="padding: 8px; width: 70%; font-size: 12px;">Nombre</th>
-                    <th style="padding: 8px; width: 30%; font-size: 12px;">Puntos</th>
+                    <th style="padding: 8px; width: 30%; font-size: 12px;">Total</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <% for(let i = 0; i < 1; i++) { %>
+                  <% for(let i = 0; i < report.topTenLeastTasks.length; i++) { %>
                     <tr style="border-bottom: 1px solid #ccc;">
-                      <td style="padding: 8px; font-size: 10px;"></td>
-                      <td style="padding: 8px; font-size: 10px;"></td>
+                      <td style="padding: 8px; font-size: 10px;"> <%= report.topTenLeastTasks[i].fullName %> </td>
+                      <td style="padding: 8px; font-size: 10px;"> <%= report.topTenLeastTasks[i].total %> </td>
                     </tr>
                   <% } %>
                 </tbody>
               </table>
             </div>
 
-            <div class="analytics-data" style="width: 25%; height: 300px; gap: 0;">
+            <div class="analytics-data" style="width: 25%; height: 320px; gap: 0;">
               <div style="width: 100%; height: 30px; background-color: #f8a900; padding: 5px;">
-                <p style="font-size: 13px;">Top 5 departamentos</p>
+                <p style="font-size: 13px;">Top 10 personal con mas tareas vencidas</p>
               </div>
     
               <table style="width: 100%; border-collapse: collapse; text-align: left;">
                 <thead>
                   <tr style="background-color: #E9ECEF; border-bottom: 2px solid #E9ECEF;">
                     <th style="padding: 8px; width: 70%; font-size: 12px;">Nombre</th>
-                    <th style="padding: 8px; width: 30%; font-size: 12px;">Tareas</th>
+                    <th style="padding: 8px; width: 30%; font-size: 12px;">Total</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <% for(let i = 0; i < 1; i++) { %>
+                  <% for(let i = 0; i < report.topTenMostDueTasks.length; i++) { %>
                     <tr style="border-bottom: 1px solid #ccc;">
-                      <td style="padding: 8px; font-size: 10px;"></td>
-                      <td style="padding: 8px; font-size: 10px;"></td>
+                      <td style="padding: 8px; font-size: 10px;"> <%= report.topTenMostDueTasks[i].fullName %> </td>
+                      <td style="padding: 8px; font-size: 10px;"> <%= report.topTenMostDueTasks[i].total %> </td>
                     </tr>
                   <% } %>
                 </tbody>
               </table>
             </div>
+          </div>
+
+          <div class="analytics-row" style="margin-top: 20px;">
+            <div class="analytics-data" style="width: 25%; height: 300px; gap: 0;">
+              <div style="width: 100%; height: 30px; background-color: #f8a900; padding: 5px;">
+                <p style="font-size: 13px;">Top 5 departamentos por tareas concluidas</p>
+              </div>
+    
+              <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                  <tr style="background-color: #E9ECEF; border-bottom: 2px solid #E9ECEF;">
+                    <th style="padding: 8px; width: 70%; font-size: 12px;">Nombre</th>
+                    <th style="padding: 8px; width: 30%; font-size: 12px;">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for(let i = 0; i < report.topFivDepartmentsTasks.length; i++) { %>
+                    <tr style="border-bottom: 1px solid #ccc;">
+                      <td style="padding: 8px; font-size: 10px;"> <%= report.topFivDepartmentsTasks[i].fullName %> </td>
+                      <td style="padding: 8px; font-size: 10px;"> <%= report.topFivDepartmentsTasks[i].total  %> </td>
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+
           </div>
         </section>
       </main>

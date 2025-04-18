@@ -52,5 +52,22 @@ export interface AnalyticsRepository {
     delayCount: number;
   }[]>
 
-  taskGeneralReport(from: FromDate, to: ToDate): Promise<{}>
+  taskGeneralReport(from: FromDate, to: ToDate): Promise<{
+    topTenMostTasks: {
+      fullName: string,
+      total: number
+    }[],
+    topTenLeastTasks: {
+      fullName: string,
+      total: number
+    }[],
+    topTenMostDueTasks: {
+      fullName: string,
+      total: number
+    }[],
+    asignedCount: number,
+    inProgressCount: number,
+    finishedCount: number,
+    dueCount: number
+  }>
 }
