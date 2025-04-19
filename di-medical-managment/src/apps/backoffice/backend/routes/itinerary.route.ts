@@ -17,6 +17,7 @@ import { ItineraryImageGeneratorController } from "../controllers/itinerary/Itin
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { authorizeModule } from "../middlewares/authorizeRoles";
 import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
+import { ItineraryPreviewPageController } from "../controllers/itinerary/ItineraryPreviewPageController";
 
 export const register = (app: Express) => {
   const createItineraryPage: ItineraryCreatePageController = container.get('Apps.Backoffice.backend.controllers.ItineraryCreatePageController');
@@ -47,6 +48,8 @@ export const register = (app: Express) => {
 
   const imageItineraryGeneratorController: ItineraryImageGeneratorController = container.get('Apps.Backoffice.backend.controllers.ItineraryImageGeneratorController');
 
+  const previewItineraryPageController: ItineraryPreviewPageController = container.get('Apps.Backoffice.backend.controllers.ItineraryPreviewPageController');
+
   app.get('/itinerary/new', ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => createItineraryPage.run(req, res));
 
   app.get('/itinerary/:id/track',ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => trackingItineraryController.run(req, res));
@@ -74,4 +77,7 @@ export const register = (app: Express) => {
   app.get('/itinerary/:id/report', ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => reportPointPageController.run(req, res));
 
   app.get('/itinerary/:id/image', ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => imageItineraryGeneratorController.run(req, res));
+
+  app.get('/itinerary/:id/preview', ensureAuthenticated, authorizeModule(AppModules.ROUTE), (req: Request, res: Response) => previewItineraryPageController.run(req, res));
+
 }

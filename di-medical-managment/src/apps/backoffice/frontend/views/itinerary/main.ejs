@@ -70,20 +70,32 @@
                 </td>
                 <td style="text-align: right;" id="truck_actions">
                   <% if(!itineraries[i].done && !itineraries[i].active){ %>
-                    <form action="/backoffice/itinerary/<%= itineraries[i].id %>/start" method="post" class="start-form">
+                    <form action="/backoffice/itinerary/<%= itineraries[i].id %>/start" method="post" class="start-form" style="display: flex; gap: 10px;">
                       <input type="text" value="<%= itineraries[i].id %>" name="id" hidden>
                       <button class="button warning" type="submit">Iniciar ruta</button>
+                      
                       <button class="button"  onclick="window.location.href='/backoffice/itinerary/<%= itineraries[i].id %>/add'" type="button">Agregar puntos</button>
+
+                      <a href="/backoffice/itinerary/<%= itineraries[i].id %>/preview" style="width: 40px; display: flex;">
+                        <img src="/images/icons/prev.png" width="20px" height="20px" alt="branch-logo">
+                      </a>
+
                     </form> 
                   <% } else if(itineraries[i].active) {%>
                     <button 
                       class="button primary"
                       onclick="window.location.href='/backoffice/itinerary/<%= itineraries[i].id %>/track'"
                       >Seguimiento</button>
+                      <a href="/backoffice/itinerary/<%= itineraries[i].id %>/preview" style="height: 40px; display: flex;">
+                        <img src="/images/icons/prev.png" width="20px" height="20px" alt="branch-logo">
+                      </a>
                   <% } else { %>
                     <button class="button"
                     onclick="window.location.href='/backoffice/itinerary/<%= itineraries[i].id %>/report'"
                     >Reporte de ruta</button>
+                    <a href="/backoffice/itinerary/<%= itineraries[i].id %>/preview" style="height: 40px; display: flex;">
+                      <img src="/images/icons/prev.png" width="20px" height="20px" alt="branch-logo">
+                    </a>
                   <% } %>
                 </td>
             </tr>

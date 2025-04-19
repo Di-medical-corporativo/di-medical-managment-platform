@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIsta previa de ruta</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/itinerary">
+            <small>Ruta</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/itinerary/<%= itinerary.id %>/preview">
+            <small>Vista previa</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="client-list">
+        <button class="button primary" style="width: 140px;" id="download-image" type="button">Descargar
+          imagen</button>
+
+        <p style="margin-top: 10px; margin-bottom: 10px;"><%= itinerary.points.length %> puntos</p>
+
+        <table class="table" id="point-list-table-data">
+          <thead>
+              <tr>
+                <th>Estatus</th>
+                <th>Cliente</th>
+                <th>Responsable</th>
+                <th>Facturas</th>
+                <th>Certificado</th>
+                <th>Ssa</th>
+                <th>Tipo</th>
+                <th>Observaciones</th>
+                <th>Comentario operador</th>
+              </tr>
+          </thead>
+          <tbody>
+            <% for(let i = 0; i < itinerary.points.length; i++) { %>
+              <% const point = itinerary.points[i] %>
+              <tr>
+                <td>
+                  <% if(point.status === 'in-progress') {%>
+                    En progreso
+                  <% } else if(point.status === 'completed') {%>
+                    Completado
+                  <% } else if(point.status === 'pastdue') {%>
+                     Punto en retraso
+                  <% } else if(point.status === 'assigned') {%>
+                    Asignado
+                  <% } else { %>
+                    Punto terminado con errores
+                  <% } %>
+                </td>
+                <td><%= point.client.name %></td>
+                <td><%= point.userAssigned.firstName %></td>
+                <td>
+                  <% point.invoice.forEach(invoice => {%>
+                    <%= invoice.number %>
+                  <% } )%>
+                </td>
+                <td><%= point.certificate %></td>
+                <td><%= point.ssa %></td>
+                <td>
+                  <% if(point.type === 'point-route') {%>
+                    Ruta
+                  <% } else if(point.type === 'point-parcel') {%>
+                    Paqueteria
+                  <% } else {%>
+                     Recoleccion
+                  <% } %>
+                </td>
+                <td><%= point.observation %></td>
+                <td><%= point.comment %></td>
+            </tr>
+            <% } %>
+          </tbody>
+      </table>
+      </section>
+    </main>
+  </div>
+  <script>
+    document.getElementById('download-image').addEventListener('click', function () {
+      const element = document.getElementById('point-list-table-data');
+
+      const excludeElements = document.querySelectorAll('.hide');
+
+      excludeElements.forEach(e => {
+        e.style.display = 'none';
+      });
+
+      html2canvas(element).then((canvas) => {
+        // Convierte el canvas a imagen
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png'); // Cambia a 'image/jpeg' si prefieres JPG
+        link.download = 'ruta.png'; // Nombre del archivo
+        link.click(); // Descarga la imagen
+
+        excludeElements.forEach(e => {
+          e.style.display = '';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

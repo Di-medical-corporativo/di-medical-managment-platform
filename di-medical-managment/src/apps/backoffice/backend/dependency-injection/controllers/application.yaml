@@ -83,6 +83,12 @@ services:
     arguments: [
       "@Contexts.Backoffice.Itinerary.application.Tracking.ItineraryTracker"
     ]
+  
+  Apps.Backoffice.backend.controllers.ItineraryPreviewPageController:
+    class: ../../controllers/itinerary/ItineraryPreviewPageController
+    arguments: [
+      "@Contexts.Backoffice.Itinerary.application.Tracking.ItineraryTracker"
+    ]
 
   Apps.Backoffice.backend.controllers.ItineraryEndController:
     class: ../../controllers/itinerary/ItineraryEndController
