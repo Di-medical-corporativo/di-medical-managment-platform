@@ -286,3 +286,34 @@ model Itinerary {
   done Boolean @default(false)
   scheduleDate DateTime
 }
+
+model Product {
+  id        String    @id @default(uuid())
+  name      String
+  image     String
+  brand     String
+  text      ProductText @relation(fields: [textId], references: [id])
+  textId    String @unique
+  tags      Tag[]     @relation("ProductTags")
+}
+
+model ProductText {
+  id             String           @id @default(uuid())
+  intro          String
+  caracteristics Caracteristic[]
+  benefits       String
+  product        Product?          
+}
+
+model Caracteristic {
+  id          String       @id @default(uuid())
+  name        String
+  productText ProductText  @relation(fields: [productTextId], references: [id])
+  productTextId String
+}
+
+model Tag {
+  id      String     @id @default(uuid())
+  name    String
+  products Product[] @relation("ProductTags")
+}
