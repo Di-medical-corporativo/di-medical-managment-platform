@@ -15,6 +15,7 @@
     "build:di": "cp -r src/apps/backoffice/frontend/. dist/src/apps/backoffice/frontend && cp -r src/apps/backoffice/backend/dependency-injection dist/src/apps/backoffice/backend/",
     "build:clean": "rm -r dist; exit 0",
     "dev:warehouse:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/backoffice/backend/start.ts",
+    "dev:webapi:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/web-api/backend/start.ts",
     "test:unit": "NODE_ENV=test jest"
   },
   "dependencies": {

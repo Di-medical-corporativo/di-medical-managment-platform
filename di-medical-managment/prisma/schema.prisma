@@ -288,17 +288,32 @@ model Itinerary {
 }
 
 model Product {
-  id        String    @id @default(uuid())
+  id        String    @id
   name      String
   image     String
-  brand     String
+  brand     Brand       @relation(fields: [brandId], references: [id])
   text      ProductText @relation(fields: [textId], references: [id])
   textId    String @unique
   tags      Tag[]     @relation("ProductTags")
+  analytics ProductAnalytics?
+}
+
+model ProductAnalytics {
+  id        String   @id @default(uuid())
+  views     Int      @default(0)
+  clicks    Int      @default(0)
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String   @unique
+}
+
+model Brand {
+  id       String    @id
+  name     String
+  products Product[]
 }
 
 model ProductText {
-  id             String           @id @default(uuid())
+  id             String           @id
   intro          String
   caracteristics Caracteristic[]
   benefits       String
@@ -306,14 +321,14 @@ model ProductText {
 }
 
 model Caracteristic {
-  id          String       @id @default(uuid())
+  id          String       @id
   name        String
   productText ProductText  @relation(fields: [productTextId], references: [id])
   productTextId String
 }
 
 model Tag {
-  id      String     @id @default(uuid())
+  id      String     @id
   name    String
   products Product[] @relation("ProductTags")
 }

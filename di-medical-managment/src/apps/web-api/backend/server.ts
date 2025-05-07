@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import * as http from 'http';
 import cors from 'cors';
-import { registerRoutes } from './backend/routes';
+import { registerRoutes } from './routes';
 
 export class Server {
   private express: express.Express;
@@ -57,7 +57,7 @@ export class Server {
       this.httpServer = this.express.listen(Number(this.port), '0.0.0.0', () => {
       
         this.logger.info(
-          `Backoffice Backend App is running at http://localhost:${this.port} in ${this.express.get('env')} mode`
+          `Web Api App is running at http://localhost:${this.port} in ${this.express.get('env')} mode`
         );
       
         this.logger.info('Press CTRL-C to stop\n');
