@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tags</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/product">
+            <small>Productos</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/product/tag">
+            <small>Tags</small>
+          </a>
+        </section>
+
+          <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/product/tag/new'">Crear tag</button>
+      </header>
+
+      <section id="client-list">
+        <table class="table">
+          <thead>
+              <tr>
+                  <th>Nombre de tag</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+            <% for(let i = 0; i < tags.length; i++) { %>
+              <tr>
+                <td><%= tags[i].name %></td>
+                <td>
+                  <form action="/backoffice/survey/<%= tags[i].id %>/close" method="post">
+                      <input type="text" value="<%= tags[i].id %>" name="id" hidden>
+                      <button class="button danger" type="submit">Cerrar encuesta</button>
+                    </form> 
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+      </table>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const deleteForms = document.querySelectorAll('.delete-form');
+
+    deleteForms.forEach(form => {
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        swal({
+          title: '¿Estás seguro?',
+          text: 'Estás a punto de eliminar a este usuario. Esta acción no puede deshacerse.',
+          buttons: true,
+          dangerMode: true,
+        }).then((accepted) => {
+          if (accepted) {
+            form.submit();
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

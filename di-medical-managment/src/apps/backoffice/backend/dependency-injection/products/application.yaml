@@ -1,0 +1,6 @@
+services:
+  Contexts.Backoffice.Product.application.Find.SearchAllTags.TagSearcher:
+    class: ../../../../../Contexts/Backoffice/Products/application/SearchAllTags/TagSearcher
+    arguments: [
+    "@Contexts.Backoffice.Analytics.infra.persistence.ProductRepository"
+  ]

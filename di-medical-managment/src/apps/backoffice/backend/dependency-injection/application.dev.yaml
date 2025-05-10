@@ -13,4 +13,5 @@ imports:
   - { resource: ./departments/application.yaml }
   - { resource: ./attendance/application.yaml }
   - { resource: ./analytics/application.yaml }
+  - { resource: ./products/application.yaml }
   - { resource: ./controllers/application.yaml }

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar tag</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/product">
+            <small>Productos</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/product/tag/">
+            <small>Tags</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/product/tag/new">
+            <small>Crear tag</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="new-client-form">
+        <form action="/backoffice/product/tag/<%= id %>/new" method="post">
+          <input type="text" hidden value="<%= id %>" name="id">
+          
+          <label for="description">Nombre del tag:</label>
+          <input type="text" id="name" name="name" class="input" placeholder="Nombre de tag" required>
+          
+          <button type="submit" class="button primary">Nuevo tag</button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

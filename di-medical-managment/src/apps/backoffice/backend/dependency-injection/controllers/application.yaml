@@ -543,3 +543,12 @@ services:
     arguments: [
       "@Contexts.Backoffice.Analytics.application.TaskGeneral.TaskGeneralReporter"
     ]
+
+  Apps.Backoffice.backend.controllers.ProductsFindAllController:
+    class: ../../controllers/products/ProductsFindAllController
+
+  Apps.Backoffice.backend.controllers.TagsFindAllController:
+    class: ../../controllers/products/TagsFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Product.application.Find.SearchAllTags.TagSearcher"
+    ]
