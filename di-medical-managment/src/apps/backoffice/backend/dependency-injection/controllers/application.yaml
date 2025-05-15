@@ -552,3 +552,15 @@ services:
     arguments: [
       "@Contexts.Backoffice.Product.application.Find.SearchAllTags.TagSearcher"
     ]
+  
+  Apps.Backoffice.backend.controllers.TagCreateController:
+    class: ../../controllers/products/TagCreateController
+    arguments: [
+      "@Contexts.Backoffice.Product.application.CreateTag.TagCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.TagDeleteController:
+    class: ../../controllers/products/TagDeleteController
+    arguments: [
+      "@Contexts.Backoffice.Product.application.DeleteTag.TagDeletor"
+    ]

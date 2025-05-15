@@ -4,3 +4,15 @@ services:
     arguments: [
     "@Contexts.Backoffice.Analytics.infra.persistence.ProductRepository"
   ]
+
+  Contexts.Backoffice.Product.application.CreateTag.TagCreator:
+    class: ../../../../../Contexts/Backoffice/Products/application/CreateTag/TagCreator
+    arguments: [
+    "@Contexts.Backoffice.Analytics.infra.persistence.ProductRepository"
+  ]
+
+  Contexts.Backoffice.Product.application.DeleteTag.TagDeletor:
+    class: ../../../../../Contexts/Backoffice/Products/application/DeleteTag/TagDeletor
+    arguments: [
+    "@Contexts.Backoffice.Analytics.infra.persistence.ProductRepository"
+  ]
