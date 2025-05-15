@@ -291,6 +291,7 @@ model Product {
   id        String    @id
   name      String
   image     String
+  brandId   String
   brand     Brand       @relation(fields: [brandId], references: [id])
   text      ProductText @relation(fields: [textId], references: [id])
   textId    String @unique

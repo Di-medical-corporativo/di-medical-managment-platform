@@ -1,4 +1,5 @@
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
+import { Brand } from "../../domain/Brand";
 import { ProductRepository } from "../../domain/ProductRepository";
 import { Tag } from "../../domain/Tag";
 import { TagId } from "../../domain/TagId";
@@ -48,5 +49,13 @@ export class PrismaProductRepository implements ProductRepository {
     });
 
     return tag;
+  }
+
+  async findAllBrands(): Promise<Brand[]> {
+    const dbBrand = await prisma.brand.findMany({});
+
+    const brand: Brand[] = dbBrand.map(t => Brand.fromPrimitives(t));
+
+    return brand;
   }
 }
