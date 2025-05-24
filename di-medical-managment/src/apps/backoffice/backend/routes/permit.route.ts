@@ -10,6 +10,7 @@ import { PermitRejectController } from "../controllers/permit/PermitRejectContro
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { authorizeModule } from "../middlewares/authorizeRoles";
 import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
+import { PermitDeleteController } from "../controllers/permit/PermitDeleteController";
 
 export const register = (app: Express) => {
   const permitCreateController: PermitCreateController = container.get('Apps.Backoffice.backend.controllers.PermitCreateController');
@@ -25,6 +26,8 @@ export const register = (app: Express) => {
   const permitRejectPageController: PermitRejectPageController = container.get('Apps.Backoffice.backend.controllers.PermitRejectPageController');
 
   const permitRejectController: PermitRejectController = container.get('Apps.Backoffice.backend.controllers.PermitRejectController');
+
+  const permitDeleteController: PermitDeleteController = container.get('Apps.Backoffice.backend.controllers.PermitDeleteController');
 
   app.get('/permit/new', (req: Request, res: Response) => {
     res.status(200).render('permit/create');
@@ -43,4 +46,6 @@ export const register = (app: Express) => {
   app.get('/permit/:id/reject',ensureAuthenticated, authorizeModule(AppModules.PERMISSIONS), (req: Request, res: Response) => permitRejectPageController.run(req, res));
 
   app.post('/permit/:id/reject', ensureAuthenticated, authorizeModule(AppModules.PERMISSIONS),(req: Request, res: Response) => permitRejectController.run(req, res));
+
+  app.delete('/permit/:id/delete', ensureAuthenticated, authorizeModule(AppModules.PERMISSIONS), (req: Request, res: Response) => permitDeleteController.run(req, res));
 }

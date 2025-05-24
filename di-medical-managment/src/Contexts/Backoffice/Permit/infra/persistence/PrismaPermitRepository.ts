@@ -260,4 +260,12 @@ export class PrismaPermitRepository implements PermitRepository {
       }
     })
   }
+
+  async delete(id: PermitId): Promise<void> {
+    await prisma.permit.delete({
+      where: {
+        id: id.toString()
+      }
+    });
+  }
 }

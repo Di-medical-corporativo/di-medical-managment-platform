@@ -11,4 +11,5 @@ export interface PermitRepository {
   findAll(month: number, year: number): Promise<Permit[]>
   find(id: PermitId): Promise<Permit | null>
   action(id: PermitId, comment: PermitAdminComment, action: PermitStatusList, decitionTakenBy: UserId): Promise<void>
+  delete(id: PermitId): Promise<void>
 }

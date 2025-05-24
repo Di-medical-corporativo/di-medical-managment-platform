@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Listado de permisos</title>
   <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
   <div id="admin-dash">
@@ -47,8 +48,17 @@
                 <small><strong>Empleado:</strong> <%= permit.user.firstName %> <%= permit.user.lastName %></small>
                 <small> <strong>Pedido el:</strong> <%= new Date(permit.createdAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
                 <small><strong>Estado:</strong> Pendiente</small>
-                <button type="submit" name="action" value="accept" class="button primary" onclick="window.location.href='/backoffice/permit/<%= permit.id %>/accept'">Aceptar</button>
-                <button type="submit" name="action" value="reject" class="button danger" onclick="window.location.href='/backoffice/permit/<%= permit.id %>/reject'">Rechazar</button>
+                <div style="width: 100%; display: flex; gap: 4px; ">
+                  <button type="submit" name="action" value="accept" class="button primary" onclick="window.location.href='/backoffice/permit/<%= permit.id %>/accept'">Aceptar</button>
+                   <button type="submit" name="action" value="reject" class="button danger" onclick="window.location.href='/backoffice/permit/<%= permit.id %>/reject'">Rechazar</button>
+
+                   <form action="/backoffice/permit/<%= permit.id %>/delete?_method=DELETE" method="post" class="delete-form" style="margin-left: auto;">
+                    <input type="text" value="<%= permit.id %>" name="id" hidden>
+                    <button class="button error" type="submit" style="width: 40px;">
+                      <img src="/images/icons/delete.png" width="20px" height="20px" alt="users-logo">
+                    </button>
+                  </form>
+                </div>
               </div>
             <% }) %>
           </div>
@@ -77,6 +87,12 @@
                 <small> <strong>Aprobado el:</strong> <%= new Date(permit.decitionTakenAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %> </small>
                 <small><strong>Estado:</strong> Aprobado</small>
                 <small><strong>Comentarios:</strong> <%= permit.adminComment %> </small>
+                <form action="/backoffice/permit/<%= permit.id %>/delete?_method=DELETE" method="post" class="delete-form" style="margin-left: auto;">
+                    <input type="text" value="<%= permit.id %>" name="id" hidden>
+                    <button class="button error" type="submit" style="width: 40px;">
+                      <img src="/images/icons/delete.png" width="20px" height="20px" alt="users-logo">
+                    </button>
+                  </form>
               </div>
             <% }) %>
           </div>
@@ -105,6 +121,12 @@
                 <small> <strong>Rechazado el:</strong> <%= new Date(permit.decitionTakenAt).toLocaleDateString("es-MX", { day: '2-digit', month: '2-digit', year: 'numeric' }) %> </small>
                 <small><strong>Estado:</strong> Rechazado</small>
                 <small><strong>Comentarios:</strong> <%= permit.adminComment %> </small>
+                <form action="/backoffice/permit/<%= permit.id %>/delete?_method=DELETE" method="post" class="delete-form" style="margin-left: auto;">
+                    <input type="text" value="<%= permit.id %>" name="id" hidden>
+                    <button class="button error" type="submit" style="width: 40px;">
+                      <img src="/images/icons/delete.png" width="20px" height="20px" alt="users-logo">
+                    </button>
+                </form>
               </div>
             <% }) %>
           </div>
@@ -112,5 +134,29 @@
       </section>
     </main>
   </div>
+
+
+  <script>
+    const deleteForms = document.querySelectorAll('.delete-form');
+
+    deleteForms.forEach(form => {
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        swal({
+          title: '¿Estás seguro?',
+          text: 'Estás a punto de eliminar este permiso. Esta acción no puede deshacerse.',
+          buttons: true,
+          dangerMode: true,
+        }).then((accepted) => {
+          if (accepted) {
+            form.submit();
+          }
+        });
+      });
+    });
+  </script>
+
 </body>
 </html>
+

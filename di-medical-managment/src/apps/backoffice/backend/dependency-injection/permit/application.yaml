@@ -28,3 +28,9 @@ services:
     arguments: [
     "@Contexts.Backoffice.Permit.infra.persistence.PermitRepository"
   ]
+
+  Contexts.Backoffice.Permit.application.Delete.PermitDeleter:
+    class: ../../../../../Contexts/Backoffice/Permit/application/Delete/PermitDeleter
+    arguments: [
+    "@Contexts.Backoffice.Permit.infra.persistence.PermitRepository"
+  ]

@@ -190,6 +190,12 @@ services:
       "@Contexts.Backoffice.Permit.application.SearchAll.PermitSearcher"
     ]
   
+  Apps.Backoffice.backend.controllers.PermitDeleteController:
+    class: ../../controllers/permit/PermitDeleteController
+    arguments: [
+      "@Contexts.Backoffice.Permit.application.Delete.PermitDeleter"
+    ]
+
   Apps.Backoffice.backend.controllers.SucursalSearchController:
     class: ../../controllers/sucursal/SucursalSearchController
     arguments: ["@Contexts.Backoffice.Sucursal.application.Find.SucursalFinder"]
