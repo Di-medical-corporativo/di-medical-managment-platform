@@ -58,4 +58,16 @@ export class PrismaProductRepository implements ProductRepository {
 
     return brand;
   }
+
+  async createBrand(brand: Brand): Promise<void> {
+    const primitives = brand.toPrimitives();
+
+    await prisma.brand.create({
+      data: {
+        id: primitives.id,
+        name: primitives.name
+      }
+    });
+  }
+
 }

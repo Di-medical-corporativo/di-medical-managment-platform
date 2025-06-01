@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Productos</title>
+  <title>Marcas</title>
   <link rel="stylesheet" href="/css/main.css">
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
@@ -16,31 +16,34 @@
 
       <header class="section-header">
         <section class="breadcrumb">
-          <a href="/backoffice/user">
+          <a href="/backoffice/product">
             <small>Productos</small>
           </a>
           <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/product/brand">
+            <small>Marcas</small>
+          </a>
         </section>
 
-        <div>
-          <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/product/tag'">Ver tags</button>
-          <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/product/brand'">Ver marcas</button>
-        </div>
+          <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/product/brand/new'">Crear marca</button>
       </header>
 
       <section id="client-list">
         <table class="table">
           <thead>
               <tr>
-                  <th>Nombre</th>
-                  <th>Puesto</th>
-                  <th>Telefono</th>
-                  <th>Correo</th>
-                  <th>Sucursal</th>
+                  <th>Marca</th>
                   <th></th>
               </tr>
           </thead>
           <tbody>
+            <% for(let i = 0; i < brands.length; i++) { %>
+              <tr>
+                <td><%= brands[i].name %></td>
+                <td id="truck_actions">
+                </td>
+              </tr>
+            <% } %>
           </tbody>
       </table>
       </section>
@@ -56,7 +59,7 @@
 
         swal({
           title: '¿Estás seguro?',
-          text: 'Estás a punto de eliminar a este usuario. Esta acción no puede deshacerse.',
+          text: 'Estás a punto de eliminar esta marca. Esta acción no puede deshacerse.',
           buttons: true,
           dangerMode: true,
         }).then((accepted) => {

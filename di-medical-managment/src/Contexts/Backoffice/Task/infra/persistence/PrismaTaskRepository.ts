@@ -1,4 +1,3 @@
-import e from "express";
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
 import { DeparmentId } from "../../../Department/domain/DeparmentId";
 import { UserId } from "../../../User/domain/UserId";

@@ -12,4 +12,6 @@ export interface ProductRepository {
   deleteTag(id: TagId): Promise<void>
 
   findAllBrands(): Promise<Brand[]>
+
+  createBrand(brand: Brand): Promise<void>
 } 

@@ -16,3 +16,15 @@ services:
     arguments: [
     "@Contexts.Backoffice.Analytics.infra.persistence.ProductRepository"
   ]
+
+  Contexts.Backoffice.Product.application.SearchAllBrands.BrandSearcher:
+    class: ../../../../../Contexts/Backoffice/Products/application/SearchAllBrands/BrandSearcher
+    arguments: [
+    "@Contexts.Backoffice.Analytics.infra.persistence.ProductRepository"
+  ]
+
+  Contexts.Backoffice.Product.application.CreateBrand.BrandCreator:
+    class: ../../../../../Contexts/Backoffice/Products/application/CreateBrand/BrandCreator
+    arguments: [
+    "@Contexts.Backoffice.Analytics.infra.persistence.ProductRepository"
+  ]

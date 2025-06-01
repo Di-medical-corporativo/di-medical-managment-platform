@@ -570,3 +570,15 @@ services:
     arguments: [
       "@Contexts.Backoffice.Product.application.DeleteTag.TagDeletor"
     ]
+
+  Apps.Backoffice.backend.controllers.BrandFindAllController:
+    class: ../../controllers/products/BrandFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Product.application.SearchAllBrands.BrandSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.BrandCreateController:
+    class: ../../controllers/products/BrandCreateController
+    arguments: [
+      "@Contexts.Backoffice.Product.application.CreateBrand.BrandCreator"
+    ]
