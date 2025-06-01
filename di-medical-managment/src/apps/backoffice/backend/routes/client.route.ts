@@ -9,6 +9,7 @@ import { ClientDeleteController } from "../controllers/client/ClientDeleteContro
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { authorizeModule } from "../middlewares/authorizeRoles";
 import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
+import { ClientFindAllJsonController } from "../controllers/client/ClientFindAllJsonController";
 
 export const register = (app: Express) => {
   const createClientController: ClientCreateController = container.get('Apps.Backoffice.backend.controllers.ClientCreateController');
@@ -20,6 +21,10 @@ export const register = (app: Express) => {
   const searchClientController: ClientSearchController = container.get('Apps.Backoffice.backend.controllers.ClientSearchController');
 
   const deleteClientController: ClientDeleteController = container.get('Apps.Backoffice.backend.controllers.ClientDeleteController');
+
+  const findAllJsonClientController: ClientFindAllJsonController = container.get('Apps.Backoffice.backend.controllers.ClientFindAllJsonController');
+
+  app.use('/clients/json', (req: Request, res: Response) => findAllJsonClientController.run(req, res));
 
   app.use('/client', ensureAuthenticated, authorizeModule(AppModules.CLIENTS));
 

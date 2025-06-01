@@ -29,6 +29,12 @@ services:
       "@Contexts.Backoffice.Client.application.Find.ClientFinder"
     ]
 
+  Apps.Backoffice.backend.controllers.ClientFindAllJsonController:
+    class: ../../controllers/client/ClientFindAllJsonController
+    arguments: [
+      "@Contexts.Backoffice.Client.application.SearchAll.ClientSearcher"
+    ]
+
   Apps.Backoffice.backend.controllers.DashBoardInitController:
     class: ../../controllers/DashboardInitController
     arguments: [

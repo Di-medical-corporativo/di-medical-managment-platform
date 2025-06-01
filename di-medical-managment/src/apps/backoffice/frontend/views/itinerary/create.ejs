@@ -54,7 +54,7 @@
 
       <section id="itinerary-creator">
         <form action="/backoffice/itinerary/create" method="post" id="itinerary-form">
-          <div id="itinerary-title">
+          <div id="itinerary-title" style="height: 340px;">
             <label for="dueTo">Fecha de inicio de ruta:</label>
             <input class="input" type="date" id="dueTo" name="dueTo" required />
 
@@ -79,6 +79,8 @@
 
             <button class="button primary" style="width: 140px;" id="download-image" type="button">Descargar
               imagen</button>
+
+            <button class="button" style="width: 140px;" type="button" id="reload-select">Recargar clientes</button>
           </div>
 
           <table class="table" id="point-list-table">
@@ -97,7 +99,7 @@
             </thead>
             <tbody id="point-table-body">
               <tr>
-                <td>
+                <td style="display: flex;">
                   <select class="input" id="clientId" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                     <% for (let i=0; i < clients.length; i++) {%>
                       <option value="<%= clients[i].id %>">
@@ -199,14 +201,14 @@
   </div>
 
   <script>
-
+    let clientChoices;
     document.addEventListener('DOMContentLoaded', function () {
       new Choices('#departments', {
         searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
         noResultsText: 'No se encontraron resultados', // Custom no results message
       });
 
-      new Choices('#clientId', {
+      clientChoices = new Choices('#clientId', {
         searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
         noResultsText: 'No se encontraron resultados'
       });
@@ -305,6 +307,39 @@
         });
       });
     });
+
+    
+    function loadClients() {
+      fetch('/backoffice/clients/json')
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          const clientSelect = document.getElementById('clientId');
+
+          if (clientChoices) {
+            clientChoices.destroy();
+          }
+
+          clientSelect.innerHTML = '';
+
+          data.forEach(client => {
+            const option = document.createElement('option');
+            option.value = client.id;
+            option.textContent = client.name;
+            clientSelect.appendChild(option);
+          });
+
+          clientChoices = new Choices('#clientId', {
+            searchPlaceholderValue: 'Selecciona una opcion', // Custom placeholder
+            noResultsText: 'No se encontraron resultados'
+          });
+        })
+        .catch(error => {
+          console.error('Error al cargar clientes:', error);
+        });
+    }
+
+    document.getElementById('reload-select').addEventListener('click', loadClients);
   </script>
 
   <script src="/js/itinerary.js"></script>
