@@ -13,7 +13,7 @@
     .editor-task {
       background-color: #ffffff;
     }
- 
+
     #toolbar-container {
       display: flex;
       flex-direction: row;
@@ -24,8 +24,24 @@
       flex-direction: row;
     }
 
-    .ql-container {
-      height: 140px;
+    #editor {
+      height: 360px;
+    }
+
+    #new-client-form {
+      width: 600px;
+      max-width: 100%; /* Para que nunca sobrepase el ancho del contenedor */
+      margin: 0 auto;   /* Centrar en pantallas grandes */
+    }
+
+    @media (max-width: 768px) {
+      #new-client-form {
+        width: 90%;
+      }
+    }
+
+    #new-client-form form {
+      width: 100%;
     }
   </style>
 </head>
@@ -75,7 +91,7 @@
           
           <label for="description">Instrucciones:</label>
           <div class="editor-task">
-            <div id="editor" style="height: 200px;">
+            <div id="editor" style="height: 500px;">
               <%- task.description %>
             </div>
           </div>
