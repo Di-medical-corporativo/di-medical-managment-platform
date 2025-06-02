@@ -24,7 +24,7 @@ export const register = (app: Express) => {
 
   const findAllJsonClientController: ClientFindAllJsonController = container.get('Apps.Backoffice.backend.controllers.ClientFindAllJsonController');
 
-  app.use('/clients/json', (req: Request, res: Response) => findAllJsonClientController.run(req, res));
+  app.get('/clients/json', (req: Request, res: Response) => findAllJsonClientController.run(req, res));
 
   app.use('/client', ensureAuthenticated, authorizeModule(AppModules.CLIENTS));
 
