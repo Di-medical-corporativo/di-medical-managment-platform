@@ -577,7 +577,6 @@ services:
       "@Contexts.Backoffice.Product.application.DeleteTag.TagDeletor"
     ]
 
-<<<<<<< HEAD
   Apps.Backoffice.backend.controllers.BrandFindAllController:
     class: ../../controllers/products/BrandFindAllController
     arguments: [
@@ -589,7 +588,6 @@ services:
     arguments: [
       "@Contexts.Backoffice.Product.application.CreateBrand.BrandCreator"
     ]
-=======
+    
   Apps.Backoffice.backend.controllers.TechnicalFindAllController:
     class: ../../controllers/technical/TechnicalFindAllController
->>>>>>> 51af7f9 (chore(technical): techincal sheets section)
