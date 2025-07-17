@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/technical">
+            <small>Fichas técnicas</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+        </section>
+
+        <div>
+          <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/technical/brand'">Ver marcas</button>
+          <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/technical/brand'">Agregar ficha</button>
+        </div>
+      </header>
+
+      <section id="client-list">
+        <table class="table">
+          <thead>
+              <tr>
+                  <th>Nombre</th>
+                  <th>Códigos</th>
+                  <th>URL</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+          </tbody>
+      </table>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const deleteForms = document.querySelectorAll('.delete-form');
+
+    deleteForms.forEach(form => {
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        swal({
+          title: '¿Estás seguro?',
+          text: 'Estás a punto de eliminar a este usuario. Esta acción no puede deshacerse.',
+          buttons: true,
+          dangerMode: true,
+        }).then((accepted) => {
+          if (accepted) {
+            form.submit();
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
