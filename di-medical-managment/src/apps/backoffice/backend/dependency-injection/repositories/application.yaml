@@ -40,3 +40,6 @@ services:
   
   Contexts.Backoffice.Analytics.infra.persistence.ProductRepository:
     class: ../../../../../Contexts/Backoffice/Products/infra/persistence/PrismaProductRepository
+
+  Contexts.Backoffice.Technical.infra.persistence.TechnicalRepository:
+      class: ../../../../../Contexts/Backoffice/Technical/infra/persistence/PrismaTechnicalRepository  

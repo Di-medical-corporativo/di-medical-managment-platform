@@ -1,4 +1,4 @@
-generator client {
+ generator client {
   provider = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
@@ -332,4 +332,26 @@ model Tag {
   id      String     @id
   name    String
   products Product[] @relation("ProductTags")
+}
+
+model Technical {
+  id String @id
+  name String
+  codes    TechnicalCode[]
+  brandId   String
+  brand     TechnicalBrand    @relation(fields: [brandId], references: [id])
+  imageUrl String
+}
+
+model TechnicalBrand {
+  id      String       @id
+  name    String       @unique
+  technicals Technical[]
+}
+
+model TechnicalCode {
+  id          String    @id
+  code        String
+  technical   Technical @relation(fields: [technicalId], references: [id])
+  technicalId String
 }
