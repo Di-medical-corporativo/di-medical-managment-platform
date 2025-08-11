@@ -1,0 +1,24 @@
+services:
+  Contexts.Backoffice.Technical.application.SearchAll.TechnicalSearcher:
+    class: ../../../../../Contexts/Backoffice/Technical/application/SearchAll/TechnicalSearcher
+    arguments: [
+    "@Contexts.Backoffice.Technical.infra.persistence.TechnicalRepository",
+    ]
+
+  Contexts.Backoffice.Technical.application.CreateBrand.BrandCreator:
+    class: ../../../../../Contexts/Backoffice/Technical/application/CreateBrand/BrandCreator
+    arguments: [
+    "@Contexts.Backoffice.Technical.infra.persistence.TechnicalRepository",
+    ]
+
+  Contexts.Backoffice.Technical.application.SearchAllBrand.BrandSearcher:
+    class: ../../../../../Contexts/Backoffice/Technical/application/SearchAllBrand/BrandSearcher
+    arguments: [
+    "@Contexts.Backoffice.Technical.infra.persistence.TechnicalRepository",
+    ]
+
+  Contexts.Backoffice.Technical.application.Create.TechnicalCreator:
+    class: ../../../../../Contexts/Backoffice/Technical/application/Create/TechnicalCreator
+    arguments: [
+    "@Contexts.Backoffice.Technical.infra.persistence.TechnicalRepository",
+    ]

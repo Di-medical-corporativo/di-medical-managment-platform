@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Productos</title>
+  <title>Fichas técnicas</title>
   <link rel="stylesheet" href="/css/main.css">
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
@@ -24,7 +24,7 @@
 
         <div>
           <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/technical/brand'">Ver marcas</button>
-          <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/technical/brand'">Agregar ficha</button>
+          <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/technical/new'">Agregar ficha</button>
         </div>
       </header>
 
@@ -33,12 +33,36 @@
           <thead>
               <tr>
                   <th>Nombre</th>
+                  <th>Marca</th>
                   <th>Códigos</th>
                   <th>URL</th>
                   <th></th>
               </tr>
           </thead>
           <tbody>
+            <% for(let i=0; i < techincal.length; i++) { %>
+                <tr>
+                  <td>
+                    <%= techincal[i].name %>
+                  </td>
+                  <td>
+                    <%= techincal[i].brand.name %>
+                  </td>
+                  <td>
+                    <%= techincal[i].codes.join(',') %>
+                  </td>
+                  <td>
+                    <a href="/<%= techincal[i].imageUrl %>">Link</a>
+                  </td>
+                  <td style="text-align: right;" id="actions">
+                    <button class="button primary" onclick="window.location.href='/backoffice/department/<%= techincal[i].id %>/update'">Actualizar</button>
+                    <form action="/backoffice/department/<%= techincal[i].id %>/delete?_method=DELETE" method="post" class="delete-form">
+                      <input type="text" value="<%= techincal[i].id %>" name="id" hidden>
+                      <button class="button danger" type="submit">Eliminar</button>
+                    </form>
+                  </td>
+                </tr>
+                <% } %>
           </tbody>
       </table>
       </section>

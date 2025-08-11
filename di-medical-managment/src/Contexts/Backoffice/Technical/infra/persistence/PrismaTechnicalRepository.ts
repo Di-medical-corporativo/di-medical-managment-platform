@@ -2,6 +2,8 @@ import { Prisma } from "@prisma/client";
 import prisma from "../../../../Shared/infra/persistence/PrismaDbConnection";
 import { Technical } from "../../domain/Technical";
 import { TechnicalRepository } from "../../domain/TechnicalRepository";
+import { TechnicalBrand } from "../../domain/TechnicalBrand";
+import { TechnicalBrandId } from "../../domain/TechnicalBrandId";
 
 export class PrismaTechnicalRepository implements TechnicalRepository {
   async searchAll(page: number = 1, searchTerm: string): Promise<{ technical: Technical[]; totalPages: number; }> {
@@ -73,5 +75,76 @@ export class PrismaTechnicalRepository implements TechnicalRepository {
       technical,
       totalPages
     }
+  }
+
+  async createBrand(brand: TechnicalBrand): Promise<void> {
+    const primitives = brand.toPrimitives();
+
+    await prisma.technicalBrand.create({
+      data: {
+        id: primitives.id,
+        name: primitives.name
+      }
+    });
+  }
+
+  async findAllBrands(): Promise<TechnicalBrand[]> {
+    const brandsRaw = await prisma.technicalBrand.findMany({
+      include: {
+        _count: {
+          select: {
+            technicals: true
+          }
+        }
+      }
+    });
+
+    const brands: TechnicalBrand[] = brandsRaw.map(b => {
+      const brand = TechnicalBrand.fromPrimitives({
+        id: b.id,
+        name: b.name
+      });
+      brand.setTotal(b._count.technicals);
+      return brand;
+    });
+
+    return brands;
+  }
+
+  async searchBrand(id: TechnicalBrandId): Promise<TechnicalBrand | null> {
+    const brandRaw = await prisma.technicalBrand.findFirst({
+      where: {
+         id: id.value
+      }
+    });
+
+    if(!brandRaw) return null;
+
+    const brand = TechnicalBrand.fromPrimitives({
+      id: brandRaw.id,
+      name: brandRaw.name
+    });
+
+    return brand;
+  }
+
+  async create(technical: Technical): Promise<void> {
+    const raw = technical.toPrimitives();
+
+    await prisma.technical.create({
+      data: {
+        id: raw.id,
+        imageUrl: raw.imageUrl,
+        name: raw.name,
+        brand: {
+          connect: {
+            id: raw.brand.id 
+          }
+        },
+        codes: {
+          create: raw.codes.map(c => ({ code: c }))
+        }
+      }
+    });
   }
 }

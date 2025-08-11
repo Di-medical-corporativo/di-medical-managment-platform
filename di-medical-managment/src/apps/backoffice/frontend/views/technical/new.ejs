@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nueva Ficha técnica</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/technical">
+            <small>Fichas técnicas</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/technical/<%= id %>/new">
+            <small>Nueva ficha</small>
+          </a>
+        </section>
+      </header>
+
+      <section id="new-client-form">
+        <form action="/backoffice/technical/<%= id %>/new" method="post" id="technical-form" enctype="multipart/form-data">
+          <input type="hidden" name="id" value="<%= id %>">
+          
+          <label for="name">Nombre:</label>
+          <input type="text" name="name" id="name" class="input" required>
+
+          <label for="brand">Marca:</label>
+          <select name="brand" id="brand" class="input" required>
+            <% brands.forEach(function(brand) { %>
+              <option value="<%= brand.id %>"><%= brand.name %></option>
+            <% }) %>
+          </select>
+
+          <label for="codes">Códigos (separados por comas):</label>
+          <input type="text" name="codes" id="codes" class="input" placeholder="ABC123, XYZ456" required>
+
+          <label for="image">Imagen:</label>
+          <input type="file" name="image" id="image" class="input" accept="image/*" required>
+
+          <button type="submit" class="button primary" id="create-technical-btn">Crear ficha</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById('create-technical-btn').addEventListener('click', function (event) {
+      event.preventDefault();
+
+      const form = document.getElementById('technical-form');
+
+      if (form.reportValidity()) {
+        swal({
+          title: '¿Estás seguro?',
+          text: 'Estás a punto de crear una nueva ficha técnica.',
+          buttons: true,
+          dangerMode: false,
+        }).then((accepted) => {
+          if (accepted) {
+            form.submit();
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

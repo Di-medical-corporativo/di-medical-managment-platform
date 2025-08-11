@@ -18,6 +18,12 @@ import { UserNotFound } from '../../../Contexts/Backoffice/User/domain/UserNotFo
 import { InvalidCredentials } from '../../../Contexts/Shared/domain/InvalidCredentials';
 import { UserAuthenticated } from '../../../Contexts/Shared/domain/UserAuthenticated';
 
+const UPLOADS_PATH = process.env.UPLOADS_PATH || 'uploads';
+
+const folder = path.isAbsolute(UPLOADS_PATH)
+  ? UPLOADS_PATH
+  : path.resolve(process.cwd(), UPLOADS_PATH);
+
 export class Server {
   private express: express.Express;
   
@@ -116,6 +122,8 @@ export class Server {
     const router = Router();
     
     this.express.use(cors());
+
+    this.express.use('/uploads', express.static(folder));
     
     this.express.use('/backoffice', router);
 

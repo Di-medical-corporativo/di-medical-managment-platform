@@ -591,3 +591,30 @@ services:
     
   Apps.Backoffice.backend.controllers.TechnicalFindAllController:
     class: ../../controllers/technical/TechnicalFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Technical.application.SearchAll.TechnicalSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.TechnicalBrandFindAllController:
+    class: ../../controllers/technical/TechnicalBrandFindAllController
+    arguments: [
+      "@Contexts.Backoffice.Technical.application.SearchAllBrand.BrandSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.TechnicalBrandCreateController:
+    class: ../../controllers/technical/TechnicalBrandCreateController
+    arguments: [
+      "@Contexts.Backoffice.Technical.application.CreateBrand.BrandCreator"
+    ]
+
+  Apps.Backoffice.backend.controllers.TechnicalCreatePageController:
+    class: ../../controllers/technical/TechnicalCreatePageController
+    arguments: [
+      "@Contexts.Backoffice.Technical.application.SearchAllBrand.BrandSearcher"
+    ]
+
+  Apps.Backoffice.backend.controllers.TechnicalCreateController:
+    class: ../../controllers/technical/TechnicalCreateController
+    arguments: [
+      "@Contexts.Backoffice.Technical.application.Create.TechnicalCreator"
+    ]

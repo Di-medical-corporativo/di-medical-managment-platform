@@ -9,4 +9,7 @@ export interface TechnicalRepository {
     searchTerm: string
   ): Promise<{ technical: Technical[], totalPages: number }>
   createBrand(brand: TechnicalBrand): Promise<void>
+  findAllBrands(): Promise<TechnicalBrand[]>
+  searchBrand(id: TechnicalBrandId): Promise<TechnicalBrand | null>
+  create(technical: Technical): Promise<void>
 }

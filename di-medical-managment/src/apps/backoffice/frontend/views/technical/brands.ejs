@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fichas técnicas</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+  <div id="admin-dash">
+
+    <%- include('../partials/_leftbar') %>
+    
+    <main id="main-admin">
+
+      <header class="section-header">
+        <section class="breadcrumb">
+          <a href="/backoffice/technical">
+            <small>Fichas técnicas</small>
+          </a>
+          <span class="breadcrumb-slash">/</span>
+          <a href="/backoffice/technical/brand">
+            <small>Marcas</small>
+          </a>
+        </section>
+
+          <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/technical/brand/new'">Crear marca</button>
+      </header>
+
+      <section id="client-list">
+        <table class="table">
+          <thead>
+              <tr>
+                  <th>Marca</th>
+                  <th>Total</th>
+              </tr>
+          </thead>
+          <tbody>
+            <% for(let i = 0; i < brands.length; i++) { %>
+              <tr>
+                <td><%= brands[i].name %></td>
+                <td><%= brands[i].total %></td>
+              </tr>
+            <% } %>
+          </tbody>
+      </table>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const deleteForms = document.querySelectorAll('.delete-form');
+
+    deleteForms.forEach(form => {
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        swal({
+          title: '¿Estás seguro?',
+          text: 'Estás a punto de eliminar esta marca. Esta acción no puede deshacerse.',
+          buttons: true,
+          dangerMode: true,
+        }).then((accepted) => {
+          if (accepted) {
+            form.submit();
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

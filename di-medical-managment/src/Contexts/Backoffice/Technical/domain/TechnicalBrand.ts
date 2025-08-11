@@ -2,10 +2,16 @@ import { TechnicalBrandId } from "./TechnicalBrandId";
 import { TechnicalBrandName } from "./TechnicalBrandName";
 
 export class TechnicalBrand {
+  private total: number = 0;
+
   constructor(
     private id: TechnicalBrandId,
     private name: TechnicalBrandName
   ) {}
+
+  public setTotal(total: number) {
+    this.total = total;
+  }
 
   static create(params: {
     id: TechnicalBrandId,
@@ -30,7 +36,8 @@ export class TechnicalBrand {
   toPrimitives() {
     return {
       id: this.id.toString(),
-      name: this.name.toString()
+      name: this.name.toString(),
+      total: this.total
     }
   }
 }

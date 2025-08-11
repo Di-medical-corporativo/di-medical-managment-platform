@@ -350,8 +350,9 @@ model TechnicalBrand {
 }
 
 model TechnicalCode {
-  id          String    @id
   code        String
   technical   Technical @relation(fields: [technicalId], references: [id])
   technicalId String
+  
+  @@id([technicalId, code])
 }
