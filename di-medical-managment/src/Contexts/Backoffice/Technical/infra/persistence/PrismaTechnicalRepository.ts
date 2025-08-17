@@ -4,6 +4,7 @@ import { Technical } from "../../domain/Technical";
 import { TechnicalRepository } from "../../domain/TechnicalRepository";
 import { TechnicalBrand } from "../../domain/TechnicalBrand";
 import { TechnicalBrandId } from "../../domain/TechnicalBrandId";
+import { TechnicalId } from "../../domain/TechnicalId";
 
 export class PrismaTechnicalRepository implements TechnicalRepository {
   async searchAll(page: number = 1, searchTerm: string): Promise<{ technical: Technical[]; totalPages: number; }> {
@@ -144,6 +145,47 @@ export class PrismaTechnicalRepository implements TechnicalRepository {
         codes: {
           create: raw.codes.map(c => ({ code: c }))
         }
+      }
+    });
+  }
+
+  async findById(id: TechnicalId): Promise<Technical | null> {
+    const raw = await prisma.technical.findFirst({
+      where: {
+        id: id.value
+      },
+      include: {
+        brand: true,
+        codes: true
+      }
+    });
+
+    if(raw == null) return null;
+
+    const technical = Technical.fromPrimitives({
+      brand: {
+        id: raw.brand.id,
+        name: raw.brand.name
+      },
+      id: raw.id,
+      codes: raw.codes.map(c => c.code),
+      imageUrl: raw.imageUrl,
+      name: raw.name
+    });
+
+    return technical;
+  }
+
+  async delete(id: TechnicalId): Promise<void> {
+    await prisma.technicalCode.deleteMany({
+      where: {
+        technicalId: id.value
+      }
+    });
+    
+    await prisma.technical.delete({
+      where: {
+        id: id.value
       }
     });
   }

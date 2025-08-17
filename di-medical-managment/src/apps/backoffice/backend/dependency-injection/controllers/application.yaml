@@ -618,3 +618,9 @@ services:
     arguments: [
       "@Contexts.Backoffice.Technical.application.Create.TechnicalCreator"
     ]
+
+  Apps.Backoffice.backend.controllers.TechnicalDeleteController:
+    class: ../../controllers/technical/TechnicalDeleteController
+    arguments: [
+      "@Contexts.Backoffice.Technical.application.Delete.TechnicalDeletor"
+    ]

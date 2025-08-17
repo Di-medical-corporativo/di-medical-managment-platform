@@ -22,3 +22,9 @@ services:
     arguments: [
     "@Contexts.Backoffice.Technical.infra.persistence.TechnicalRepository",
     ]
+
+  Contexts.Backoffice.Technical.application.Delete.TechnicalDeletor:
+    class: ../../../../../Contexts/Backoffice/Technical/application/Delete/TechnicalDeletor
+    arguments: [
+    "@Contexts.Backoffice.Technical.infra.persistence.TechnicalRepository",
+    ]

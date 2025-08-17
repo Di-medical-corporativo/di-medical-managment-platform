@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,40 +8,57 @@
   <link rel="stylesheet" href="/css/main.css">
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
+
 <body>
   <div id="admin-dash">
 
     <%- include('../partials/_leftbar') %>
-    
-    <main id="main-admin">
 
-      <header class="section-header">
-        <section class="breadcrumb">
-          <a href="/backoffice/technical">
-            <small>Fichas técnicas</small>
-          </a>
-          <span class="breadcrumb-slash">/</span>
-        </section>
+      <main id="main-admin">
 
-        <div>
-          <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/technical/brand'">Ver marcas</button>
-          <button id="new-client" class="button primary" onclick="window.location.href='/backoffice/technical/new'">Agregar ficha</button>
-        </div>
-      </header>
+        <header class="section-header">
+          <section class="breadcrumb">
+            <a href="/backoffice/technical">
+              <small>Fichas técnicas</small>
+            </a>
+            <span class="breadcrumb-slash">/</span>
+          </section>
 
-      <section id="client-list">
-        <table class="table">
-          <thead>
+          <div>
+            <button id="new-client" class="button primary"
+              onclick="window.location.href='/backoffice/technical/brand'">Ver marcas</button>
+            <button id="new-client" class="button primary"
+              onclick="window.location.href='/backoffice/technical/new'">Agregar ficha</button>
+          </div>
+        </header>
+
+        <section id="client-list">
+          <div>
+            <form action="/backoffice/technical" method="get" style="width: 350px; display: flex; gap: 10px; flex-direction: column;">
+              <input   name="term" placeholder="Termino a buscar: Codigo, nombre, marca... " class="input"
+                style="width: 100%;" value="<%= term %>">
+              <button class="button primary">Buscar</button>
+
+              <div style="align-self: center;">
+                <input  type="text" value="<%= pageNumber %>" style="width: 30px; text-align: center;" name="page" > / <%= totalPage %>
+              </div>
+
+            </form>
+          </div>
+
+          <table class="table" style="margin-top: 10px;">
+            <thead>
               <tr>
-                  <th>Nombre</th>
-                  <th>Marca</th>
-                  <th>Códigos</th>
-                  <th>URL</th>
-                  <th></th>
+                <th>Nombre</th>
+                <th>Marca</th>
+                <th>Códigos</th>
+                <th>URL</th>
+                <th></th>
               </tr>
-          </thead>
-          <tbody>
-            <% for(let i=0; i < techincal.length; i++) { %>
+            </thead>
+
+            <tbody>
+              <% for(let i=0; i < techincal.length; i++) { %>
                 <tr>
                   <td>
                     <%= techincal[i].name %>
@@ -55,25 +73,25 @@
                     <a href="/<%= techincal[i].imageUrl %>">Link</a>
                   </td>
                   <td style="text-align: right;" id="actions">
-                    <button class="button primary" onclick="window.location.href='/backoffice/department/<%= techincal[i].id %>/update'">Actualizar</button>
-                    <form action="/backoffice/department/<%= techincal[i].id %>/delete?_method=DELETE" method="post" class="delete-form">
+                    <form action="/backoffice/technical/<%= techincal[i].id %>/delete?_method=DELETE" method="post"
+                      class="delete-form">
                       <input type="text" value="<%= techincal[i].id %>" name="id" hidden>
                       <button class="button danger" type="submit">Eliminar</button>
                     </form>
                   </td>
                 </tr>
                 <% } %>
-          </tbody>
-      </table>
-      </section>
-    </main>
+            </tbody>
+          </table>
+        </section>
+      </main>
   </div>
 
   <script>
     const deleteForms = document.querySelectorAll('.delete-form');
 
     deleteForms.forEach(form => {
-      form.addEventListener('submit', function(event) {
+      form.addEventListener('submit', function (event) {
         event.preventDefault();
 
         swal({
@@ -90,4 +108,5 @@
     });
   </script>
 </body>
+
 </html>
