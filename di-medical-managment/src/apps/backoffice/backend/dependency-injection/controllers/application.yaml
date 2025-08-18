@@ -624,3 +624,9 @@ services:
     arguments: [
       "@Contexts.Backoffice.Technical.application.Delete.TechnicalDeletor"
     ]
+
+  Apps.Backoffice.backend.controllers.api.TechnicalFindPaginated:
+    class: ../../controllers/technical/api/TechnicalFindPaginated
+    arguments: [
+      "@Contexts.Backoffice.Technical.application.SearchAll.TechnicalSearcher"
+    ]

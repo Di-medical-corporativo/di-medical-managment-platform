@@ -2,7 +2,7 @@ import express, { Request, Response, Router } from 'express';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import * as http from 'http';
-import { registerRoutes } from './routes';
+import { registerApiRoutes, registerRoutes } from './routes';
 import cors from 'cors';
 import path from "path";
 import methodOverride from 'method-override';
@@ -120,11 +120,15 @@ export class Server {
     });
 
     const router = Router();
+
+    const apiRouter = Router();
     
     this.express.use(cors());
 
     this.express.use('/uploads', express.static(folder));
     
+    this.express.use('/api/v1', apiRouter);
+
     this.express.use('/backoffice', router);
 
     this.express.get('/', (req: Request, res: Response) => res.redirect('/backoffice'));
@@ -149,6 +153,8 @@ export class Server {
     });
     
     registerRoutes(router);
+
+    registerApiRoutes(apiRouter);
 
     router.use((req: Request, res: Response, next: Function) => {
       res.locals.currentPath = req.path;

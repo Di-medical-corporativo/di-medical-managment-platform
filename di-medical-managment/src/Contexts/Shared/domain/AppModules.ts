@@ -12,5 +12,6 @@ export enum AppModules {
   DEPARTMENTS = 'departamentos_modulo',
   ANALYTICS = 'analiticas_modulo',
   ATTENDANCE = 'faltas_modulo',
-  PRODUCTS = 'productos_modulo'
+  PRODUCTS = 'productos_modulo',
+  TECHNICAL = 'fichas_modulo'
 };

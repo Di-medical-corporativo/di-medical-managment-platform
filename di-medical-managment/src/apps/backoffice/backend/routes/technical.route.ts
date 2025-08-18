@@ -1,13 +1,16 @@
+import container from "../dependency-injection";
 import { v4 as uuid } from "uuid";
 import { Express, Request, Response } from "express";
 import { TechnicalFindAllController } from "../controllers/technical/TechnicalFindAllController";
-import container from "../dependency-injection";
 import { TechnicalBrandFindAllController } from "../controllers/technical/TechnicalBrandFindAllController";
 import { TechnicalBrandCreateController } from "../controllers/technical/TechnicalBrandCreateController";
 import { TechnicalCreatePageController } from "../controllers/technical/TechnicalCreatePageController";
 import { TechnicalCreateController } from "../controllers/technical/TechnicalCreateController";
 import { MulterRequest, upload } from "../../../../Contexts/Backoffice/Technical/infra/storage/multerUpload";
 import { TechnicalDeleteController } from "../controllers/technical/TechnicalDeleteController";
+import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
+import { authorizeModule } from "../middlewares/authorizeRoles";
+import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
 
 export const register = (app: Express) => {
   const findAllTechnicalController: TechnicalFindAllController = container.get('Apps.Backoffice.backend.controllers.TechnicalFindAllController');
@@ -21,6 +24,8 @@ export const register = (app: Express) => {
   const createTechnicalController: TechnicalCreateController = container.get('Apps.Backoffice.backend.controllers.TechnicalCreateController');
 
   const technicalDeleteController: TechnicalDeleteController = container.get('Apps.Backoffice.backend.controllers.TechnicalDeleteController');
+
+  app.use('/technical', ensureAuthenticated, authorizeModule(AppModules.TECHNICAL));
 
   app.get('/technical', (req: Request, res: Response) => findAllTechnicalController.run(req, res));
 

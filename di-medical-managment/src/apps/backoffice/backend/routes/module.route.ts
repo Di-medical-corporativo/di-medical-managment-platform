@@ -1,7 +1,7 @@
+import { v4 as uuid } from "uuid";
+import container from "../dependency-injection";
 import { Express, Request, Response } from "express";
 import { ModuleFindAllController } from "../controllers/modules/ModuleFindAllController";
-import container from "../dependency-injection";
-import { v4 as uuid } from "uuid";
 import { ModuleCreateController } from "../controllers/modules/ModuleCreateController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { authorizeModule } from "../middlewares/authorizeRoles";

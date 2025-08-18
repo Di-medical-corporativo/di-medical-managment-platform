@@ -1,6 +1,6 @@
+import container from "../dependency-injection";
 import { Express } from "express";
 import { Request, Response } from "express";
-import container from "../dependency-injection";
 import { TaskCreateController } from "../controllers/tasks/TaskCreateController";
 import { TaskCreatePageController } from "../controllers/tasks/TaskCreatePageController";
 import { TaskGlobalKanban } from "../controllers/tasks/TaskGlobalKanban";
@@ -11,7 +11,6 @@ import { TaskChangeStatusController } from "../controllers/tasks/TaskChangeStatu
 import { TaskDetailPageController } from "../controllers/tasks/TaskDetailPageController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { authorizeModule } from "../middlewares/authorizeRoles";
-import { adminRole, surperAdminRole } from "../../../../Contexts/Shared/domain/roles/Roles";
 import { AppModules } from "../../../../Contexts/Shared/domain/AppModules";
 import { TaskChangeStatusAdmin } from "../controllers/tasks/TaskChangeStatusAdmin";
 import { TaskFilterKanbanController } from "../controllers/tasks/TaskFilterKanbanController";
