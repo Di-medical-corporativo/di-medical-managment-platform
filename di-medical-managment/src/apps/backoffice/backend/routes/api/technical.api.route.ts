@@ -17,11 +17,12 @@ export const register = (app: Express) => {
     const filePath = path.join(UPLOADS_PATH, filename);
 
     if(!fs.existsSync(filePath)) {
-      return res.status(404).json({
+      res.status(404).json({
         error: "No se encontro el archivo"
       });
+    } else {
+      res.download(filePath);
     }
 
-    return res.download(filePath);
   });
 }
